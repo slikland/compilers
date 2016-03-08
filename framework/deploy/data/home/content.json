@@ -1,0 +1,43 @@
+{
+	"meta":
+	{
+		"title": "title home",
+		"description":"description home",
+		"favicon":"{base}media/images/favicon.ico",
+		"social":{
+			"facebook":{
+				"type":"website",
+				"image":"{base}media/images/social/share_facebook.jpg",
+				"title": "title facebook here",
+				"description":"description facebook here"
+			},
+			"twitter":{
+				"type":"summary",
+				"image":"{base}media/images/social/share_twitter.jpg",
+				"title": "title twitter here",
+				"description":"description twitter here"
+			}
+		}
+	},
+	"deeplink":{
+		"var":"test.test2.gallery",
+		"route":"/galeria[id]"
+	},
+	"gallery":[
+		{
+			"id":"image-4",
+			"src":"{base}media/images/scissors.png"
+		}
+	],
+	"videos":[
+		{
+			"id":"video-test",
+			"loadWithView":true,
+			"src":"{base}media/videos/test.mp4",
+			"autoplay" : true,
+			"fullBuffer" : true,
+			"loop": false,
+			"volume": 0.01
+		}
+	]
+}

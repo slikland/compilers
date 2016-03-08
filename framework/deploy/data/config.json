@@ -1,0 +1,100 @@
+{
+	"paths":
+	{
+		"cdn":"",
+		"base":""
+	},
+	"navigation":{
+		"type":"scroll",
+		"options":{
+			"orientation":"vertical",
+			"scrollToTime":0,
+			"showViewPercent":0.5,
+			"snap":{
+				"delay":0
+			}
+		},
+		"forceHashBang":false,
+		"startBefore":true,
+		"autoStart":true,
+		"instantiateViews":true,
+		"defaultView":"home"
+	},
+	"views":[
+		{
+			"id":"home",
+			"class":"home-view",
+			"route":"/home",
+			"content":"{base}data/home/content.json",
+			"cache":true,
+			"destroyable":true,
+			"loadContent":true
+		},
+		{
+			"id":"sub1",
+			"class":"sub1-view",
+			"content":"{base}data/home/sub1/content.json",
+			"route":"/sub1",
+			"destroyable":true,
+			"cache":true
+		},
+		{
+			"id":"sub2",
+			"class":"sub2-view",
+			"content":"{base}data/home/sub2/content.json",
+			"route":"/galeria(/{id})?",
+			"destroyable":true,
+			"loadContent":true
+		},
+		{
+			"id":"sub3",
+			"class":"sub3-view",
+			"route":"/blah/sub3/{id}",
+			"destroyable":true,
+			"loadContent":true
+		},
+		{
+			"id":"test",
+			"class":"test1-view",
+			"route":"/test1",
+			"content":"{base}data/test/content.json",
+			"destroyable":false,
+			"loadContent":true
+		}
+	],
+	"required":
+	{
+		"preloader":
+		[
+			{
+				"id": "preloader-css",
+				"src": "{base}css/preloader.css"
+			}
+		],
+		"core":
+		[
+			{
+				"id":"vendors",
+				"src":"{base}js/vendors.js"
+			},
+			{
+				"id": "tracking",
+				"src": "{base}data/tracking.json"
+			}
+		],
+		"main":
+		[
+			{
+				"content": "{base}data/main/content.json"
+			},
+			{
+				"id": "main-css",
+				"src": "{base}css/main.css"
+			},
+			{
+				"id": "main-js",
+				"src": "{base}js/main.js"
+			}
+		]
+	}
+}

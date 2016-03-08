@@ -1,0 +1,49 @@
+{
+	"meta":
+	{
+		"title": "title test",
+		"description":"description test",
+		"social":{
+			"facebook":{
+				"type":"website",
+				"image":"{base}media/images/social/share_facebook.jpg",
+				"title": "title facebook here",
+				"description":"description facebook here"
+			},
+			"twitter":{
+				"type":"summary",
+				"image":"{base}media/images/social/share_twitter.jpg",
+				"title": "title twitter here",
+				"description":"description twitter here"
+			}
+		}
+	},
+	"assets": {
+		"logo": {
+			"initialColor": "#00baff"
+		},
+		"menu": {
+			"itens": [{
+				"title": "Play"
+			},{
+				"title": "How to Play"
+			},{
+				"title": "Ranking"
+			}]
+		}
+	},
+	"templates": {
+		"rock": {
+			"rgb": [236, 48, 47],
+			"hex": "#ec302f"
+		},
+		"paper": {
+			"rgb": [136, 231, 141],
+			"hex": "#88e78d"
+		},
+		"scissors": {
+			"rgb": [0, 186, 255],
+			"hex": "#00baff"
+		}
+	}
+}
