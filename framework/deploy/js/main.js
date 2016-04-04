@@ -2539,6 +2539,7 @@ Main = (function(_super) {
   __extends(Main, _super);
 
   function Main() {
+    this.resize = __bind(this.resize, this);
     this.create = __bind(this.create, this);
     return Main.__super__.constructor.apply(this, arguments);
   }
@@ -2567,6 +2568,8 @@ Main = (function(_super) {
       });
       this.test.element.on('click', this.go);
     }
+    app.resizer = Resizer.getInstance();
+    app.resizer.on(Resizer.RESIZE, this.resize);
     return Main.__super__.create.apply(this, arguments);
   };
 
@@ -2576,6 +2579,10 @@ Main = (function(_super) {
 
   Main.prototype.go = function(evt) {
     return app.navigation.gotoView(evt.srcElement.innerText);
+  };
+
+  Main.prototype.resize = function(evt) {
+    return console.log('Resizer >>>>>', evt.breakpoint);
   };
 
   return Main;

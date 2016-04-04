@@ -36,6 +36,10 @@ class Main extends NavigationContainer
 				'background-color': '#'+color
 			})
 			@test.element.on 'click', @go
+
+
+		app.resizer = Resizer.getInstance()
+		app.resizer.on Resizer.RESIZE, @resize
 		super
 
 	test:(evt)->
@@ -43,5 +47,8 @@ class Main extends NavigationContainer
 
 	go:(evt)->
 		app.navigation.gotoView(evt.srcElement.innerText)
+
+	resize:(evt)=>
+		console.log 'Resizer >>>>>', evt.breakpoint
 
 return new Main()

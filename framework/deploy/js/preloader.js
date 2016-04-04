@@ -3119,6 +3119,153 @@ NavigationLoader = (function(_super) {
 
 })(EventDispatcher);
 
+var Resizer,
+  __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
+  __hasProp = {}.hasOwnProperty,
+  __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
+
+Resizer = (function(_super) {
+  __extends(Resizer, _super);
+
+  Resizer.RESIZE = 'resizeResizer';
+
+  Resizer.ORIENTATION_CHANGE = 'orientationChangeResizer';
+
+  Resizer.BREAKPOINT_CHANGE = 'breakpointChangedResizer';
+
+  Resizer.getInstance = function() {
+    return Resizer._instance != null ? Resizer._instance : Resizer._instance = (function(func, args, ctor) {
+      ctor.prototype = func.prototype;
+      var child = new ctor, result = func.apply(child, args);
+      return Object(result) === result ? result : child;
+    })(Resizer, arguments, function(){});
+  };
+
+  function Resizer() {
+    this._orientation = __bind(this._orientation, this);
+    this._resize = __bind(this._resize, this);
+    this._onOrientation = __bind(this._onOrientation, this);
+    this._onResize = __bind(this._onResize, this);
+    this.resize = __bind(this.resize, this);
+    this._data = {};
+    this._refElement = document.body;
+    window.addEventListener('resize', this._onResize);
+    window.addEventListener('orientationchange', this._onOrientation);
+    this._breakpoints = app.config.breakpoints;
+    this._updateData();
+  }
+
+  Resizer.get({
+    data: function() {
+      return this._data;
+    }
+  });
+
+  Resizer.get({
+    breakpoint: function() {
+      return this._data['breakpoint'];
+    }
+  });
+
+  Resizer.get({
+    breakpoints: function() {
+      return this._breakpoints;
+    }
+  });
+
+  Resizer.get({
+    width: function() {
+      return this._data['width'];
+    }
+  });
+
+  Resizer.get({
+    height: function() {
+      return this._data['height'];
+    }
+  });
+
+  Resizer.get({
+    orientation: function() {
+      return this._data['orientation'];
+    }
+  });
+
+  Resizer.prototype.resize = function() {
+    return this._resize();
+  };
+
+  Resizer.prototype._onResize = function(e) {
+    e.preventDefault();
+    e.stopImmediatePropagation();
+    if (this._resTimeout != null) {
+      clearTimeout(this._resTimeout);
+    }
+    return this._resTimeout = setTimeout(this._resize, 50);
+  };
+
+  Resizer.prototype._onOrientation = function(e) {
+    e.preventDefault();
+    e.stopImmediatePropagation();
+    if (this._oriTimeout != null) {
+      clearTimeout(this._oriTimeout);
+    }
+    this._oriTimeout = setTimeout(this._orientation, 50);
+    return false;
+  };
+
+  Resizer.prototype._resize = function() {
+    this._updateData();
+    this.trigger(Resizer.RESIZE, this._data);
+    return false;
+  };
+
+  Resizer.prototype._orientation = function() {
+    this._updateData();
+    this.trigger(Resizer.RESIZE, this._data);
+    return false;
+  };
+
+  Resizer.prototype._updateData = function() {
+    var _bpChanged, _breakpoint;
+    _breakpoint = this._getBreakpoint();
+    _bpChanged = this._data.breakpoint !== _breakpoint;
+    this._data = {
+      width: window.innerWidth,
+      height: window.innerHeight,
+      orientation: window.innerWidth > window.innerHeight ? 'landscape' : 'portrait',
+      breakpoint: _breakpoint
+    };
+    if (_bpChanged) {
+      return this.trigger(Resizer.BREAKPOINT_CHANGE, _breakpoint);
+    }
+  };
+
+  Resizer.prototype._getBreakpoint = function() {
+    var b, i, _breakpoint, _i, _ref;
+    _breakpoint = 'mobile';
+    this._refElement.className = this._refElement.className.split('mobile').join(" ");
+    _ref = this._breakpoints;
+    for (i = _i = _ref.length - 1; _i >= 0; i = _i += -1) {
+      b = _ref[i];
+      this._refElement.className = this._refElement.className.split(b['name']).join(" ");
+      if (window.innerWidth >= b['size']) {
+        if (this._breakpoints.length >= i + 1) {
+          _breakpoint = this._breakpoints[this._breakpoints.length - 1]['name'];
+        } else {
+          _breakpoint = this._breakpoints[i + 1]['name'];
+        }
+        break;
+      }
+    }
+    this._refElement.className += _breakpoint;
+    return _breakpoint;
+  };
+
+  return Resizer;
+
+})(EventDispatcher);
+
 var PreloaderView,
   __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
   __hasProp = {}.hasOwnProperty,

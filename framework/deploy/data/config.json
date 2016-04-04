@@ -62,6 +62,13 @@
 			"loadContent":true
 		}
 	],
+	"breakpoints":[
+		{"name":"mobile", "size": 767},
+		{"name":"ds", "size": 960},
+		{"name":"dm", "size": 1040},
+		{"name":"dl", "size": 1600},
+		{"name":"full", "size": 1920}
+	],
 	"required":
 	{
 		"preloader":
