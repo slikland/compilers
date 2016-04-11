@@ -19,6 +19,11 @@
 			}
 		}
 	},
+	"background": {
+		"id": "bg-teste",
+		"src": "{base}media/images/slik-test.png",
+		"loadWhen": ["isCurrentPage"]
+	},
 	"deeplink":{
 		"var":"test.test2.gallery",
 		"route":"/galeria[id]"

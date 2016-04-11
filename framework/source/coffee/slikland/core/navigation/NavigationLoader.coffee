@@ -7,6 +7,7 @@
 #import slikland.utils.JSONUtils
 
 #import slikland.loader.AssetLoader
+#import slikland.loader.LoadValidations
 #import slikland.core.navigation.BaseView
 
 class NavigationLoader extends EventDispatcher
@@ -33,7 +34,7 @@ class NavigationLoader extends EventDispatcher
 		head = document.querySelector("head") || document.getElementsByTagName("head")[0]
 		app.root = document.querySelector("base")?.href || document.getElementsByTagName("base")[0]?.href
 		app.loader = @loader = AssetLoader.getInstance()
-		
+
 		@queue = @loader.getGroup('config')
 		@queue.on(AssetLoader.COMPLETE_FILE, @_prepareConfigFile)
 		@queue.loadFile 
@@ -43,17 +44,83 @@ class NavigationLoader extends EventDispatcher
 
 	_prepareConfigFile:(evt)=>
 		@queue.off(AssetLoader.COMPLETE_FILE, @_prepareConfigFile)
-
+		
 		@_parseConfigFile(evt.result)
 
-		queue = @loader.getGroup('preloadContents')
-		queue.on(AssetLoader.COMPLETE_ALL, @_createLoadQueue)
+		routeUtils = RouteUtils.getInstance()
+		routeUtils.setup(app.config.views)
+		pathData = routeUtils.parsePath(location.href.replace(app.root, ''))
+		@_initialRouteParams = routeUtils.checkRoute(pathData.path)
+		@_initialView = routeUtils.getViewIdByRoute(@_initialRouteParams[0]?[0]?.route)
+		
+		@_configQueue = @loader.getGroup('preloadContents')
+		@_configQueue.on(AssetLoader.COMPLETE_ALL, @_createLoadQueue)
+		@_configQueue.on(AssetLoader.COMPLETE_FILE, @_checkInternalContent)
 
 		if app.config.preloadContents.length > 0
-			queue.loadManifest(app.config.preloadContents)
+			@_configQueue.loadManifest(app.config.preloadContents)
 		else
 			@_createLoadQueue(null)
-		false
+		false 
+
+	_checkInternalContent:(evt)=>
+		data = evt.result
+
+		#fix scope
+		if evt.item.scope
+			evt.item.scope.tag = data
+
+		#check internal content
+		if evt.item.ext == 'json'
+			viewId = evt.item.parentId || evt.item.id
+			view = null
+			filtered = JSONUtils.filterObject(data, 'service', null, null, true)
+
+			for file in filtered
+				view ?= @_getViewByContentId(viewId)
+				normFile = @_normalizePaths(file, app.config.paths)
+				ableToLoad = true
+
+				#validate load
+				if normFile.loadWhen
+					ableToLoad = LoadValidations.getInstance().validate(normFile.loadWhen, [view, normFile])
+
+				#insert service on queue
+				if ableToLoad
+					if normFile.internal
+						#check if current page is same of service
+						if @_initialView == view.id
+							#pause loader when loading service
+							@_configQueue.setPaused(true)
+							#load service
+							DataController.getInstance().callAPI normFile.service, @_initialRouteParams[1], (e, result)=>
+									#continue loop
+									@_checkInternalContent
+										result: result
+										item:
+											id: normFile.id
+											ext: 'json'
+											scope: file
+											parentId: viewId
+									#resume loading
+									@_configQueue.setPaused(false)
+								,@_serviceFailed
+					else
+						#load via preload js
+						@_configQueue.loadFile
+							id: normFile.id
+							src: normFile.service
+							scope: file
+							parentId: viewId
+
+	_serviceFailed:()=>
+		@_configQueue.setPaused(false)
+
+	_getViewByContentId:(contentId)->
+		for k,v of app.config.views
+			if v.content == contentId
+				return v
+				break
 
 	_createLoadQueue:(evt)=>
 		evt?.currentTarget?.off(AssetLoader.COMPLETE_ALL, @_createLoadQueue)
@@ -67,22 +134,28 @@ class NavigationLoader extends EventDispatcher
 		@currentStep = @loaderSteps[0]
 		
 		check = ObjectUtils.count(evt?.currentTarget?._loadedResults)
-		if check>0 then @_parseContentFiles(app.config.views, evt.currentTarget._loadedResults)
+
+		if check > 0 then @_parseContentFiles(app.config.views, evt.currentTarget._loadedResults)
 
 		queues = app.config.required
 		total = ObjectUtils.count(queues)
-		for k, v of queues
-			@loaderSteps.push {id:k, data:v, ratio:(1/total)}
+		firstIndex = @loaderSteps.length
 
+		for k, v of queues
+			switch k
+				when 'preloader' then @loaderSteps[firstIndex] = {id:k, data:v, ratio:(1/total)}
+				when 'core' then @loaderSteps[firstIndex + 1] = {id:k, data:v, ratio:(1/total)}
+				when 'main' then @loaderSteps[firstIndex + 2] = {id:k, data:v, ratio:(1/total)}
+
+		for k, v of queues
+			continue if k == 'preloader' || k == 'core' || k == 'main'
+			@loaderSteps.push {id:k, data:v, ratio:(1/total)}
+			
 		@queue = @_createLoader(@currentStep.id)
 		if check>0 then @queue.load()
 		false
 
 	_parseContentFiles:(p_views, p_data)=>
-		# 
-		# @TODO:
-		# IMPLEMENT FIX AND ADD THIS FUCKING UGLY CONTENT LOADING OF REQUIRED NODE
-		# 
 		ts = new Date().getTime()
 		for node of app.config.required
 			for k, v of app.config.required[node]
@@ -93,6 +166,7 @@ class NavigationLoader extends EventDispatcher
 					filtered = []
 					for index, obj of results
 						if obj.loadWithView is true || obj.loadWithView is undefined
+
 							if !obj.id? || obj.id is undefined then obj.id = obj.src
 							
 							if obj.cache isnt undefined
@@ -101,41 +175,82 @@ class NavigationLoader extends EventDispatcher
 								cache = "?noCache="+ts
 							else
 								cache = ""
-							obj.src += cache
 
+							#image validation
+							if obj.loadWhen
+								if !LoadValidations.getInstance().validate(obj.loadWhen, [v, obj])
+									continue
+
+							#test multiple formats
+							if typeof(obj.src) == 'object'
+								for item,i in obj.src
+									if item.when == undefined
+										obj.originalSrc = obj.src
+										obj.originalSrc[i].isDefault = true
+										obj.src = item.file
+										break
+
+									if LoadValidations.getInstance().validate(item.when, [v, obj])
+										obj.originalSrc = obj.src
+										obj.originalSrc[i].isDefault = true
+										obj.src = item.file
+										break
+
+							obj.src += cache
+							obj.src = obj.src.replace(app.root, '')
 							filtered.push obj
+
 					app.config.required[node] = ArrayUtils.merge(app.config.required[node], filtered)
-		# 
-		# 
-		# 
-		# 
+
 		for k, v of p_views
 			if p_data[v.content]
 				v.content = p_data[v.content]
+
+			if typeof v.content is 'object'
 				v.content = @_normalizePaths(v.content, app.config.paths)
-				if typeof v.content is 'object'
-					results = JSONUtils.filterObject(v.content, 'src', null, null, true)
-					filtered = []
-					for index, obj of results
-						if obj.loadWithView is true || obj.loadWithView is undefined
-							if !obj.id? || obj.id is undefined then obj.id = obj.src
-							
-							if obj.cache isnt undefined
-								cache = if obj.cache is false then cache = "?noCache="+ts else ""
-							else if v.cache isnt undefined && v.cache is false
-								cache = "?noCache="+ts
-							else
-								cache = ""
-							obj.src += cache
+				results = JSONUtils.filterObject(v.content, 'src', null, null, true)
+				filtered = []
+				for index, obj of results
+					if obj.loadWithView is true || obj.loadWithView is undefined
+						if !obj.id? || obj.id is undefined then obj.id = obj.src
+						
+						if obj.cache isnt undefined
+							cache = if obj.cache is false then cache = "?noCache="+ts else ""
+						else if v.cache isnt undefined && v.cache is false
+							cache = "?noCache="+ts
+						else
+							cache = ""
 
-							filtered.push obj
-					if !app.config.required[v.id]
-						app.config.required[v.id] = []
-						app.config.required[v.id] = filtered
-					else
-						app.config.required[node] = ArrayUtils.merge(app.config.required[node], filtered)
+						#image validation
+						if obj.loadWhen
+							if !LoadValidations.getInstance().validate(obj.loadWhen, [v, obj])
+								continue
+								
+						#test multiple formats
+						if typeof(obj.src) == 'object'
+							for item,i in obj.src
+								if item.when == undefined
+									obj.originalSrc = obj.src
+									obj.originalSrc[i].isDefault = true
+									obj.src = item.file
+									break
 
-			if v.subviews then @_parseContentFiles(v.subviews, p_data)
+								if LoadValidations.getInstance().validate(item.when, [v, obj])
+									obj.originalSrc = obj.src
+									obj.originalSrc[i].isDefault = true
+									obj.src = item.file
+									break
+
+						obj.src += cache
+						obj.src = obj.src.replace(app.root, '')
+						filtered.push obj
+
+				if !app.config.required[v.id]
+					app.config.required[v.id] = []
+					app.config.required[v.id] = filtered
+				else
+					app.config.required[node] = ArrayUtils.merge(app.config.required[node], filtered)
+
 		false
 
 	_parseConfigFile:(p_data)->
@@ -144,12 +259,14 @@ class NavigationLoader extends EventDispatcher
 		if !p_data.preloadContents then p_data.preloadContents = []
 		ts = new Date().getTime()
 		temp = []
+
 		for k, v of p_data.views
 			v.class = StringUtils.toCamelCase(v.class)
 			temp[v.id] = v
 			if v.loadContent && v.content
 				cache = if v.cache isnt undefined && v.cache is false then "?noCache="+ts else ""
-				p_data.preloadContents.push {'id':v.content, 'src':v.content+cache}
+				if typeof(v.content) != 'object' && v.content != '{}'
+					p_data.preloadContents.push {'id':v.content, 'src':v.content+cache}
 
 		for k, v of p_data.views
 			if v.parentView == v.id then throw new Error('The parent view cannot be herself')
@@ -169,7 +286,9 @@ class NavigationLoader extends EventDispatcher
 						cache = "?noCache="+ts
 					else
 						cache = ""
-					p_data.preloadContents.push {'id':v.content, 'src':v.content+cache}
+
+					if typeof(v.content) != 'object' && v.content != '{}'
+						p_data.preloadContents.push {'id':v.content, 'src':v.content+cache}
 
 		for id of p_data.required
 			for k, v of p_data.required[id]
@@ -248,11 +367,12 @@ class NavigationLoader extends EventDispatcher
 				style.type = "text/css"
 				head.appendChild(style)
 				si = head.querySelectorAll('style').length
-
-				if document.all
-					document.styleSheets[si].cssText = data
-				else
+				
+				try
 					style.appendChild(document.createTextNode(data))
+				catch e
+					if document.all
+						document.styleSheets[si].cssText = data
 		false
 
 	_loadProgress:(evt)=>
@@ -343,7 +463,6 @@ class NavigationLoader extends EventDispatcher
 	
 	_showMainView:(evt=null)=>
 		@_mainView.off(BaseView.CREATE_COMPLETE, @_showMainView)
-		@_mainView.showStart()
 		false
 
 	coreAssetsLoaded:(evt=null)=>

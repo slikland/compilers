@@ -1736,6 +1736,119 @@ AssetLoader = (function(_super) {
 
 })(EventDispatcher);
 
+var LoadValidations,
+  __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
+
+LoadValidations = (function() {
+  LoadValidations.getInstance = function() {
+    return LoadValidations._instance != null ? LoadValidations._instance : LoadValidations._instance = (function(func, args, ctor) {
+      ctor.prototype = func.prototype;
+      var child = new ctor, result = func.apply(child, args);
+      return Object(result) === result ? result : child;
+    })(LoadValidations, arguments, function(){});
+  };
+
+  function LoadValidations() {
+    this._breakpoint = __bind(this._breakpoint, this);
+    this._isCurrentPage = __bind(this._isCurrentPage, this);
+    this._isPortable = __bind(this._isPortable, this);
+    this._isntTablet = __bind(this._isntTablet, this);
+    this._isTablet = __bind(this._isTablet, this);
+    this._isntMobile = __bind(this._isntMobile, this);
+    this._isMobile = __bind(this._isMobile, this);
+    var pathData, routeData, routeUtils, _ref, _ref1;
+    routeUtils = RouteUtils.getInstance();
+    pathData = routeUtils.parsePath(location.href.replace(app.root, ''));
+    routeData = routeUtils.checkRoute(pathData.path);
+    this._initialView = routeUtils.getViewIdByRoute((_ref = routeData[0]) != null ? (_ref1 = _ref[0]) != null ? _ref1.route : void 0 : void 0);
+    this._validations = {};
+    this.addValidation('isMobile', this._isMobile);
+    this.addValidation('isntMobile', this._isntMobile);
+    this.addValidation('isTablet', this._isTablet);
+    this.addValidation('isntTablet', this._isntTablet);
+    this.addValidation('isPortable', this._isPortable);
+    this.addValidation('isCurrentPage', this._isCurrentPage);
+    this.addValidation('breakpoint', this._breakpoint);
+  }
+
+  LoadValidations.prototype.addValidation = function(name, method) {
+    if (!this._validations.hasOwnProperty(name)) {
+      return this._validations[name] = method;
+    } else {
+      return console.log('method name,' + name + 'already exists.');
+    }
+  };
+
+  LoadValidations.prototype.validate = function(method, args) {
+    var m, methodArgs, methodName, _base, _base1, _i, _len;
+    if (typeof method === 'string') {
+      m = method.split(':');
+      methodName = m.shift();
+      methodArgs = args.concat(m.slice(0));
+      return typeof (_base = this._validations)[method] === "function" ? _base[method].apply(_base, args) : void 0;
+    } else {
+      for (_i = 0, _len = method.length; _i < _len; _i++) {
+        m = method[_i];
+        m = m.split(':');
+        methodName = m.shift();
+        methodArgs = args.concat(m.slice(0));
+        if (!(typeof (_base1 = this._validations)[methodName] === "function" ? _base1[methodName].apply(_base1, methodArgs) : void 0)) {
+          return false;
+        }
+      }
+    }
+    return true;
+  };
+
+  LoadValidations.prototype._isMobile = function() {
+    return app.dd.mobile;
+  };
+
+  LoadValidations.prototype._isntMobile = function() {
+    return !app.dd.mobile;
+  };
+
+  LoadValidations.prototype._isTablet = function() {
+    return app.dd.tablet;
+  };
+
+  LoadValidations.prototype._isntTablet = function() {
+    return !app.dd.tablet;
+  };
+
+  LoadValidations.prototype._isPortable = function() {
+    return !!app.dd.mobile || !!app.dd.tablet;
+  };
+
+  LoadValidations.prototype._isCurrentPage = function(view, item, strict) {
+    console.log('view:', view, ' \n item:', item, 'strict:', strict);
+    if (view === true && strict !== 'true') {
+      return true;
+    }
+    return this._initialView === view.id;
+  };
+
+  LoadValidations.prototype._breakpoint = function(view, item, value) {
+    var bp, current, resizer, _i, _ref;
+    resizer = Resizer.getInstance();
+    current = resizer.breakpoint;
+    _ref = resizer.breakpoints;
+    for (_i = _ref.length - 1; _i >= 0; _i += -1) {
+      bp = _ref[_i];
+      if (value === bp.name) {
+        return true;
+      }
+      if (current === bp.name) {
+        return false;
+      }
+    }
+    return false;
+  };
+
+  return LoadValidations;
+
+})();
+
 var BaseDOM,
   __hasProp = {}.hasOwnProperty,
   __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
@@ -2655,6 +2768,8 @@ NavigationLoader = (function(_super) {
     this._loadFileComplete = __bind(this._loadFileComplete, this);
     this._parseContentFiles = __bind(this._parseContentFiles, this);
     this._createLoadQueue = __bind(this._createLoadQueue, this);
+    this._serviceFailed = __bind(this._serviceFailed, this);
+    this._checkInternalContent = __bind(this._checkInternalContent, this);
     this._prepareConfigFile = __bind(this._prepareConfigFile, this);
     wrapper = p_wrapper == null ? document.body : p_wrapper;
     if (p_configPath == null) {
@@ -2678,21 +2793,101 @@ NavigationLoader = (function(_super) {
   }
 
   NavigationLoader.prototype._prepareConfigFile = function(evt) {
-    var queue;
+    var pathData, routeUtils, _ref, _ref1;
     this.queue.off(AssetLoader.COMPLETE_FILE, this._prepareConfigFile);
     this._parseConfigFile(evt.result);
-    queue = this.loader.getGroup('preloadContents');
-    queue.on(AssetLoader.COMPLETE_ALL, this._createLoadQueue);
+    routeUtils = RouteUtils.getInstance();
+    routeUtils.setup(app.config.views);
+    pathData = routeUtils.parsePath(location.href.replace(app.root, ''));
+    this._initialRouteParams = routeUtils.checkRoute(pathData.path);
+    this._initialView = routeUtils.getViewIdByRoute((_ref = this._initialRouteParams[0]) != null ? (_ref1 = _ref[0]) != null ? _ref1.route : void 0 : void 0);
+    this._configQueue = this.loader.getGroup('preloadContents');
+    this._configQueue.on(AssetLoader.COMPLETE_ALL, this._createLoadQueue);
+    this._configQueue.on(AssetLoader.COMPLETE_FILE, this._checkInternalContent);
     if (app.config.preloadContents.length > 0) {
-      queue.loadManifest(app.config.preloadContents);
+      this._configQueue.loadManifest(app.config.preloadContents);
     } else {
       this._createLoadQueue(null);
     }
     return false;
   };
 
+  NavigationLoader.prototype._checkInternalContent = function(evt) {
+    var ableToLoad, data, file, filtered, normFile, view, viewId, _i, _len, _results;
+    data = evt.result;
+    if (evt.item.scope) {
+      evt.item.scope.tag = data;
+    }
+    if (evt.item.ext === 'json') {
+      viewId = evt.item.parentId || evt.item.id;
+      view = null;
+      filtered = JSONUtils.filterObject(data, 'service', null, null, true);
+      _results = [];
+      for (_i = 0, _len = filtered.length; _i < _len; _i++) {
+        file = filtered[_i];
+        if (view == null) {
+          view = this._getViewByContentId(viewId);
+        }
+        normFile = this._normalizePaths(file, app.config.paths);
+        ableToLoad = true;
+        if (normFile.loadWhen) {
+          ableToLoad = LoadValidations.getInstance().validate(normFile.loadWhen, [view, normFile]);
+        }
+        if (ableToLoad) {
+          if (normFile.internal) {
+            if (this._initialView === view.id) {
+              this._configQueue.setPaused(true);
+              _results.push(DataController.getInstance().callAPI(normFile.service, this._initialRouteParams[1], (function(_this) {
+                return function(e, result) {
+                  _this._checkInternalContent({
+                    result: result,
+                    item: {
+                      id: normFile.id,
+                      ext: 'json',
+                      scope: file,
+                      parentId: viewId
+                    }
+                  });
+                  return _this._configQueue.setPaused(false);
+                };
+              })(this), this._serviceFailed));
+            } else {
+              _results.push(void 0);
+            }
+          } else {
+            _results.push(this._configQueue.loadFile({
+              id: normFile.id,
+              src: normFile.service,
+              scope: file,
+              parentId: viewId
+            }));
+          }
+        } else {
+          _results.push(void 0);
+        }
+      }
+      return _results;
+    }
+  };
+
+  NavigationLoader.prototype._serviceFailed = function() {
+    return this._configQueue.setPaused(false);
+  };
+
+  NavigationLoader.prototype._getViewByContentId = function(contentId) {
+    var k, v, _ref;
+    _ref = app.config.views;
+    for (k in _ref) {
+      v = _ref[k];
+      if (v.content === contentId) {
+        return v;
+        break;
+      }
+    }
+  };
+
   NavigationLoader.prototype._createLoadQueue = function(evt) {
-    var check, k, queues, total, v, _ref, _ref1;
+    var check, firstIndex, k, queues, total, v, _ref, _ref1;
     if (evt != null) {
       if ((_ref = evt.currentTarget) != null) {
         _ref.off(AssetLoader.COMPLETE_ALL, this._createLoadQueue);
@@ -2713,8 +2908,37 @@ NavigationLoader = (function(_super) {
     }
     queues = app.config.required;
     total = ObjectUtils.count(queues);
+    firstIndex = this.loaderSteps.length;
     for (k in queues) {
       v = queues[k];
+      switch (k) {
+        case 'preloader':
+          this.loaderSteps[firstIndex] = {
+            id: k,
+            data: v,
+            ratio: 1 / total
+          };
+          break;
+        case 'core':
+          this.loaderSteps[firstIndex + 1] = {
+            id: k,
+            data: v,
+            ratio: 1 / total
+          };
+          break;
+        case 'main':
+          this.loaderSteps[firstIndex + 2] = {
+            id: k,
+            data: v,
+            ratio: 1 / total
+          };
+      }
+    }
+    for (k in queues) {
+      v = queues[k];
+      if (k === 'preloader' || k === 'core' || k === 'main') {
+        continue;
+      }
       this.loaderSteps.push({
         id: k,
         data: v,
@@ -2729,7 +2953,7 @@ NavigationLoader = (function(_super) {
   };
 
   NavigationLoader.prototype._parseContentFiles = function(p_views, p_data) {
-    var cache, filtered, index, k, node, obj, results, ts, v, _ref;
+    var cache, filtered, i, index, item, k, node, obj, results, ts, v, _i, _j, _len, _len1, _ref, _ref1, _ref2;
     ts = new Date().getTime();
     for (node in app.config.required) {
       _ref = app.config.required[node];
@@ -2753,7 +2977,31 @@ NavigationLoader = (function(_super) {
               } else {
                 cache = "";
               }
+              if (obj.loadWhen) {
+                if (!LoadValidations.getInstance().validate(obj.loadWhen, [v, obj])) {
+                  continue;
+                }
+              }
+              if (typeof obj.src === 'object') {
+                _ref1 = obj.src;
+                for (i = _i = 0, _len = _ref1.length; _i < _len; i = ++_i) {
+                  item = _ref1[i];
+                  if (item.when === void 0) {
+                    obj.originalSrc = obj.src;
+                    obj.originalSrc[i].isDefault = true;
+                    obj.src = item.file;
+                    break;
+                  }
+                  if (LoadValidations.getInstance().validate(item.when, [v, obj])) {
+                    obj.originalSrc = obj.src;
+                    obj.originalSrc[i].isDefault = true;
+                    obj.src = item.file;
+                    break;
+                  }
+                }
+              }
               obj.src += cache;
+              obj.src = obj.src.replace(app.root, '');
               filtered.push(obj);
             }
           }
@@ -2765,37 +3013,58 @@ NavigationLoader = (function(_super) {
       v = p_views[k];
       if (p_data[v.content]) {
         v.content = p_data[v.content];
+      }
+      if (typeof v.content === 'object') {
         v.content = this._normalizePaths(v.content, app.config.paths);
-        if (typeof v.content === 'object') {
-          results = JSONUtils.filterObject(v.content, 'src', null, null, true);
-          filtered = [];
-          for (index in results) {
-            obj = results[index];
-            if (obj.loadWithView === true || obj.loadWithView === void 0) {
-              if ((obj.id == null) || obj.id === void 0) {
-                obj.id = obj.src;
-              }
-              if (obj.cache !== void 0) {
-                cache = obj.cache === false ? cache = "?noCache=" + ts : "";
-              } else if (v.cache !== void 0 && v.cache === false) {
-                cache = "?noCache=" + ts;
-              } else {
-                cache = "";
-              }
-              obj.src += cache;
-              filtered.push(obj);
+        results = JSONUtils.filterObject(v.content, 'src', null, null, true);
+        filtered = [];
+        for (index in results) {
+          obj = results[index];
+          if (obj.loadWithView === true || obj.loadWithView === void 0) {
+            if ((obj.id == null) || obj.id === void 0) {
+              obj.id = obj.src;
             }
-          }
-          if (!app.config.required[v.id]) {
-            app.config.required[v.id] = [];
-            app.config.required[v.id] = filtered;
-          } else {
-            app.config.required[node] = ArrayUtils.merge(app.config.required[node], filtered);
+            if (obj.cache !== void 0) {
+              cache = obj.cache === false ? cache = "?noCache=" + ts : "";
+            } else if (v.cache !== void 0 && v.cache === false) {
+              cache = "?noCache=" + ts;
+            } else {
+              cache = "";
+            }
+            if (obj.loadWhen) {
+              if (!LoadValidations.getInstance().validate(obj.loadWhen, [v, obj])) {
+                continue;
+              }
+            }
+            if (typeof obj.src === 'object') {
+              _ref2 = obj.src;
+              for (i = _j = 0, _len1 = _ref2.length; _j < _len1; i = ++_j) {
+                item = _ref2[i];
+                if (item.when === void 0) {
+                  obj.originalSrc = obj.src;
+                  obj.originalSrc[i].isDefault = true;
+                  obj.src = item.file;
+                  break;
+                }
+                if (LoadValidations.getInstance().validate(item.when, [v, obj])) {
+                  obj.originalSrc = obj.src;
+                  obj.originalSrc[i].isDefault = true;
+                  obj.src = item.file;
+                  break;
+                }
+              }
+            }
+            obj.src += cache;
+            obj.src = obj.src.replace(app.root, '');
+            filtered.push(obj);
           }
         }
-      }
-      if (v.subviews) {
-        this._parseContentFiles(v.subviews, p_data);
+        if (!app.config.required[v.id]) {
+          app.config.required[v.id] = [];
+          app.config.required[v.id] = filtered;
+        } else {
+          app.config.required[node] = ArrayUtils.merge(app.config.required[node], filtered);
+        }
       }
     }
     return false;
@@ -2816,10 +3085,12 @@ NavigationLoader = (function(_super) {
       temp[v.id] = v;
       if (v.loadContent && v.content) {
         cache = v.cache !== void 0 && v.cache === false ? "?noCache=" + ts : "";
-        p_data.preloadContents.push({
-          'id': v.content,
-          'src': v.content + cache
-        });
+        if (typeof v.content !== 'object' && v.content !== '{}') {
+          p_data.preloadContents.push({
+            'id': v.content,
+            'src': v.content + cache
+          });
+        }
       }
     }
     _ref1 = p_data.views;
@@ -2842,10 +3113,12 @@ NavigationLoader = (function(_super) {
           } else {
             cache = "";
           }
-          p_data.preloadContents.push({
-            'id': v.content,
-            'src': v.content + cache
-          });
+          if (typeof v.content !== 'object' && v.content !== '{}') {
+            p_data.preloadContents.push({
+              'id': v.content,
+              'src': v.content + cache
+            });
+          }
         }
       }
     }
@@ -2931,7 +3204,7 @@ NavigationLoader = (function(_super) {
   };
 
   NavigationLoader.prototype._loadFileComplete = function(p_event) {
-    var data, result, si, style;
+    var data, e, result, si, style;
     switch (p_event.item.ext) {
       case 'json':
         data = p_event.result;
@@ -2959,10 +3232,13 @@ NavigationLoader = (function(_super) {
         style.type = "text/css";
         head.appendChild(style);
         si = head.querySelectorAll('style').length;
-        if (document.all) {
-          document.styleSheets[si].cssText = data;
-        } else {
+        try {
           style.appendChild(document.createTextNode(data));
+        } catch (_error) {
+          e = _error;
+          if (document.all) {
+            document.styleSheets[si].cssText = data;
+          }
         }
     }
     return false;
@@ -3090,7 +3366,6 @@ NavigationLoader = (function(_super) {
       evt = null;
     }
     this._mainView.off(BaseView.CREATE_COMPLETE, this._showMainView);
-    this._mainView.showStart();
     return false;
   };
 
@@ -3265,6 +3540,185 @@ Resizer = (function(_super) {
   return Resizer;
 
 })(EventDispatcher);
+
+var RouteUtils,
+  __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
+
+RouteUtils = (function() {
+  function RouteUtils() {
+    this.getViewIdByRoute = __bind(this.getViewIdByRoute, this);
+  }
+
+  RouteUtils.getInstance = function() {
+    return RouteUtils._instance != null ? RouteUtils._instance : RouteUtils._instance = (function(func, args, ctor) {
+      ctor.prototype = func.prototype;
+      var child = new ctor, result = func.apply(child, args);
+      return Object(result) === result ? result : child;
+    })(RouteUtils, arguments, function(){});
+  };
+
+  RouteUtils.prototype.setup = function(views) {
+    var k, v, _results;
+    this._routes = [];
+    this._numRoutes = 0;
+    _results = [];
+    for (k in views) {
+      v = views[k];
+      if (v.route) {
+        _results.push(this.addRoute(v.route));
+      } else {
+        _results.push(void 0);
+      }
+    }
+    return _results;
+  };
+
+  RouteUtils.prototype.addRoute = function(p_route, p_data) {
+    var err, i, labels, o, p, r, routeRE;
+    if (p_data == null) {
+      p_data = null;
+    }
+    if (typeof p_route !== 'string') {
+      i = p_route.length;
+      while (i-- > 0) {
+        this.addRoute(p_route[i], p_data);
+      }
+    }
+    r = /\{(.*?)\}/g;
+    labels = [];
+    p = 0;
+    while (o = r.exec(p_route)) {
+      labels[p++] = o[1];
+    }
+    r = p_route;
+    if (r === '*') {
+      r = '.*';
+    }
+    try {
+      r = r.replace(/(.*?)\/*$/, '$1');
+      routeRE = new RegExp('(?:' + r.replace(/\{.*?\}/g, '(.+?)') + '$)', 'g');
+    } catch (_error) {
+      err = _error;
+      console.log(err.stack);
+      return;
+    }
+    this._routes[this._numRoutes++] = {
+      data: p_data,
+      route: p_route,
+      routeRE: routeRE,
+      labels: labels,
+      numLabels: labels.length,
+      numSlashes: p_route.split('/').length
+    };
+    return this._routes.sort(this._sortRoutes);
+  };
+
+  RouteUtils.prototype.parsePath = function(p_rawPath) {
+    var params, path, pathParts;
+    pathParts = /^(?:#?!?\/*)([^?]*)\??(.*?)$/.exec(p_rawPath);
+    path = pathParts[1];
+    params = this._parseParams(pathParts[2]);
+    return {
+      rawPath: p_rawPath,
+      path: path,
+      params: params
+    };
+  };
+
+  RouteUtils.prototype.checkRoute = function(p_path) {
+    var data, foundRoute, i, j, k, label, o, re, route, routes, routesIndex, v, _i, _len, _ref;
+    i = this._numRoutes;
+    foundRoute = null;
+    data = null;
+    routes = [];
+    routesIndex = 0;
+    p_path = '/' + p_path;
+    while (i-- > 0) {
+      route = this._routes[i];
+      if (foundRoute) {
+        if (route.route === foundRoute) {
+          routes[routesIndex++] = route;
+        } else {
+          break;
+        }
+      }
+      re = route.routeRE;
+      re.lastIndex = 0;
+      if (!(o = re.exec(p_path))) {
+        continue;
+      }
+      data = {};
+      routes[routesIndex++] = route;
+      foundRoute = route.route;
+      _ref = route.labels;
+      for (j = _i = 0, _len = _ref.length; _i < _len; j = ++_i) {
+        label = _ref[j];
+        v = o[j * 2 + 1];
+        data[label] = v;
+      }
+    }
+    for (k in data) {
+      v = data[k];
+      if (v) {
+        data[k] = v.replace(/\?.*$/gi, '');
+      }
+    }
+    return [routes, data];
+  };
+
+  RouteUtils.prototype.getViewIdByRoute = function(p_value) {
+    var k, view, _ref;
+    _ref = app.config.views;
+    for (k in _ref) {
+      view = _ref[k];
+      if ((view.route != null) && view.route === p_value) {
+        return view.id;
+      }
+    }
+    return null;
+  };
+
+  RouteUtils.prototype._parseParams = function(p_path) {
+    var c, o, pRE, params;
+    params = {};
+    if (p_path) {
+      pRE = /&?([^=&]+)=?([^=&]*)/g;
+      c = 0;
+      while (o = pRE.exec(p_path)) {
+        params[o[1]] = o[2];
+      }
+    }
+    return params;
+  };
+
+  RouteUtils.prototype._sortRoutes = function(p_a, p_b) {
+    if (p_a.numLabels < p_b.numLabels) {
+      return -1;
+    }
+    if (p_a.numLabels > p_b.numLabels) {
+      return 1;
+    }
+    if (p_a.numSlashes < p_b.numSlashes) {
+      return -1;
+    }
+    if (p_a.numSlashes > p_b.numSlashes) {
+      return 1;
+    }
+    if (p_a.route === p_b.route) {
+      return 0;
+    }
+    if (p_a.route < p_b.route) {
+      return -1;
+    }
+    if (p_a.route > p_b.route) {
+      return 1;
+    }
+    return 0;
+  };
+
+  return RouteUtils;
+
+})();
 
 var PreloaderView,
   __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },

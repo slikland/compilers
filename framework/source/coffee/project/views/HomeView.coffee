@@ -19,6 +19,8 @@ class HomeView extends BaseView
 		# @appendChild @_video
 		# @_video.element.play()
 
+		
+
 		color = Math.floor(Math.random()*16777215).toString(16)
 		@test = new BaseDOM('div')
 		@appendChild(@test)
