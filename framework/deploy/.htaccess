@@ -1,16 +1,15 @@
 <IfModule mod_rewrite.c>
-	Options +FollowSymLinks
 	RewriteEngine on
 
-	RewriteCond %{REQUEST_URI} !/(css|media|dynamic|fonts|data)
-	RewriteCond %{REQUEST_FILENAME} !-f
-	RewriteCond %{REQUEST_FILENAME} !-d
-	RewriteRule (.*) index.php
-
-	RewriteCond %{REQUEST_FILENAME} !-f
-	RewriteCond %{REQUEST_FILENAME} !-d
-	RewriteCond %{REQUEST_URI} !=/favicon.ico
+	RewriteBase /
+	RewriteCond %{REQUEST_FILENAME}  !-f
+	RewriteCond %{REQUEST_FILENAME}  !-d
+	RewriteCond $0#%{REQUEST_URI} ([^#]*)#(.*)\1$
+	RewriteCond %{REQUEST_FILENAME} !\.(gif|jpe?g|png)$ [NC]
+	RewriteCond %{REQUEST_URI} !/(css|data|fonts|js|media)/ [NC]
+	RewriteRule (.*) %2index.php [QSA,L]
 </IfModule>
+
 
 <IfModule mod_headers.c>
 	<FilesMatch "\.(cur|gif|ico|jpe?g|png|svgz?|webp)$">
