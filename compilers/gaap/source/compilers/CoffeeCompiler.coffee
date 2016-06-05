@@ -248,6 +248,7 @@ class CoffeeCompiler
 			if fs.existsSync(@file)
 				@content = fs.readFileSync(@file, 'utf8')
 				try
+					@content = @content.replace(/^(\s*)(.*?)#\s*inject\s+(['|"])?([^\s'"]+)(\3)(.*?)$/mg, @_replaceInjection)
 					if /\.js$/ig.test(@file)
 						@js = @content
 					else
@@ -279,6 +280,17 @@ class CoffeeCompiler
 					@append[ai++] = f
 				else
 					@prepend[pi++] = f
+		_replaceInjection:()=>
+			injectFile = path.dirname(@file) + '/' + arguments[4]
+			content = ''
+			if fs.existsSync(injectFile)
+				stat = fs.statSync(injectFile)
+				if stat.isFile()
+					content = fs.readFileSync(injectFile, 'utf8')
+			content = content.replace(/^/gm, arguments[1]).replace(/^\s*/, '').replace(/\s*$/, '')
+			content = arguments[1] + arguments[2] + content + arguments[6]
+			return content
+
 		dispose:()->
 			@prepend.length = 0
 			@append.length = 0
