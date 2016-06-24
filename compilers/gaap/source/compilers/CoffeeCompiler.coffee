@@ -1,4 +1,5 @@
 class CoffeeCompiler
+	@_ADD_NAMESPACE_FN: 'function __addNamespace(scope, obj){for(k in obj){if(!scope[k]) scope[k] = {};__addNamespace(scope[k], obj[k])}};'
 	constructor:()->
 		@_cache = {}
 		@_tasks = []
@@ -99,15 +100,32 @@ class CoffeeCompiler
 		task.filteredFiles = files
 		i = -1
 		l = files.length
+		namespaces = {}
+		hasNamespaces = false
 		source = ''
 		while ++i < l
 			c = @_cache[files[i]]
 			if c
+				if @_addNamespaces(c.namespaces, namespaces)
+					hasNamespaces = true
 				source += c.js + '\n'
+		if hasNamespaces
+			source = @constructor._ADD_NAMESPACE_FN + '\n' + '__addNamespace(this, '+JSON.stringify(namespaces)+');\n' + source
 		if !task.bare
 			source = '(function() {\n' + source + '}).call(this);'
 		task.rawSource = source
 		return files
+
+	_addNamespaces:(namespaces, nsObj)->
+		added = false
+		for ns in namespaces
+			ns = ns.split('.')
+			for n in ns
+				if !nsObj[n]
+					nsObj[n] = {}
+					added = true
+				nsObj = nsObj[n]
+		return added
 
 	parseFile:()->
 
@@ -239,6 +257,7 @@ class CoffeeCompiler
 		constructor:(@file)->
 			@prepend = []
 			@append = []
+			@namespaces = []
 			@isJS = false
 			if fs.existsSync(@file)
 				@update()
@@ -249,11 +268,11 @@ class CoffeeCompiler
 				@content = fs.readFileSync(@file, 'utf8')
 				try
 					@content = @content.replace(/^(\s*)(.*?)#\s*inject\s+(['|"])?([^\s'"]+)(\3)(.*?)$/mg, @_replaceInjection)
+					@parseContent()
 					if /\.js$/ig.test(@file)
 						@js = @content
 					else
 						@js = coffee.compile(@content, {bare: true})
-					@parseContent()
 				catch e
 					Log.setStyle('red')
 					Log.print('Error parsing ')
@@ -265,21 +284,29 @@ class CoffeeCompiler
 			else
 				throw new Error('File not found: ' + @file)
 		parseContent:()->
-			importRE = /#\s*(import|\@codekit-(prepend|append))\s+(['|"])?([^\s'"]+)(\2)?/g
+			importRE = /#\s*(import|\@codekit-(prepend|append)|namespace)\s+(['|"])?([^\s'"]+)(\2)?/g
 			pi = ai = 0
 
 			@prepend.length = 0
 			@append.length = 0
+			@namespaces.length = 0
+
 
 			while (match = importRE.exec(@content))
 				f = match[4]
-				if match[1] == 'import'
-					if !/\.js$/ig.test(f)
-						f = f.replace(/\./g, '/') + '.coffee'
-				if match[2] == 'append'
-					@append[ai++] = f
-				else
-					@prepend[pi++] = f
+				switch match[1]
+					when 'import', 'codekit'
+						if !/\.js$/ig.test(f)
+							f = f.replace(/\./g, '/') + '.coffee'
+						if match[2] == 'append'
+							@append[ai++] = f
+						else
+							@prepend[pi++] = f
+					when 'namespace'
+						@namespaces.push(f)
+			if (l = @namespaces.length) > 0
+				ns = @namespaces[l - 1]
+				@content = @content.replace(/^(class\s+)([^\s]+)/gm, '$1' + ns + '.$2')
 		_replaceInjection:()=>
 			injectFile = path.dirname(@file) + '/' + arguments[4]
 			content = ''
