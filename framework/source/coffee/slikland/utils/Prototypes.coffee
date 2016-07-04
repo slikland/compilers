@@ -75,6 +75,22 @@ String::rtrim=(char = null)->
 	re.multiline = true
 	return @replace(re, '')
 
+String::padLeft = (length, char = ' ') ->
+	if char.length == 0
+		char = ' '
+	text = @
+	while text.length < length
+		text = char + text
+	return text
+
+String::padRight = (length, char = ' ') ->
+	if char.length == 0
+		char = ' '
+	text = @
+	while text.length < length
+		text += char
+	return text	
+
 ##------------------------------------------------------------------------------
 ##
 ##	ARRAY PROTOTYPE

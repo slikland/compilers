@@ -76,7 +76,7 @@ class StylusCompiler
 				if fs.existsSync(psrc)
 					# out = fs.readFileSync(psrc, {encoding: 'utf-8'})
 					# exec('vendors/stylus/bin/stylus -x --verbose --include-path=' + sourcePaths.join(':') + ' ' + psrc + ' ' + p, @_compiled)
-					exec('vendors/stylus/bin/stylus -u ./vendors/nib -c -I '+sourcePaths.join(':')+' '+psrc+' -o '+p, @_compiled )
+					exec('vendors/stylus/bin/stylus --include-css -u ./vendors/nib -c -I '+sourcePaths.join(':')+' '+psrc+' -o '+p, @_compiled )
 					# console.log(a)
 					# out = less.render(out, opts, @_compiled)
 					break
