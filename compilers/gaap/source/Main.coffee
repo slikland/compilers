@@ -101,9 +101,9 @@ class Main
 					@lessCompiler.runTasks(true)
 					@stylusCompiler.runTasks(true)
 					@jsCompiler.runTasks(true)
-				# when 'docs'
-				# 	@docs = true
-				# 	@_buildDocs()
+				when 'docs'
+					@docs = true
+					@_buildDocs()
 				else
 					Log.setStyle('yellow')
 					Log.print('No command ')
@@ -135,7 +135,7 @@ class Main
 		Log.println()
 
 		@buildFile.docs['linkNatives'] = true
-		@buildFile.docs['attributesEmit'] = true
+		@buildFile.docs['attributesEmit'] = false
 		@buildFile.docs['selleck'] = true
 		@buildFile.docs['syntaxtype'] = 'coffee'
 		@buildFile.docs['extension'] = '.coffee'
