@@ -5,6 +5,9 @@ class ScrollNavigationController extends BaseNavigationController
 	constructor: () ->
 		super
 
+	@get type:->
+		return 'scroll'
+
 	@get visibleViews:->
 		return @_visibleViews
 

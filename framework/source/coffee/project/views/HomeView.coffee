@@ -1,3 +1,4 @@
+#import slikland.utils.SplitTextUtils
 #import project.media.HomeVideo
 
 class HomeView extends BaseView
@@ -39,7 +40,6 @@ class HomeView extends BaseView
 			TweenMax.to(splitText[i], 1, {opacity: 0, delay: Math.random() * 2})
 
 
-
 		# @_homeVideo = new HomeVideo(@content)
 		# @appendChild @_homeVideo
 		# @_homeVideo.create()
@@ -78,6 +78,7 @@ class HomeView extends BaseView
 		})
 
 	showComplete:(evt=null)=>
+		# console.log @routeData
 		# console.log @id, 'showComplete'
 		super
 

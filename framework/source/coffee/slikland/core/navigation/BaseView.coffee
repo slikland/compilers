@@ -28,6 +28,7 @@ class BaseView extends BaseDOM
 		@id = if @_data.id? then @_data.id
 		@content = if @_data.content? then @_data.content
 		@route = if @_data.route? then @_data.route
+		@routeData = if !@_routeData then null
 		@parentView = if @_data.parentView? then @_data.parentView
 		@subviews = if @_data.subviews? then @_data.subviews
 		@destroyable = if @_data.destroyable? then @_data.destroyable
@@ -62,6 +63,11 @@ class BaseView extends BaseDOM
 		return @_route
 	@set route:(p_value)->
 		@_route = p_value
+
+	@get routeData:->
+		return @_routeData
+	@set routeData:(p_value)->
+		@_routeData = p_value
 
 	@get parentView:->
 		return @_parentView
@@ -173,6 +179,7 @@ class BaseView extends BaseDOM
 		@_parentPath?.length = 0
 		@_parentPath = null
 
+		@_routeData = null
 		@_data = null
 
 		@trigger(BaseView.DESTROY, @)

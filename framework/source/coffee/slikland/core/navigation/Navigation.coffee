@@ -59,7 +59,9 @@ class Navigation extends EventDispatcher
 		return @_visibleViews || _controller.visibleViews
 
 	@get currentView:->
-		return @_currentView || _controller.currentView
+		view = @_currentView || _controller.currentView
+		view.routeData = @routeData
+		return view
 
 	@get previousView:->
 		return @_previousView || _controller.previousView

@@ -1,9 +1,10 @@
 #import slikland.core.navigation.types.DefaultNavigationController
 #import slikland.core.navigation.NavigationContainer
+#import slikland.utils.Resizer
 #
 #############################
 # 
-# IMPORT ALL VIEWS BELLOW
+# IMPORT ONLY VIEWS BELLOW
 # 
 #############################
 # 
@@ -12,8 +13,6 @@
 #import project.views.Sub1View
 #import project.views.Sub2View
 #import project.views.Sub3View
-
-#import slikland.utils.SplitTextUtils
 
 class Main extends NavigationContainer
 	create:(evt=null)=>
@@ -39,6 +38,7 @@ class Main extends NavigationContainer
 
 
 		app.resizer = Resizer.getInstance()
+		app.resizer.bounds = {"top":10, "bottom":10, "left":10, "right":10}
 		app.resizer.on Resizer.RESIZE, @resize
 		super
 
@@ -49,6 +49,9 @@ class Main extends NavigationContainer
 		app.navigation.gotoView(evt.srcElement.innerText)
 
 	resize:(evt)=>
-		console.log 'Resizer >>>>>', evt.breakpoint
+		# console.log 'Resizer:', evt
+
+	@get controller:=>
+		return new DefaultNavigationController()
 
 return new Main()

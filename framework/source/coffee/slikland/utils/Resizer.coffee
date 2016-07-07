@@ -2,99 +2,110 @@
 
 class Resizer extends EventDispatcher
 
-	@RESIZE: 'resizeResizer'
-	@ORIENTATION_CHANGE: 'orientationChangeResizer'
-	@BREAKPOINT_CHANGE: 'breakpointChangedResizer'
+	@RESIZE: 'resize_resizer'
+	@ORIENTATION_CHANGE: 'orientation_change_resizer'
+	@BREAKPOINT_CHANGE: 'breakpoint_changed_resizer'
+
+	_bounds = null
+	_body = null
 
 	@getInstance:()=>
-		@_instance ?= new @(arguments...)
+		@_instance ?= new @()
 
 	constructor:()->
-		#params
-		@_data = {}
-		@_refElement = document.body
+		_body = document.querySelector("body")
+		_bounds = {"top":0, "bottom":0, "left":0, "right":0}
+		@start()
 		
-		#listeners
-		window.addEventListener 'resize', @_onResize
-		window.addEventListener 'orientationchange', @_onOrientation
-		
-		#start
-		@_breakpoints = app.config.breakpoints
-		@_updateData()
-
-	# Getters and Setters
-	#-------------------------------------------
-	@get data:->
-		@_data
-
-	@get breakpoint:->
-		@_data['breakpoint']
-
-	@get breakpoints:->
-		@_breakpoints
-
 	@get width:->
-		@_data['width']
+		return window.innerWidth
 
 	@get height:->
-		@_data['height']
+		return window.innerHeight
+
+	@get bounds:->
+		return _bounds
+
+	@set bounds:(p_value)->
+		_bounds = p_value
 
 	@get orientation:->
-		@_data['orientation']
+		return if window.innerWidth > window.innerHeight then 'landscape' else 'portrait'
 
-	# Public
-	#-------------------------------------------
-	resize:()=>
-		@_resize()
+	start:()=>
+		window.addEventListener 'resize', @change
+		window.addEventListener 'orientationchange', @change
+		@change()
 
-	# Private
-	#-------------------------------------------
-	_onResize:(e)=>
-		e.preventDefault()
-		e.stopImmediatePropagation()
-		clearTimeout @_resTimeout if @_resTimeout?
-		@_resTimeout = setTimeout @_resize, 50
+	stop:()=>
+		window.removeEventListener 'resize', @change
+		window.removeEventListener 'orientationchange', @change
 
-	_onOrientation:(e)=>
-		e.preventDefault()
-		e.stopImmediatePropagation()
-		clearTimeout @_oriTimeout if @_oriTimeout?
-		@_oriTimeout = setTimeout @_orientation, 50
+	change:(evt)=>
+		evt?.preventDefault()
+		evt?.stopImmediatePropagation()
+		
+		_data = {
+			"width": @width,
+			"height": @height,
+			"bounds": @bounds,
+			"orientation": @orientation
+		}
+
+		if evt?.type == "resize" then @trigger Resizer.RESIZE, _data
+		if evt?.type == "orientationchange" then @trigger Resizer.ORIENTATION_CHANGE, _data
+		if app.conditions?
+			for k, v of app.conditions.list
+				if v['size']? || v['orientation']?
+					if app.conditions.test(k)
+						if !@hasClass(k) then @addClass(k)
+					else
+						if @hasClass(k) then @removeClass(k)
+					
+					_data['breakpoint'] = {key:k, values:v}
+					@trigger Resizer.BREAKPOINT_CHANGE, _data
+				
+	addClass:(className)->
+		if typeof(className) is 'string'
+			className = className.replace(/\s+/ig, ' ').split(' ')
+		else if typeof(className) isnt 'Array'
+			return
+		classNames = _body.className.replace(/\s+/ig, ' ').split(' ')
+		p = classNames.length
+		i = className.length
+		while i-- > 0
+			if classNames.indexOf(className[i]) >= 0
+				continue
+			classNames[p++] = className[i]
+		_body.className = classNames.join(' ')
 		false
 
-	_resize:()=>
-		@_updateData()
-		@trigger Resizer.RESIZE, @_data
+	removeClass:(className)->
+		if typeof(className) is 'string'
+			className = className.replace(/\s+/ig, ' ').split(' ')
+		else if typeof(className) isnt 'Array'
+			return
+
+		classNames = _body.className.replace(/\s+/ig, ' ').split(' ')
+		i = className.length
+		while i-- > 0
+			if (p = classNames.indexOf(className[i])) >= 0
+				classNames.splice(p, 1)
+		_body.className = classNames.join(' ')
 		false
 
-	_orientation:()=>
-		@_updateData()
-		@trigger Resizer.RESIZE, @_data
-		false
+	hasClass:(className)->
+		if typeof(className) is 'string'
+			className = className.replace(/\s+/ig, ' ').split(' ')
+		else if typeof(className) isnt 'Array'
+			return
 
-	_updateData:->
-		_breakpoint = @_getBreakpoint()
-		_bpChanged = @_data.breakpoint != _breakpoint
+		classNames = _body.className.replace(/\s+/ig, ' ').split(' ')
+		i = className.length
 
-		@_data = 
-			width: window.innerWidth
-			height: window.innerHeight
-			orientation: if window.innerWidth > window.innerHeight then 'landscape' else 'portrait'
-			breakpoint: _breakpoint
-			
-		if _bpChanged
-			@trigger Resizer.BREAKPOINT_CHANGE, _breakpoint
+		hasClass = true
 
-	_getBreakpoint:->
-		_breakpoint = 'mobile'
-		@_refElement.className = @_refElement.className.split('mobile').join(" ")
-		for b,i in @_breakpoints by -1
-			@_refElement.className = @_refElement.className.split(b['name']).join(" ")
-			if window.innerWidth >= b['size']
-				if @_breakpoints.length >= i + 1
-					_breakpoint = @_breakpoints[@_breakpoints.length - 1]['name']
-				else
-					_breakpoint = @_breakpoints[i+1]['name']
-				break
-		@_refElement.className += _breakpoint
-		return _breakpoint
+		while i-- > 0
+			hasClass &= (classNames.indexOf(className[i]) >= 0)
+		return hasClass
+	

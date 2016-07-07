@@ -47,7 +47,7 @@ class Debug
 				trace: ->
 				warn: ->
 		else
-			console.log "===============\nDEBUG MODE ON\n==============="
+			console.log "=============\nDEBUG MODE ON\n============="
 
 	@check:(value = null)->
 		o = ''

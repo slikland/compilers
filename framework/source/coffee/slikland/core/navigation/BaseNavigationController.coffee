@@ -34,6 +34,10 @@ class BaseNavigationController extends EventDispatcher
 		false
 
 	# Override this method
+	@get type:->
+		throw new Error('Override the visibleViews getter in '+@constructor.type+' class')
+
+	# Override this method
 	@get visibleViews:->
 		throw new Error('Override the visibleViews getter in '+@constructor.name+' class')
 

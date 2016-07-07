@@ -162,3 +162,10 @@ unless "some" of Array::
 # 
 Node::on = Node::addEventListener
 Node::off = Node::removeEventListener
+
+##------------------------------------------------------------------------------
+#
+# ADDED OLDER BROWSERS SUPPORT
+# 
+navigator.getUserMedia = navigator.mediaDevices.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia
+

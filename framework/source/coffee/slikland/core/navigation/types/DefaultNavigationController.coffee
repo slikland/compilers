@@ -7,6 +7,9 @@ class DefaultNavigationController extends BaseNavigationController
 	constructor: () ->
 		super
 
+	@get type:->
+		return 'default'
+
 	@get visibleViews:->
 		return [@_currentView]
 
