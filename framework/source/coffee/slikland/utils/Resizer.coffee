@@ -61,7 +61,6 @@ class Resizer extends EventDispatcher
 						if !@hasClass(k) then @addClass(k)
 					else
 						if @hasClass(k) then @removeClass(k)
-					
 					_data['breakpoint'] = {key:k, values:v}
 					@trigger Resizer.BREAKPOINT_CHANGE, _data
 				
