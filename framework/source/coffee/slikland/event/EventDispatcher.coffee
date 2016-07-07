@@ -1,22 +1,48 @@
+###*
+EventDispatcher class for handling and triggering events.
+@class EventDispatcher
+###
 class EventDispatcher
 
 	# Collection of {Event}
 	_events:null
 
-	# Add the event
-	#
-	# event - {String} to the event
-	# handler - {Function} to the handler
-	on:(p_event, p_handler, p_useCapture=false)->
+	###*
+	Add a event listener.
+	@method on
+	@param {String} event Event name.
+	@param {function} handler A callback function to handle the event.<br>
+	The callback function can receive 1 or 2 parameters. The first parameter is the event data itself and the second parameter is the custom data of the triggering event.
+
+	@example
+		function someEventHandler(e, data)
+		{
+			console.log(e); // Returns event data with it's type and target/currentTarget set to the scope
+			console.log(data); // If the triggering event has any custom data
+		}
+		var ed = new EventDispatcher()
+		ed.on('someEvent', someEventHandler);
+	###
+	on:(p_event, p_handler)->
 		if !@_events then @_events = {}
 		if !@_events[p_event] then @_events[p_event] = []
 		if !(p_handler in @_events[p_event])
 			@_events[p_event].unshift(p_handler)
 
-	# Remove the event
-	#
-	# event - {String} to the event
-	off:(p_event=null, p_handler=null, p_useCapture=false)->
+	###*
+	Remove an event listener.
+
+	**BEWARE**
+
+	> Calling this method without a handler will remove all listeners attached to this event.
+
+	> If calling without the event name, will remove all listeners attached to this instance.
+
+	@method off
+	@param {String} [event=null] Event name.
+	@param {function} [handler=null] A callback function added in the {{#crossLink "EventDispatcher/on:method"}}{{/crossLink}} call.
+	###
+	off:(p_event=null, p_handler=null)->
 		if !@_events
 			@_events = {}
 			return
@@ -31,10 +57,27 @@ class EventDispatcher
 		else
 			@_events = {}
 
-	# Trigger the custom events
-	#
-	# event - {String} to the event
-	# data  - {Object} to the data
+	###*
+	Triggers an event.
+	@method trigger
+	@param {String} event Event name.
+	@param {object} [data=null] Custom event data.
+	@param {object} [target=null] Target that will be specified in the `event.target`. The `event.currentTarget` will always be this instance.
+
+	@example
+		var ed = new EventDispatcher()
+
+		// Will just trigger the event
+		ed.trigger('someEvent'); 
+
+		// Will trigger the event with the object which can be retrieved by the second
+		// parameter of the handler function.
+		ed.trigger('someEvent', {someData: true}); 
+
+		// Will set the event target to window. On the handler's first parameter
+		//`event.target` will be window, and event.currentTarget will be the `ev` instance.
+		ed.trigger('someEvent', {someData: true}, window);
+	###
 	trigger:(evt, data = null, target = null)=>
 		if Array.isArray(evt)
 			for e in evt
@@ -56,10 +99,13 @@ class EventDispatcher
 		while i-- > 0
 			events[i]?(e, data)
 
-	# Check if the event already exists
-	#
-	# event - {String} to the event
-	# handler - {Function} to the handler
+	###*
+	Check if a event handler is already set.
+	@method hasEvent
+	@param {String} event Event name.
+	@param {function} [handler=null] A callback function added in the {{#crossLink "EventDispatcher/on:method"}}{{/crossLink}} call.
+	@return {Boolean}
+	###
 	hasEvent:(p_event, p_handler)->
 		if !@_events
 			@_events = {}
@@ -70,3 +116,53 @@ class EventDispatcher
 				if @_events[event].indexOf(p_handler) > -1
 					return true
 		return false
+
+
+	###*
+	Triggers an event after the current code block has finished processing.
+
+	This is useful for stacking up events that needs to be triggered at the end of the function but it's validating beforehand.
+	@method stackTrigger
+	@param {String} event Event name.
+	@param {object} [data=null] Custom event data.
+	@param {object} [target=null] Target that will be specified in the `event.target`. The `event.currentTarget` will always be this instance.
+
+	@example
+		var ed = new EventDispatcher()
+
+		var someObject = {a: true, b: false, c: true};
+
+		ed.on('isA', function(){console.log('Is A!');});
+		ed.on('isB', function(){console.log('Is B!');});
+		ed.on('isC', function(){console.log('Is C!');});
+
+		function test()
+		{
+			console.log("Init test()");
+			if(someObject.a) ed.stackTrigger('isA');
+			if(someObject.b) ed.stackTrigger('isB');
+			if(someObject.c) ed.stackTrigger('isC');
+			console.log("End test()");
+		}
+
+		// This will result in:
+		// log: 'Init test()'
+		// log: 'End test()'
+		// log: 'isA'
+		// log: 'isC'
+
+	###
+	stackTrigger:(evt, data = null, target = null)->
+		@_stackTriggerer ?= []
+
+		@_stackTriggerer.push([evt, data, target])
+
+		clearTimeout(@_stackTriggerTimeout)
+		@_stackTriggerTimeout = setTimeout(@_triggerStacked, 0)
+	_triggerStacked:()=>
+		l = @_stackTriggerer.length
+		i = -1
+		while ++i < l
+			@trigger.apply(@, @_stackTriggerer[i])
+
+		@_stackTriggerer.length = 0
