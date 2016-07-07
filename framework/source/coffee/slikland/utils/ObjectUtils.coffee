@@ -50,6 +50,13 @@ class ObjectUtils
 				return copy
 			throw new Error('Unable to copy')
 
+
+	@hasSameKey:(p_a, p_b)->
+		return if Object.getOwnPropertyNames(p_a)[0] == Object.getOwnPropertyNames(p_b)[0] then true else false
+
+	@isEqual:(p_a, p_b)->
+		return JSON.stringify(p_a) == JSON.stringify(p_b)
+
 	# Public: Return a mapped {Array} of a {Array} item.
 	#
 	# source -  The {Array} object.
@@ -75,3 +82,4 @@ class ObjectUtils
 				o[names[j]] = item[j]
 			ret[i - 1] = o
 		return ret
+		

@@ -4,6 +4,61 @@
 		"cdn":"",
 		"base":""
 	},
+	"conditions":
+	{
+		"sizeBlah": {
+			"size": {
+				"min-width":320,
+				"min-height":480
+			},
+			"orientation":"landscape"
+		},
+		"size1": {
+			"size": {
+				"max-width":1024,
+				"max-height":768
+			},
+			"orientation":"landscape"
+		},
+		"size2": {
+			"size": {
+				"min-width":320,
+				"min-height":480,
+				"max-width":1024,
+				"max-height":768
+			},
+			"orientation":"landscape"
+		},
+		"size3": {
+			"size": {
+				"min-width":320,
+				"max-height":768
+			},
+			"orientation":"landscape"
+		},
+		"bla": {
+			"browser":{
+				"ua":"",
+				"name":"Chrome",
+				"webgl":true,
+				"canvas":true
+			},
+			"domain":"local.slikland.com",
+			"platform":"MacIntel"
+		},
+		"bla1": {
+			"browser":{
+				"name":"Safari",
+				"canvas":true
+			}
+		},
+		"bla2": {
+			"browser":{
+				"name":"Chrome",
+				"touch":false
+			}
+		}
+	},	
 	"navigation":{
 		"type":"scroll",
 		"options":{
@@ -24,7 +79,7 @@
 		{
 			"id":"home",
 			"class":"home-view",
-			"route":"/home",
+			"route":"/",
 			"content":"{base}data/home/content.json",
 			"cache":true,
 			"destroyable":true,
@@ -71,21 +126,29 @@
 				"src": "{base}css/preloader.css"
 			}
 		],
+		"tracking":
+		[
+			{
+				"id": "test-tracking",
+				"src": "{base}data/tracking.json"
+			}
+		],
 		"core":
 		[
 			{
 				"id":"vendors",
 				"src":"{base}js/vendors.js"
-			},
-			{
-				"id": "tracking",
-				"src": "{base}data/tracking.json"
 			}
 		],
 		"main":
 		[
 			{
-				"content": "{base}data/main/content.json"
+				"content": [
+					{
+						"condition":"bla",
+						"file":"{base}data/main/content.json"
+					}
+				]
 			},
 			{
 				"id": "main-css",

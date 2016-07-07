@@ -57,7 +57,7 @@ Debug = (function() {
         warn: function() {}
       };
     } else {
-      return console.log("===============\nDEBUG MODE ON\n===============");
+      return console.log("=============\nDEBUG MODE ON\n=============");
     }
   };
 
@@ -426,6 +426,8 @@ Node.prototype.on = Node.prototype.addEventListener;
 
 Node.prototype.off = Node.prototype.removeEventListener;
 
+navigator.getUserMedia = navigator.mediaDevices.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia;
+
 var EventDispatcher,
   __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
   __indexOf = [].indexOf || function(item) { for (var i = 0, l = this.length; i < l; i++) { if (i in this && this[i] === item) return i; } return -1; };
@@ -637,91 +639,6 @@ if (window.addEventListener) {
   window.onload = windowLoaded;
 }
 
-var ObjectUtils;
-
-ObjectUtils = (function() {
-  function ObjectUtils() {}
-
-  ObjectUtils.count = function(p_item) {
-    var key, result;
-    result = 0;
-    for (key in p_item) {
-      result++;
-    }
-    return result;
-  };
-
-  ObjectUtils.toArray = function(p_source) {
-    var k, result, v;
-    result = [];
-    for (k in p_source) {
-      v = p_source[k];
-      result.push(p_source[k]);
-    }
-    return result;
-  };
-
-  ObjectUtils.clone = function(p_target) {
-    var copy, err, i, k, len, v;
-    try {
-      return JSON.parse(JSON.stringify(p_target));
-    } catch (_error) {
-      err = _error;
-      if (!p_target || typeof p_target !== 'object') {
-        return p_target;
-      }
-      copy = null;
-      if (p_target instanceof Array) {
-        copy = [];
-        i = 0;
-        len = p_target.length;
-        while (i < len) {
-          copy[i] = this.clone(p_target[i]);
-          i++;
-        }
-        return copy;
-      }
-      if (p_target instanceof Object) {
-        copy = {};
-        for (k in p_target) {
-          v = p_target[k];
-          if (v !== 'object') {
-            copy[k] = v;
-          } else {
-            copy[k] = this.clone(v);
-          }
-        }
-        return copy;
-      }
-      throw new Error('Unable to copy');
-    }
-  };
-
-  ObjectUtils.parseLinkedArray = function(p_source) {
-    var i, item, j, names, numNames, o, ret;
-    if (!p_source || (p_source && p_source.length < 1)) {
-      return [];
-    }
-    i = p_source.length;
-    names = p_source[0];
-    numNames = names.length;
-    ret = [];
-    while (i-- > 1) {
-      o = {};
-      j = numNames;
-      item = p_source[i];
-      while (j-- > 0) {
-        o[names[j]] = item[j];
-      }
-      ret[i - 1] = o;
-    }
-    return ret;
-  };
-
-  return ObjectUtils;
-
-})();
-
 var NumberUtils;
 
 NumberUtils = (function() {
@@ -858,9 +775,9 @@ ArrayUtils = (function() {
 
   ArrayUtils.merge = function(p_arrayA, p_arrayB) {
     var i, j, result;
-    result = [];
     i = 0;
     j = 0;
+    result = [];
     while ((i < p_arrayA.length) || (j < p_arrayB.length)) {
       if (i < p_arrayA.length) {
         result.push(p_arrayA[i]);
@@ -925,9 +842,7 @@ ArrayUtils = (function() {
   };
 
   ArrayUtils.fromEndToMiddle = function(p_array) {
-    var newArray;
-    newArray = this.fromMiddleToEnd(p_array);
-    return newArray.reverse();
+    return this.fromMiddleToEnd(p_array).reverse();
   };
 
   ArrayUtils.lastIndexOf = function(p_array, p_value) {
@@ -945,6 +860,103 @@ ArrayUtils = (function() {
   };
 
   return ArrayUtils;
+
+})();
+
+var ObjectUtils;
+
+ObjectUtils = (function() {
+  function ObjectUtils() {}
+
+  ObjectUtils.count = function(p_item) {
+    var key, result;
+    result = 0;
+    for (key in p_item) {
+      result++;
+    }
+    return result;
+  };
+
+  ObjectUtils.toArray = function(p_source) {
+    var k, result, v;
+    result = [];
+    for (k in p_source) {
+      v = p_source[k];
+      result.push(p_source[k]);
+    }
+    return result;
+  };
+
+  ObjectUtils.clone = function(p_target) {
+    var copy, err, i, k, len, v;
+    try {
+      return JSON.parse(JSON.stringify(p_target));
+    } catch (_error) {
+      err = _error;
+      if (!p_target || typeof p_target !== 'object') {
+        return p_target;
+      }
+      copy = null;
+      if (p_target instanceof Array) {
+        copy = [];
+        i = 0;
+        len = p_target.length;
+        while (i < len) {
+          copy[i] = this.clone(p_target[i]);
+          i++;
+        }
+        return copy;
+      }
+      if (p_target instanceof Object) {
+        copy = {};
+        for (k in p_target) {
+          v = p_target[k];
+          if (v !== 'object') {
+            copy[k] = v;
+          } else {
+            copy[k] = this.clone(v);
+          }
+        }
+        return copy;
+      }
+      throw new Error('Unable to copy');
+    }
+  };
+
+  ObjectUtils.hasSameKey = function(p_a, p_b) {
+    if (Object.getOwnPropertyNames(p_a)[0] === Object.getOwnPropertyNames(p_b)[0]) {
+      return true;
+    } else {
+      return false;
+    }
+  };
+
+  ObjectUtils.isEqual = function(p_a, p_b) {
+    return JSON.stringify(p_a) === JSON.stringify(p_b);
+  };
+
+  ObjectUtils.parseLinkedArray = function(p_source) {
+    var i, item, j, names, numNames, o, ret;
+    if (!p_source || (p_source && p_source.length < 1)) {
+      return [];
+    }
+    i = p_source.length;
+    names = p_source[0];
+    numNames = names.length;
+    ret = [];
+    while (i-- > 1) {
+      o = {};
+      j = numNames;
+      item = p_source[i];
+      while (j-- > 0) {
+        o[names[j]] = item[j];
+      }
+      ret[i - 1] = o;
+    }
+    return ret;
+  };
+
+  return ObjectUtils;
 
 })();
 
@@ -1736,6 +1748,374 @@ AssetLoader = (function(_super) {
 
 })(EventDispatcher);
 
+var Detections,
+  __indexOf = [].indexOf || function(item) { for (var i = 0, l = this.length; i < l; i++) { if (i in this && this[i] === item) return i; } return -1; };
+
+Detections = (function() {
+  var getFirstMatch, testCanvas, testWebGL;
+
+  Detections.prototype.matches = [
+    {
+      name: 'Opera',
+      nick: /opera/i,
+      test: /opera|opr/i,
+      version: /(?:opera|opr)[\s\/](\d+(\.\d+)*)/i
+    }, {
+      name: 'Windows Phone',
+      nick: /WindowsPhone/i,
+      test: /windows phone/i,
+      version: /iemobile\/(\d+(\.\d+)*)/i
+    }, {
+      name: 'Edge',
+      nick: /edge|edgehtml/i,
+      test: /edge|msapphost|edgehtml/i,
+      version: /(?:edge|edgehtml)\/(\d+(\.\d+)*)/i
+    }, {
+      name: 'Internet Explorer',
+      nick: /explorer|internetexplorer|ie/i,
+      test: /msie|trident/i,
+      version: /(?:msie |rv:)(\d+(\.\d+)*)/i
+    }, {
+      name: 'Chrome',
+      nick: /Chrome/i,
+      test: /chrome|crios|crmo/i,
+      version: /(?:chrome|crios|crmo)\/(\d+(\.\d+)*)/i
+    }, {
+      name: 'iPod',
+      nick: /iPod/i,
+      test: /ipod/i
+    }, {
+      name: 'iPhone',
+      nick: /iPhone/i,
+      test: /iphone/i
+    }, {
+      name: 'iPad',
+      nick: /iPad/i,
+      test: /ipad/i
+    }, {
+      name: 'FirefoxOS',
+      nick: /FirefoxOS|ffos/i,
+      test: /\((mobile|tablet);[^\)]*rv:[\d\.]+\)firefox|iceweasel/i,
+      version: /(?:firefox|iceweasel)[ \/](\d+(\.\d+)?)/i
+    }, {
+      name: 'Firefox',
+      nick: /Firefox|ff/i,
+      test: /firefox|iceweasel/i,
+      version: /(?:firefox|iceweasel)[ \/](\d+(\.\d+)?)/i
+    }, {
+      name: 'Android',
+      nick: /Android/i,
+      test: /android/i
+    }, {
+      name: 'BlackBerry',
+      nick: /BlackBerry/i,
+      test: /(blackberry)|(\bbb)|(rim\stablet)\d+/i,
+      version: /blackberry[\d]+\/(\d+(\.\d+)?)/i
+    }, {
+      name: 'WebOS',
+      nick: /WebOS/i,
+      test: /(web|hpw)os/i,
+      version: /w(?:eb)?osbrowser\/(\d+(\.\d+)?)/i
+    }, {
+      name: 'Safari',
+      nick: /safari/i,
+      test: /safari/i
+    }
+  ];
+
+  Detections.getInstance = function() {
+    return Detections._instance != null ? Detections._instance : Detections._instance = (function(func, args, ctor) {
+      ctor.prototype = func.prototype;
+      var child = new ctor, result = func.apply(child, args);
+      return Object(result) === result ? result : child;
+    })(Detections, arguments, function(){});
+  };
+
+  function Detections() {
+    var k, v, _ref;
+    this.matched = null;
+    this.ua = (typeof navigator !== "undefined" && navigator !== null ? navigator.userAgent : void 0) || '';
+    this.platform = this.os = (typeof navigator !== "undefined" && navigator !== null ? navigator.platform : void 0) || '';
+    this.version = getFirstMatch(/version\/(\d+(\.\d+)*)/i, this.ua);
+    this.getBrowser();
+    this.versionArr = this.version == null ? [] : this.version.split('.');
+    _ref = this.versionArr;
+    for (k in _ref) {
+      v = _ref[k];
+      this.versionArr[k] = Number(v);
+    }
+    this.orientation = (typeof window !== "undefined" && window !== null ? window.innerWidth : void 0) > (typeof window !== "undefined" && window !== null ? window.innerHeight : void 0) ? 'landscape' : 'portrait';
+    this.touch = (__indexOf.call(window, 'ontouchstart') >= 0) || (navigator.maxTouchPoints > 0) || (navigator.msMaxTouchPoints > 0);
+    this.tablet = /(ipad.*|tablet.*|(android.*?chrome((?!mobi).)*))$/i.test(this.ua);
+    this.mobile = !this.tablet && (getFirstMatch(/(ipod|iphone|ipad)/i, this.ua) || /[^-]mobi/i.test(this.ua));
+    this.desktop = !this.mobile && !this.tablet;
+    this.canvas = testCanvas();
+    this.webgl = testWebGL();
+  }
+
+  Detections.prototype.test = function(value) {
+    var i, l, m, result, v, _i, _ref;
+    if (!this.matched) {
+      return 0;
+    }
+    if (!(m = value.match(/(?:(?:(\D.*?)(?:\s|$))?(\D.*?)(?:\s|$))?(?:([\d\.]+))?/))) {
+      return 0;
+    }
+    result = 0;
+    if (m[1]) {
+      if (new RegExp(m[1], 'i').test(this.os)) {
+        result = 1;
+      } else {
+        return 0;
+      }
+    }
+    if (m[2]) {
+      if ((_ref = this.matched.nick) != null ? _ref.test(m[2]) : void 0) {
+        result = 1;
+      } else {
+        return 0;
+      }
+    }
+    if (m[3]) {
+      v = m[3].split('.');
+      l = v.length;
+      if (l > this.versionArr.length) {
+        l = this.versionArr.length;
+      }
+      for (i = _i = 0; 0 <= l ? _i <= l : _i >= l; i = 0 <= l ? ++_i : --_i) {
+        if (this.versionArr[i] > v[i]) {
+          return 2;
+        } else if (this.versionArr[i] < v[i]) {
+          return -1;
+        }
+      }
+    }
+    return result;
+  };
+
+  Detections.prototype.getBrowser = function() {
+    var m, _i, _len, _ref;
+    _ref = this.matches;
+    for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+      m = _ref[_i];
+      if (m.test.test(this.ua)) {
+        this.name = m.name;
+        this.version = this.version || getFirstMatch(m.version, this.ua);
+        this.matched = m;
+        break;
+      }
+    }
+    return [this.name, this.version];
+  };
+
+  testWebGL = function() {
+    var err;
+    try {
+      return !!window.WebGLRenderingContext && Boolean(document.createElement("canvas").getContext('webgl')) || Boolean(document.createElement("canvas").getContext('experimental-webgl'));
+    } catch (_error) {
+      err = _error;
+      return false;
+    }
+  };
+
+  testCanvas = function() {
+    var err;
+    try {
+      return !!window.CanvasRenderingContext2D && Boolean(document.createElement("canvas").getContext('2d'));
+    } catch (_error) {
+      err = _error;
+      return false;
+    }
+  };
+
+  getFirstMatch = function(re, val) {
+    var m;
+    m = val.match(re);
+    return (m && m.length > 1 && m[1]) || null;
+  };
+
+  return Detections;
+
+})();
+
+var ConditionsValidation,
+  __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
+  __slice = [].slice;
+
+ConditionsValidation = (function() {
+  var _detections, _list;
+
+  _list = null;
+
+  _detections = null;
+
+  ConditionsValidation.getInstance = function(p_data) {
+    return ConditionsValidation._instance != null ? ConditionsValidation._instance : ConditionsValidation._instance = new ConditionsValidation(p_data);
+  };
+
+  function ConditionsValidation(p_data) {
+    this.validate = __bind(this.validate, this);
+    _detections = Detections.getInstance();
+    _list = ObjectUtils.clone(p_data);
+  }
+
+  ConditionsValidation.prototype.add = function(p_obj) {
+    var k, v;
+    if (ObjectUtils.hasSameKey(p_obj, _list) || ObjectUtils.isEqual(p_obj, _list)) {
+      throw new Error('The object ' + JSON.stringify(p_obj) + ' already exists in validations list.');
+    }
+    for (k in p_obj) {
+      v = p_obj[k];
+      _list[k] = v;
+    }
+    return true;
+  };
+
+  ConditionsValidation.get({
+    list: function() {
+      return _list;
+    }
+  });
+
+  ConditionsValidation.prototype.get = function(p_keyID) {
+    if (this.has(p_keyID)) {
+      return _list[p_keyID];
+    } else {
+      throw new Error("The key " + p_keyID + " does not exists in validations list.");
+    }
+  };
+
+  ConditionsValidation.prototype.has = function(p_keyID) {
+    if (_list[p_keyID]) {
+      return true;
+    } else {
+      return false;
+    }
+  };
+
+  ConditionsValidation.prototype.remove = function(p_keyID) {
+    if (_list[p_keyID]) {
+      delete _list[p_keyID];
+      return true;
+    } else {
+      throw new Error("The key " + p_keyID + " does not exists in validations list.");
+    }
+    return false;
+  };
+
+  ConditionsValidation.prototype.test = function(p_args) {
+    var parsed, validate;
+    parsed = p_args.replace(new RegExp(/\w+/g), "validate('$&')");
+    validate = this.validate;
+    return eval('(function(){return (' + parsed + ');})();');
+  };
+
+  ConditionsValidation.prototype.validate = function(p_keyID) {
+    var a, err, i, k, key, match, matchSize, r, result, total, v, value, _i, _ref, _ref1;
+    result = [];
+    _ref = this.get(p_keyID);
+    for (k in _ref) {
+      v = _ref[k];
+      switch (k) {
+        case "size":
+          matchSize = true;
+          for (key in v) {
+            value = v[key];
+            switch (key) {
+              case "max-width":
+                if (window.innerWidth > value) {
+                  matchSize = false;
+                  break;
+                }
+                break;
+              case "min-width":
+                if (window.innerWidth < value) {
+                  matchSize = false;
+                  break;
+                }
+                break;
+              case "max-height":
+                if (window.innerHeight > value) {
+                  matchSize = false;
+                  break;
+                }
+                break;
+              case "min-height":
+                if (window.innerHeight < value) {
+                  matchSize = false;
+                  break;
+                }
+            }
+          }
+          result.push(matchSize);
+          break;
+        case "browser":
+          for (key in v) {
+            value = v[key];
+            switch (key) {
+              case "ua":
+                result.push(new RegExp(value).test(_detections.ua));
+                break;
+              case "version":
+                a = value.match(/\d+/g);
+                total = a.length;
+                if (total > _detections.versionArr.length) {
+                  total = _detections.versionArr.length;
+                }
+                for (i = _i = 0; 0 <= total ? _i <= total : _i >= total; i = 0 <= total ? ++_i : --_i) {
+                  if (a[i] === void 0) {
+                    continue;
+                  }
+                  match = 0;
+                  if (a[i] > _detections.versionArr[i]) {
+                    match = 1;
+                    break;
+                  } else if (a[i] < _detections.versionArr[i]) {
+                    match = -1;
+                    break;
+                  }
+                }
+                r = ((_ref1 = value.match(/[<>=]+/g)) != null ? _ref1[0] : void 0) || '==';
+                if (r.lengh === 0) {
+                  r = '==';
+                }
+                result.push(eval('0' + r + 'match'));
+                break;
+              default:
+                try {
+                  if (_detections[key] != null) {
+                    result.push(value === _detections[key]);
+                  }
+                } catch (_error) {
+                  err = _error;
+                }
+            }
+          }
+          break;
+        case "domain":
+          result.push(v.toLowerCase() === window.location.hostname.toLowerCase());
+          break;
+        case "platform":
+          result.push(v.toLowerCase() === _detections.platform.toLowerCase());
+      }
+    }
+    if (result.indexOf(false) === -1) {
+      return true;
+    } else {
+      return false;
+    }
+  };
+
+  ConditionsValidation.prototype.customTest = function() {
+    var p_args, p_callback;
+    p_callback = arguments[0], p_args = 2 <= arguments.length ? __slice.call(arguments, 1) : [];
+    return p_callback.call(void 0, p_args);
+  };
+
+  return ConditionsValidation;
+
+})();
+
 var BaseDOM,
   __hasProp = {}.hasOwnProperty,
   __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
@@ -2298,6 +2678,7 @@ BaseView = (function(_super) {
     this.id = this._data.id != null ? this._data.id : void 0;
     this.content = this._data.content != null ? this._data.content : void 0;
     this.route = this._data.route != null ? this._data.route : void 0;
+    this.routeData = !this._routeData ? null : void 0;
     this.parentView = this._data.parentView != null ? this._data.parentView : void 0;
     this.subviews = this._data.subviews != null ? this._data.subviews : void 0;
     this.destroyable = this._data.destroyable != null ? this._data.destroyable : void 0;
@@ -2373,6 +2754,18 @@ BaseView = (function(_super) {
   BaseView.set({
     route: function(p_value) {
       return this._route = p_value;
+    }
+  });
+
+  BaseView.get({
+    routeData: function() {
+      return this._routeData;
+    }
+  });
+
+  BaseView.set({
+    routeData: function(p_value) {
+      return this._routeData = p_value;
     }
   });
 
@@ -2591,6 +2984,7 @@ BaseView = (function(_super) {
       _ref.length = 0;
     }
     this._parentPath = null;
+    this._routeData = null;
     this._data = null;
     this.trigger(BaseView.DESTROY, this);
     this.destroyComplete();
@@ -2633,6 +3027,8 @@ NavigationLoader = (function(_super) {
   app.container = {};
 
   app.navigation = {};
+
+  app.conditions = null;
 
   function NavigationLoader(p_preloaderView, p_configPath, p_wrapper) {
     var _ref, _ref1;
@@ -2692,7 +3088,7 @@ NavigationLoader = (function(_super) {
   };
 
   NavigationLoader.prototype._createLoadQueue = function(evt) {
-    var check, k, queues, total, v, _ref, _ref1;
+    var check, firstIndexes, k, queues, total, v, _ref, _ref1;
     if (evt != null) {
       if ((_ref = evt.currentTarget) != null) {
         _ref.off(AssetLoader.COMPLETE_ALL, this._createLoadQueue);
@@ -2713,13 +3109,27 @@ NavigationLoader = (function(_super) {
     }
     queues = app.config.required;
     total = ObjectUtils.count(queues);
+    firstIndexes = this.loaderSteps.length;
     for (k in queues) {
       v = queues[k];
-      this.loaderSteps.push({
-        id: k,
-        data: v,
-        ratio: 1 / total
-      });
+      switch (k) {
+        case 'preloader':
+        case 'core':
+        case 'main':
+          this.loaderSteps.splice(firstIndexes, 0, {
+            id: k,
+            data: v,
+            ratio: 1 / total
+          });
+          firstIndexes++;
+          break;
+        default:
+          this.loaderSteps.push({
+            id: k,
+            data: v,
+            ratio: 1 / total
+          });
+      }
     }
     this.queue = this._createLoader(this.currentStep.id);
     if (check > 0) {
@@ -2729,7 +3139,7 @@ NavigationLoader = (function(_super) {
   };
 
   NavigationLoader.prototype._parseContentFiles = function(p_views, p_data) {
-    var cache, filtered, index, k, node, obj, results, ts, v, _ref;
+    var cache, cloneSrc, filtered, i, index, k, node, obj, results, ts, v, _i, _j, _ref, _ref1, _ref2;
     ts = new Date().getTime();
     for (node in app.config.required) {
       _ref = app.config.required[node];
@@ -2753,8 +3163,29 @@ NavigationLoader = (function(_super) {
               } else {
                 cache = "";
               }
-              obj.src += cache;
-              filtered.push(obj);
+              if (typeof obj.src !== 'object' && obj.src !== '{}') {
+                obj.src += cache;
+                filtered.push(obj);
+              } else {
+                cloneSrc = ObjectUtils.clone(obj.src);
+                for (i = _i = 0, _ref1 = cloneSrc.length; 0 <= _ref1 ? _i < _ref1 : _i > _ref1; i = 0 <= _ref1 ? ++_i : --_i) {
+                  if (cloneSrc[i].condition != null) {
+                    if (app.conditions.test(cloneSrc[i].condition)) {
+                      if (cloneSrc[i].file != null) {
+                        obj.src = cloneSrc[i].file + cache;
+                        filtered.push(obj);
+                      }
+                      break;
+                    }
+                  } else {
+                    if (cloneSrc[i].file != null) {
+                      obj.src = cloneSrc[i].file + cache;
+                      filtered.push(obj);
+                      break;
+                    }
+                  }
+                }
+              }
             }
           }
           app.config.required[node] = ArrayUtils.merge(app.config.required[node], filtered);
@@ -2782,8 +3213,29 @@ NavigationLoader = (function(_super) {
               } else {
                 cache = "";
               }
-              obj.src += cache;
-              filtered.push(obj);
+              if (typeof obj.src !== 'object' && obj.src !== '{}') {
+                obj.src += cache;
+                filtered.push(obj);
+              } else {
+                cloneSrc = ObjectUtils.clone(obj.src);
+                for (i = _j = 0, _ref2 = cloneSrc.length; 0 <= _ref2 ? _j < _ref2 : _j > _ref2; i = 0 <= _ref2 ? ++_j : --_j) {
+                  if (cloneSrc[i].condition != null) {
+                    if (app.conditions.test(cloneSrc[i].condition)) {
+                      if (cloneSrc[i].file != null) {
+                        obj.src = cloneSrc[i].file + cache;
+                        filtered.push(obj);
+                      }
+                      break;
+                    }
+                  } else {
+                    if (cloneSrc[i].file != null) {
+                      obj.src = cloneSrc[i].file + cache;
+                      filtered.push(obj);
+                      break;
+                    }
+                  }
+                }
+              }
             }
           }
           if (!app.config.required[v.id]) {
@@ -2802,13 +3254,18 @@ NavigationLoader = (function(_super) {
   };
 
   NavigationLoader.prototype._parseConfigFile = function(p_data) {
-    var cache, id, k, temp, ts, v, _ref, _ref1, _ref2;
+    var cache, i, id, k, temp, ts, v, _i, _j, _k, _ref, _ref1, _ref2, _ref3, _ref4, _ref5;
+    p_data.paths = this._normalizeConfigPaths(p_data.paths);
     p_data = this._normalizePaths(p_data, p_data.paths);
     if (!p_data.preloadContents) {
       p_data.preloadContents = [];
     }
     ts = new Date().getTime();
     temp = [];
+    if (p_data.conditions == null) {
+      p_data.conditions = {};
+    }
+    app.conditions || (app.conditions = ConditionsValidation.getInstance(p_data.conditions));
     _ref = p_data.views;
     for (k in _ref) {
       v = _ref[k];
@@ -2816,15 +3273,39 @@ NavigationLoader = (function(_super) {
       temp[v.id] = v;
       if (v.loadContent && v.content) {
         cache = v.cache !== void 0 && v.cache === false ? "?noCache=" + ts : "";
-        p_data.preloadContents.push({
-          'id': v.content,
-          'src': v.content + cache
-        });
+        if (typeof v.content !== 'object' && v.content !== '{}') {
+          p_data.preloadContents.push({
+            'id': v.content,
+            'src': v.content + cache
+          });
+        } else {
+          for (i = _i = 0, _ref1 = v.content.length; 0 <= _ref1 ? _i < _ref1 : _i > _ref1; i = 0 <= _ref1 ? ++_i : --_i) {
+            if (v.content[i].condition != null) {
+              if (app.conditions.test(v.content[i].condition)) {
+                if (v.content[i].file != null) {
+                  p_data.preloadContents.push({
+                    'id': v.content[i].file,
+                    'src': v.content[i].file + cache
+                  });
+                }
+                break;
+              }
+            } else {
+              if (v.content[i].file != null) {
+                p_data.preloadContents.push({
+                  'id': v.content[i].file,
+                  'src': v.content[i].file + cache
+                });
+                break;
+              }
+            }
+          }
+        }
       }
     }
-    _ref1 = p_data.views;
-    for (k in _ref1) {
-      v = _ref1[k];
+    _ref2 = p_data.views;
+    for (k in _ref2) {
+      v = _ref2[k];
       if (v.parentView === v.id) {
         throw new Error('The parent view cannot be herself');
       }
@@ -2842,23 +3323,71 @@ NavigationLoader = (function(_super) {
           } else {
             cache = "";
           }
-          p_data.preloadContents.push({
-            'id': v.content,
-            'src': v.content + cache
-          });
+          if (typeof v.content !== 'object' && v.content !== '{}') {
+            p_data.preloadContents.push({
+              'id': v.content,
+              'src': v.content + cache
+            });
+          } else {
+            for (i = _j = 0, _ref3 = v.content.length; 0 <= _ref3 ? _j < _ref3 : _j > _ref3; i = 0 <= _ref3 ? ++_j : --_j) {
+              if (v.content[i].condition != null) {
+                if (app.conditions.test(v.content[i].condition)) {
+                  if (v.content[i].file != null) {
+                    p_data.preloadContents.push({
+                      'id': v.content[i].file,
+                      'src': v.content[i].file + cache
+                    });
+                  }
+                  break;
+                }
+              } else {
+                if (v.content[i].file != null) {
+                  p_data.preloadContents.push({
+                    'id': v.content[i].file,
+                    'src': v.content[i].file + cache
+                  });
+                  break;
+                }
+              }
+            }
+          }
         }
       }
     }
     for (id in p_data.required) {
-      _ref2 = p_data.required[id];
-      for (k in _ref2) {
-        v = _ref2[k];
+      _ref4 = p_data.required[id];
+      for (k in _ref4) {
+        v = _ref4[k];
         if (v.content) {
           cache = v.cache !== void 0 && v.cache === false ? "?noCache=" + ts : "";
-          p_data.preloadContents.push({
-            'id': v.content,
-            'src': v.content + cache
-          });
+          if (typeof v.content !== 'object' && v.content !== '{}') {
+            p_data.preloadContents.push({
+              'id': v.content,
+              'src': v.content + cache
+            });
+          } else {
+            for (i = _k = 0, _ref5 = v.content.length; 0 <= _ref5 ? _k < _ref5 : _k > _ref5; i = 0 <= _ref5 ? ++_k : --_k) {
+              if (v.content[i].condition != null) {
+                if (app.conditions.test(v.content[i].condition)) {
+                  if (v.content[i].file != null) {
+                    p_data.preloadContents.push({
+                      'id': v.content[i].file,
+                      'src': v.content[i].file + cache
+                    });
+                  }
+                  break;
+                }
+              } else {
+                if (v.content[i].file != null) {
+                  p_data.preloadContents.push({
+                    'id': v.content[i].file,
+                    'src': v.content[i].file + cache
+                  });
+                  break;
+                }
+              }
+            }
+          }
         }
       }
     }
@@ -2919,6 +3448,20 @@ NavigationLoader = (function(_super) {
     return false;
   };
 
+  NavigationLoader.prototype._normalizeConfigPaths = function(p_paths) {
+    var o, p_pathsStr, val;
+    p_pathsStr = JSON.stringify(p_paths);
+    while ((o = /\{([^\"\{\}]+)\}/.exec(p_pathsStr))) {
+      val = p_paths[o[1]];
+      if (!val) {
+        val = '';
+      }
+      p_pathsStr = p_pathsStr.replace(new RegExp('\{' + o[1] + '\}', 'ig'), val);
+      p_paths = JSON.parse(p_pathsStr);
+    }
+    return p_paths;
+  };
+
   NavigationLoader.prototype._normalizePaths = function(p_data, p_paths) {
     var k, v;
     for (k in p_paths) {
@@ -2931,7 +3474,7 @@ NavigationLoader = (function(_super) {
   };
 
   NavigationLoader.prototype._loadFileComplete = function(p_event) {
-    var data, result, si, style;
+    var data, e, result, si, style;
     switch (p_event.item.ext) {
       case 'json':
         data = p_event.result;
@@ -2959,10 +3502,13 @@ NavigationLoader = (function(_super) {
         style.type = "text/css";
         head.appendChild(style);
         si = head.querySelectorAll('style').length;
-        if (document.all) {
-          document.styleSheets[si].cssText = data;
-        } else {
+        try {
           style.appendChild(document.createTextNode(data));
+        } catch (_error) {
+          e = _error;
+          if (document.all) {
+            document.styleSheets[si].cssText = data;
+          }
         }
     }
     return false;
@@ -3090,7 +3636,6 @@ NavigationLoader = (function(_super) {
       evt = null;
     }
     this._mainView.off(BaseView.CREATE_COMPLETE, this._showMainView);
-    this._mainView.showStart();
     return false;
   };
 
@@ -3222,6 +3767,7 @@ PreloaderView = (function(_super) {
 })(BaseView);
 
 var Preloader,
+  __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
   __hasProp = {}.hasOwnProperty,
   __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
@@ -3229,8 +3775,16 @@ Preloader = (function(_super) {
   __extends(Preloader, _super);
 
   function Preloader() {
+    this.preloaderAssetsLoaded = __bind(this.preloaderAssetsLoaded, this);
     Preloader.__super__.constructor.call(this, new PreloaderView());
   }
+
+  Preloader.prototype.preloaderAssetsLoaded = function(evt) {
+    if (evt == null) {
+      evt = null;
+    }
+    return false;
+  };
 
   return Preloader;
 

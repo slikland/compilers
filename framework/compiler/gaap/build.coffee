@@ -18,9 +18,11 @@ tasks:
 	preloaderJS:
 		src: '{paths.coffee}project/Preloader.coffee'
 		output: '{paths.deploy}js/preloader.js'
+	
 	mainJS:
 		src: '{paths.coffee}project/Main.coffee'
 		output: '{paths.deploy}js/main.js'
+		depends: 'preloaderJS'
 		
 	vendors:
 		src: '{paths.vendors}imports.js'
@@ -29,9 +31,11 @@ tasks:
 	preloaderCSS:
 		src: '{paths.stylus}preloader.styl'
 		output: '{paths.deploy}css/preloader.css'
+	
 	mainCSS:
 		src: '{paths.stylus}main.styl'
 		output: '{paths.deploy}css/main.css'
+	
 	fontsCSS:
 		src: '{paths.stylus}fonts.styl'
 		output: '{paths.deploy}css/fonts.css'

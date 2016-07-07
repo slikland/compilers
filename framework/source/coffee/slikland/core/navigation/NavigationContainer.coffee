@@ -1,14 +1,8 @@
 #import slikland.core.navigation.Navigation
-#import slikland.core.navigation.types.DefaultNavigationController
-#import slikland.core.navigation.types.ScrollNavigationController
+#import slikland.core.navigation.BaseView
 
 class NavigationContainer extends BaseView
-
-	@DEFAULT_NAVIGATION: "default"
-	@SCROLL_NAVIGATION: "scroll"
 	
-	@controller = null
-
 	constructor: () ->
 		super null, 'nav-container'
 
@@ -19,13 +13,6 @@ class NavigationContainer extends BaseView
 	@get navigation:()->
 		return @_navigation
 
-	# Override this method (optional)
+	# Override this method (required)
 	@get controller:=>
-		if !@controller
-			switch app.config.navigation.type
-				when @SCROLL_NAVIGATION
-					@controller = new ScrollNavigationController()
-				when @DEFAULT_NAVIGATION
-				else
-					@controller = new DefaultNavigationController()
-		return @controller
+		throw new Error('Override this method with a instance of BaseNavigationController.')

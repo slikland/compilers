@@ -2,11 +2,13 @@
 #import slikland.utils.Prototypes
 #import slikland.core.App
 
+#import slikland.utils.ArrayUtils
 #import slikland.utils.ObjectUtils
 #import slikland.utils.StringUtils
 #import slikland.utils.JSONUtils
 
 #import slikland.loader.AssetLoader
+#import slikland.loader.ConditionsValidation
 #import slikland.core.navigation.BaseView
 
 class NavigationLoader extends EventDispatcher
@@ -19,6 +21,7 @@ class NavigationLoader extends EventDispatcher
 	app.config = {}
 	app.container = {}
 	app.navigation = {}
+	app.conditions = null
 
 	constructor:(p_preloaderView, p_configPath = "data/config.json", p_wrapper=null)->
 		wrapper = if !(p_wrapper)? then document.body else p_wrapper
@@ -33,7 +36,7 @@ class NavigationLoader extends EventDispatcher
 		head = document.querySelector("head") || document.getElementsByTagName("head")[0]
 		app.root = document.querySelector("base")?.href || document.getElementsByTagName("base")[0]?.href
 		app.loader = @loader = AssetLoader.getInstance()
-		
+
 		@queue = @loader.getGroup('config')
 		@queue.on(AssetLoader.COMPLETE_FILE, @_prepareConfigFile)
 		@queue.loadFile 
@@ -43,17 +46,17 @@ class NavigationLoader extends EventDispatcher
 
 	_prepareConfigFile:(evt)=>
 		@queue.off(AssetLoader.COMPLETE_FILE, @_prepareConfigFile)
-
+		
 		@_parseConfigFile(evt.result)
-
+		
 		queue = @loader.getGroup('preloadContents')
 		queue.on(AssetLoader.COMPLETE_ALL, @_createLoadQueue)
-
+		
 		if app.config.preloadContents.length > 0
 			queue.loadManifest(app.config.preloadContents)
 		else
 			@_createLoadQueue(null)
-		false
+		false 
 
 	_createLoadQueue:(evt)=>
 		evt?.currentTarget?.off(AssetLoader.COMPLETE_ALL, @_createLoadQueue)
@@ -67,22 +70,25 @@ class NavigationLoader extends EventDispatcher
 		@currentStep = @loaderSteps[0]
 		
 		check = ObjectUtils.count(evt?.currentTarget?._loadedResults)
-		if check>0 then @_parseContentFiles(app.config.views, evt.currentTarget._loadedResults)
+		if check > 0 then @_parseContentFiles(app.config.views, evt.currentTarget._loadedResults)
 
 		queues = app.config.required
 		total = ObjectUtils.count(queues)
+		firstIndexes = @loaderSteps.length
+
 		for k, v of queues
-			@loaderSteps.push {id:k, data:v, ratio:(1/total)}
+			switch k
+				when 'preloader', 'core', 'main'
+					@loaderSteps.splice(firstIndexes, 0, {id:k, data:v, ratio:(1/total)})
+					firstIndexes++
+				else
+					@loaderSteps.push {id:k, data:v, ratio:(1/total)}
 
 		@queue = @_createLoader(@currentStep.id)
 		if check>0 then @queue.load()
 		false
 
 	_parseContentFiles:(p_views, p_data)=>
-		# 
-		# @TODO:
-		# IMPLEMENT FIX AND ADD THIS FUCKING UGLY CONTENT LOADING OF REQUIRED NODE
-		# 
 		ts = new Date().getTime()
 		for node of app.config.required
 			for k, v of app.config.required[node]
@@ -101,14 +107,27 @@ class NavigationLoader extends EventDispatcher
 								cache = "?noCache="+ts
 							else
 								cache = ""
-							obj.src += cache
+							if typeof(obj.src) != 'object' && obj.src != '{}'
+								obj.src += cache
+								filtered.push obj
+							else
+								cloneSrc = ObjectUtils.clone(obj.src)
+								for i in [0...cloneSrc.length]
+									if cloneSrc[i].condition?
+										if app.conditions.test(cloneSrc[i].condition)
+											if cloneSrc[i].file?
+												obj.src = cloneSrc[i].file+cache
+												filtered.push obj
+											break
+									else
+										if cloneSrc[i].file?
+											obj.src = cloneSrc[i].file+cache
+											filtered.push obj
+											break
 
-							filtered.push obj
+							
 					app.config.required[node] = ArrayUtils.merge(app.config.required[node], filtered)
-		# 
-		# 
-		# 
-		# 
+
 		for k, v of p_views
 			if p_data[v.content]
 				v.content = p_data[v.content]
@@ -126,9 +145,24 @@ class NavigationLoader extends EventDispatcher
 								cache = "?noCache="+ts
 							else
 								cache = ""
-							obj.src += cache
+							if typeof(obj.src) != 'object' && obj.src != '{}'
+								obj.src += cache
+								filtered.push obj
+							else
+								cloneSrc = ObjectUtils.clone(obj.src)
+								for i in [0...cloneSrc.length]
+									if cloneSrc[i].condition?
+										if app.conditions.test(cloneSrc[i].condition)
+											if cloneSrc[i].file?
+												obj.src = cloneSrc[i].file+cache
+												filtered.push obj
+											break
+									else
+										if cloneSrc[i].file?
+											obj.src = cloneSrc[i].file+cache
+											filtered.push obj
+											break
 
-							filtered.push obj
 					if !app.config.required[v.id]
 						app.config.required[v.id] = []
 						app.config.required[v.id] = filtered
@@ -145,12 +179,28 @@ class NavigationLoader extends EventDispatcher
 		if !p_data.preloadContents then p_data.preloadContents = []
 		ts = new Date().getTime()
 		temp = []
+		
+		p_data.conditions ?= {}
+		app.conditions ||= ConditionsValidation.getInstance(p_data.conditions)
+
 		for k, v of p_data.views
 			v.class = StringUtils.toCamelCase(v.class)
 			temp[v.id] = v
 			if v.loadContent && v.content
 				cache = if v.cache isnt undefined && v.cache is false then "?noCache="+ts else ""
-				p_data.preloadContents.push {'id':v.content, 'src':v.content+cache}
+				if typeof(v.content) != 'object' && v.content != '{}'
+					p_data.preloadContents.push {'id':v.content, 'src':v.content+cache}
+				else
+					for i in [0...v.content.length]
+						if v.content[i].condition?
+							if app.conditions.test(v.content[i].condition)
+								if v.content[i].file?
+									p_data.preloadContents.push {'id':v.content[i].file, 'src':v.content[i].file+cache}
+								break
+						else
+							if v.content[i].file?
+								p_data.preloadContents.push {'id':v.content[i].file, 'src':v.content[i].file+cache}
+								break
 
 		for k, v of p_data.views
 			if v.parentView == v.id then throw new Error('The parent view cannot be herself')
@@ -158,7 +208,7 @@ class NavigationLoader extends EventDispatcher
 			if temp[v.parentView]? && v.parentView != v.id
 				if !temp[v.parentView].subviews then temp[v.parentView].subviews = {}
 				#
-				#  When don't set the loadContent to true or chache to false in config file the view inherits of this parent
+				#  When don't set the loadContent to true or cache to false in config file the view inherits of this parent
 				#  console.log v.id, v.loadContent, v.cache
 				# 
 				v.loadContent = if !v.loadContent? then temp[v.parentView].loadContent else v.loadContent
@@ -170,14 +220,37 @@ class NavigationLoader extends EventDispatcher
 						cache = "?noCache="+ts
 					else
 						cache = ""
-					p_data.preloadContents.push {'id':v.content, 'src':v.content+cache}
 
+					if typeof(v.content) != 'object' && v.content != '{}'
+						p_data.preloadContents.push {'id':v.content, 'src':v.content+cache}
+					else
+						for i in [0...v.content.length]
+							if v.content[i].condition?
+								if app.conditions.test(v.content[i].condition)
+									if v.content[i].file?
+										p_data.preloadContents.push {'id':v.content[i].file, 'src':v.content[i].file+cache}
+									break
+							else
+								if v.content[i].file?
+									p_data.preloadContents.push {'id':v.content[i].file, 'src':v.content[i].file+cache}
+									break
 		for id of p_data.required
 			for k, v of p_data.required[id]
 				if v.content
 					cache = if v.cache isnt undefined && v.cache is false then "?noCache="+ts else ""
-					p_data.preloadContents.push {'id':v.content, 'src':v.content+cache}
-
+					if typeof(v.content) != 'object' && v.content != '{}'
+						p_data.preloadContents.push {'id':v.content, 'src':v.content+cache}
+					else
+						for i in [0...v.content.length]
+							if v.content[i].condition?
+								if app.conditions.test(v.content[i].condition)
+									if v.content[i].file?
+										p_data.preloadContents.push {'id':v.content[i].file, 'src':v.content[i].file+cache}
+									break
+							else
+								if v.content[i].file?
+									p_data.preloadContents.push {'id':v.content[i].file, 'src':v.content[i].file+cache}
+									break
 		p_data.views = temp
 		app.config = p_data
 		return p_data
@@ -226,6 +299,16 @@ class NavigationLoader extends EventDispatcher
 			p_paths = JSON.parse(p_pathsStr)
 		return p_paths
 
+	_normalizeConfigPaths:(p_paths)->
+		p_pathsStr = JSON.stringify(p_paths)
+		while (o = /\{([^\"\{\}]+)\}/.exec(p_pathsStr))
+			val = p_paths[o[1]]
+			if !val
+				val = ''
+			p_pathsStr = p_pathsStr.replace(new RegExp('\{'+o[1]+'\}', 'ig'), val)
+			p_paths = JSON.parse(p_pathsStr)
+		return p_paths
+
 	_normalizePaths:(p_data, p_paths)->
 		for k, v of p_paths
 			p_data = JSON.stringify(p_data)
@@ -258,11 +341,12 @@ class NavigationLoader extends EventDispatcher
 				style.type = "text/css"
 				head.appendChild(style)
 				si = head.querySelectorAll('style').length
-
-				if document.all
-					document.styleSheets[si].cssText = data
-				else
+				
+				try
 					style.appendChild(document.createTextNode(data))
+				catch e
+					if document.all
+						document.styleSheets[si].cssText = data
 		false
 
 	_loadProgress:(evt)=>
@@ -353,7 +437,6 @@ class NavigationLoader extends EventDispatcher
 	
 	_showMainView:(evt=null)=>
 		@_mainView.off(BaseView.CREATE_COMPLETE, @_showMainView)
-		@_mainView.showStart()
 		false
 
 	coreAssetsLoaded:(evt=null)=>

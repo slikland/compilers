@@ -167,6 +167,12 @@ BaseNavigationController = (function(_super) {
   };
 
   BaseNavigationController.get({
+    type: function() {
+      throw new Error('Override the visibleViews getter in ' + this.constructor.type + ' class');
+    }
+  });
+
+  BaseNavigationController.get({
     visibleViews: function() {
       throw new Error('Override the visibleViews getter in ' + this.constructor.name + ' class');
     }
@@ -254,6 +260,12 @@ DefaultNavigationController = (function(_super) {
     this.change = __bind(this.change, this);
     DefaultNavigationController.__super__.constructor.apply(this, arguments);
   }
+
+  DefaultNavigationController.get({
+    type: function() {
+      return 'default';
+    }
+  });
 
   DefaultNavigationController.get({
     visibleViews: function() {
@@ -964,7 +976,10 @@ Navigation = (function(_super) {
 
   Navigation.get({
     currentView: function() {
-      return this._currentView || _controller.currentView;
+      var view;
+      view = this._currentView || _controller.currentView;
+      view.routeData = this.routeData;
+      return view;
     }
   });
 
@@ -1095,474 +1110,6 @@ Navigation = (function(_super) {
 
 })(EventDispatcher);
 
-var NumberUtils;
-
-NumberUtils = (function() {
-  function NumberUtils() {}
-
-  NumberUtils.isEven = function(p_value) {
-    if (p_value % 2 === 0) {
-      return true;
-    } else {
-      return false;
-    }
-  };
-
-  NumberUtils.isZero = function(p_value) {
-    return Math.abs(p_value) < 0.00001;
-  };
-
-  NumberUtils.toPercent = function(p_value, p_min, p_max) {
-    return ((p_value - p_min) / (p_max - p_min)) * 100;
-  };
-
-  NumberUtils.percentToValue = function(p_percent, p_min, p_max) {
-    return ((p_max - p_min) * p_percent) + p_min;
-  };
-
-  NumberUtils.getBytesAsMegabytes = function(p_bytes) {
-    return (Math.floor((p_bytes / 1024 / 1024) * 100) / 100) + " MB";
-  };
-
-  NumberUtils.bytesTo = function(p_bytes) {
-    if (p_bytes >= 1000000000) {
-      return (p_bytes / 1000000000).toFixed(2) + ' GB';
-    } else if (p_bytes >= 1000000) {
-      return (p_bytes / 1000000).toFixed(2) + ' MB';
-    } else if (p_bytes >= 1000) {
-      return (p_bytes / 1000).toFixed(2) + ' KB';
-    } else if (p_bytes > 1) {
-      return p_bytes + ' bytes';
-    } else if (p_bytes === 1) {
-      return p_bytes + ' byte';
-    } else {
-      return '0 byte';
-    }
-  };
-
-  NumberUtils.rangeRandom = function(p_low, p_high, p_rounded) {
-    if (p_rounded == null) {
-      p_rounded = false;
-    }
-    if (!p_rounded) {
-      return (Math.random() * (p_high - p_low)) + p_low;
-    } else {
-      return Math.round(Math.round(Math.random() * (p_high - p_low)) + p_low);
-    }
-  };
-
-  NumberUtils.distanceBetweenCoordinates = function(p_from, p_to, p_units) {
-    var a, c, dLatitude, dLongitude, radius;
-    if (p_units == null) {
-      p_units = "km";
-    }
-    radius;
-    switch (p_units) {
-      case "km":
-        radius = 6371;
-        break;
-      case "meters":
-        radius = 6378000;
-        break;
-      case "feet":
-        radius = 20925525;
-        break;
-      case "miles":
-        radius = 3963;
-    }
-    dLatitude = (p_to.x - p_from.x) * Math.PI / 180;
-    dLongitude = (p_to.y - p_from.y) * Math.PI / 180;
-    a = Math.sin(dLatitude / 2) * Math.sin(dLatitude / 2) + Math.sin(dLongitude / 2) * Math.sin(dLongitude / 2) * Math.cos(p_from.x * Math.PI / 180) * Math.cos(p_to.x * Math.PI / 180);
-    c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-    return radius * c;
-  };
-
-  return NumberUtils;
-
-})();
-
-
-/**
-Bunch of utilities methods for {Array}
-@class ArrayUtils
- */
-var ArrayUtils;
-
-ArrayUtils = (function() {
-  function ArrayUtils() {}
-
-  ArrayUtils.removeItem = function(p_array, p_item, p_clone) {
-    var k, result, v, _i, _len;
-    if (p_clone == null) {
-      p_clone = false;
-    }
-    result = p_clone ? p_array.slice(0) : p_array;
-    for (v = _i = 0, _len = result.length; _i < _len; v = ++_i) {
-      k = result[v];
-      if (k === p_item) {
-        result.splice(v, 1);
-      }
-    }
-    return result;
-  };
-
-  ArrayUtils.removeItemByIndex = function(p_index, p_array, p_clone) {
-    var result;
-    if (p_clone == null) {
-      p_clone = false;
-    }
-    result = p_clone ? p_array.slice(0) : p_array;
-    result.splice(p_index, 1);
-    return result;
-  };
-
-  ArrayUtils.removeDuplicateStrings = function(p_array, p_clone) {
-    if (p_clone == null) {
-      p_clone = false;
-    }
-    return p_array.filter(function(el, pos, self) {
-      return self.indexOf(el) === pos;
-    });
-  };
-
-  ArrayUtils.hasItem = function(p_value, p_array) {
-    return p_array.indexOf(p_value) > -1;
-  };
-
-  ArrayUtils.merge = function(p_arrayA, p_arrayB) {
-    var i, j, result;
-    result = [];
-    i = 0;
-    j = 0;
-    while ((i < p_arrayA.length) || (j < p_arrayB.length)) {
-      if (i < p_arrayA.length) {
-        result.push(p_arrayA[i]);
-        i++;
-      }
-      if (j < p_arrayB.length) {
-        result.push(p_arrayB[j]);
-        j++;
-      }
-    }
-    return result;
-  };
-
-  ArrayUtils.randomIndex = function(p_array) {
-    return NumberUtils.rangeRandom(0, p_array.length - 1, true);
-  };
-
-  ArrayUtils.randomItem = function(p_array) {
-    return p_array[ArrayUtils.randomIndex(p_array)];
-  };
-
-  ArrayUtils.shuffle = function(p_array, p_clone) {
-    var i, item, random, result, temp, _i, _len;
-    if (p_clone == null) {
-      p_clone = false;
-    }
-    result = p_clone ? p_array.slice(0) : p_array;
-    for (i = _i = 0, _len = result.length; _i < _len; i = ++_i) {
-      item = result[i];
-      random = Math.floor(Math.random() * result.length);
-      temp = result[i];
-      result[i] = result[random];
-      result[random] = temp;
-    }
-    return result;
-  };
-
-  ArrayUtils.move = function(p_array, p_oldIndex, p_newIndex, p_clone) {
-    var k, result;
-    if (p_clone == null) {
-      p_clone = false;
-    }
-    result = p_clone ? p_array.slice(0) : p_array;
-    if (p_newIndex >= result.length) {
-      k = new_index - result.length;
-      while ((k--) + 1) {
-        result.push(void 0);
-      }
-    }
-    result.splice(p_newIndex, 0, result.splice(p_oldIndex, 1)[0]);
-    return result;
-  };
-
-  ArrayUtils.fromMiddleToEnd = function(p_array) {
-    var first, last, len, merged, midLen;
-    len = p_array.length;
-    midLen = Math.floor(len * 0.5);
-    first = p_array.slice(midLen, len);
-    last = p_array.slice(0, midLen).reverse();
-    merged = this.merge(first, last);
-    return merged;
-  };
-
-  ArrayUtils.fromEndToMiddle = function(p_array) {
-    var newArray;
-    newArray = this.fromMiddleToEnd(p_array);
-    return newArray.reverse();
-  };
-
-  ArrayUtils.lastIndexOf = function(p_array, p_value) {
-    var i, index, total;
-    i = 0;
-    total = p_array.length;
-    index = -1;
-    while (i !== total) {
-      if (p_array[i] === p_value) {
-        index = i;
-      }
-      i++;
-    }
-    return index;
-  };
-
-  return ArrayUtils;
-
-})();
-
-var ScrollNavigationController,
-  __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
-  __hasProp = {}.hasOwnProperty,
-  __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
-
-ScrollNavigationController = (function(_super) {
-  __extends(ScrollNavigationController, _super);
-
-  function ScrollNavigationController() {
-    this._onAutoKill = __bind(this._onAutoKill, this);
-    this._onCompleteAutoScroll = __bind(this._onCompleteAutoScroll, this);
-    this._onStartAutoScroll = __bind(this._onStartAutoScroll, this);
-    this._scrollToView = __bind(this._scrollToView, this);
-    this._show = __bind(this._show, this);
-    this._snapping = __bind(this._snapping, this);
-    this._isVisible = __bind(this._isVisible, this);
-    this._onScroll = __bind(this._onScroll, this);
-    this.change = __bind(this.change, this);
-    ScrollNavigationController.__super__.constructor.apply(this, arguments);
-  }
-
-  ScrollNavigationController.get({
-    visibleViews: function() {
-      return this._visibleViews;
-    }
-  });
-
-  ScrollNavigationController.get({
-    currentView: function() {
-      return this._currentView;
-    }
-  });
-
-  ScrollNavigationController.get({
-    previousView: function() {
-      return this._previousView;
-    }
-  });
-
-  ScrollNavigationController.get({
-    data: function() {
-      return {
-        currentView: this.currentView,
-        previousView: this.previousView,
-        visibleViews: this._visibleViews
-      };
-    }
-  });
-
-  ScrollNavigationController.prototype.start = function(p_id) {
-    var k, v, view, _ref, _ref1;
-    if (p_id == null) {
-      p_id = null;
-    }
-    if (app.config.navigation.options != null) {
-      this._options = app.config.navigation.options;
-    } else {
-      throw new Error('The options object in config.json file must be created to use this navigation, see a example in source code.');
-
-      /*
-      			"navigation":{
-      				"type":"scroll",
-      				"options":{
-      					"orientation":"vertical",
-      					"scrollToTime":0,
-      					"showViewPercent":0.5,
-      					"snap":{
-      						"delay":0
-      					}
-      				}
-      			}
-       */
-    }
-    this._visibleViews = this._visibleViews || [];
-    this._autoScrolling = false;
-    this._orientation = (this._options.orientation != null) && (this._options.orientation === 'vertical' || this._options.orientation === 'horizontal') ? this._options.orientation : 'vertical';
-    this._snapDelay = (((_ref = this._options.snap) != null ? _ref.delay : void 0) != null) && this._options.snap.delay > 0 ? this._options.snap.delay : 0;
-    this._scrollToTime = this._options.scrollToTime >= 0 ? this._options.scrollToTime : .5;
-    this._showViewPercent = this._options.showViewPercent >= 0 || this._options.showViewPercent <= 1 ? this._options.showViewPercent : .5;
-    _ref1 = app.config.views;
-    for (k in _ref1) {
-      v = _ref1[k];
-      view = this._views.create(k);
-      this._appendToWrapper(view);
-      view.createStart();
-    }
-    window.addEventListener("scroll", this._onScroll);
-    this._onScroll(null);
-    return ScrollNavigationController.__super__.start.call(this, p_id);
-  };
-
-  ScrollNavigationController.prototype.change = function(p_id) {
-    var _ref;
-    if (((_ref = this._currentView) != null ? _ref.id : void 0) === p_id) {
-      return;
-    }
-    if (this._currentView != null) {
-      this._previousView = this._currentView;
-    }
-    this._currentView = this._views.create(p_id);
-    return this._scrollToView(p_id);
-  };
-
-  ScrollNavigationController.prototype._onScroll = function(evt) {
-    var currentView, index, k, v, view, view_bounds, _ref, _ref1, _results;
-    this._visibleViews = this._visibleViews || [];
-    currentView = null;
-    _ref = app.config.views;
-    _results = [];
-    for (k in _ref) {
-      v = _ref[k];
-      view = this._views.create(k);
-      view_bounds = (this._orientation === 'vertical' ? view.height + view.element.offsetTop : view.width + view.element.offsetLeft) - this._getScrollValue;
-      if (this._isVisible(view)) {
-        if (this._visibleViews.indexOf(view) < 0) {
-          this._visibleViews.push(view);
-        }
-      } else {
-        index = this._visibleViews.indexOf(view);
-        if (index >= 0) {
-          ArrayUtils.removeItemByIndex(index, this._visibleViews);
-        }
-      }
-      if (view_bounds > ((this._orientation === 'vertical' ? window.innerHeight : window.innerWidth) * this._showViewPercent) && currentView === null) {
-        currentView = view;
-        this._snapping(view);
-        if (((_ref1 = this._currentView) != null ? _ref1.id : void 0) === view.id) {
-          continue;
-        }
-        if (this._currentView != null) {
-          this._previousView = this._currentView;
-        }
-        this._currentView = this._views.create(view.id);
-        _results.push(this._show(view));
-      } else {
-        _results.push(view.pause());
-      }
-    }
-    return _results;
-  };
-
-  ScrollNavigationController.prototype._isVisible = function(p_view) {
-    var elementBottom, elementLeft, elementRight, elementTop;
-    if (this._orientation === 'vertical') {
-      elementTop = p_view.element.offsetTop;
-      elementBottom = elementTop + p_view.height;
-      return (this._getScrollValue + window.innerHeight) > elementTop && this._getScrollValue + window.innerHeight < (elementBottom + window.innerHeight);
-    } else {
-      elementLeft = p_view.element.offsetLeft;
-      elementRight = elementLeft + p_view.width;
-      return (this._getScrollValue + window.innerWidth) > elementLeft && this._getScrollValue + window.innerWidth < (elementRight + window.innerWidth);
-    }
-  };
-
-  ScrollNavigationController.prototype._snapping = function(p_view) {
-    if (!this._autoScrolling && this._snapDelay > 0) {
-      TweenMax.killDelayedCallsTo(this._scrollToView);
-      return TweenMax.delayedCall(this._snapDelay, this._scrollToView, [p_view.id]);
-    }
-  };
-
-  ScrollNavigationController.prototype._show = function(p_view) {
-    this.trigger(BaseNavigationController.CHANGE_VIEW, {
-      data: this.data
-    });
-    if (p_view.showed) {
-      return p_view.resume();
-    } else {
-      return p_view.showStart();
-    }
-  };
-
-  ScrollNavigationController.prototype._scrollToView = function(p_id) {
-    var view;
-    view = this._views.create(p_id);
-    TweenMax.killTweensOf(window);
-    if (this._orientation === 'vertical') {
-      TweenMax.to(window, this._scrollToTime, {
-        scrollTo: {
-          y: view.element.offsetTop,
-          onAutoKill: this._onAutoKill
-        },
-        ease: Quad.easeOut,
-        onStart: this._onStartAutoScroll,
-        onComplete: this._onCompleteAutoScroll
-      });
-    } else {
-      TweenMax.to(window, this._scrollToTime, {
-        scrollTo: {
-          x: view.element.offsetLeft,
-          onAutoKill: this._onAutoKill
-        },
-        ease: Quad.easeOut,
-        onStart: this._onStartAutoScroll,
-        onComplete: this._onCompleteAutoScroll
-      });
-    }
-    TweenMax.killDelayedCallsTo(this._show);
-    return TweenMax.delayedCall(this._scrollToTime, this._show, [view]);
-  };
-
-  ScrollNavigationController.prototype._onStartAutoScroll = function() {
-    return this._autoScrolling = true;
-  };
-
-  ScrollNavigationController.prototype._onCompleteAutoScroll = function() {
-    return this._autoScrolling = false;
-  };
-
-  ScrollNavigationController.prototype._onAutoKill = function(event) {
-    return this._autoScrolling = false;
-  };
-
-  ScrollNavigationController.get({
-    _getScrollValue: function() {
-      var B, D;
-      if (this._orientation === 'vertical') {
-        if (typeof pageYOffset !== 'undefined') {
-          return pageYOffset;
-        } else {
-          B = document.body;
-          D = document.documentElement;
-          D = D.clientHeight ? D : B;
-          return D.scrollTop;
-        }
-      } else {
-        if (typeof pageXOffset !== 'undefined') {
-          return pageXOffset;
-        } else {
-          B = document.body;
-          D = document.documentElement;
-          D = D.clientWidth ? D : B;
-          return D.scrollLeft;
-        }
-      }
-    }
-  });
-
-  return ScrollNavigationController;
-
-})(BaseNavigationController);
-
 var NavigationContainer,
   __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
   __hasProp = {}.hasOwnProperty,
@@ -1570,12 +1117,6 @@ var NavigationContainer,
 
 NavigationContainer = (function(_super) {
   __extends(NavigationContainer, _super);
-
-  NavigationContainer.DEFAULT_NAVIGATION = "default";
-
-  NavigationContainer.SCROLL_NAVIGATION = "scroll";
-
-  NavigationContainer.controller = null;
 
   function NavigationContainer() {
     this.setupNavigation = __bind(this.setupNavigation, this);
@@ -1595,24 +1136,267 @@ NavigationContainer = (function(_super) {
 
   NavigationContainer.get({
     controller: function() {
-      if (!NavigationContainer.controller) {
-        switch (app.config.navigation.type) {
-          case NavigationContainer.SCROLL_NAVIGATION:
-            NavigationContainer.controller = new ScrollNavigationController();
-            break;
-          case NavigationContainer.DEFAULT_NAVIGATION:
-            break;
-          default:
-            NavigationContainer.controller = new DefaultNavigationController();
-        }
-      }
-      return NavigationContainer.controller;
+      throw new Error('Override this method with a instance of BaseNavigationController.');
     }
   });
 
   return NavigationContainer;
 
 })(BaseView);
+
+var Resizer,
+  __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
+  __hasProp = {}.hasOwnProperty,
+  __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
+
+Resizer = (function(_super) {
+  var _body, _bounds;
+
+  __extends(Resizer, _super);
+
+  Resizer.RESIZE = 'resize_resizer';
+
+  Resizer.ORIENTATION_CHANGE = 'orientation_change_resizer';
+
+  Resizer.BREAKPOINT_CHANGE = 'breakpoint_changed_resizer';
+
+  _bounds = null;
+
+  _body = null;
+
+  Resizer.getInstance = function() {
+    return Resizer._instance != null ? Resizer._instance : Resizer._instance = new Resizer();
+  };
+
+  function Resizer() {
+    this.change = __bind(this.change, this);
+    this.stop = __bind(this.stop, this);
+    this.start = __bind(this.start, this);
+    _body = document.querySelector("body");
+    _bounds = {
+      "top": 0,
+      "bottom": 0,
+      "left": 0,
+      "right": 0
+    };
+    this.start();
+  }
+
+  Resizer.get({
+    width: function() {
+      return window.innerWidth;
+    }
+  });
+
+  Resizer.get({
+    height: function() {
+      return window.innerHeight;
+    }
+  });
+
+  Resizer.get({
+    bounds: function() {
+      return _bounds;
+    }
+  });
+
+  Resizer.set({
+    bounds: function(p_value) {
+      return _bounds = p_value;
+    }
+  });
+
+  Resizer.get({
+    orientation: function() {
+      if (window.innerWidth > window.innerHeight) {
+        return 'landscape';
+      } else {
+        return 'portrait';
+      }
+    }
+  });
+
+  Resizer.prototype.start = function() {
+    window.addEventListener('resize', this.change);
+    window.addEventListener('orientationchange', this.change);
+    return this.change();
+  };
+
+  Resizer.prototype.stop = function() {
+    window.removeEventListener('resize', this.change);
+    return window.removeEventListener('orientationchange', this.change);
+  };
+
+  Resizer.prototype.change = function(evt) {
+    var k, v, _data, _ref, _results;
+    if (evt != null) {
+      evt.preventDefault();
+    }
+    if (evt != null) {
+      evt.stopImmediatePropagation();
+    }
+    _data = {
+      "width": this.width,
+      "height": this.height,
+      "bounds": this.bounds,
+      "orientation": this.orientation
+    };
+    if ((evt != null ? evt.type : void 0) === "resize") {
+      this.trigger(Resizer.RESIZE, _data);
+    }
+    if ((evt != null ? evt.type : void 0) === "orientationchange") {
+      this.trigger(Resizer.ORIENTATION_CHANGE, _data);
+    }
+    if (app.conditions != null) {
+      _ref = app.conditions.list;
+      _results = [];
+      for (k in _ref) {
+        v = _ref[k];
+        if ((v['size'] != null) || (v['orientation'] != null)) {
+          if (app.conditions.test(k)) {
+            if (!this.hasClass(k)) {
+              this.addClass(k);
+            }
+          } else {
+            if (this.hasClass(k)) {
+              this.removeClass(k);
+            }
+          }
+          _data['breakpoint'] = {
+            key: k,
+            values: v
+          };
+          _results.push(this.trigger(Resizer.BREAKPOINT_CHANGE, _data));
+        } else {
+          _results.push(void 0);
+        }
+      }
+      return _results;
+    }
+  };
+
+  Resizer.prototype.addClass = function(className) {
+    var classNames, i, p;
+    if (typeof className === 'string') {
+      className = className.replace(/\s+/ig, ' ').split(' ');
+    } else if (typeof className !== 'Array') {
+      return;
+    }
+    classNames = _body.className.replace(/\s+/ig, ' ').split(' ');
+    p = classNames.length;
+    i = className.length;
+    while (i-- > 0) {
+      if (classNames.indexOf(className[i]) >= 0) {
+        continue;
+      }
+      classNames[p++] = className[i];
+    }
+    _body.className = classNames.join(' ');
+    return false;
+  };
+
+  Resizer.prototype.removeClass = function(className) {
+    var classNames, i, p;
+    if (typeof className === 'string') {
+      className = className.replace(/\s+/ig, ' ').split(' ');
+    } else if (typeof className !== 'Array') {
+      return;
+    }
+    classNames = _body.className.replace(/\s+/ig, ' ').split(' ');
+    i = className.length;
+    while (i-- > 0) {
+      if ((p = classNames.indexOf(className[i])) >= 0) {
+        classNames.splice(p, 1);
+      }
+    }
+    _body.className = classNames.join(' ');
+    return false;
+  };
+
+  Resizer.prototype.hasClass = function(className) {
+    var classNames, hasClass, i;
+    if (typeof className === 'string') {
+      className = className.replace(/\s+/ig, ' ').split(' ');
+    } else if (typeof className !== 'Array') {
+      return;
+    }
+    classNames = _body.className.replace(/\s+/ig, ' ').split(' ');
+    i = className.length;
+    hasClass = true;
+    while (i-- > 0) {
+      hasClass &= classNames.indexOf(className[i]) >= 0;
+    }
+    return hasClass;
+  };
+
+  return Resizer;
+
+})(EventDispatcher);
+
+var SplitTextUtils;
+
+SplitTextUtils = (function() {
+  function SplitTextUtils() {}
+
+  SplitTextUtils.splitHTMLChars = function(target, opt, className) {
+    if (opt == null) {
+      opt = {};
+    }
+    if (className == null) {
+      className = 'split-chunk';
+    }
+    return this._splitHTML(target, className, opt, this._replaceChars);
+  };
+
+  SplitTextUtils.splitHTMLWords = function(target, opt, className) {
+    if (opt == null) {
+      opt = {};
+    }
+    if (className == null) {
+      className = 'split-chunk';
+    }
+    return this._splitHTML(target, className, opt, this._replaceWords);
+  };
+
+  SplitTextUtils._splitHTML = function(target, className, opt, type) {
+    var html, replacedHTML;
+    if (target instanceof BaseDOM) {
+      target = target.element;
+    }
+    html = target.innerHTML;
+    this._currentClassName = className;
+    replacedHTML = html.replace(/([^\<\>]*)?(\<[^\>]*\>)?/ig, type);
+    target.innerHTML = replacedHTML;
+    return target.querySelectorAll('.' + className);
+  };
+
+  SplitTextUtils._replaceChars = function(match, text, tag) {
+    var ret;
+    ret = '';
+    if (text) {
+      ret = text.replace(/(.)/g, '<span class="' + SplitTextUtils._currentClassName + '">$1</span>');
+    }
+    if (tag) {
+      ret += tag;
+    }
+    return ret;
+  };
+
+  SplitTextUtils._replaceWords = function(match, text, tag) {
+    var ret;
+    ret = '';
+    if (text) {
+      ret = text.replace(/([^\s]+)/g, '<span class="' + SplitTextUtils._currentClassName + '">$1</span>');
+    }
+    if (tag) {
+      ret += tag;
+    }
+    return ret;
+  };
+
+  return SplitTextUtils;
+
+})();
 
 var HomeVideo,
   __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
@@ -2465,71 +2249,6 @@ Sub3View = (function(_super) {
 
 })(BaseView);
 
-var SplitTextUtils;
-
-SplitTextUtils = (function() {
-  function SplitTextUtils() {}
-
-  SplitTextUtils.splitHTMLChars = function(target, opt, className) {
-    if (opt == null) {
-      opt = {};
-    }
-    if (className == null) {
-      className = 'split-chunk';
-    }
-    return this._splitHTML(target, className, opt, this._replaceChars);
-  };
-
-  SplitTextUtils.splitHTMLWords = function(target, opt, className) {
-    if (opt == null) {
-      opt = {};
-    }
-    if (className == null) {
-      className = 'split-chunk';
-    }
-    return this._splitHTML(target, className, opt, this._replaceWords);
-  };
-
-  SplitTextUtils._splitHTML = function(target, className, opt, type) {
-    var html, replacedHTML;
-    if (target instanceof BaseDOM) {
-      target = target.element;
-    }
-    html = target.innerHTML;
-    this._currentClassName = className;
-    replacedHTML = html.replace(/([^\<\>]*)?(\<[^\>]*\>)?/ig, type);
-    target.innerHTML = replacedHTML;
-    return target.querySelectorAll('.' + className);
-  };
-
-  SplitTextUtils._replaceChars = function(match, text, tag) {
-    var ret;
-    ret = '';
-    if (text) {
-      ret = text.replace(/(.)/g, '<span class="' + SplitTextUtils._currentClassName + '">$1</span>');
-    }
-    if (tag) {
-      ret += tag;
-    }
-    return ret;
-  };
-
-  SplitTextUtils._replaceWords = function(match, text, tag) {
-    var ret;
-    ret = '';
-    if (text) {
-      ret = text.replace(/([^\s]+)/g, '<span class="' + SplitTextUtils._currentClassName + '">$1</span>');
-    }
-    if (tag) {
-      ret += tag;
-    }
-    return ret;
-  };
-
-  return SplitTextUtils;
-
-})();
-
 var Main,
   __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
   __hasProp = {}.hasOwnProperty,
@@ -2539,6 +2258,7 @@ Main = (function(_super) {
   __extends(Main, _super);
 
   function Main() {
+    this.resize = __bind(this.resize, this);
     this.create = __bind(this.create, this);
     return Main.__super__.constructor.apply(this, arguments);
   }
@@ -2567,6 +2287,14 @@ Main = (function(_super) {
       });
       this.test.element.on('click', this.go);
     }
+    app.resizer = Resizer.getInstance();
+    app.resizer.bounds = {
+      "top": 10,
+      "bottom": 10,
+      "left": 10,
+      "right": 10
+    };
+    app.resizer.on(Resizer.RESIZE, this.resize);
     return Main.__super__.create.apply(this, arguments);
   };
 
@@ -2577,6 +2305,14 @@ Main = (function(_super) {
   Main.prototype.go = function(evt) {
     return app.navigation.gotoView(evt.srcElement.innerText);
   };
+
+  Main.prototype.resize = function(evt) {};
+
+  Main.get({
+    controller: function() {
+      return new DefaultNavigationController();
+    }
+  });
 
   return Main;
 

@@ -1,7 +1,8 @@
-class DeviceDetection
+class Detections
 	matches: [
 		{name: 'Opera', nick: /opera/i, test: /opera|opr/i, version: /(?:opera|opr)[\s\/](\d+(\.\d+)*)/i},
 		{name: 'Windows Phone', nick: /WindowsPhone/i, test: /windows phone/i, version: /iemobile\/(\d+(\.\d+)*)/i},
+		{name: 'Edge', nick: /edge|edgehtml/i, test: /edge|msapphost|edgehtml/i, version: /(?:edge|edgehtml)\/(\d+(\.\d+)*)/i},
 		{name: 'Internet Explorer', nick: /explorer|internetexplorer|ie/i, test: /msie|trident/i, version: /(?:msie |rv:)(\d+(\.\d+)*)/i},
 		{name: 'Chrome', nick: /Chrome/i, test: /chrome|crios|crmo/i, version: /(?:chrome|crios|crmo)\/(\d+(\.\d+)*)/i},
 		{name: 'iPod', nick: /iPod/i, test: /ipod/i},
@@ -21,18 +22,24 @@ class DeviceDetection
 	constructor:()->
 		@matched = null
 		@ua = navigator?.userAgent || ''
-		@os = navigator.platform || ''
-		@ios = getFirstMatch(/(ipod|iphone|ipad)/i, @ua)
-		@tablet = /(ipad.*|tablet.*|(android.*?chrome((?!mobi).)*))$/i.test(@ua)
-		@mobile = !@tablet && (@ios || /[^-]mobi/i.test(@ua))
+		@platform = @os = navigator?.platform || ''
 		@version = getFirstMatch(/version\/(\d+(\.\d+)*)/i, @ua)
-
+		
 		@getBrowser()
 		@versionArr = if !@version? then [] else @version.split('.')
 		for k, v of @versionArr
 			@versionArr[k] = Number(v)
+		
+		@orientation = if window?.innerWidth > window?.innerHeight then 'landscape' else 'portrait'
+		@touch = ('ontouchstart' in window) || (navigator.maxTouchPoints > 0) || (navigator.msMaxTouchPoints > 0)
+		@tablet = /(ipad.*|tablet.*|(android.*?chrome((?!mobi).)*))$/i.test(@ua)
+		@mobile = !@tablet && (getFirstMatch(/(ipod|iphone|ipad)/i, @ua) || /[^-]mobi/i.test(@ua))
+		@desktop = !@mobile && !@tablet
 
-	checkBrowser:(value)->
+		@canvas = testCanvas()
+		@webgl = testWebGL()
+		
+	test:(value)->
 		if !@matched
 			return 0
 		
@@ -61,6 +68,7 @@ class DeviceDetection
 					return -1
 		return result
 
+
 	getBrowser:()->
 		for m in @matches
 			if m.test.test(@ua)
@@ -70,6 +78,18 @@ class DeviceDetection
 				break
 		return [@name, @version]
 		
+	testWebGL=()->
+		try
+			return !!window.WebGLRenderingContext && Boolean(document.createElement("canvas").getContext('webgl')) || Boolean(document.createElement("canvas").getContext('experimental-webgl'))
+		catch err
+			return false
+
+	testCanvas=()->
+		try
+			return !!window.CanvasRenderingContext2D && Boolean(document.createElement("canvas").getContext('2d'))
+		catch err
+			return false
+
 	getFirstMatch=(re, val)->
 		m = val.match(re)
 		return (m && m.length > 1 && m[1]) || null

@@ -1,3 +1,4 @@
+#import slikland.utils.SplitTextUtils
 #import project.media.HomeVideo
 
 class HomeView extends BaseView
@@ -19,6 +20,8 @@ class HomeView extends BaseView
 		# @appendChild @_video
 		# @_video.element.play()
 
+		
+
 		color = Math.floor(Math.random()*16777215).toString(16)
 		@test = new BaseDOM('div')
 		@appendChild(@test)
@@ -35,7 +38,6 @@ class HomeView extends BaseView
 		i = splitText.length
 		while i-- > 0
 			TweenMax.to(splitText[i], 1, {opacity: 0, delay: Math.random() * 2})
-
 
 
 		# @_homeVideo = new HomeVideo(@content)
@@ -76,6 +78,7 @@ class HomeView extends BaseView
 		})
 
 	showComplete:(evt=null)=>
+		# console.log @routeData
 		# console.log @id, 'showComplete'
 		super
 

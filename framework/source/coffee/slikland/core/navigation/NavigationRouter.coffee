@@ -10,8 +10,8 @@ class NavigationRouter extends EventDispatcher
 
 	# Setup
 	#
-	# rootPath - {String} to root path
-	# forceHashBang - {Boolean} to force hash bang
+	# p_rootPath - {String} to root path
+	# p_forceHashBang - {Boolean} to force hash bang
 	#
 	# Use root path if not set in base tag
 	setup:(p_rootPath = null, p_forceHashBang = false)->
@@ -142,8 +142,8 @@ class NavigationRouter extends EventDispatcher
 		@_triggerPath(@_getPath())
 
 	# Add a route
-	# route - {String} to route
-	# data - {Object} to data
+	# p_route - {String} to route
+	# p_data - {Object} to data
 	addRoute:(p_route, p_data = null)->
 		# console.log "addRoute"
 		if typeof(p_route)!='string'
@@ -170,7 +170,7 @@ class NavigationRouter extends EventDispatcher
 		@_routes.sort(@_sortRoutes)
 
 	# Remove a route
-	# route - {String} to route
+	# p_route - {String} to route
 	removeRoute:(p_route)->
 		i = @_numRoutes
 		while i-- > 0

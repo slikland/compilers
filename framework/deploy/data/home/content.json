@@ -19,25 +19,13 @@
 			}
 		}
 	},
-	"deeplink":{
-		"var":"test.test2.gallery",
-		"route":"/galeria[id]"
-	},
-	"gallery":[
-		{
-			"id":"image-4",
-			"src":"{base}media/images/scissors.png"
-		}
-	],
-	"videos":[
-		{
-			"id":"video-test",
-			"loadWithView":true,
-			"src":"{base}media/videos/test.mp4",
-			"autoplay" : true,
-			"fullBuffer" : true,
-			"loop": false,
-			"volume": 0.01
-		}
-	]
+	"test-image": {
+		"id": "image-bug",
+		"src": [
+			{
+				"condition":"sizeBlah",
+				"file":"{base}media/images/test-other.png"
+			}
+		]	
+	}
 }
