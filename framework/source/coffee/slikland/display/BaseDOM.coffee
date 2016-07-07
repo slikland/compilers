@@ -35,11 +35,17 @@ Node::findParents = (query) ->
 # Node.get({instance: ()-> return @__instance__})
 
 # BaseDOM: SlikLand DOM
+###*
+Base DOM manipulation class
+@class BaseDOM
+###
+
 class BaseDOM extends EventDispatcher
 	# 
 	# Deprecated params: constructor:(element = 'div', className = null, namespace = null)->
 	# 
 	constructor:(p_options...)->
+		super
 		# 
 		# Default params:
 		# 

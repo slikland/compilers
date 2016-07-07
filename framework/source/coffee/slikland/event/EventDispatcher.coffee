@@ -6,6 +6,7 @@ class EventDispatcher
 
 	# Collection of {Event}
 	_events:null
+	_stackTriggerer:[]
 
 	###*
 	Add a event listener.
@@ -117,7 +118,6 @@ class EventDispatcher
 					return true
 		return false
 
-
 	###*
 	Triggers an event after the current code block has finished processing.
 
@@ -153,12 +153,11 @@ class EventDispatcher
 
 	###
 	stackTrigger:(evt, data = null, target = null)->
-		@_stackTriggerer ?= []
-
 		@_stackTriggerer.push([evt, data, target])
 
 		clearTimeout(@_stackTriggerTimeout)
 		@_stackTriggerTimeout = setTimeout(@_triggerStacked, 0)
+	
 	_triggerStacked:()=>
 		l = @_stackTriggerer.length
 		i = -1
