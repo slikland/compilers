@@ -139,6 +139,7 @@ class NavigationLoader extends EventDispatcher
 		false
 
 	_parseConfigFile:(p_data)->
+		p_data.paths = @_normalizeConfigPaths(p_data.paths)
 		p_data = @_normalizePaths(p_data, p_data.paths)
 
 		if !p_data.preloadContents then p_data.preloadContents = []
@@ -215,6 +216,15 @@ class NavigationLoader extends EventDispatcher
 		if p_files.length > 0
 			@queue.load()
 		false
+	_normalizeConfigPaths:(p_paths)->
+		p_pathsStr = JSON.stringify(p_paths)
+		while (o = /\{([^\"\{\}]+)\}/.exec(p_pathsStr))
+			val = p_paths[o[1]]
+			if !val
+				val = ''
+			p_pathsStr = p_pathsStr.replace(new RegExp('\{'+o[1]+'\}', 'ig'), val)
+			p_paths = JSON.parse(p_pathsStr)
+		return p_paths
 
 	_normalizePaths:(p_data, p_paths)->
 		for k, v of p_paths
