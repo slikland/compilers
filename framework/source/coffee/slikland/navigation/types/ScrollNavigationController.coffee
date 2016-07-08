@@ -49,6 +49,7 @@ class ScrollNavigationController extends BaseNavigationController
 
 		for k, v of app.config.views
 			view = @_views.create(k)
+			view.data.snap ?= true
 			@_appendToWrapper(view)
 			view.createStart()
 		
@@ -104,9 +105,11 @@ class ScrollNavigationController extends BaseNavigationController
 			return (@_getScrollValue + window.innerWidth) > elementLeft && @_getScrollValue + window.innerWidth < (elementRight + window.innerWidth)
 
 	_snapping:(p_view)=>
-		if !@_autoScrolling && @_snapDelay > 0
+		if !@_autoScrolling && @_snapDelay> 0
 			TweenMax.killDelayedCallsTo @_scrollToView
-			TweenMax.delayedCall @_snapDelay, @_scrollToView, [p_view.id]
+
+			if p_view.data.snap || p_view.snap
+				TweenMax.delayedCall @_snapDelay, @_scrollToView, [p_view.id]
 
 	_show:(p_view)=>
 		@trigger(BaseNavigationController.CHANGE_VIEW, {data:@data})

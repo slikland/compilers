@@ -235,6 +235,259 @@ BaseNavigationController = (function(_super) {
 
 })(EventDispatcher);
 
+var ScrollNavigationController,
+  __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
+  __hasProp = {}.hasOwnProperty,
+  __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
+
+ScrollNavigationController = (function(_super) {
+  __extends(ScrollNavigationController, _super);
+
+  function ScrollNavigationController() {
+    this._onAutoKill = __bind(this._onAutoKill, this);
+    this._onCompleteAutoScroll = __bind(this._onCompleteAutoScroll, this);
+    this._onStartAutoScroll = __bind(this._onStartAutoScroll, this);
+    this._scrollToView = __bind(this._scrollToView, this);
+    this._show = __bind(this._show, this);
+    this._snapping = __bind(this._snapping, this);
+    this._isVisible = __bind(this._isVisible, this);
+    this._onScroll = __bind(this._onScroll, this);
+    this.change = __bind(this.change, this);
+    ScrollNavigationController.__super__.constructor.apply(this, arguments);
+  }
+
+  ScrollNavigationController.get({
+    type: function() {
+      return 'scroll';
+    }
+  });
+
+  ScrollNavigationController.get({
+    visibleViews: function() {
+      return this._visibleViews;
+    }
+  });
+
+  ScrollNavigationController.get({
+    currentView: function() {
+      return this._currentView;
+    }
+  });
+
+  ScrollNavigationController.get({
+    previousView: function() {
+      return this._previousView;
+    }
+  });
+
+  ScrollNavigationController.get({
+    data: function() {
+      return {
+        currentView: this.currentView,
+        previousView: this.previousView,
+        visibleViews: this._visibleViews
+      };
+    }
+  });
+
+  ScrollNavigationController.prototype.start = function(p_id) {
+    var k, v, view, _base, _ref, _ref1;
+    if (p_id == null) {
+      p_id = null;
+    }
+    if (app.config.navigation.options != null) {
+      this._options = app.config.navigation.options;
+    } else {
+      throw new Error('The options object in config.json file must be created to use this navigation, see a example in source code.');
+
+      /*
+      			"navigation":{
+      				"type":"scroll",
+      				"options":{
+      					"orientation":"vertical",
+      					"scrollToTime":0,
+      					"showViewPercent":0.5,
+      					"snap":{
+      						"delay":0
+      					}
+      				}
+      			}
+       */
+    }
+    this._visibleViews = this._visibleViews || [];
+    this._autoScrolling = false;
+    this._orientation = (this._options.orientation != null) && (this._options.orientation === 'vertical' || this._options.orientation === 'horizontal') ? this._options.orientation : 'vertical';
+    this._snapDelay = (((_ref = this._options.snap) != null ? _ref.delay : void 0) != null) && this._options.snap.delay > 0 ? this._options.snap.delay : 0;
+    this._scrollToTime = this._options.scrollToTime >= 0 ? this._options.scrollToTime : .5;
+    this._showViewPercent = this._options.showViewPercent >= 0 || this._options.showViewPercent <= 1 ? this._options.showViewPercent : .5;
+    _ref1 = app.config.views;
+    for (k in _ref1) {
+      v = _ref1[k];
+      view = this._views.create(k);
+      if ((_base = view.data).snap == null) {
+        _base.snap = true;
+      }
+      this._appendToWrapper(view);
+      view.createStart();
+    }
+    window.addEventListener("scroll", this._onScroll);
+    this._onScroll(null);
+    return ScrollNavigationController.__super__.start.call(this, p_id);
+  };
+
+  ScrollNavigationController.prototype.change = function(p_id) {
+    var _ref;
+    if (((_ref = this._currentView) != null ? _ref.id : void 0) === p_id) {
+      return;
+    }
+    if (this._currentView != null) {
+      this._previousView = this._currentView;
+    }
+    this._currentView = this._views.create(p_id);
+    return this._scrollToView(p_id);
+  };
+
+  ScrollNavigationController.prototype._onScroll = function(evt) {
+    var currentView, index, k, v, view, view_bounds, _ref, _ref1, _results;
+    this._visibleViews = this._visibleViews || [];
+    currentView = null;
+    _ref = app.config.views;
+    _results = [];
+    for (k in _ref) {
+      v = _ref[k];
+      view = this._views.create(k);
+      view_bounds = (this._orientation === 'vertical' ? view.height + view.element.offsetTop : view.width + view.element.offsetLeft) - this._getScrollValue;
+      if (this._isVisible(view)) {
+        if (this._visibleViews.indexOf(view) < 0) {
+          this._visibleViews.push(view);
+        }
+      } else {
+        index = this._visibleViews.indexOf(view);
+        if (index >= 0) {
+          ArrayUtils.removeItemByIndex(index, this._visibleViews);
+        }
+      }
+      if (view_bounds > ((this._orientation === 'vertical' ? window.innerHeight : window.innerWidth) * this._showViewPercent) && currentView === null) {
+        currentView = view;
+        this._snapping(view);
+        if (((_ref1 = this._currentView) != null ? _ref1.id : void 0) === view.id) {
+          continue;
+        }
+        if (this._currentView != null) {
+          this._previousView = this._currentView;
+        }
+        this._currentView = this._views.create(view.id);
+        _results.push(this._show(view));
+      } else {
+        _results.push(view.pause());
+      }
+    }
+    return _results;
+  };
+
+  ScrollNavigationController.prototype._isVisible = function(p_view) {
+    var elementBottom, elementLeft, elementRight, elementTop;
+    if (this._orientation === 'vertical') {
+      elementTop = p_view.element.offsetTop;
+      elementBottom = elementTop + p_view.height;
+      return (this._getScrollValue + window.innerHeight) > elementTop && this._getScrollValue + window.innerHeight < (elementBottom + window.innerHeight);
+    } else {
+      elementLeft = p_view.element.offsetLeft;
+      elementRight = elementLeft + p_view.width;
+      return (this._getScrollValue + window.innerWidth) > elementLeft && this._getScrollValue + window.innerWidth < (elementRight + window.innerWidth);
+    }
+  };
+
+  ScrollNavigationController.prototype._snapping = function(p_view) {
+    if (!this._autoScrolling && this._snapDelay > 0) {
+      TweenMax.killDelayedCallsTo(this._scrollToView);
+      if (p_view.data.snap || p_view.snap) {
+        return TweenMax.delayedCall(this._snapDelay, this._scrollToView, [p_view.id]);
+      }
+    }
+  };
+
+  ScrollNavigationController.prototype._show = function(p_view) {
+    this.trigger(BaseNavigationController.CHANGE_VIEW, {
+      data: this.data
+    });
+    if (p_view.showed) {
+      return p_view.resume();
+    } else {
+      return p_view.showStart();
+    }
+  };
+
+  ScrollNavigationController.prototype._scrollToView = function(p_id) {
+    var view;
+    view = this._views.create(p_id);
+    TweenMax.killTweensOf(window);
+    if (this._orientation === 'vertical') {
+      TweenMax.to(window, this._scrollToTime, {
+        scrollTo: {
+          y: view.element.offsetTop,
+          onAutoKill: this._onAutoKill
+        },
+        ease: Quad.easeOut,
+        onStart: this._onStartAutoScroll,
+        onComplete: this._onCompleteAutoScroll
+      });
+    } else {
+      TweenMax.to(window, this._scrollToTime, {
+        scrollTo: {
+          x: view.element.offsetLeft,
+          onAutoKill: this._onAutoKill
+        },
+        ease: Quad.easeOut,
+        onStart: this._onStartAutoScroll,
+        onComplete: this._onCompleteAutoScroll
+      });
+    }
+    TweenMax.killDelayedCallsTo(this._show);
+    return TweenMax.delayedCall(this._scrollToTime, this._show, [view]);
+  };
+
+  ScrollNavigationController.prototype._onStartAutoScroll = function() {
+    return this._autoScrolling = true;
+  };
+
+  ScrollNavigationController.prototype._onCompleteAutoScroll = function() {
+    return this._autoScrolling = false;
+  };
+
+  ScrollNavigationController.prototype._onAutoKill = function(event) {
+    return this._autoScrolling = false;
+  };
+
+  ScrollNavigationController.get({
+    _getScrollValue: function() {
+      var B, D;
+      if (this._orientation === 'vertical') {
+        if (typeof pageYOffset !== 'undefined') {
+          return pageYOffset;
+        } else {
+          B = document.body;
+          D = document.documentElement;
+          D = D.clientHeight ? D : B;
+          return D.scrollTop;
+        }
+      } else {
+        if (typeof pageXOffset !== 'undefined') {
+          return pageXOffset;
+        } else {
+          B = document.body;
+          D = document.documentElement;
+          D = D.clientWidth ? D : B;
+          return D.scrollLeft;
+        }
+      }
+    }
+  });
+
+  return ScrollNavigationController;
+
+})(BaseNavigationController);
+
 var DefaultNavigationController,
   __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
   __hasProp = {}.hasOwnProperty,
@@ -2310,7 +2563,7 @@ Main = (function(_super) {
 
   Main.get({
     controller: function() {
-      return new DefaultNavigationController();
+      return new ScrollNavigationController();
     }
   });
 

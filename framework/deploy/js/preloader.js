@@ -1110,6 +1110,18 @@ ObjectUtils = (function() {
     return ret;
   };
 
+  ObjectUtils.merge = function(a, b) {
+    var k;
+    if (typeof a === 'object' && typeof b === 'object') {
+      for (k in b) {
+        if (!a.hasOwnProperty(k)) {
+          a[k] = b[k];
+        }
+      }
+    }
+    return a;
+  };
+
   return ObjectUtils;
 
 })();
@@ -1482,6 +1494,196 @@ JSONUtils = (function() {
   };
 
   return JSONUtils;
+
+})();
+
+var Detections,
+  __indexOf = [].indexOf || function(item) { for (var i = 0, l = this.length; i < l; i++) { if (i in this && this[i] === item) return i; } return -1; };
+
+Detections = (function() {
+  var getFirstMatch, testCanvas, testWebGL;
+
+  Detections.prototype.matches = [
+    {
+      name: 'Opera',
+      nick: /opera/i,
+      test: /opera|opr/i,
+      version: /(?:opera|opr)[\s\/](\d+(\.\d+)*)/i
+    }, {
+      name: 'Windows Phone',
+      nick: /WindowsPhone/i,
+      test: /windows phone/i,
+      version: /iemobile\/(\d+(\.\d+)*)/i
+    }, {
+      name: 'Edge',
+      nick: /edge|edgehtml/i,
+      test: /edge|msapphost|edgehtml/i,
+      version: /(?:edge|edgehtml)\/(\d+(\.\d+)*)/i
+    }, {
+      name: 'Internet Explorer',
+      nick: /explorer|internetexplorer|ie/i,
+      test: /msie|trident/i,
+      version: /(?:msie |rv:)(\d+(\.\d+)*)/i
+    }, {
+      name: 'Chrome',
+      nick: /Chrome/i,
+      test: /chrome|crios|crmo/i,
+      version: /(?:chrome|crios|crmo)\/(\d+(\.\d+)*)/i
+    }, {
+      name: 'iPod',
+      nick: /iPod/i,
+      test: /ipod/i
+    }, {
+      name: 'iPhone',
+      nick: /iPhone/i,
+      test: /iphone/i
+    }, {
+      name: 'iPad',
+      nick: /iPad/i,
+      test: /ipad/i
+    }, {
+      name: 'FirefoxOS',
+      nick: /FirefoxOS|ffos/i,
+      test: /\((mobile|tablet);[^\)]*rv:[\d\.]+\)firefox|iceweasel/i,
+      version: /(?:firefox|iceweasel)[ \/](\d+(\.\d+)?)/i
+    }, {
+      name: 'Firefox',
+      nick: /Firefox|ff/i,
+      test: /firefox|iceweasel/i,
+      version: /(?:firefox|iceweasel)[ \/](\d+(\.\d+)?)/i
+    }, {
+      name: 'Android',
+      nick: /Android/i,
+      test: /android/i
+    }, {
+      name: 'BlackBerry',
+      nick: /BlackBerry/i,
+      test: /(blackberry)|(\bbb)|(rim\stablet)\d+/i,
+      version: /blackberry[\d]+\/(\d+(\.\d+)?)/i
+    }, {
+      name: 'WebOS',
+      nick: /WebOS/i,
+      test: /(web|hpw)os/i,
+      version: /w(?:eb)?osbrowser\/(\d+(\.\d+)?)/i
+    }, {
+      name: 'Safari',
+      nick: /safari/i,
+      test: /safari/i
+    }
+  ];
+
+  Detections.getInstance = function() {
+    return Detections._instance != null ? Detections._instance : Detections._instance = (function(func, args, ctor) {
+      ctor.prototype = func.prototype;
+      var child = new ctor, result = func.apply(child, args);
+      return Object(result) === result ? result : child;
+    })(Detections, arguments, function(){});
+  };
+
+  function Detections() {
+    var k, v, _ref;
+    this.matched = null;
+    this.ua = (typeof navigator !== "undefined" && navigator !== null ? navigator.userAgent : void 0) || '';
+    this.platform = this.os = (typeof navigator !== "undefined" && navigator !== null ? navigator.platform : void 0) || '';
+    this.version = getFirstMatch(/version\/(\d+(\.\d+)*)/i, this.ua);
+    this.getBrowser();
+    this.versionArr = this.version == null ? [] : this.version.split('.');
+    _ref = this.versionArr;
+    for (k in _ref) {
+      v = _ref[k];
+      this.versionArr[k] = Number(v);
+    }
+    this.orientation = (typeof window !== "undefined" && window !== null ? window.innerWidth : void 0) > (typeof window !== "undefined" && window !== null ? window.innerHeight : void 0) ? 'landscape' : 'portrait';
+    this.touch = (__indexOf.call(window, 'ontouchstart') >= 0) || (navigator.maxTouchPoints > 0) || (navigator.msMaxTouchPoints > 0);
+    this.tablet = /(ipad.*|tablet.*|(android.*?chrome((?!mobi).)*))$/i.test(this.ua);
+    this.mobile = !this.tablet && (getFirstMatch(/(ipod|iphone|ipad)/i, this.ua) || /[^-]mobi/i.test(this.ua));
+    this.desktop = !this.mobile && !this.tablet;
+    this.canvas = testCanvas();
+    this.webgl = testWebGL();
+  }
+
+  Detections.prototype.test = function(value) {
+    var i, l, m, result, v, _i, _ref;
+    if (!this.matched) {
+      return 0;
+    }
+    if (!(m = value.match(/(?:(?:(\D.*?)(?:\s|$))?(\D.*?)(?:\s|$))?(?:([\d\.]+))?/))) {
+      return 0;
+    }
+    result = 0;
+    if (m[1]) {
+      if (new RegExp(m[1], 'i').test(this.os)) {
+        result = 1;
+      } else {
+        return 0;
+      }
+    }
+    if (m[2]) {
+      if ((_ref = this.matched.nick) != null ? _ref.test(m[2]) : void 0) {
+        result = 1;
+      } else {
+        return 0;
+      }
+    }
+    if (m[3]) {
+      v = m[3].split('.');
+      l = v.length;
+      if (l > this.versionArr.length) {
+        l = this.versionArr.length;
+      }
+      for (i = _i = 0; 0 <= l ? _i <= l : _i >= l; i = 0 <= l ? ++_i : --_i) {
+        if (this.versionArr[i] > v[i]) {
+          return 2;
+        } else if (this.versionArr[i] < v[i]) {
+          return -1;
+        }
+      }
+    }
+    return result;
+  };
+
+  Detections.prototype.getBrowser = function() {
+    var m, _i, _len, _ref;
+    _ref = this.matches;
+    for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+      m = _ref[_i];
+      if (m.test.test(this.ua)) {
+        this.name = m.name;
+        this.version = this.version || getFirstMatch(m.version, this.ua);
+        this.matched = m;
+        break;
+      }
+    }
+    return [this.name, this.version];
+  };
+
+  testWebGL = function() {
+    var err;
+    try {
+      return !!window.WebGLRenderingContext && Boolean(document.createElement("canvas").getContext('webgl')) || Boolean(document.createElement("canvas").getContext('experimental-webgl'));
+    } catch (_error) {
+      err = _error;
+      return false;
+    }
+  };
+
+  testCanvas = function() {
+    var err;
+    try {
+      return !!window.CanvasRenderingContext2D && Boolean(document.createElement("canvas").getContext('2d'));
+    } catch (_error) {
+      err = _error;
+      return false;
+    }
+  };
+
+  getFirstMatch = function(re, val) {
+    var m;
+    m = val.match(re);
+    return (m && m.length > 1 && m[1]) || null;
+  };
+
+  return Detections;
 
 })();
 
@@ -1902,196 +2104,6 @@ AssetLoader = (function(_super) {
 
 })(EventDispatcher);
 
-var Detections,
-  __indexOf = [].indexOf || function(item) { for (var i = 0, l = this.length; i < l; i++) { if (i in this && this[i] === item) return i; } return -1; };
-
-Detections = (function() {
-  var getFirstMatch, testCanvas, testWebGL;
-
-  Detections.prototype.matches = [
-    {
-      name: 'Opera',
-      nick: /opera/i,
-      test: /opera|opr/i,
-      version: /(?:opera|opr)[\s\/](\d+(\.\d+)*)/i
-    }, {
-      name: 'Windows Phone',
-      nick: /WindowsPhone/i,
-      test: /windows phone/i,
-      version: /iemobile\/(\d+(\.\d+)*)/i
-    }, {
-      name: 'Edge',
-      nick: /edge|edgehtml/i,
-      test: /edge|msapphost|edgehtml/i,
-      version: /(?:edge|edgehtml)\/(\d+(\.\d+)*)/i
-    }, {
-      name: 'Internet Explorer',
-      nick: /explorer|internetexplorer|ie/i,
-      test: /msie|trident/i,
-      version: /(?:msie |rv:)(\d+(\.\d+)*)/i
-    }, {
-      name: 'Chrome',
-      nick: /Chrome/i,
-      test: /chrome|crios|crmo/i,
-      version: /(?:chrome|crios|crmo)\/(\d+(\.\d+)*)/i
-    }, {
-      name: 'iPod',
-      nick: /iPod/i,
-      test: /ipod/i
-    }, {
-      name: 'iPhone',
-      nick: /iPhone/i,
-      test: /iphone/i
-    }, {
-      name: 'iPad',
-      nick: /iPad/i,
-      test: /ipad/i
-    }, {
-      name: 'FirefoxOS',
-      nick: /FirefoxOS|ffos/i,
-      test: /\((mobile|tablet);[^\)]*rv:[\d\.]+\)firefox|iceweasel/i,
-      version: /(?:firefox|iceweasel)[ \/](\d+(\.\d+)?)/i
-    }, {
-      name: 'Firefox',
-      nick: /Firefox|ff/i,
-      test: /firefox|iceweasel/i,
-      version: /(?:firefox|iceweasel)[ \/](\d+(\.\d+)?)/i
-    }, {
-      name: 'Android',
-      nick: /Android/i,
-      test: /android/i
-    }, {
-      name: 'BlackBerry',
-      nick: /BlackBerry/i,
-      test: /(blackberry)|(\bbb)|(rim\stablet)\d+/i,
-      version: /blackberry[\d]+\/(\d+(\.\d+)?)/i
-    }, {
-      name: 'WebOS',
-      nick: /WebOS/i,
-      test: /(web|hpw)os/i,
-      version: /w(?:eb)?osbrowser\/(\d+(\.\d+)?)/i
-    }, {
-      name: 'Safari',
-      nick: /safari/i,
-      test: /safari/i
-    }
-  ];
-
-  Detections.getInstance = function() {
-    return Detections._instance != null ? Detections._instance : Detections._instance = (function(func, args, ctor) {
-      ctor.prototype = func.prototype;
-      var child = new ctor, result = func.apply(child, args);
-      return Object(result) === result ? result : child;
-    })(Detections, arguments, function(){});
-  };
-
-  function Detections() {
-    var k, v, _ref;
-    this.matched = null;
-    this.ua = (typeof navigator !== "undefined" && navigator !== null ? navigator.userAgent : void 0) || '';
-    this.platform = this.os = (typeof navigator !== "undefined" && navigator !== null ? navigator.platform : void 0) || '';
-    this.version = getFirstMatch(/version\/(\d+(\.\d+)*)/i, this.ua);
-    this.getBrowser();
-    this.versionArr = this.version == null ? [] : this.version.split('.');
-    _ref = this.versionArr;
-    for (k in _ref) {
-      v = _ref[k];
-      this.versionArr[k] = Number(v);
-    }
-    this.orientation = (typeof window !== "undefined" && window !== null ? window.innerWidth : void 0) > (typeof window !== "undefined" && window !== null ? window.innerHeight : void 0) ? 'landscape' : 'portrait';
-    this.touch = (__indexOf.call(window, 'ontouchstart') >= 0) || (navigator.maxTouchPoints > 0) || (navigator.msMaxTouchPoints > 0);
-    this.tablet = /(ipad.*|tablet.*|(android.*?chrome((?!mobi).)*))$/i.test(this.ua);
-    this.mobile = !this.tablet && (getFirstMatch(/(ipod|iphone|ipad)/i, this.ua) || /[^-]mobi/i.test(this.ua));
-    this.desktop = !this.mobile && !this.tablet;
-    this.canvas = testCanvas();
-    this.webgl = testWebGL();
-  }
-
-  Detections.prototype.test = function(value) {
-    var i, l, m, result, v, _i, _ref;
-    if (!this.matched) {
-      return 0;
-    }
-    if (!(m = value.match(/(?:(?:(\D.*?)(?:\s|$))?(\D.*?)(?:\s|$))?(?:([\d\.]+))?/))) {
-      return 0;
-    }
-    result = 0;
-    if (m[1]) {
-      if (new RegExp(m[1], 'i').test(this.os)) {
-        result = 1;
-      } else {
-        return 0;
-      }
-    }
-    if (m[2]) {
-      if ((_ref = this.matched.nick) != null ? _ref.test(m[2]) : void 0) {
-        result = 1;
-      } else {
-        return 0;
-      }
-    }
-    if (m[3]) {
-      v = m[3].split('.');
-      l = v.length;
-      if (l > this.versionArr.length) {
-        l = this.versionArr.length;
-      }
-      for (i = _i = 0; 0 <= l ? _i <= l : _i >= l; i = 0 <= l ? ++_i : --_i) {
-        if (this.versionArr[i] > v[i]) {
-          return 2;
-        } else if (this.versionArr[i] < v[i]) {
-          return -1;
-        }
-      }
-    }
-    return result;
-  };
-
-  Detections.prototype.getBrowser = function() {
-    var m, _i, _len, _ref;
-    _ref = this.matches;
-    for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-      m = _ref[_i];
-      if (m.test.test(this.ua)) {
-        this.name = m.name;
-        this.version = this.version || getFirstMatch(m.version, this.ua);
-        this.matched = m;
-        break;
-      }
-    }
-    return [this.name, this.version];
-  };
-
-  testWebGL = function() {
-    var err;
-    try {
-      return !!window.WebGLRenderingContext && Boolean(document.createElement("canvas").getContext('webgl')) || Boolean(document.createElement("canvas").getContext('experimental-webgl'));
-    } catch (_error) {
-      err = _error;
-      return false;
-    }
-  };
-
-  testCanvas = function() {
-    var err;
-    try {
-      return !!window.CanvasRenderingContext2D && Boolean(document.createElement("canvas").getContext('2d'));
-    } catch (_error) {
-      err = _error;
-      return false;
-    }
-  };
-
-  getFirstMatch = function(re, val) {
-    var m;
-    m = val.match(re);
-    return (m && m.length > 1 && m[1]) || null;
-  };
-
-  return Detections;
-
-})();
-
 var ConditionsValidation,
   __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
   __slice = [].slice;
@@ -2109,7 +2121,7 @@ ConditionsValidation = (function() {
 
   function ConditionsValidation(p_data) {
     this.validate = __bind(this.validate, this);
-    _detections = Detections.getInstance();
+    _detections = app.detections;
     _list = ObjectUtils.clone(p_data);
   }
 
@@ -3191,6 +3203,8 @@ NavigationLoader = (function(_super) {
 
   app.conditions = null;
 
+  app.detections = null;
+
   function NavigationLoader(p_preloaderView, p_configPath, p_wrapper) {
     var _ref, _ref1;
     if (p_configPath == null) {
@@ -3225,6 +3239,7 @@ NavigationLoader = (function(_super) {
     head = document.querySelector("head") || document.getElementsByTagName("head")[0];
     app.root = ((_ref = document.querySelector("base")) != null ? _ref.href : void 0) || ((_ref1 = document.getElementsByTagName("base")[0]) != null ? _ref1.href : void 0);
     app.loader = this.loader = AssetLoader.getInstance();
+    app.detections = Detections.getInstance();
     this.queue = this.loader.getGroup('config');
     this.queue.on(AssetLoader.COMPLETE_FILE, this._prepareConfigFile);
     this.queue.loadFile({

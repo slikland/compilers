@@ -63,10 +63,10 @@
 		"type":"scroll",
 		"options":{
 			"orientation":"vertical",
-			"scrollToTime":0,
+			"scrollToTime":3,
 			"showViewPercent":0.5,
 			"snap":{
-				"delay":0
+				"delay":1
 			}
 		},
 		"forceHashBang":false,
@@ -82,6 +82,7 @@
 			"route":"/",
 			"content":"{base}data/home/content.json",
 			"cache":true,
+			"snap":false,
 			"destroyable":true,
 			"loadContent":true
 		},
