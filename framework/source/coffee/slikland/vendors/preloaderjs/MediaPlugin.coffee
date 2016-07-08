@@ -1,6 +1,6 @@
-#import slikland.plugins.preloaderjs.MediaRequest
-#import slikland.plugins.preloaderjs.TagMediaLoader
-#import slikland.plugins.preloaderjs.MediaLoader
+#import slikland.vendors.preloaderjs.MediaRequest
+#import slikland.vendors.preloaderjs.TagMediaLoader
+#import slikland.vendors.preloaderjs.MediaLoader
 
 do ->
 	'use strict'

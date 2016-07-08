@@ -1,4 +1,4 @@
-#import slikland.core.navigation.types.DefaultNavigationController
+#import slikland.navigation.types.DefaultNavigationController
 #import slikland.core.navigation.NavigationContainer
 #import slikland.utils.Resizer
 #

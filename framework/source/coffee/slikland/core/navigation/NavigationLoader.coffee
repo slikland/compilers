@@ -1,4 +1,4 @@
-#import slikland.debug.Debug
+#import slikland.core.debug.Debug
 #import slikland.utils.Prototypes
 #import slikland.core.App
 
@@ -8,8 +8,8 @@
 #import slikland.utils.JSONUtils
 
 #import slikland.loader.AssetLoader
-#import slikland.loader.ConditionsValidation
-#import slikland.core.navigation.BaseView
+#import slikland.core.loader.ConditionsValidation
+#import slikland.navigation.BaseView
 
 class NavigationLoader extends EventDispatcher
 
@@ -40,8 +40,8 @@ class NavigationLoader extends EventDispatcher
 		@queue = @loader.getGroup('config')
 		@queue.on(AssetLoader.COMPLETE_FILE, @_prepareConfigFile)
 		@queue.loadFile 
-				id: 'config',
-				src: if app.root? then app.root+p_configPath else p_configPath
+			id: 'config',
+			src: if app.root? then app.root+p_configPath else p_configPath
 		false
 
 	_prepareConfigFile:(evt)=>

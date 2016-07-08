@@ -1,5 +1,5 @@
 #import slikland.core.navigation.Navigation
-#import slikland.core.navigation.BaseView
+#import slikland.navigation.BaseView
 
 class NavigationContainer extends BaseView
 	
