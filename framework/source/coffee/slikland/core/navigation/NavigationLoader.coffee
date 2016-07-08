@@ -23,6 +23,7 @@ class NavigationLoader extends EventDispatcher
 	app.container = {}
 	app.navigation = {}
 	app.conditions = null
+	app.detections = null
 
 	constructor:(p_preloaderView, p_configPath = "data/config.json", p_wrapper=null)->
 		wrapper = if !(p_wrapper)? then document.body else p_wrapper
