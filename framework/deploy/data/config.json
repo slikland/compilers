@@ -88,7 +88,15 @@
 		{
 			"id":"sub1",
 			"class":"sub1-view",
-			"content":"{base}data/home/sub1/content.json",
+			"content":[
+				{
+					"condition":"bla",
+					"file":"{base}data/home/sub1/content.json"
+				},
+				{
+					"condition":"bla1"
+				}
+			],
 			"route":"/sub1",
 			"destroyable":true,
 			"cache":true
