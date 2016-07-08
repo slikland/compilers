@@ -75,3 +75,10 @@ class ObjectUtils
 				o[names[j]] = item[j]
 			ret[i - 1] = o
 		return ret
+	
+	@merge:(a, b)->
+		if typeof(a) == 'object' && typeof(b) == 'object'
+			for k of b
+				if !a.hasOwnProperty(k)
+					a[k] = b[k]
+		return a
