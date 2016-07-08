@@ -299,16 +299,6 @@ class NavigationLoader extends EventDispatcher
 			p_paths = JSON.parse(p_pathsStr)
 		return p_paths
 
-	_normalizeConfigPaths:(p_paths)->
-		p_pathsStr = JSON.stringify(p_paths)
-		while (o = /\{([^\"\{\}]+)\}/.exec(p_pathsStr))
-			val = p_paths[o[1]]
-			if !val
-				val = ''
-			p_pathsStr = p_pathsStr.replace(new RegExp('\{'+o[1]+'\}', 'ig'), val)
-			p_paths = JSON.parse(p_pathsStr)
-		return p_paths
-
 	_normalizePaths:(p_data, p_paths)->
 		for k, v of p_paths
 			p_data = JSON.stringify(p_data)

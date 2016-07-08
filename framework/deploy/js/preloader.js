@@ -293,6 +293,36 @@ String.prototype.rtrim = function(char) {
   return this.replace(re, '');
 };
 
+String.prototype.padLeft = function(length, char) {
+  var text;
+  if (char == null) {
+    char = ' ';
+  }
+  if (char.length === 0) {
+    char = ' ';
+  }
+  text = this;
+  while (text.length < length) {
+    text = char + text;
+  }
+  return text;
+};
+
+String.prototype.padRight = function(length, char) {
+  var text;
+  if (char == null) {
+    char = ' ';
+  }
+  if (char.length === 0) {
+    char = ' ';
+  }
+  text = this;
+  while (text.length < length) {
+    text += char;
+  }
+  return text;
+};
+
 if (!("isArray" in Array.prototype)) {
   Array.isArray = function(arg) {
     return Object.prototype.toString.call(arg) === '[object Array]';
@@ -428,21 +458,44 @@ Node.prototype.off = Node.prototype.removeEventListener;
 
 navigator.getUserMedia = navigator.mediaDevices.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia;
 
+
+/**
+EventDispatcher class for handling and triggering events.
+@class EventDispatcher
+ */
 var EventDispatcher,
   __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
   __indexOf = [].indexOf || function(item) { for (var i = 0, l = this.length; i < l; i++) { if (i in this && this[i] === item) return i; } return -1; };
 
 EventDispatcher = (function() {
   function EventDispatcher() {
+    this._triggerStacked = __bind(this._triggerStacked, this);
     this.trigger = __bind(this.trigger, this);
   }
 
   EventDispatcher.prototype._events = null;
 
-  EventDispatcher.prototype.on = function(p_event, p_handler, p_useCapture) {
-    if (p_useCapture == null) {
-      p_useCapture = false;
-    }
+  EventDispatcher.prototype._stackTriggerer = [];
+
+
+  /**
+  	Add a event listener.
+  	@method on
+  	@param {String} event Event name.
+  	@param {function} handler A callback function to handle the event.<br>
+  	The callback function can receive 1 or 2 parameters. The first parameter is the event data itself and the second parameter is the custom data of the triggering event.
+  
+  	@example
+  		function someEventHandler(e, data)
+  		{
+  			console.log(e); // Returns event data with it's type and target/currentTarget set to the scope
+  			console.log(data); // If the triggering event has any custom data
+  		}
+  		var ed = new EventDispatcher()
+  		ed.on('someEvent', someEventHandler);
+   */
+
+  EventDispatcher.prototype.on = function(p_event, p_handler) {
     if (!this._events) {
       this._events = {};
     }
@@ -454,16 +507,28 @@ EventDispatcher = (function() {
     }
   };
 
-  EventDispatcher.prototype.off = function(p_event, p_handler, p_useCapture) {
+
+  /**
+  	Remove an event listener.
+  
+  	**BEWARE**
+  
+  	> Calling this method without a handler will remove all listeners attached to this event.
+  
+  	> If calling without the event name, will remove all listeners attached to this instance.
+  
+  	@method off
+  	@param {String} [event=null] Event name.
+  	@param {function} [handler=null] A callback function added in the {{#crossLink "EventDispatcher/on:method"}}{{/crossLink}} call.
+   */
+
+  EventDispatcher.prototype.off = function(p_event, p_handler) {
     var events, i;
     if (p_event == null) {
       p_event = null;
     }
     if (p_handler == null) {
       p_handler = null;
-    }
-    if (p_useCapture == null) {
-      p_useCapture = false;
     }
     if (!this._events) {
       this._events = {};
@@ -483,6 +548,29 @@ EventDispatcher = (function() {
       return this._events = {};
     }
   };
+
+
+  /**
+  	Triggers an event.
+  	@method trigger
+  	@param {String} event Event name.
+  	@param {object} [data=null] Custom event data.
+  	@param {object} [target=null] Target that will be specified in the `event.target`. The `event.currentTarget` will always be this instance.
+  
+  	@example
+  		var ed = new EventDispatcher()
+  
+  		// Will just trigger the event
+  		ed.trigger('someEvent'); 
+  
+  		// Will trigger the event with the object which can be retrieved by the second
+  		// parameter of the handler function.
+  		ed.trigger('someEvent', {someData: true}); 
+  
+  		// Will set the event target to window. On the handler's first parameter
+  		//`event.target` will be window, and event.currentTarget will be the `ev` instance.
+  		ed.trigger('someEvent', {someData: true}, window);
+   */
 
   EventDispatcher.prototype.trigger = function(evt, data, target) {
     var e, events, i, k, v, _i, _len, _results;
@@ -530,6 +618,15 @@ EventDispatcher = (function() {
     return _results;
   };
 
+
+  /**
+  	Check if a event handler is already set.
+  	@method hasEvent
+  	@param {String} event Event name.
+  	@param {function} [handler=null] A callback function added in the {{#crossLink "EventDispatcher/on:method"}}{{/crossLink}} call.
+  	@return {Boolean}
+   */
+
   EventDispatcher.prototype.hasEvent = function(p_event, p_handler) {
     var event;
     if (!this._events) {
@@ -544,6 +641,63 @@ EventDispatcher = (function() {
       }
     }
     return false;
+  };
+
+
+  /**
+  	Triggers an event after the current code block has finished processing.
+  
+  	This is useful for stacking up events that needs to be triggered at the end of the function but it's validating beforehand.
+  	@method stackTrigger
+  	@param {String} event Event name.
+  	@param {object} [data=null] Custom event data.
+  	@param {object} [target=null] Target that will be specified in the `event.target`. The `event.currentTarget` will always be this instance.
+  
+  	@example
+  		var ed = new EventDispatcher()
+  
+  		var someObject = {a: true, b: false, c: true};
+  
+  		ed.on('isA', function(){console.log('Is A!');});
+  		ed.on('isB', function(){console.log('Is B!');});
+  		ed.on('isC', function(){console.log('Is C!');});
+  
+  		function test()
+  		{
+  			console.log("Init test()");
+  			if(someObject.a) ed.stackTrigger('isA');
+  			if(someObject.b) ed.stackTrigger('isB');
+  			if(someObject.c) ed.stackTrigger('isC');
+  			console.log("End test()");
+  		}
+  
+  		// This will result in:
+  		// log: 'Init test()'
+  		// log: 'End test()'
+  		// log: 'isA'
+  		// log: 'isC'
+   */
+
+  EventDispatcher.prototype.stackTrigger = function(evt, data, target) {
+    if (data == null) {
+      data = null;
+    }
+    if (target == null) {
+      target = null;
+    }
+    this._stackTriggerer.push([evt, data, target]);
+    clearTimeout(this._stackTriggerTimeout);
+    return this._stackTriggerTimeout = setTimeout(this._triggerStacked, 0);
+  };
+
+  EventDispatcher.prototype._triggerStacked = function() {
+    var i, l;
+    l = this._stackTriggerer.length;
+    i = -1;
+    while (++i < l) {
+      this.trigger.apply(this, this._stackTriggerer[i]);
+    }
+    return this._stackTriggerer.length = 0;
   };
 
   return EventDispatcher;
@@ -2158,12 +2312,19 @@ Node.prototype.findParents = function(query) {
   return null;
 };
 
+
+/**
+Base DOM manipulation class
+@class BaseDOM
+ */
+
 BaseDOM = (function(_super) {
   __extends(BaseDOM, _super);
 
   function BaseDOM() {
     var className, element, i, namespace, option, p_options;
     p_options = 1 <= arguments.length ? __slice.call(arguments, 0) : [];
+    BaseDOM.__super__.constructor.apply(this, arguments);
     element = 'div';
     className = null;
     namespace = null;
