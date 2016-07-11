@@ -165,3 +165,4 @@ class EventDispatcher
 			@trigger.apply(@, @_stackTriggerer[i])
 
 		@_stackTriggerer.length = 0
+	

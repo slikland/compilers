@@ -26,6 +26,16 @@
 				"condition":"sizeBlah",
 				"file":"{base}media/images/test-other.png"
 			}
-		]	
-	}
+		]
+	},
+	"spritesheets": [
+		{
+			"image": {
+				"src": "{spritesheet}spritesheetTest.png"
+			},
+			"json": {
+				"src": "{spritesheet}spritesheetTest.json"
+			}
+		}
+	]
 }

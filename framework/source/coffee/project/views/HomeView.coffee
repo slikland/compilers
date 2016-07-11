@@ -1,4 +1,7 @@
 #import slikland.utils.SplitTextUtils
+#import slikland.anim.BaseAnimation
+#import slikland.anim.SpriteSheetAnimation
+#import slikland.anim.ImageSequenceAnimation
 #import project.media.HomeVideo
 
 class HomeView extends BaseView
@@ -20,8 +23,6 @@ class HomeView extends BaseView
 		# @appendChild @_video
 		# @_video.element.play()
 
-		
-
 		color = Math.floor(Math.random()*16777215).toString(16)
 		@test = new BaseDOM('div')
 		@appendChild(@test)
@@ -39,6 +40,16 @@ class HomeView extends BaseView
 		while i-- > 0
 			TweenMax.to(splitText[i], 1, {opacity: 0, delay: Math.random() * 2})
 
+		ba = new SpriteSheetAnimation(@content.spritesheets[0])
+		ba.addLabel('test', 0, 10)
+		ba.addLabel('test1', 10, 20)
+		ba.addLabel('test2', 10)
+		ba.addLabel('test3', 20, 30)
+		ba.fps = 15
+		@appendChild(ba)
+		ba.play({repeat: true, label: "test"})
+		@_ba = ba
+		window.addEventListener('mousedown', @_mouseDown)
 
 		# @_homeVideo = new HomeVideo(@content)
 		# @appendChild @_homeVideo
@@ -51,6 +62,11 @@ class HomeView extends BaseView
 
 		# console.log @id, 'create'
 		super
+	_mouseDown:()=>
+		if @_ba.paused
+			@_ba.resume()
+		else
+			@_ba.pause()
 
 	_handler:(evt)=>
 		# console.log "evt.type:", evt.type
@@ -78,7 +94,6 @@ class HomeView extends BaseView
 		})
 
 	showComplete:(evt=null)=>
-		# console.log @routeData
 		# console.log @id, 'showComplete'
 		super
 

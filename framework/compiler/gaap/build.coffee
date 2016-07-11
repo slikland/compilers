@@ -41,8 +41,8 @@ tasks:
 		output: '{paths.deploy}css/fonts.css'
 
 docs:
-	name: "Test Project Name"
-	description: "Test Project description"
+	name: "Slikland Framework"
+	description: "Slikland Framework"
 	version: "1.0"
 	url: "http://slikland.com/"
 	logo: "http://slikland.com/media/images/logo_docs.png"

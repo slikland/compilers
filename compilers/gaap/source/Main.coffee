@@ -139,6 +139,8 @@ class Main
 		@buildFile.docs['selleck'] = true
 		@buildFile.docs['syntaxtype'] = 'coffee'
 		@buildFile.docs['extension'] = '.coffee'
+
+		
 		@buildFile.docs['paths'] = @buildFile.docs['source']
 		@buildFile.docs['outdir'] = @buildFile.docs['options']['output']
 

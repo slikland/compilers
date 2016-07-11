@@ -2,7 +2,9 @@
 	"paths":
 	{
 		"cdn":"",
-		"base":""
+		"base":"",
+		"media": "{base}media/",
+		"spritesheet":"{media}spritesheet/"
 	},
 	"conditions":
 	{

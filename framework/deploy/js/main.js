@@ -1398,6 +1398,878 @@ SplitTextUtils = (function() {
 
 })();
 
+
+/**
+Class to controll animation. It calls a callback method every requestAnimation frame.<br>
+In case of Internet Explorer 9, it uses a setTimeout with 16 ms.
+@class AnimationTicker
+@static
+ */
+var AnimationTicker;
+
+AnimationTicker = (function() {
+  function AnimationTicker() {}
+
+  AnimationTicker._callbacks = [];
+
+  AnimationTicker._init = function() {
+    if (!window.requestAnimationFrame) {
+      if (window.mozRequestAnimationFrame) {
+        window.requestAnimationFrame = window.mozRequestAnimationFrame;
+        window.cancelAnimationFrame = window.mozCancelAnimationFrame || window.mozCancelRequestAnimationFrame;
+      } else if (window.webkitRequestAnimationFrame) {
+        window.requestAnimationFrame = window.webkitRequestAnimationFrame;
+        window.cancelAnimationFrame = window.webkitCancelAnimationFrame || window.webkitCancelRequestAnimationFrame;
+      } else {
+        window.requestAnimationFrame = function(callback, element) {
+          return setTimeout(callback, 16);
+        };
+        window.cancelAnimationFrame = function(id) {
+          return clearTimeout(id);
+        };
+      }
+    }
+    return this._update();
+  };
+
+
+  /**
+  	Add a callback method that will be called every requestAnimation.
+  	@method add
+  	@static
+  	@param {function} callback
+  	Callback function to be called on every browser update.<br>
+  	The callback method will be called passing a `data` parameter which will contain the `data` passed in this method and the `frame` number if the `fps` value is set in the `data`.<br>
+  	If the callback function already exists, it'll only update the `data`.
+  	@param {Object} [data={}] All values in this object are optional.
+  	```
+  	{
+  		"fps": 0 // Number. Frame rate to update.
+  		"initFrame": 0 // Number. Use value when adding a animation that doesn't start at frame 0. Ex: starting a animation from a middle.
+  		"delay": 0 // Number. Delay in seconds to start triggering the callback.
+  	}
+  	```
+   */
+
+  AnimationTicker.add = function(callback, data) {
+    var callbackData;
+    if (data == null) {
+      data = {};
+    }
+    if (!callback) {
+      throw new Error('callback is not defined.');
+    }
+    this.remove(callback);
+    data.initTime = this._currentTime;
+    if (data.fps) {
+      if (!data.initFrame) {
+        data.initFrame = 0;
+      }
+      data.fpms = data.fps * 0.001;
+      if (data.frame == null) {
+        data.frame = data.initFrame;
+      }
+    }
+    if (data.delay == null) {
+      data.delay = 0;
+    }
+    data.delayMs = data.delay * 1000;
+    callbackData = {
+      func: callback,
+      data: data
+    };
+    callbackData.func(data);
+    return this._callbacks.push(callbackData);
+  };
+
+
+  /**
+  	Remove a callback method added by {{#crossLink "AnimationTicker/add:method"}}{{/crossLink}}
+  	@method remove
+  	@static
+  	@param {function} callback Callback function to be removed.
+   */
+
+  AnimationTicker.remove = function(callback) {
+    var i, _results;
+    i = this._callbacks.length;
+    _results = [];
+    while (i-- > 0) {
+      if (this._callbacks[i].func === callback) {
+        _results.push(this._callbacks.splice(i, 1));
+      } else {
+        _results.push(void 0);
+      }
+    }
+    return _results;
+  };
+
+  AnimationTicker._update = function(items) {
+    var data, dt, f, i, item, l, t, _ref;
+    if (items == null) {
+      items = null;
+    }
+    if (!Array.isArray(items)) {
+      items = AnimationTicker._callbacks;
+    }
+    t = Date.now();
+    window.requestAnimationFrame(AnimationTicker._update);
+    l = items.length;
+    i = -1;
+    while (++i < l) {
+      item = items[i];
+      data = item.data;
+      dt = t - data.initTime - data.delayMs;
+      if (dt <= 0) {
+        continue;
+      }
+      data.time = dt;
+      if (data.fps != null) {
+        f = (dt * data.fpms + data.initFrame) >> 0;
+        if (f === data.frame) {
+          continue;
+        }
+        data.frame = f;
+      }
+      if ((_ref = items[i]) != null) {
+        if (typeof _ref.func === "function") {
+          _ref.func(data);
+        }
+      }
+    }
+    return AnimationTicker._currentTime = t;
+  };
+
+  AnimationTicker._init();
+
+  return AnimationTicker;
+
+})();
+
+
+/**
+BaseAnimation interface class for most frame / time based animation.<br>
+Please do not instantiate this class. Use the extended classes.
+@class BaseAnimation
+@extends BaseDOM
+ */
+var BaseAnimation,
+  __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
+  __hasProp = {}.hasOwnProperty,
+  __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
+
+BaseAnimation = (function(_super) {
+  __extends(BaseAnimation, _super);
+
+
+  /**
+  	Triggered when animation starts. Usually when {{#crossLink "BaseAnimation/play:method"}}{{/crossLink}} is called.
+  	@event PLAY
+   */
+
+  BaseAnimation.PLAY = 'animation_play';
+
+
+  /**
+  	Triggered when animation stops. Usually when {{#crossLink "BaseAnimation/stop:method"}}{{/crossLink}} is called.
+  	@event STOP
+   */
+
+  BaseAnimation.STOP = 'animation_stop';
+
+
+  /**
+  	Triggered when animation resumes. Usually when {{#crossLink "BaseAnimation/resume:method"}}{{/crossLink}} is called.
+  	@event RESUME
+   */
+
+  BaseAnimation.RESUME = 'animation_resume';
+
+
+  /**
+  	Triggered when animation pauses. Usually when {{#crossLink "BaseAnimation/pause:method"}}{{/crossLink}} is called.
+  	@event PAUSE
+   */
+
+  BaseAnimation.PAUSE = 'animation_pause';
+
+
+  /**
+  	Triggered when animation finishes.
+  	@event COMPLETE
+   */
+
+  BaseAnimation.COMPLETE = 'animation_complete';
+
+
+  /**
+  	Triggered when animation reached the end and repeats.
+  	@event REPEAT
+   */
+
+  BaseAnimation.REPEAT = 'animation_repeat';
+
+
+  /**
+  	Triggered when animation changes it's frame.
+  	@event UPDATE
+   */
+
+  BaseAnimation.UPDATE = 'animation_update';
+
+  BaseAnimation.prototype._repeat = false;
+
+  BaseAnimation.prototype._fps = 15;
+
+  BaseAnimation.prototype._iFps = 0;
+
+  BaseAnimation.prototype._currentTime = 0;
+
+  BaseAnimation.prototype._totalTime = 0;
+
+  BaseAnimation.prototype._durationTime = 0;
+
+  BaseAnimation.prototype._currentFrame = 0;
+
+  BaseAnimation.prototype._totalFrames = 0;
+
+  BaseAnimation.prototype._durationFrames = 0;
+
+  BaseAnimation.prototype._currentLabel = null;
+
+  BaseAnimation.prototype._animData = null;
+
+  BaseAnimation.prototype._currentAnimData = null;
+
+  BaseAnimation.prototype._labels = [];
+
+  function BaseAnimation() {
+    this._redraw = __bind(this._redraw, this);
+    this._update = __bind(this._update, this);
+    this._sortLabels = __bind(this._sortLabels, this);
+    this._updateLabels = __bind(this._updateLabels, this);
+    if (this.constructor.name === 'BaseAnimation') {
+      throw new Error('Please extend me.');
+    }
+    BaseAnimation.__super__.constructor.call(this, {
+      element: 'div',
+      className: 'animation'
+    });
+  }
+
+
+  /**
+  	Return true if the animation was paused
+  
+  	@attribute paused
+  	@type Boolean
+  	@readOnly
+   */
+
+  BaseAnimation.get({
+    paused: function() {
+      return this._paused;
+    }
+  });
+
+
+  /**
+  	Define if the animation will repeat or not.<br>
+  	By default it's set to false.<br>
+  	If the value is set to true, it will repeat infinitely.<br>
+  	This value can also be changed when calling the {{#crossLink "BaseAnimation/play:method"}}{{/crossLink}} method.
+  
+  	@attribute repeat
+  	@default false
+  	@type Boolean | Number
+   */
+
+  BaseAnimation.get({
+    repeat: function() {
+      return this._repeat;
+    }
+  });
+
+  BaseAnimation.set({
+    repeat: function(value) {
+      return this._repeat = value;
+    }
+  });
+
+
+  /**
+  	Frame rate of animation.
+  	@attribute fps
+  	@type Number
+   */
+
+  BaseAnimation.get({
+    fps: function() {
+      return this._fps;
+    }
+  });
+
+  BaseAnimation.set({
+    fps: function(value) {
+      if (isNaN(value)) {
+        throw new Error('fps isNaN');
+      }
+      this._fps = value;
+      this._iFps = 1 / this._fps;
+      return this._dirty = true;
+    }
+  });
+
+
+  /**
+  	Current time of the animation in seconds.
+  	If it's playing a specific label, it refers to the portion of the label.
+  	
+  	@attribute currentTime
+  	@type Number
+   */
+
+  BaseAnimation.get({
+    currentTime: function() {
+      return this._currentTime;
+    }
+  });
+
+  BaseAnimation.set({
+    currentTime: function(value) {
+      if (isNaN(value)) {
+        throw new Error('currentTime isNaN');
+      }
+      this._currentTime = value;
+      return this._dirty = true;
+    }
+  });
+
+
+  /**
+  	Total time of the animation in seconds.
+  	If it's playing a specific label, it refers to the portion of the label.
+  	
+  	@attribute totalTime
+  	@type Number
+  	@readOnly
+   */
+
+  BaseAnimation.get({
+    totalTime: function() {
+      return this._totalTime;
+    }
+  });
+
+
+  /**
+  	Current frame number of the animation.
+  	If it's playing a specific label, it refers to the portion of the label.
+  	
+  	@attribute currentFrame
+  	@type Number
+   */
+
+  BaseAnimation.get({
+    currentFrame: function() {
+      return this._currentFrame;
+    }
+  });
+
+  BaseAnimation.set({
+    currentFrame: function(value) {
+      if (isNaN(value)) {
+        throw new Error('currentFrame isNaN');
+      }
+      this._currentFrame = value;
+      return this._dirty = true;
+    }
+  });
+
+
+  /**
+  	Duration in frames of the animation.
+  	If it's playing a specific label, it refers to the portion of the label.
+  	
+  	@attribute durationFrames
+  	@type Number
+  	@readOnly
+   */
+
+  BaseAnimation.get({
+    durationFrames: function() {
+      return this._durationFrames;
+    }
+  });
+
+
+  /**
+  	Total number of frames of the animation.
+  	
+  	@attribute totalFrames
+  	@type Number
+  	@readOnly
+   */
+
+  BaseAnimation.get({
+    totalFrames: function() {
+      return this._totalFrames;
+    }
+  });
+
+
+  /**
+  	The name of label currently playing.
+  	
+  	@attribute currentLabel
+  	@type String
+  	@readOnly
+   */
+
+  BaseAnimation.get({
+    currentLabel: function() {
+      return this._currentLabel;
+    }
+  });
+
+  BaseAnimation.set({
+    _dirty: function(value) {
+      if (!value) {
+        return;
+      }
+      clearTimeout(this._dirtyTimeout);
+      return this._dirtyTimeout = setTimeout(this._redraw, 0);
+    }
+  });
+
+  BaseAnimation.set({
+    _labelsDirty: function(value) {
+      if (!value) {
+        return;
+      }
+      clearTimeout(this._labelsDirtyTimeout);
+      return this._labelsDirtyTimeout = setTimeout(this._updateLabels, 0);
+    }
+  });
+
+
+  /**
+  	Add a section of frames with a label name.
+  	@method addLabel
+  	@param {String} name Name of the label
+  	@param {Number} start Number of frame that the animation should start
+  	@param {Number} [end] Last frame of the section. If this parameter is not set, will get the next label's `start` or the last frame of entire animation.
+   */
+
+  BaseAnimation.prototype.addLabel = function(name, start, end) {
+    if (end == null) {
+      end = null;
+    }
+    this.removeLabel(name);
+    this._labels.push({
+      name: name,
+      start: start,
+      end: end
+    });
+    return this._labelsDirty = true;
+  };
+
+
+  /**
+  	Remove a label
+  	@method removeLabel
+  	@param {String} name Name of the label
+   */
+
+  BaseAnimation.prototype.removeLabel = function(name) {
+    var i;
+    i = this._labels.length;
+    while (i-- > 0) {
+      if (this._labels[i].name === name) {
+        this._labels.splice(i, 1);
+      }
+    }
+    return this._labelsDirty = true;
+  };
+
+  BaseAnimation.prototype._updateLabels = function() {
+    var f0, f1, i, labelData;
+    this._labels.sort(this._sortLabels);
+    f0 = f1 = this._totalFrames - 1;
+    i = this._labels.length;
+    while (i-- > 0) {
+      labelData = this._labels[i];
+      if (labelData.end === null) {
+        labelData.duration = f0 - labelData.start;
+      } else {
+        labelData.duration = labelData.end - labelData.start;
+      }
+      if (labelData.start !== f1) {
+        f0 = f1;
+        f1 = labelData.start;
+      }
+    }
+    return this._numLabels = this._labels.length;
+  };
+
+  BaseAnimation.prototype._sortLabels = function(a, b) {
+    if (a.start < b.start) {
+      return -1;
+    }
+    if (a.start > b.start) {
+      return 1;
+    }
+    if (a.end > b.end) {
+      return -1;
+    }
+    if (a.end < b.end) {
+      return 1;
+    }
+    return 0;
+  };
+
+
+  /**
+  	Play the animation.<br>
+  	It receives a `data` object which is optional with some settings.
+  	@method play
+  	@param {Object} [data={}] Data with values explained below:
+  	Name |Type|Default|Description
+  	-----|----|:------|-----------
+  	delay|Number|0|Delay in seconds to start the animation
+  	{{#crossLink "BaseAnimation/repeat:attribute"}}{{/crossLink}}|Boolean&nbsp;\|&nbsp;Number|false|If the animation should repeat. If number is passed, will repeat the amount of number defined.
+  	label|String|null|The label of the animation to play. If nothing is passed, will play the entire animation.
+   */
+
+  BaseAnimation.prototype.play = function(data) {
+    if (data == null) {
+      data = {};
+    }
+    this._paused = false;
+    this._repeat = data.repeat || false;
+    this._animData = this._getLabelData(data.label);
+    this._durationFrames = this._animData.duration;
+    this._durationTime = this._durationFrames * this._iFps;
+    this._currentFrame = 0;
+    this._currentTime = 0;
+    AnimationTicker.add(this._update, {
+      fps: this._fps,
+      delay: data.delay || 0
+    });
+    return this.trigger(this.constructor.PLAY);
+  };
+
+
+  /**
+  	Resume the animation. If the {{#crossLink "BaseAnimation/play:method"}}{{/crossLink}} method was called with a label, it will resume the portion of the specified label
+  	@method resume
+   */
+
+  BaseAnimation.prototype.resume = function() {
+    if (!this._animData) {
+      throw new Error('Resume can only be called after a pause.');
+    }
+    this._paused = false;
+    AnimationTicker.add(this._update, {
+      fps: this._fps,
+      initFrame: this._currentFrame
+    });
+    return this.trigger(this.constructor.RESUME);
+  };
+
+
+  /**
+  	Pause the animation.
+  	@method pause
+   */
+
+  BaseAnimation.prototype.pause = function() {
+    if (!this._animData) {
+      throw new Error('Can\'t pause an animation that is not playing.');
+    }
+    this._paused = true;
+    AnimationTicker.remove(this._update);
+    return this.trigger(this.constructor.PAUSE);
+  };
+
+
+  /**
+  	Stop the animation and goes to last frame.
+  	@method stop
+   */
+
+  BaseAnimation.prototype.stop = function() {
+    if (!this._animData) {
+      throw new Error('Can\'t stop an animation that is not playing.');
+    }
+    this._paused = false;
+    AnimationTicker.remove(this._update);
+    return this.trigger(this.constructor.STOP);
+  };
+
+  BaseAnimation.prototype._getLabelData = function(label) {
+    var data, i;
+    if (label == null) {
+      label = null;
+    }
+    data = {
+      start: 0,
+      end: this._totalFrames - 1,
+      duration: this._totalFrames
+    };
+    if (this._numLabels == null) {
+      this._updateLabels();
+    }
+    if (label) {
+      i = this._numLabels;
+      while (i-- > 0) {
+        if (this._labels[i].name === label) {
+          data = this._labels[i];
+          break;
+        }
+      }
+    }
+    return data;
+  };
+
+  BaseAnimation.prototype._update = function(data) {
+    var f, nf;
+    if (!this._animData) {
+      throw new Error('Can\'t update without _animData');
+    }
+    f = data.frame;
+    nf = ((f % this._durationFrames) + this._durationFrames) % this._durationFrames;
+    if (nf === this._currentFrame) {
+      return;
+    }
+    this.stackTrigger(this.constructor.UPDATE);
+    if (f >= this._durationFrames) {
+      if (this._repeat) {
+        this.stackTrigger(this.constructor.REPEAT);
+      } else {
+        this.stackTrigger(this.constructor.COMPLETE);
+        this.stop();
+        f = this._durationFrames - 1;
+      }
+    }
+    this._currentFrame = ((f % this._durationFrames) + this._durationFrames) % this._durationFrames;
+    this._currentTime = this._currentFrame * this._iFps;
+    return this._dirty = true;
+  };
+
+
+  /**
+  	Update the 
+  	@method redraw
+   */
+
+  BaseAnimation.prototype.redraw = function() {};
+
+  BaseAnimation.prototype._redraw = function() {
+    throw new Error('Method _redraw not overwritten.');
+  };
+
+  return BaseAnimation;
+
+})(BaseDOM);
+
+var SpriteSheetAnimation,
+  __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
+  __hasProp = {}.hasOwnProperty,
+  __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
+
+SpriteSheetAnimation = (function(_super) {
+  __extends(SpriteSheetAnimation, _super);
+
+  SpriteSheetAnimation._init = function() {
+    var css, e, head, si, style;
+    head = document.querySelector("head") || document.getElementsByTagName("head")[0];
+    css = '.animation.spritesheet{display: inline-block;position: relative;font-size:0px;}';
+    style = document.createElement('style');
+    style.type = "text/css";
+    head.appendChild(style);
+    si = head.querySelectorAll('style').length;
+    try {
+      return style.appendChild(document.createTextNode(css));
+    } catch (_error) {
+      e = _error;
+      if (document.all) {
+        return document.styleSheets[si].cssText = css;
+      }
+    }
+  };
+
+  SpriteSheetAnimation._init();
+
+
+  /**
+  	Spritesheet Animation class
+  	@class SpriteSheetAnimation
+  	@constructor
+  	@extends BaseAnimation
+  	@param {Object} data Object defining spritesheet.
+   */
+
+  function SpriteSheetAnimation(data) {
+    this._redrawBackground = __bind(this._redrawBackground, this);
+    this._redrawImage = __bind(this._redrawImage, this);
+    var image, json, _ref;
+    if (data.image == null) {
+      throw new Error('data.image is not set');
+    }
+    if (!data.json) {
+      throw new Error('data.json is not set');
+    }
+    image = data.image.tag || data.image;
+    json = data.json.tag || data.json;
+    if (!(image instanceof Image || ((_ref = image.tagName) != null ? _ref.toLowerCase() : void 0) === 'img')) {
+      throw new Error('data.image is not Type of Image');
+    }
+    SpriteSheetAnimation.__super__.constructor.apply(this, arguments);
+    this.addClass('spritesheet');
+    this._frames = this._parseJson(json);
+    this._totalFrames = this._frames.length;
+    this._useBackground = data.background || false;
+    this._holder = new BaseDOM({
+      element: 'div'
+    });
+    this._holder.css({
+      display: 'inline-block',
+      width: this._size.w + 'px',
+      height: this._size.h + 'px'
+    });
+    this.appendChild(this._holder);
+    this._container = new BaseDOM({
+      element: 'div'
+    });
+    this._container.css({
+      display: 'inline-block',
+      position: 'absolute',
+      overflow: 'hidden'
+    });
+    this.appendChild(this._container);
+    if (this._useBackground) {
+      this._setupBackground(image);
+      this._redraw = this._redrawBackground;
+    } else {
+      this._setupImage(image);
+      this._redraw = this._redrawImage;
+    }
+  }
+
+  SpriteSheetAnimation.prototype._parseJson = function(data) {
+    var f, fo, frames, i, ish, isw, maxHeight, maxWidth, sh, sw, trimmed, _i, _len, _ref;
+    frames = [];
+    this._imageSize = data.meta.size;
+    trimmed = false;
+    maxWidth = Number.MIN_VALUE;
+    maxHeight = Number.MIN_VALUE;
+    i = 0;
+    _ref = data.frames;
+    for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+      f = _ref[_i];
+      sw = f.sourceSize.w;
+      sh = f.sourceSize.h;
+      isw = 1 / sw;
+      ish = 1 / sh;
+      fo = {};
+      fo.source = f.frame;
+      fo.proportionalSource = {
+        x: (-(f.frame.x / f.frame.w) * 100).toString() + '%',
+        y: (-(f.frame.y / f.frame.h) * 100).toString() + '%',
+        w: ((this._imageSize.w / f.frame.w) * 100).toString() + '%',
+        h: ((this._imageSize.h / f.frame.h) * 100).toString() + '%'
+      };
+      fo.output = {
+        x: f.spriteSourceSize.x,
+        y: f.spriteSourceSize.y,
+        w: f.frame.w,
+        h: f.frame.h
+      };
+      fo.proportionalOutput = {
+        x: f.spriteSourceSize.x * isw,
+        y: f.spriteSourceSize.y * ish,
+        w: f.frame.w * isw,
+        h: f.frame.h * ish
+      };
+      if (maxWidth < sw) {
+        maxWidth = sw;
+      }
+      if (maxHeight < sh) {
+        maxHeight = sh;
+      }
+      frames[i++] = fo;
+    }
+    this._size = {
+      w: maxWidth,
+      h: maxHeight
+    };
+    i = frames.length;
+    while (i-- > 0) {
+      fo = frames[i];
+      fo.output.x = ((fo.output.x / maxWidth) * 100).toString() + '%';
+      fo.output.y = ((fo.output.y / maxHeight) * 100).toString() + '%';
+      fo.output.w = ((fo.output.w / maxWidth) * 100).toString() + '%';
+      fo.output.h = ((fo.output.h / maxHeight) * 100).toString() + '%';
+    }
+    return frames;
+  };
+
+  SpriteSheetAnimation.prototype._setupImage = function(image) {
+    this._image = image.cloneNode();
+    this._image.style.position = 'absolute';
+    this._image.style.display = 'inline-block';
+    this._image.style.width = (this._imageSize.w / this._size.w) * 100 + '%';
+    this._image.style.height = (this._imageSize.h / this._size.h) * 100 + '%';
+    return this._container.appendChild(this._image);
+  };
+
+  SpriteSheetAnimation.prototype._setupBackground = function() {};
+
+  SpriteSheetAnimation.prototype._redrawImage = function() {
+    var b, fd;
+    fd = this._frames[this._currentFrame];
+    if (!fd) {
+      return;
+    }
+    this._container.css({
+      left: fd.output.x,
+      top: fd.output.y,
+      width: fd.output.w,
+      height: fd.output.h
+    });
+    b = this._container.getBounds();
+    this._image.style['left'] = fd.proportionalSource.x;
+    this._image.style['top'] = fd.proportionalSource.y;
+    this._image.style['width'] = fd.proportionalSource.w;
+    return this._image.style['height'] = fd.proportionalSource.h;
+  };
+
+  SpriteSheetAnimation.prototype._redrawBackground = function() {
+    console.log(2);
+    this.html = this._currentFrame;
+    return console.log(this._currentFrame);
+  };
+
+  return SpriteSheetAnimation;
+
+})(BaseAnimation);
+
+var ImageSequenceAnimation,
+  __hasProp = {}.hasOwnProperty,
+  __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
+
+ImageSequenceAnimation = (function(_super) {
+  __extends(ImageSequenceAnimation, _super);
+
+  function ImageSequenceAnimation() {
+    return ImageSequenceAnimation.__super__.constructor.apply(this, arguments);
+  }
+
+  return ImageSequenceAnimation;
+
+})(BaseAnimation);
+
 var HomeVideo,
   __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
   __hasProp = {}.hasOwnProperty,
@@ -1509,6 +2381,7 @@ HomeView = (function(_super) {
     this.showStart = __bind(this.showStart, this);
     this.createComplete = __bind(this.createComplete, this);
     this._handler = __bind(this._handler, this);
+    this._mouseDown = __bind(this._mouseDown, this);
     this.create = __bind(this.create, this);
     this.createStart = __bind(this.createStart, this);
     return HomeView.__super__.constructor.apply(this, arguments);
@@ -1522,7 +2395,7 @@ HomeView = (function(_super) {
   };
 
   HomeView.prototype.create = function(evt) {
-    var color, i, splitText;
+    var ba, color, i, splitText;
     if (evt == null) {
       evt = null;
     }
@@ -1544,7 +2417,28 @@ HomeView = (function(_super) {
         delay: Math.random() * 2
       });
     }
+    ba = new SpriteSheetAnimation(this.content.spritesheets[0]);
+    ba.addLabel('test', 0, 10);
+    ba.addLabel('test1', 10, 20);
+    ba.addLabel('test2', 10);
+    ba.addLabel('test3', 20, 30);
+    ba.fps = 15;
+    this.appendChild(ba);
+    ba.play({
+      repeat: true,
+      label: "test"
+    });
+    this._ba = ba;
+    window.addEventListener('mousedown', this._mouseDown);
     return HomeView.__super__.create.apply(this, arguments);
+  };
+
+  HomeView.prototype._mouseDown = function() {
+    if (this._ba.paused) {
+      return this._ba.resume();
+    } else {
+      return this._ba.pause();
+    }
   };
 
   HomeView.prototype._handler = function(evt) {
