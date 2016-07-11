@@ -1,0 +1,572 @@
+{
+    "project": {
+        "name": "Slikland Framework",
+        "description": "Slikland Framework",
+        "version": "1.0",
+        "url": "http://slikland.com/",
+        "logo": "http://slikland.com/media/images/logo_docs.png",
+        "source": "../../source/",
+        "linkNatives": true,
+        "attributesEmit": false,
+        "selleck": true,
+        "syntaxtype": "coffee",
+        "extension": ".coffee",
+        "paths": "../../source/",
+        "outdir": "../../docs"
+    },
+    "files": {
+        "../../source/coffee/slikland/anim/AnimationTicker.coffee": {
+            "name": "../../source/coffee/slikland/anim/AnimationTicker.coffee",
+            "modules": {},
+            "classes": {
+                "AnimationTicker": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "../../source/coffee/slikland/anim/BaseAnimation.coffee": {
+            "name": "../../source/coffee/slikland/anim/BaseAnimation.coffee",
+            "modules": {},
+            "classes": {
+                "BaseAnimation": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "../../source/coffee/slikland/anim/SpriteSheetAnimation.coffee": {
+            "name": "../../source/coffee/slikland/anim/SpriteSheetAnimation.coffee",
+            "modules": {},
+            "classes": {
+                "SpriteSheetAnimation": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "../../source/coffee/slikland/display/BaseDOM.coffee": {
+            "name": "../../source/coffee/slikland/display/BaseDOM.coffee",
+            "modules": {},
+            "classes": {
+                "BaseDOM": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "../../source/coffee/slikland/event/EventDispatcher.coffee": {
+            "name": "../../source/coffee/slikland/event/EventDispatcher.coffee",
+            "modules": {},
+            "classes": {
+                "EventDispatcher": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "../../source/coffee/slikland/utils/ArrayUtils.coffee": {
+            "name": "../../source/coffee/slikland/utils/ArrayUtils.coffee",
+            "modules": {},
+            "classes": {
+                "ArrayUtils": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        }
+    },
+    "modules": {},
+    "classes": {
+        "AnimationTicker": {
+            "name": "AnimationTicker",
+            "shortname": "AnimationTicker",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "file": "../../source/coffee/slikland/anim/AnimationTicker.coffee",
+            "line": 1,
+            "description": "Class to controll animation. It calls a callback method every requestAnimation frame.<br>\nIn case of Internet Explorer 9, it uses a setTimeout with 16 ms.",
+            "static": 1
+        },
+        "BaseAnimation": {
+            "name": "BaseAnimation",
+            "shortname": "BaseAnimation",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "file": "../../source/coffee/slikland/anim/BaseAnimation.coffee",
+            "line": 3,
+            "description": "BaseAnimation interface class for most frame / time based animation.<br>\nPlease do not instantiate this class. Use the extended classes.",
+            "extends": "BaseDOM"
+        },
+        "SpriteSheetAnimation": {
+            "name": "SpriteSheetAnimation",
+            "shortname": "SpriteSheetAnimation",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "file": "../../source/coffee/slikland/anim/SpriteSheetAnimation.coffee",
+            "line": 20,
+            "description": "Spritesheet Animation class",
+            "is_constructor": 1,
+            "extends": "BaseAnimation",
+            "params": [
+                {
+                    "name": "data",
+                    "description": "Object defining spritesheet.",
+                    "type": "Object"
+                }
+            ]
+        },
+        "BaseDOM": {
+            "name": "BaseDOM",
+            "shortname": "BaseDOM",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "file": "../../source/coffee/slikland/display/BaseDOM.coffee",
+            "line": 38,
+            "description": "Base DOM manipulation class"
+        },
+        "EventDispatcher": {
+            "name": "EventDispatcher",
+            "shortname": "EventDispatcher",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "file": "../../source/coffee/slikland/event/EventDispatcher.coffee",
+            "line": 1,
+            "description": "EventDispatcher class for handling and triggering events."
+        },
+        "ArrayUtils": {
+            "name": "ArrayUtils",
+            "shortname": "ArrayUtils",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "file": "../../source/coffee/slikland/utils/ArrayUtils.coffee",
+            "line": 3,
+            "description": "Bunch of utilities methods for {Array}"
+        }
+    },
+    "elements": {},
+    "classitems": [
+        {
+            "file": "../../source/coffee/slikland/anim/AnimationTicker.coffee",
+            "line": 25,
+            "description": "Add a callback method that will be called every requestAnimation.",
+            "itemtype": "method",
+            "name": "add",
+            "static": 1,
+            "params": [
+                {
+                    "name": "callback\nCallback",
+                    "description": "function to be called on every browser update.<br>\nThe callback method will be called passing a `data` parameter which will contain the `data` passed in this method and the `frame` number if the `fps` value is set in the `data`.<br>\nIf the callback function already exists, it'll only update the `data`.",
+                    "type": "Function"
+                },
+                {
+                    "name": "data",
+                    "description": "All values in this object are optional.\n```\n{\n\t\"fps\": 0 // Number. Frame rate to update.\n\t\"initFrame\": 0 // Number. Use value when adding a animation that doesn't start at frame 0. Ex: starting a animation from a middle.\n\t\"delay\": 0 // Number. Delay in seconds to start triggering the callback.\n}\n```",
+                    "type": "Object",
+                    "optional": true,
+                    "optdefault": "{}"
+                }
+            ],
+            "class": "AnimationTicker"
+        },
+        {
+            "file": "../../source/coffee/slikland/anim/AnimationTicker.coffee",
+            "line": 58,
+            "description": "Remove a callback method added by {{#crossLink \"AnimationTicker/add:method\"}}{{/crossLink}}",
+            "itemtype": "method",
+            "name": "remove",
+            "static": 1,
+            "params": [
+                {
+                    "name": "callback",
+                    "description": "Callback function to be removed.",
+                    "type": "Function"
+                }
+            ],
+            "class": "AnimationTicker"
+        },
+        {
+            "file": "../../source/coffee/slikland/anim/BaseAnimation.coffee",
+            "line": 13,
+            "description": "Triggered when animation starts. Usually when {{#crossLink \"BaseAnimation/play:method\"}}{{/crossLink}} is called.",
+            "itemtype": "event",
+            "name": "PLAY",
+            "class": "BaseAnimation"
+        },
+        {
+            "file": "../../source/coffee/slikland/anim/BaseAnimation.coffee",
+            "line": 19,
+            "description": "Triggered when animation stops. Usually when {{#crossLink \"BaseAnimation/stop:method\"}}{{/crossLink}} is called.",
+            "itemtype": "event",
+            "name": "STOP",
+            "class": "BaseAnimation"
+        },
+        {
+            "file": "../../source/coffee/slikland/anim/BaseAnimation.coffee",
+            "line": 25,
+            "description": "Triggered when animation resumes. Usually when {{#crossLink \"BaseAnimation/resume:method\"}}{{/crossLink}} is called.",
+            "itemtype": "event",
+            "name": "RESUME",
+            "class": "BaseAnimation"
+        },
+        {
+            "file": "../../source/coffee/slikland/anim/BaseAnimation.coffee",
+            "line": 31,
+            "description": "Triggered when animation pauses. Usually when {{#crossLink \"BaseAnimation/pause:method\"}}{{/crossLink}} is called.",
+            "itemtype": "event",
+            "name": "PAUSE",
+            "class": "BaseAnimation"
+        },
+        {
+            "file": "../../source/coffee/slikland/anim/BaseAnimation.coffee",
+            "line": 37,
+            "description": "Triggered when animation finishes.",
+            "itemtype": "event",
+            "name": "COMPLETE",
+            "class": "BaseAnimation"
+        },
+        {
+            "file": "../../source/coffee/slikland/anim/BaseAnimation.coffee",
+            "line": 43,
+            "description": "Triggered when animation reached the end and repeats.",
+            "itemtype": "event",
+            "name": "REPEAT",
+            "class": "BaseAnimation"
+        },
+        {
+            "file": "../../source/coffee/slikland/anim/BaseAnimation.coffee",
+            "line": 49,
+            "description": "Triggered when animation changes it's frame.",
+            "itemtype": "event",
+            "name": "UPDATE",
+            "class": "BaseAnimation"
+        },
+        {
+            "file": "../../source/coffee/slikland/anim/BaseAnimation.coffee",
+            "line": 77,
+            "description": "Return true if the animation was paused",
+            "itemtype": "attribute",
+            "name": "paused",
+            "type": "Boolean",
+            "readonly": "",
+            "class": "BaseAnimation"
+        },
+        {
+            "file": "../../source/coffee/slikland/anim/BaseAnimation.coffee",
+            "line": 88,
+            "description": "Define if the animation will repeat or not.<br>\nBy default it's set to false.<br>\nIf the value is set to true, it will repeat infinitely.<br>\nThis value can also be changed when calling the {{#crossLink \"BaseAnimation/play:method\"}}{{/crossLink}} method.",
+            "itemtype": "attribute",
+            "name": "repeat",
+            "default": "false",
+            "type": "Boolean | Number",
+            "class": "BaseAnimation"
+        },
+        {
+            "file": "../../source/coffee/slikland/anim/BaseAnimation.coffee",
+            "line": 104,
+            "description": "Frame rate of animation.",
+            "itemtype": "attribute",
+            "name": "fps",
+            "type": "Number",
+            "class": "BaseAnimation"
+        },
+        {
+            "file": "../../source/coffee/slikland/anim/BaseAnimation.coffee",
+            "line": 119,
+            "description": "Current time of the animation in seconds.\nIf it's playing a specific label, it refers to the portion of the label.",
+            "itemtype": "attribute",
+            "name": "currentTime",
+            "type": "Number",
+            "class": "BaseAnimation"
+        },
+        {
+            "file": "../../source/coffee/slikland/anim/BaseAnimation.coffee",
+            "line": 134,
+            "description": "Total time of the animation in seconds.\nIf it's playing a specific label, it refers to the portion of the label.",
+            "itemtype": "attribute",
+            "name": "totalTime",
+            "type": "Number",
+            "readonly": "",
+            "class": "BaseAnimation"
+        },
+        {
+            "file": "../../source/coffee/slikland/anim/BaseAnimation.coffee",
+            "line": 145,
+            "description": "Current frame number of the animation.\nIf it's playing a specific label, it refers to the portion of the label.",
+            "itemtype": "attribute",
+            "name": "currentFrame",
+            "type": "Number",
+            "class": "BaseAnimation"
+        },
+        {
+            "file": "../../source/coffee/slikland/anim/BaseAnimation.coffee",
+            "line": 161,
+            "description": "Duration in frames of the animation.\nIf it's playing a specific label, it refers to the portion of the label.",
+            "itemtype": "attribute",
+            "name": "durationFrames",
+            "type": "Number",
+            "readonly": "",
+            "class": "BaseAnimation"
+        },
+        {
+            "file": "../../source/coffee/slikland/anim/BaseAnimation.coffee",
+            "line": 173,
+            "description": "Total number of frames of the animation.",
+            "itemtype": "attribute",
+            "name": "totalFrames",
+            "type": "Number",
+            "readonly": "",
+            "class": "BaseAnimation"
+        },
+        {
+            "file": "../../source/coffee/slikland/anim/BaseAnimation.coffee",
+            "line": 184,
+            "description": "The name of label currently playing.",
+            "itemtype": "attribute",
+            "name": "currentLabel",
+            "type": "String",
+            "readonly": "",
+            "class": "BaseAnimation"
+        },
+        {
+            "file": "../../source/coffee/slikland/anim/BaseAnimation.coffee",
+            "line": 207,
+            "description": "Add a section of frames with a label name.",
+            "itemtype": "method",
+            "name": "addLabel",
+            "params": [
+                {
+                    "name": "name",
+                    "description": "Name of the label",
+                    "type": "String"
+                },
+                {
+                    "name": "start",
+                    "description": "Number of frame that the animation should start",
+                    "type": "Number"
+                },
+                {
+                    "name": "end",
+                    "description": "Last frame of the section. If this parameter is not set, will get the next label's `start` or the last frame of entire animation.",
+                    "type": "Number",
+                    "optional": true
+                }
+            ],
+            "class": "BaseAnimation"
+        },
+        {
+            "file": "../../source/coffee/slikland/anim/BaseAnimation.coffee",
+            "line": 219,
+            "description": "Remove a label",
+            "itemtype": "method",
+            "name": "removeLabel",
+            "params": [
+                {
+                    "name": "name",
+                    "description": "Name of the label",
+                    "type": "String"
+                }
+            ],
+            "class": "BaseAnimation"
+        },
+        {
+            "file": "../../source/coffee/slikland/anim/BaseAnimation.coffee",
+            "line": 257,
+            "description": "Play the animation.<br>\nIt receives a `data` object which is optional with some settings.",
+            "itemtype": "method",
+            "name": "play",
+            "params": [
+                {
+                    "name": "data",
+                    "description": "Data with values explained below:\nName |Type|Default|Description\n-----|----|:------|-----------\ndelay|Number|0|Delay in seconds to start the animation\n{{#crossLink \"BaseAnimation/repeat:attribute\"}}{{/crossLink}}|Boolean&nbsp;\\|&nbsp;Number|false|If the animation should repeat. If number is passed, will repeat the amount of number defined.\nlabel|String|null|The label of the animation to play. If nothing is passed, will play the entire animation.",
+                    "type": "Object",
+                    "optional": true,
+                    "optdefault": "{}"
+                }
+            ],
+            "class": "BaseAnimation"
+        },
+        {
+            "file": "../../source/coffee/slikland/anim/BaseAnimation.coffee",
+            "line": 279,
+            "description": "Resume the animation. If the {{#crossLink \"BaseAnimation/play:method\"}}{{/crossLink}} method was called with a label, it will resume the portion of the specified label",
+            "itemtype": "method",
+            "name": "resume",
+            "class": "BaseAnimation"
+        },
+        {
+            "file": "../../source/coffee/slikland/anim/BaseAnimation.coffee",
+            "line": 290,
+            "description": "Pause the animation.",
+            "itemtype": "method",
+            "name": "pause",
+            "class": "BaseAnimation"
+        },
+        {
+            "file": "../../source/coffee/slikland/anim/BaseAnimation.coffee",
+            "line": 301,
+            "description": "Stop the animation and goes to last frame.",
+            "itemtype": "method",
+            "name": "stop",
+            "class": "BaseAnimation"
+        },
+        {
+            "file": "../../source/coffee/slikland/anim/BaseAnimation.coffee",
+            "line": 346,
+            "description": "Update the",
+            "itemtype": "method",
+            "name": "redraw",
+            "class": "BaseAnimation"
+        },
+        {
+            "file": "../../source/coffee/slikland/event/EventDispatcher.coffee",
+            "line": 11,
+            "description": "Add a event listener.",
+            "itemtype": "method",
+            "name": "on",
+            "params": [
+                {
+                    "name": "event",
+                    "description": "Event name.",
+                    "type": "String"
+                },
+                {
+                    "name": "handler",
+                    "description": "A callback function to handle the event.<br>\nThe callback function can receive 1 or 2 parameters. The first parameter is the event data itself and the second parameter is the custom data of the triggering event.",
+                    "type": "Function"
+                }
+            ],
+            "example": [
+                "\n\tfunction someEventHandler(e, data)\n\t{\n\t\tconsole.log(e); // Returns event data with it's type and target/currentTarget set to the scope\n\t\tconsole.log(data); // If the triggering event has any custom data\n\t}\n\tvar ed = new EventDispatcher()\n\ted.on('someEvent', someEventHandler);"
+            ],
+            "class": "EventDispatcher"
+        },
+        {
+            "file": "../../source/coffee/slikland/event/EventDispatcher.coffee",
+            "line": 33,
+            "description": "Remove an event listener.\n\n**BEWARE**\n\n> Calling this method without a handler will remove all listeners attached to this event.\n\n> If calling without the event name, will remove all listeners attached to this instance.",
+            "itemtype": "method",
+            "name": "off",
+            "params": [
+                {
+                    "name": "event",
+                    "description": "Event name.",
+                    "type": "String",
+                    "optional": true,
+                    "optdefault": "null"
+                },
+                {
+                    "name": "handler",
+                    "description": "A callback function added in the {{#crossLink \"EventDispatcher/on:method\"}}{{/crossLink}} call.",
+                    "type": "Function",
+                    "optional": true,
+                    "optdefault": "null"
+                }
+            ],
+            "class": "EventDispatcher"
+        },
+        {
+            "file": "../../source/coffee/slikland/event/EventDispatcher.coffee",
+            "line": 61,
+            "description": "Triggers an event.",
+            "itemtype": "method",
+            "name": "trigger",
+            "params": [
+                {
+                    "name": "event",
+                    "description": "Event name.",
+                    "type": "String"
+                },
+                {
+                    "name": "data",
+                    "description": "Custom event data.",
+                    "type": "Object",
+                    "optional": true,
+                    "optdefault": "null"
+                },
+                {
+                    "name": "target",
+                    "description": "Target that will be specified in the `event.target`. The `event.currentTarget` will always be this instance.",
+                    "type": "Object",
+                    "optional": true,
+                    "optdefault": "null"
+                }
+            ],
+            "example": [
+                "\n\tvar ed = new EventDispatcher()\n\n\t// Will just trigger the event\n\ted.trigger('someEvent'); \n\n\t// Will trigger the event with the object which can be retrieved by the second\n\t// parameter of the handler function.\n\ted.trigger('someEvent', {someData: true}); \n\n\t// Will set the event target to window. On the handler's first parameter\n\t//`event.target` will be window, and event.currentTarget will be the `ev` instance.\n\ted.trigger('someEvent', {someData: true}, window);"
+            ],
+            "class": "EventDispatcher"
+        },
+        {
+            "file": "../../source/coffee/slikland/event/EventDispatcher.coffee",
+            "line": 103,
+            "description": "Check if a event handler is already set.",
+            "itemtype": "method",
+            "name": "hasEvent",
+            "params": [
+                {
+                    "name": "event",
+                    "description": "Event name.",
+                    "type": "String"
+                },
+                {
+                    "name": "handler",
+                    "description": "A callback function added in the {{#crossLink \"EventDispatcher/on:method\"}}{{/crossLink}} call.",
+                    "type": "Function",
+                    "optional": true,
+                    "optdefault": "null"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "Boolean"
+            },
+            "class": "EventDispatcher"
+        },
+        {
+            "file": "../../source/coffee/slikland/event/EventDispatcher.coffee",
+            "line": 121,
+            "description": "Triggers an event after the current code block has finished processing.\n\nThis is useful for stacking up events that needs to be triggered at the end of the function but it's validating beforehand.",
+            "itemtype": "method",
+            "name": "stackTrigger",
+            "params": [
+                {
+                    "name": "event",
+                    "description": "Event name.",
+                    "type": "String"
+                },
+                {
+                    "name": "data",
+                    "description": "Custom event data.",
+                    "type": "Object",
+                    "optional": true,
+                    "optdefault": "null"
+                },
+                {
+                    "name": "target",
+                    "description": "Target that will be specified in the `event.target`. The `event.currentTarget` will always be this instance.",
+                    "type": "Object",
+                    "optional": true,
+                    "optdefault": "null"
+                }
+            ],
+            "example": [
+                "\n\tvar ed = new EventDispatcher()\n\n\tvar someObject = {a: true, b: false, c: true};\n\n\ted.on('isA', function(){console.log('Is A!');});\n\ted.on('isB', function(){console.log('Is B!');});\n\ted.on('isC', function(){console.log('Is C!');});\n\n\tfunction test()\n\t{\n\t\tconsole.log(\"Init test()\");\n\t\tif(someObject.a) ed.stackTrigger('isA');\n\t\tif(someObject.b) ed.stackTrigger('isB');\n\t\tif(someObject.c) ed.stackTrigger('isC');\n\t\tconsole.log(\"End test()\");\n\t}\n\n\t// This will result in:\n\t// log: 'Init test()'\n\t// log: 'End test()'\n\t// log: 'isA'\n\t// log: 'isC'\n"
+            ],
+            "class": "EventDispatcher"
+        }
+    ],
+    "warnings": []
+}
