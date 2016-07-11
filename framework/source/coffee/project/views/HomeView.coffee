@@ -40,14 +40,19 @@ class HomeView extends BaseView
 		while i-- > 0
 			TweenMax.to(splitText[i], 1, {opacity: 0, delay: Math.random() * 2})
 
-		ba = new SpriteSheetAnimation(@content.spritesheets[0])
+		data = @content.spritesheets[0]
+		data.background = true
+		ba = new SpriteSheetAnimation(data)
 		ba.addLabel('test', 0, 10)
 		ba.addLabel('test1', 10, 20)
 		ba.addLabel('test2', 10)
 		ba.addLabel('test3', 20, 30)
 		ba.fps = 15
+		ba.css({
+			width: '50vw'
+		})
 		@appendChild(ba)
-		ba.play({repeat: true, label: "test"})
+		ba.play({repeat: true})
 		@_ba = ba
 		window.addEventListener('mousedown', @_mouseDown)
 

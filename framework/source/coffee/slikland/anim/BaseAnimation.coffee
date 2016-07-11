@@ -343,15 +343,5 @@ class BaseAnimation extends BaseDOM
 		@_currentTime = @_currentFrame * @_iFps
 		@_dirty = true
 
-	###*
-	Update the 
-	@method redraw
-	###
-	redraw:()->
-		# if !@_animData
-		# 	throw new Error('Can\'t stop an animation that is not playing.')
-		# AnimationTicker.remove(@_update)
-		# @currentFrame = 0
-		# @trigger(@constructor.STOP)
 	_redraw:()=>
 		throw new Error('Method _redraw not overwritten.')
