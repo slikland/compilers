@@ -1,3 +1,4 @@
+#import slikland.navigation.types.ScrollNavigationController
 #import slikland.navigation.types.DefaultNavigationController
 #import slikland.core.navigation.NavigationContainer
 #import slikland.utils.Resizer
@@ -52,6 +53,6 @@ class Main extends NavigationContainer
 		# console.log 'Resizer:', evt
 
 	@get controller:=>
-		return new DefaultNavigationController()
+		return new ScrollNavigationController()
 
 return new Main()

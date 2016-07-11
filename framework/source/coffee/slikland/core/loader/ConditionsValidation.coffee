@@ -10,7 +10,7 @@ class ConditionsValidation
 		@_instance ?= new @(p_data)
 
 	constructor:(p_data)->
-		_detections = Detections.getInstance()
+		_detections = app.detections
 		_list = ObjectUtils.clone(p_data)
 
 	add:(p_obj)->

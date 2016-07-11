@@ -6,6 +6,7 @@
 #import slikland.utils.ObjectUtils
 #import slikland.utils.StringUtils
 #import slikland.utils.JSONUtils
+#import slikland.utils.Detections
 
 #import slikland.loader.AssetLoader
 #import slikland.core.loader.ConditionsValidation
@@ -22,6 +23,7 @@ class NavigationLoader extends EventDispatcher
 	app.container = {}
 	app.navigation = {}
 	app.conditions = null
+	app.detections = null
 
 	constructor:(p_preloaderView, p_configPath = "data/config.json", p_wrapper=null)->
 		wrapper = if !(p_wrapper)? then document.body else p_wrapper
@@ -36,6 +38,7 @@ class NavigationLoader extends EventDispatcher
 		head = document.querySelector("head") || document.getElementsByTagName("head")[0]
 		app.root = document.querySelector("base")?.href || document.getElementsByTagName("base")[0]?.href
 		app.loader = @loader = AssetLoader.getInstance()
+		app.detections = Detections.getInstance()
 
 		@queue = @loader.getGroup('config')
 		@queue.on(AssetLoader.COMPLETE_FILE, @_prepareConfigFile)

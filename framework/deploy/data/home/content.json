@@ -37,5 +37,14 @@
 				"src": "{spritesheet}spritesheetTest.json"
 			}
 		}
-	]
+	],
+	"test-audio":{
+		"id":"audio-test",
+		"loadWithView":true,
+		"src":"{base}media/audios/test.mp3",
+		"autoplay" : false,
+		"fullBuffer" : true,
+		"loop": true,
+		"volume": 0.01
+	}
 }
