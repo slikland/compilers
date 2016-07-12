@@ -35,7 +35,7 @@ class HomeView extends BaseView
 			'background-color': '#'+color
 		})
 
-		splitText = SplitTextUtils.splitHTMLWords(@test)
+		splitText = SplitTextUtils.splitHTMLChars(@test)
 		i = splitText.length
 		while i-- > 0
 			TweenMax.to(splitText[i], 1, {opacity: 0, delay: Math.random() * 2})

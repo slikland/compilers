@@ -1,9 +1,6 @@
 <?php
     $protocol = isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != 'off' ? 'https://' : 'http://';
     $url = $protocol . $_SERVER['HTTP_HOST'] . str_replace('index.php','',$_SERVER['SCRIPT_NAME']);
-
-    $data = file_get_contents('data/config.json');
-    $temp = json_decode(stripslashes($data), true);
 ?>
 
 <!DOCTYPE html>

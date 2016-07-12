@@ -15,10 +15,7 @@ class SplitTextUtils
 
 		target.innerHTML = replacedHTML
 		return target.querySelectorAll('.' + className)
-
 		# return new SplitText(target.querySelectorAll('.' + className), opt)
-
-
 
 	@_replaceChars:(match, text, tag)=>
 		ret = ''

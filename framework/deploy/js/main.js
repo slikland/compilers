@@ -1417,11 +1417,17 @@ Resizer = (function(_super) {
 
   _body = null;
 
-  Resizer.getInstance = function() {
-    return Resizer._instance != null ? Resizer._instance : Resizer._instance = new Resizer();
+  Resizer.getInstance = function(p_start) {
+    if (p_start == null) {
+      p_start = true;
+    }
+    return Resizer._instance != null ? Resizer._instance : Resizer._instance = new Resizer(p_start);
   };
 
-  function Resizer() {
+  function Resizer(p_start) {
+    if (p_start == null) {
+      p_start = true;
+    }
     this.change = __bind(this.change, this);
     this.stop = __bind(this.stop, this);
     this.start = __bind(this.start, this);
@@ -1432,7 +1438,9 @@ Resizer = (function(_super) {
       "left": 0,
       "right": 0
     };
-    this.start();
+    if (p_start != null) {
+      this.start();
+    }
   }
 
   Resizer.get({
@@ -1448,6 +1456,16 @@ Resizer = (function(_super) {
   });
 
   Resizer.get({
+    orientation: function() {
+      if (window.innerWidth > window.innerHeight) {
+        return 'landscape';
+      } else {
+        return 'portrait';
+      }
+    }
+  });
+
+  Resizer.get({
     bounds: function() {
       return _bounds;
     }
@@ -1456,16 +1474,6 @@ Resizer = (function(_super) {
   Resizer.set({
     bounds: function(p_value) {
       return _bounds = p_value;
-    }
-  });
-
-  Resizer.get({
-    orientation: function() {
-      if (window.innerWidth > window.innerHeight) {
-        return 'landscape';
-      } else {
-        return 'portrait';
-      }
     }
   });
 
@@ -2697,7 +2705,7 @@ HomeView = (function(_super) {
       'display': 'table-cell',
       'background-color': '#' + color
     });
-    splitText = SplitTextUtils.splitHTMLWords(this.test);
+    splitText = SplitTextUtils.splitHTMLChars(this.test);
     i = splitText.length;
     while (i-- > 0) {
       TweenMax.to(splitText[i], 1, {
@@ -3456,14 +3464,14 @@ Main = (function(_super) {
     }
     menu = new BaseDOM();
     this.appendChildAt(menu, 0);
-    app.navigation.on(Navigation.CHANGE_VIEW, this.test);
+    app.navigation.on(Navigation.CHANGE_VIEW, this.tests);
     _ref = app.config.views;
     for (k in _ref) {
       v = _ref[k];
       color = Math.floor(Math.random() * 16777215).toString(16);
       this.test = new BaseDOM();
       menu.appendChild(this.test);
-      this.test.text = v.id;
+      this.test.text = this.test.id = v.id;
       this.test.css({
         'width': '50px',
         'height': '25px',
@@ -3484,9 +3492,7 @@ Main = (function(_super) {
     return Main.__super__.create.apply(this, arguments);
   };
 
-  Main.prototype.test = function(evt) {
-    return console.log(">>>", evt.data);
-  };
+  Main.prototype.tests = function(evt) {};
 
   Main.prototype.go = function(evt) {
     return app.navigation.gotoView(evt.srcElement.innerText);

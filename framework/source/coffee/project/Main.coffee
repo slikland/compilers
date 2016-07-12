@@ -20,14 +20,14 @@ class Main extends NavigationContainer
 		menu = new BaseDOM()
 		@appendChildAt(menu, 0)
 		
-		app.navigation.on(Navigation.CHANGE_VIEW, @test)
+		app.navigation.on(Navigation.CHANGE_VIEW, @tests)
 		# app.navigation.on(Navigation.CHANGE_ROUTE, @test)
 
 		for k, v of app.config.views
 			color = Math.floor(Math.random()*16777215).toString(16)
 			@test = new BaseDOM()
 			menu.appendChild(@test)
-			@test.text = v.id
+			@test.text = @test.id = v.id
 			@test.css({
 				'width':'50px',
 				'height':'25px',
@@ -43,8 +43,8 @@ class Main extends NavigationContainer
 		app.resizer.on Resizer.RESIZE, @resize
 		super
 
-	test:(evt)->
-		console.log ">>>", evt.data
+	tests:(evt)->
+		# console.log ">>>", evt.data
 
 	go:(evt)->
 		app.navigation.gotoView(evt.srcElement.innerText)
