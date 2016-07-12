@@ -1,0 +1,21 @@
+{
+	"meta":
+	{
+		"title": "main",
+		"description":"description main",
+		"social":{
+			"facebook":{
+				"type":"website",
+				"image":"{base}media/images/social/share_facebook.jpg",
+				"title": "title facebook here",
+				"description":"description facebook here"
+			},
+			"twitter":{
+				"type":"summary",
+				"image":"{base}media/images/social/share_twitter.jpg",
+				"title": "title twitter here",
+				"description":"description twitter here"
+			}
+		}
+	}
+}

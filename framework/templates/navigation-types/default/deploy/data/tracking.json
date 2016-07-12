@@ -1,0 +1,26 @@
+{
+	"scope":
+	{
+		"ga": {
+			"id": ""
+		}
+	},
+	"tags":
+	{
+		"section":
+		{
+			"ga": {
+				"type": "pageview",
+				"action": "#{section}"
+			}
+		},
+		"click_menu":
+		{
+			"ga": {
+				"type": "event",
+				"category": "click_menu",
+				"action": "#{section}"
+			}
+		}
+	}
+}
