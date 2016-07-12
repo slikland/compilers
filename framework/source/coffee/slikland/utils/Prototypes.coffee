@@ -183,5 +183,6 @@ Node::off = Node::removeEventListener
 #
 # ADDED OLDER BROWSERS SUPPORT
 # 
+navigator.mediaDevices ?= {}
 navigator.getUserMedia = navigator.mediaDevices.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia
 

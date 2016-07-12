@@ -456,6 +456,10 @@ Node.prototype.on = Node.prototype.addEventListener;
 
 Node.prototype.off = Node.prototype.removeEventListener;
 
+if (navigator.mediaDevices == null) {
+  navigator.mediaDevices = {};
+}
+
 navigator.getUserMedia = navigator.mediaDevices.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia;
 
 
