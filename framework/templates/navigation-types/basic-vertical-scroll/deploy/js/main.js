@@ -298,7 +298,7 @@ ScrollNavigationController = (function(_super) {
     if (app.config.navigation.options != null) {
       this._options = app.config.navigation.options;
     } else {
-      throw new Error('The options object in config.json file must be created to use this navigation, see a example in source code.');
+      throw new Error('The options object in config.json file must be created to use this navigation type, see a example in source code.');
 
       /*
       			"navigation":{

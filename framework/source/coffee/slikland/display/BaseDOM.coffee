@@ -219,7 +219,7 @@ class BaseDOM extends EventDispatcher
 	find:(query, onlyInstances = false)->
 		element = @element.querySelector(query)
 		if onlyInstances
-			return element?.instance
+			return element?.__instance__
 		else
 			return element
 
@@ -235,8 +235,8 @@ class BaseDOM extends EventDispatcher
 			l = elements.length
 			p = 0
 			while ++i < l
-				if elements[i].instance
-					els[p++] = elements[i].instance
+				if elements[i].__instance__
+					els[p++] = elements[i].__instance__
 			elements = els
 		return elements
 

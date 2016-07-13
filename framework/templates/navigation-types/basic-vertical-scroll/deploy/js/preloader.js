@@ -2574,7 +2574,7 @@ BaseDOM = (function(_super) {
     }
     element = this.element.querySelector(query);
     if (onlyInstances) {
-      return element != null ? element.instance : void 0;
+      return element != null ? element.__instance__ : void 0;
     } else {
       return element;
     }
@@ -2592,8 +2592,8 @@ BaseDOM = (function(_super) {
       l = elements.length;
       p = 0;
       while (++i < l) {
-        if (elements[i].instance) {
-          els[p++] = elements[i].instance;
+        if (elements[i].__instance__) {
+          els[p++] = elements[i].__instance__;
         }
       }
       elements = els;

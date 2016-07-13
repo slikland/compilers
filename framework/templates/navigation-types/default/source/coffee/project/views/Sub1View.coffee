@@ -1,31 +1,19 @@
 class Sub1View extends BaseView
 
 	createStart:(evt=null)=>
-		# console.log @id, 'createStart'
+		# @a = new BaseDOM({element:"div", className:"blah"})
+		# @appendChild(@a)
+		
+		# @b = new BaseDOM({element:"div", className:"bluh"})
+		# @appendChild(@b)
+		# color = Math.floor(Math.random()*16777215).toString(16)
 		super
 
 	create:(evt=null)=>
-		color = Math.floor(Math.random()*16777215).toString(16)
-		
-		@test = new BaseDOM('div')
-		@appendChild(@test)
-		@test.text = "SUB 1"
-		@test.css({
-			'width':'1350px',
-			'height':'350px',
-			'display': 'table-cell',
-			# 'position':'absolute',
-			'background-color': '#'+color
-		})
-
 		# console.log @id, 'create'
 		super
 
 	createComplete:(evt=null)=>
-		TweenMax.set(@test.element,{
-			opacity: 0
-		})
-
 		# console.log @id, 'createComplete'
 		super
 
@@ -34,14 +22,8 @@ class Sub1View extends BaseView
 		super
 
 	show:(evt=null)=>
-		TweenMax.to(@test.element, .3, {
-			opacity: 1, 
-			ease: Quad.easeOut, 
-			onComplete: =>
-				super
-		})
 		# console.log @id, 'show'
-		# super
+		super
 
 	showComplete:(evt=null)=>
 		# console.log @id, 'showComplete'
@@ -52,31 +34,14 @@ class Sub1View extends BaseView
 		super
 
 	hide:(evt=null)=>
-		TweenMax.to(@test.element, .3, {
-			opacity: 0, 
-			ease: Quad.easeOut, 
-			onComplete: =>
-				# console.log @id, 'hide'
-				super
-		})
-		# super
+		# console.log @id, 'hide'
+		super
 
 	hideComplete:(evt=null)=>
 		# console.log @id, 'hideComplete'
 		super
 
-	changeSubview:(evt=null)=>
-		# console.log @id, 'changeSubview'
-		super
-
 	destroy:(evt=null)=>
-		@element.off()
-		if @test 
-			TweenMax.killTweensOf(@test)
-			@test.destroy()
-			@removeChild(@test)
-			@test = null
-		
 		# console.log @id, 'destroy'
 		super
 

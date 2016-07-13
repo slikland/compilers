@@ -92,7 +92,7 @@ class CoffeeCompiler
 				if !t
 					continue
 				usedFiles = @_filterTask(t)
-				j = files.length
+				j = usedFiles.length
 				while j-- > 0
 					if (k = files.indexOf(usedFiles[j])) >= 0
 						files.splice(k, 1)
