@@ -81,7 +81,7 @@
 		{
 			"id":"home",
 			"class":"home-view",
-			"route":"/",
+			"route":"/home",
 			"content":"{base}data/home/content.json",
 			"cache":true,
 			"snap":false,
