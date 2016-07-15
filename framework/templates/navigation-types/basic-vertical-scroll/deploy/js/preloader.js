@@ -2402,7 +2402,7 @@ BaseDOM = (function(_super) {
   });
 
   BaseDOM.get({
-    height: function(value) {
+    height: function() {
       return this.getBounds().height;
     }
   });
@@ -2414,7 +2414,7 @@ BaseDOM = (function(_super) {
   });
 
   BaseDOM.get({
-    top: function(value) {
+    top: function() {
       return this.getBounds().top;
     }
   });
@@ -2426,7 +2426,7 @@ BaseDOM = (function(_super) {
   });
 
   BaseDOM.get({
-    y: function(value) {
+    y: function() {
       return this.getBounds().top;
     }
   });

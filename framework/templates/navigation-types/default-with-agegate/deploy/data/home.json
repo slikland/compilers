@@ -1,0 +1,25 @@
+{
+	"meta":
+	{
+		"title": "Default Template - title home",
+		"description":"description home",
+		"social":{
+			"facebook":{
+				"type":"website",
+				"image":"{base}media/images/social/share_facebook.jpg",
+				"title": "title facebook here",
+				"description":"description facebook here"
+			},
+			"twitter":{
+				"type":"summary",
+				"image":"{base}media/images/social/share_twitter.jpg",
+				"title": "title twitter here",
+				"description":"description twitter here"
+			}
+		}
+	},
+	"image":{
+		"id": "image",
+		"src":"{images}666x666&text=home+dummy+image.png"
+	}
+}

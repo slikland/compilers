@@ -107,17 +107,17 @@ class BaseDOM extends EventDispatcher
 
 	@get width:()->
 		return @getBounds().width
-	@get height:(value)->
+	@get height:()->
 		return @getBounds().height
 	
 	@get left:()->
 		return @getBounds().left
-	@get top:(value)->
+	@get top:()->
 		return @getBounds().top
 
 	@get x:()->
 		return @getBounds().left
-	@get y:(value)->
+	@get y:()->
 		return @getBounds().top
 
 

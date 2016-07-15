@@ -3,7 +3,8 @@
 class App extends EventDispatcher
 	constructor:()->
 		super
-		# @_checkWindowActivity()
+
+		@_checkWindowActivity()
 		# 
 		# TODO: FIX IE8
 		# 
@@ -42,9 +43,9 @@ class App extends EventDispatcher
 			hidden = document[@_hidden]
 
 		if hidden
-			@dispatchEvent('windowInactive')
+			@dispatchEvent(new Event('windowInactive'))
 		else
-			@dispatchEvent('windowActive')
+			@dispatchEvent(new Event('windowActive'))
 
 if !app
 	app = new App()

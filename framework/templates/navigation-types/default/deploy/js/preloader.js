@@ -12,7 +12,7 @@ Debug = (function() {
   Debug.dark = 0x2c035d;
 
   Debug.init = function() {
-    var err, re, _ref;
+    var err, frameworkVersion, projectVersion, re, _ref;
     Debug._console = window.console;
     try {
       Debug._log = Function.prototype.bind.call((_ref = Debug._console) != null ? _ref.log : void 0, Debug._console);
@@ -57,7 +57,9 @@ Debug = (function() {
         warn: function() {}
       };
     } else {
-      return console.log("=============\nDEBUG MODE ON\n=============");
+      frameworkVersion = "v0.1";
+      projectVersion = "v0.1";
+      return console.log("%c=============\nDEBUG MODE ON\n-------------\nFramework    \nversion: " + frameworkVersion + "\n-------------\nProject      \nversion: " + projectVersion + "\n=============", 'background: #000; color: #ffff00');
     }
   };
 
@@ -718,6 +720,7 @@ App = (function(_super) {
 
   function App() {
     App.__super__.constructor.apply(this, arguments);
+    this._checkWindowActivity();
   }
 
   App.prototype._checkWindowActivity = function() {
@@ -762,9 +765,9 @@ App = (function(_super) {
       hidden = document[this._hidden];
     }
     if (hidden) {
-      return this.dispatchEvent('windowInactive');
+      return this.dispatchEvent(new Event('windowInactive'));
     } else {
-      return this.dispatchEvent('windowActive');
+      return this.dispatchEvent(new Event('windowActive'));
     }
   };
 
@@ -2402,7 +2405,7 @@ BaseDOM = (function(_super) {
   });
 
   BaseDOM.get({
-    height: function(value) {
+    height: function() {
       return this.getBounds().height;
     }
   });
@@ -2414,7 +2417,7 @@ BaseDOM = (function(_super) {
   });
 
   BaseDOM.get({
-    top: function(value) {
+    top: function() {
       return this.getBounds().top;
     }
   });
@@ -2426,7 +2429,7 @@ BaseDOM = (function(_super) {
   });
 
   BaseDOM.get({
-    y: function(value) {
+    y: function() {
       return this.getBounds().top;
     }
   });
@@ -3187,13 +3190,17 @@ var NavigationLoader,
   __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
 NavigationLoader = (function(_super) {
-  var head, wrapper;
+  var head, wrapper, _mainView, _preloaderView;
 
   __extends(NavigationLoader, _super);
 
   head = null;
 
   wrapper = null;
+
+  _mainView = null;
+
+  _preloaderView = null;
 
   app.root = null;
 
@@ -3222,9 +3229,10 @@ NavigationLoader = (function(_super) {
     this.coreAssetsLoaded = __bind(this.coreAssetsLoaded, this);
     this._showMainView = __bind(this._showMainView, this);
     this._createMainView = __bind(this._createMainView, this);
-    this._destroyPreloderView = __bind(this._destroyPreloderView, this);
-    this._showPreloaderView = __bind(this._showPreloaderView, this);
-    this._createPreloaderView = __bind(this._createPreloaderView, this);
+    this.destroyPreloderView = __bind(this.destroyPreloderView, this);
+    this.hidePreloderView = __bind(this.hidePreloderView, this);
+    this.showPreloaderView = __bind(this.showPreloaderView, this);
+    this.createPreloaderView = __bind(this.createPreloaderView, this);
     this._loadComplete = __bind(this._loadComplete, this);
     this._loadProgress = __bind(this._loadProgress, this);
     this._loadFileComplete = __bind(this._loadFileComplete, this);
@@ -3238,12 +3246,13 @@ NavigationLoader = (function(_super) {
     if (!(p_preloaderView instanceof BaseView)) {
       throw new Error('The param p_preloaderView is null or the instance of param p_preloaderView is not either BaseView class');
     } else {
-      this._preloaderView = p_preloaderView;
+      _preloaderView = p_preloaderView;
     }
     head = document.querySelector("head") || document.getElementsByTagName("head")[0];
     app.root = ((_ref = document.querySelector("base")) != null ? _ref.href : void 0) || ((_ref1 = document.getElementsByTagName("base")[0]) != null ? _ref1.href : void 0);
     app.loader = this.loader = AssetLoader.getInstance();
     app.detections = Detections.getInstance();
+    this.loaded = false;
     this.queue = this.loader.getGroup('config');
     this.queue.on(AssetLoader.COMPLETE_FILE, this._prepareConfigFile);
     this.queue.loadFile({
@@ -3669,8 +3678,8 @@ NavigationLoader = (function(_super) {
         data = data.replace(/^\/\/.*?(\n|$)/igm, '');
         if (this.currentStep.id === 'main') {
           result = eval(data);
-          this._mainView = result;
-          this._mainView.id = 'main';
+          _mainView = result;
+          _mainView.id = 'main';
         } else {
           eval('(function (){' + data + '}).call(self)');
         }
@@ -3695,15 +3704,14 @@ NavigationLoader = (function(_super) {
   };
 
   NavigationLoader.prototype._loadProgress = function(evt) {
-    var _ref;
-    if ((_ref = this._preloaderView) != null) {
-      _ref.progress = (evt.loaded / evt.total) * this.currentStep.ratio + this.loaderRatio;
+    if (_preloaderView != null) {
+      _preloaderView.progress = (evt.loaded / evt.total) * this.currentStep.ratio + this.loaderRatio;
     }
     return false;
   };
 
   NavigationLoader.prototype._loadComplete = function(p_event) {
-    var k, step, v, _ref;
+    var k, step, v, view, _ref;
     this._removeLoader(this.queue);
     step = this.loaderSteps[this.loaderStep];
     if (step) {
@@ -3712,26 +3720,29 @@ NavigationLoader = (function(_super) {
           this.coreAssetsLoaded();
           break;
         case 'main':
-          _ref = app.config.required.main;
-          for (k in _ref) {
-            v = _ref[k];
-            if ((v != null ? v.content : void 0) != null) {
-              this._mainView.content = v.content;
-              break;
-            }
-          }
+          view = _mainView;
           this.mainAssetsLoaded();
           break;
         case 'preloader':
+          view = _preloaderView;
           this.preloaderAssetsLoaded();
-          this._createPreloaderView();
+          this.createPreloaderView();
           break;
+      }
+      _ref = app.config.required[step.id];
+      for (k in _ref) {
+        v = _ref[k];
+        if ((v != null ? v.content : void 0) != null) {
+          view.content = v.content;
+          break;
+        }
       }
     }
     this.loaderRatio += step.ratio;
     this.loaderStep++;
     if (this.loaderStep >= this.loaderSteps.length) {
-      return this._hidePreloderView();
+      this.loaded = true;
+      return this.hidePreloderView();
     }
     this.currentStep = this.loaderSteps[this.loaderStep];
     this.queue = this._createLoader(this.currentStep.id);
@@ -3742,36 +3753,36 @@ NavigationLoader = (function(_super) {
     return false;
   };
 
-  NavigationLoader.prototype._createPreloaderView = function(evt) {
+  NavigationLoader.prototype.createPreloaderView = function(evt) {
     if (evt == null) {
       evt = null;
     }
-    wrapper.appendChild(this._preloaderView.element);
-    this._preloaderView.on(BaseView.CREATE_COMPLETE, this._showPreloaderView);
-    this._preloaderView.createStart();
+    wrapper.appendChild(_preloaderView.element);
+    _preloaderView.on(BaseView.CREATE_COMPLETE, this.showPreloaderView);
+    _preloaderView.createStart();
     return false;
   };
 
-  NavigationLoader.prototype._showPreloaderView = function(evt) {
+  NavigationLoader.prototype.showPreloaderView = function(evt) {
     if (evt == null) {
       evt = null;
     }
-    this._preloaderView.off(BaseView.CREATE_COMPLETE, this._showPreloaderView);
-    this._preloaderView.showStart();
+    _preloaderView.off(BaseView.CREATE_COMPLETE, this.showPreloaderView);
+    _preloaderView.showStart();
     return false;
   };
 
-  NavigationLoader.prototype._hidePreloderView = function(evt) {
+  NavigationLoader.prototype.hidePreloderView = function(evt) {
     if (evt == null) {
       evt = null;
     }
-    this._preloaderView.on(BaseView.HIDE_COMPLETE, this._destroyPreloderView);
-    this._preloaderView.progress = 1;
-    this._preloaderView.hideStart();
+    _preloaderView.on(BaseView.HIDE_COMPLETE, this.destroyPreloderView);
+    _preloaderView.progress = 1;
+    _preloaderView.hideStart();
     return false;
   };
 
-  NavigationLoader.prototype._destroyPreloderView = function(evt) {
+  NavigationLoader.prototype.destroyPreloderView = function(evt) {
     var hiddenFonts, _ref;
     if (evt == null) {
       evt = null;
@@ -3782,31 +3793,30 @@ NavigationLoader = (function(_super) {
         _ref.removeChild(hiddenFonts);
       }
     }
-    this._preloaderView.off(BaseView.HIDE_COMPLETE, this._destroyPreloderView);
-    this._preloaderView.on(BaseView.DESTROY_COMPLETE, this._createMainView);
-    this._preloaderView.destroy();
+    _preloaderView.off(BaseView.HIDE_COMPLETE, this.destroyPreloderView);
+    _preloaderView.on(BaseView.DESTROY_COMPLETE, this._createMainView);
+    _preloaderView.destroy();
     this._removeLoader(this.queue);
     return false;
   };
 
   NavigationLoader.prototype._createMainView = function() {
     var _ref, _ref1;
-    this._preloaderView.off(BaseView.DESTROY_COMPLETE, this._createMainView);
-    wrapper.removeChild(this._preloaderView.element);
-    this._preloaderView = null;
-    delete this._preloaderView;
-    if (!(this._mainView instanceof BaseView)) {
+    _preloaderView.off(BaseView.DESTROY_COMPLETE, this._createMainView);
+    wrapper.removeChild(_preloaderView.element);
+    _preloaderView = null;
+    if (!(_mainView instanceof BaseView)) {
       throw new Error('The instance of Main class is not either BaseView class');
     }
-    app.container = this._mainView;
-    wrapper.appendChild(this._mainView.element);
-    this._mainView.on(BaseView.CREATE_COMPLETE, this._showMainView);
+    app.container = _mainView;
+    wrapper.appendChild(_mainView.element);
+    _mainView.on(BaseView.CREATE_COMPLETE, this._showMainView);
     if (((_ref = app.config.navigation) != null ? _ref.startBefore : void 0) || ((_ref1 = app.config.navigation) != null ? _ref1.startBefore : void 0) === void 0) {
-      this._mainView.setupNavigation(app.config);
-      this._mainView.createStart();
+      _mainView.setupNavigation(app.config);
+      _mainView.createStart();
     } else {
-      this._mainView.createStart();
-      this._mainView.setupNavigation(app.config);
+      _mainView.createStart();
+      _mainView.setupNavigation(app.config);
     }
     return false;
   };
@@ -3815,7 +3825,8 @@ NavigationLoader = (function(_super) {
     if (evt == null) {
       evt = null;
     }
-    this._mainView.off(BaseView.CREATE_COMPLETE, this._showMainView);
+    _mainView.off(BaseView.CREATE_COMPLETE, this._showMainView);
+    _mainView.showStart();
     return false;
   };
 
@@ -3844,8 +3855,79 @@ NavigationLoader = (function(_super) {
 
 })(EventDispatcher);
 
-var Preloader,
+var TemplatePreloaderView,
   __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
+  __hasProp = {}.hasOwnProperty,
+  __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
+
+TemplatePreloaderView = (function(_super) {
+  __extends(TemplatePreloaderView, _super);
+
+  function TemplatePreloaderView(p_data, p_className) {
+    if (p_data == null) {
+      p_data = null;
+    }
+    if (p_className == null) {
+      p_className = null;
+    }
+    this.destroy = __bind(this.destroy, this);
+    this.hide = __bind(this.hide, this);
+    this.createStart = __bind(this.createStart, this);
+    TemplatePreloaderView.__super__.constructor.call(this, p_data, 'preloaderCustonCSS');
+  }
+
+  TemplatePreloaderView.set({
+    progress: function(p_value) {
+      if (this.content != null) {
+        return this.text = this.content.label + " " + Math.round(p_value * 100) + "%";
+      } else {
+        return this.text = Math.round(p_value * 100) + "%";
+      }
+    }
+  });
+
+  TemplatePreloaderView.prototype.createStart = function(evt) {
+    if (evt == null) {
+      evt = null;
+    }
+    this.css({
+      'width': '100%',
+      'height': '100%',
+      'font-size': '5em',
+      'text-align': 'center',
+      'background-color': '#' + Math.floor(Math.random() * 16777215).toString(16)
+    });
+    return TemplatePreloaderView.__super__.createStart.apply(this, arguments);
+  };
+
+  TemplatePreloaderView.prototype.hide = function(evt) {
+    if (evt == null) {
+      evt = null;
+    }
+    return TweenMax.to(this.element, 1, {
+      delay: .5,
+      opacity: 0,
+      onComplete: (function(_this) {
+        return function() {
+          return TemplatePreloaderView.__super__.hide.apply(_this, arguments);
+        };
+      })(this)
+    });
+  };
+
+  TemplatePreloaderView.prototype.destroy = function(evt) {
+    if (evt == null) {
+      evt = null;
+    }
+    TweenMax.killTweensOf(this.element);
+    return TemplatePreloaderView.__super__.destroy.apply(this, arguments);
+  };
+
+  return TemplatePreloaderView;
+
+})(BaseView);
+
+var Preloader,
   __hasProp = {}.hasOwnProperty,
   __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
@@ -3853,16 +3935,8 @@ Preloader = (function(_super) {
   __extends(Preloader, _super);
 
   function Preloader() {
-    this.preloaderAssetsLoaded = __bind(this.preloaderAssetsLoaded, this);
-    Preloader.__super__.constructor.call(this, new PreloaderView());
+    Preloader.__super__.constructor.call(this, new TemplatePreloaderView());
   }
-
-  Preloader.prototype.preloaderAssetsLoaded = function(evt) {
-    if (evt == null) {
-      evt = null;
-    }
-    return false;
-  };
 
   return Preloader;
 

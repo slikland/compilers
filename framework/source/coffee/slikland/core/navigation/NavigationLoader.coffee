@@ -16,6 +16,9 @@ class NavigationLoader extends EventDispatcher
 
 	head = null
 	wrapper = null
+	
+	_mainView = null
+	_preloaderView = null
 
 	app.root = null
 	app.loader = null
@@ -33,13 +36,14 @@ class NavigationLoader extends EventDispatcher
 		if !(p_preloaderView instanceof BaseView)
 			throw new Error('The param p_preloaderView is null or the instance of param p_preloaderView is not either BaseView class')
 		else
-			@_preloaderView = p_preloaderView 
+			_preloaderView = p_preloaderView 
 		
 		head = document.querySelector("head") || document.getElementsByTagName("head")[0]
 		app.root = document.querySelector("base")?.href || document.getElementsByTagName("base")[0]?.href
 		app.loader = @loader = AssetLoader.getInstance()
 		app.detections = Detections.getInstance()
 
+		@loaded = false
 		@queue = @loader.getGroup('config')
 		@queue.on(AssetLoader.COMPLETE_FILE, @_prepareConfigFile)
 		@queue.loadFile 
@@ -322,8 +326,8 @@ class NavigationLoader extends EventDispatcher
 				data = data.replace(/^\/\/.*?(\n|$)/igm, '')
 				if @currentStep.id == 'main'
 					result = eval(data)
-					@_mainView = result
-					@_mainView.id = 'main'
+					_mainView = result
+					_mainView.id = 'main'
 				else
 					eval('(function (){' + data + '}).call(self)')
 					
@@ -343,7 +347,7 @@ class NavigationLoader extends EventDispatcher
 		false
 
 	_loadProgress:(evt)=>
-		@_preloaderView?.progress = ((evt.loaded / evt.total) * @currentStep.ratio + @loaderRatio)
+		_preloaderView?.progress = ((evt.loaded / evt.total) * @currentStep.ratio + @loaderRatio)
 		false
 
 	_loadComplete:(p_event)=>
@@ -356,21 +360,25 @@ class NavigationLoader extends EventDispatcher
 					@coreAssetsLoaded()
 					break
 				when 'main'
-					for k, v of app.config.required.main
-						if v?.content?
-							@_mainView.content = v.content
-							break
+					view = _mainView
 					@mainAssetsLoaded()
 					break
 				when 'preloader'
+					view = _preloaderView
 					@preloaderAssetsLoaded()
-					@_createPreloaderView()
+					@createPreloaderView()
+					break
+			for k, v of app.config.required[step.id]
+				if v?.content?
+					view.content = v.content
 					break
 
 		@loaderRatio += step.ratio
 		@loaderStep++
 		
-		if @loaderStep >= @loaderSteps.length then return @_hidePreloderView()
+		if @loaderStep >= @loaderSteps.length
+			@loaded = true
+			return @hidePreloderView()
 
 		@currentStep = @loaderSteps[@loaderStep]
 		@queue = @_createLoader(@currentStep.id)
@@ -379,57 +387,57 @@ class NavigationLoader extends EventDispatcher
 		if @queue._loadQueue.length + @queue._currentLoads.length is 0 then @_loadComplete()
 		false
 
-	_createPreloaderView:(evt=null)=>
-		wrapper.appendChild(@_preloaderView.element)
-		@_preloaderView.on(BaseView.CREATE_COMPLETE, @_showPreloaderView)
-		@_preloaderView.createStart()
+	createPreloaderView:(evt=null)=>
+		wrapper.appendChild(_preloaderView.element)
+		_preloaderView.on(BaseView.CREATE_COMPLETE, @showPreloaderView)
+		_preloaderView.createStart()
 		false
 		
-	_showPreloaderView:(evt=null)=>
-		@_preloaderView.off(BaseView.CREATE_COMPLETE, @_showPreloaderView)
-		@_preloaderView.showStart()
+	showPreloaderView:(evt=null)=>
+		_preloaderView.off(BaseView.CREATE_COMPLETE, @showPreloaderView)
+		_preloaderView.showStart()
 		false
 
-	_hidePreloderView:(evt=null)->
-		@_preloaderView.on(BaseView.HIDE_COMPLETE, @_destroyPreloderView)
-		@_preloaderView.progress = 1
-		@_preloaderView.hideStart()
+	hidePreloderView:(evt=null)=>
+		_preloaderView.on(BaseView.HIDE_COMPLETE, @destroyPreloderView)
+		_preloaderView.progress = 1
+		_preloaderView.hideStart()
 		false
 
-	_destroyPreloderView:(evt=null)=>
+	destroyPreloderView:(evt=null)=>
 		hiddenFonts = document.getElementById('hiddenFonts')
 		hiddenFonts?.parentNode?.removeChild(hiddenFonts)
 
-		@_preloaderView.off(BaseView.HIDE_COMPLETE, @_destroyPreloderView)
-		@_preloaderView.on(BaseView.DESTROY_COMPLETE, @_createMainView)
-		@_preloaderView.destroy()
+		_preloaderView.off(BaseView.HIDE_COMPLETE, @destroyPreloderView)
+		_preloaderView.on(BaseView.DESTROY_COMPLETE, @_createMainView)
+		_preloaderView.destroy()
 
 		@_removeLoader(@queue)
 		false
 
 	_createMainView:()=>
-		@_preloaderView.off(BaseView.DESTROY_COMPLETE, @_createMainView)
-		wrapper.removeChild(@_preloaderView.element)
-		@_preloaderView = null
-		delete @_preloaderView
+		_preloaderView.off(BaseView.DESTROY_COMPLETE, @_createMainView)
+		wrapper.removeChild(_preloaderView.element)
+		_preloaderView = null
 
-		if !(@_mainView instanceof BaseView) then throw new Error('The instance of Main class is not either BaseView class')
+		if !(_mainView instanceof BaseView) then throw new Error('The instance of Main class is not either BaseView class')
 
-		app.container = @_mainView
-		wrapper.appendChild(@_mainView.element)
+		app.container = _mainView
+		wrapper.appendChild(_mainView.element)
 
-		@_mainView.on(BaseView.CREATE_COMPLETE, @_showMainView)
+		_mainView.on(BaseView.CREATE_COMPLETE, @_showMainView)
 		if app.config.navigation?.startBefore || app.config.navigation?.startBefore is undefined
-			@_mainView.setupNavigation(app.config)
-			@_mainView.createStart()
+			_mainView.setupNavigation(app.config)
+			_mainView.createStart()
 		else
-			@_mainView.createStart()
-			@_mainView.setupNavigation(app.config)
+			_mainView.createStart()
+			_mainView.setupNavigation(app.config)
 
 		false
 	
 	_showMainView:(evt=null)=>
-		@_mainView.off(BaseView.CREATE_COMPLETE, @_showMainView)
+		_mainView.off(BaseView.CREATE_COMPLETE, @_showMainView)
+		_mainView.showStart()
 		false
 
 	coreAssetsLoaded:(evt=null)=>

@@ -47,7 +47,10 @@ class Debug
 				trace: ->
 				warn: ->
 		else
-			console.log "=============\nDEBUG MODE ON\n============="
+			frameworkVersion = "v0.1"
+			projectVersion = "v0.1"
+			console.log "%c=============\nDEBUG MODE ON\n-------------\nFramework    \nversion: "+frameworkVersion+"\n-------------\nProject      \nversion: "+projectVersion+"\n=============", 'background: #000; color: #ffff00'
+
 
 	@check:(value = null)->
 		o = ''
