@@ -10,7 +10,7 @@
 
 #import slikland.loader.AssetLoader
 #import slikland.core.loader.ConditionsValidation
-#import slikland.navigation.BaseView
+#import slikland.navigation.display.BaseView
 
 class NavigationLoader extends EventDispatcher
 
