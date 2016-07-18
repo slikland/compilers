@@ -2,6 +2,10 @@
 #import slikland.utils.ArrayUtils
 
 class ScrollNavigationController extends BaseNavigationController
+	@SCROLL: 'navigation_controller_scroll'
+
+	viewScrollPercent = 0
+
 	constructor: () ->
 		super
 
@@ -31,7 +35,8 @@ class ScrollNavigationController extends BaseNavigationController
 				"options":{
 					"orientation":"vertical",
 					"scrollToTime":0,
-					"showViewPercent":0.5,
+					"pauseInvisibleViews":true,
+					"showViewLimit":0.5,
 					"snap":{
 						"delay":0
 					}
@@ -45,7 +50,8 @@ class ScrollNavigationController extends BaseNavigationController
 		@_orientation = if @_options.orientation? && (@_options.orientation == 'vertical' || @_options.orientation == 'horizontal') then @_options.orientation else 'vertical'
 		@_snapDelay = if @_options.snap?.delay? && @_options.snap.delay > 0 then @_options.snap.delay else 0
 		@_scrollToTime = if @_options.scrollToTime >= 0 then @_options.scrollToTime else .5
-		@_showViewPercent = if @_options.showViewPercent >= 0 || @_options.showViewPercent <= 1 then @_options.showViewPercent else .5
+		@_showViewLimit = if @_options.showViewLimit >= 0 || @_options.showViewLimit <= 1 then @_options.showViewLimit else .5
+		@_pauseInvisibleViews = if @_options.pauseInvisibleViews? then @_options.pauseInvisibleViews else true
 
 		for k, v of app.config.views
 			view = @_views.create(k)
@@ -73,16 +79,20 @@ class ScrollNavigationController extends BaseNavigationController
 		for k, v of app.config.views
 			view = @_views.create(k)
 			
-			view_bounds = (if @_orientation == 'vertical' then view.height + view.element.offsetTop else view.width + view.element.offsetLeft) - @_getScrollValue
+			if @_orientation == 'vertical'
+				viewOffset = (view.height + view.element.offsetTop)
+			else
+				viewOffset = (view.width + view.element.offsetLeft)
+
+			viewBounds = viewOffset - @scrollValue
 
 			if @_isVisible(view)
 				if @_visibleViews.indexOf(view) < 0 then @_visibleViews.push view
 			else
 				index = @_visibleViews.indexOf(view)
 				if index >= 0 then ArrayUtils.removeItemByIndex(index, @_visibleViews)
-
 			
-			if view_bounds > ((if @_orientation == 'vertical' then window.innerHeight else window.innerWidth)*@_showViewPercent) and currentView == null
+			if viewBounds > (@windowValue*@_showViewLimit) and currentView == null
 				currentView = view
 				@_snapping(view)
 
@@ -92,17 +102,18 @@ class ScrollNavigationController extends BaseNavigationController
 
 				@_show(view)
 			else
-				view.pause()			
+				@_hide(view)
+		@trigger(ScrollNavigationController.SCROLL, {percent:@scrollPercent, value:@scrollValue})
 		
 	_isVisible:(p_view)=>
 		if @_orientation == 'vertical'
 			elementTop = p_view.element.offsetTop
 			elementBottom = elementTop + p_view.height
-			return (@_getScrollValue + window.innerHeight) > elementTop && @_getScrollValue + window.innerHeight < (elementBottom + window.innerHeight)
+			return (@scrollValue + window.innerHeight) > elementTop && @scrollValue + window.innerHeight < (elementBottom + window.innerHeight)
 		else
 			elementLeft = p_view.element.offsetLeft
 			elementRight = elementLeft + p_view.width
-			return (@_getScrollValue + window.innerWidth) > elementLeft && @_getScrollValue + window.innerWidth < (elementRight + window.innerWidth)
+			return (@scrollValue + window.innerWidth) > elementLeft && @scrollValue + window.innerWidth < (elementRight + window.innerWidth)
 
 	_snapping:(p_view)=>
 		if !@_autoScrolling && @_snapDelay> 0
@@ -113,59 +124,78 @@ class ScrollNavigationController extends BaseNavigationController
 
 	_show:(p_view)=>
 		@trigger(BaseNavigationController.CHANGE_VIEW, {data:@data})
-		if p_view.showed then p_view.resume() else p_view.showStart()
+		if !p_view.showed
+			p_view.showStart()
+		else
+			if @_pauseInvisibleViews then p_view.resume()
+
+	_hide:(p_view)=>
+		if !@_isVisible(p_view)
+			if @_pauseInvisibleViews then p_view.pause()
+		
+		if p_view.id != @_currentView.id
+			if p_view.showed
+				p_view.hideStart()
 
 	_scrollToView:(p_id)=>
 		view = @_views.create(p_id)
 
+		TweenMax.killDelayedCallsTo @_scrollToView
 		TweenMax.killTweensOf window
+		
 		if @_orientation == 'vertical'
-			TweenMax.to window, @_scrollToTime, {
-				scrollTo:{
-					y:view.element.offsetTop, 
-					onAutoKill:@_onAutoKill
-				}, 
-				ease:Quad.easeOut, 
-				onStart:@_onStartAutoScroll, 
-				onComplete:@_onCompleteAutoScroll
-			};
+			orientation = {
+				y:view.element.offsetTop,
+				onAutoKill:@_onAutoKill
+			}
 		else
-			TweenMax.to window, @_scrollToTime, {
-				scrollTo:{
-					x:view.element.offsetLeft, 
-					onAutoKill:@_onAutoKill
-				}, 
-				ease:Quad.easeOut, 
-				onStart:@_onStartAutoScroll, 
-				onComplete:@_onCompleteAutoScroll
-			};
+			orientation = {
+				x:view.element.offsetLeft,
+				onAutoKill:@_onAutoKill
+			}
 
-		TweenMax.killDelayedCallsTo @_show
-		TweenMax.delayedCall @_scrollToTime, @_show, [view]		
+		TweenMax.to window, @_scrollToTime, {
+			scrollTo:orientation, 
+			ease:Quad.easeOut, 
+			onStart:@_onStartAutoScroll, 
+			onComplete:@_onCompleteAutoScroll,
+			onCompleteParams:[view]
+		}
 
 	_onStartAutoScroll:()=>
 		@_autoScrolling = true
 	
-	_onCompleteAutoScroll:()=>
+	_onCompleteAutoScroll:(p_view)=>
+		@_autoScrolling = false
+		@_show(p_view)
+
+	_onAutoKill:(evt)=>
 		@_autoScrolling = false
 
-	_onAutoKill:(event)=>
-		@_autoScrolling = false
+	@get scrollPercent:()->
+		body = document.body
+		doc = document.documentElement
+		if @_orientation == 'vertical'
+			return ((doc.scrollTop + body.scrollTop) / (doc.scrollHeight - doc.clientHeight))
+		else
+			return ((doc.scrollLeft + body.scrollLeft) / (doc.scrollWidth - doc.clientWidth))
 
-	@get _getScrollValue:->
+	@get scrollValue:->
+		body = document.body
+		doc = document.documentElement
 		if @_orientation == 'vertical'
 			if typeof pageYOffset != 'undefined'
 				return pageYOffset
 			else
-				B = document.body
-				D = document.documentElement
-				D = if D.clientHeight then D else B
-				return D.scrollTop
+				doc = if doc.clientHeight then doc else body
+				return doc.scrollTop
 		else
 			if typeof pageXOffset != 'undefined'
 				return pageXOffset
 			else
-				B = document.body
-				D = document.documentElement
-				D = if D.clientWidth then D else B
-				return D.scrollLeft
+				doc = if doc.clientWidth then doc else body
+				return doc.scrollLeft
+	
+	@get windowValue:->
+		return if @_orientation == 'vertical' then window.innerHeight else window.innerWidth
+

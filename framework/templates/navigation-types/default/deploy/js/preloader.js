@@ -59,7 +59,7 @@ Debug = (function() {
     } else {
       frameworkVersion = "v0.1";
       projectVersion = "v0.1";
-      return console.log("%c=============\nDEBUG MODE ON\n-------------\nFramework    \nversion: " + frameworkVersion + "\n-------------\nProject      \nversion: " + projectVersion + "\n=============", 'background: #000; color: #ffff00');
+      return console.log("%c=============\nDEBUG MODE ON\n-------------\nFramework    \nversion: " + frameworkVersion + "\n-------------\nProject      \nversion: " + projectVersion + "\n=============", 'background: #272822; color: #f8f8f2');
     }
   };
 

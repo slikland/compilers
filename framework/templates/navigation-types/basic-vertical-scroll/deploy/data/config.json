@@ -3,74 +3,18 @@
 	{
 		"cdn":"",
 		"base":"",
-		"media": "{base}media/",
-		"spritesheet":"{media}spritesheet/"
-	},
-	"conditions":
-	{
-		"sizeBlah": {
-			"size": {
-				"min-width":320,
-				"min-height":480
-			},
-			"orientation":"landscape"
-		},
-		"size1": {
-			"size": {
-				"max-width":1024,
-				"max-height":768
-			},
-			"orientation":"landscape"
-		},
-		"size2": {
-			"size": {
-				"min-width":320,
-				"min-height":480,
-				"max-width":1024,
-				"max-height":768
-			},
-			"orientation":"landscape"
-		},
-		"size3": {
-			"size": {
-				"min-width":320,
-				"max-height":768
-			},
-			"orientation":"landscape"
-		},
-		"bla": {
-			"browser":{
-				"ua":"",
-				"name":"Chrome",
-				"webgl":true,
-				"canvas":true
-			},
-			"domain":"local.slikland.com",
-			"platform":"MacIntel"
-		},
-		"bla1": {
-			"browser":{
-				"name":"Safari",
-				"canvas":true
-			}
-		},
-		"bla2": {
-			"browser":{
-				"name":"Chrome",
-				"touch":false
-			}
-		}
+		"images":"{base}media/images/"
 	},	
 	"navigation":{
-		"type":"scroll",
 		"options":{
 			"orientation":"vertical",
-			"scrollToTime":3,
-			"showViewPercent":0.5,
+			"scrollToTime":1,
+			"pauseInvisibleViews":true,
+			"showViewLimit":0.5,
 			"snap":{
 				"delay":1
 			}
-		},
+		},		
 		"forceHashBang":false,
 		"startBefore":true,
 		"autoStart":true,
@@ -80,52 +24,57 @@
 	"views":[
 		{
 			"id":"home",
-			"class":"home-view",
-			"route":"/home",
-			"content":"{base}data/home/content.json",
+			"class":"template-home-view",
+			"route":"/",
+			"content":"{base}data/home.json",
 			"cache":true,
-			"snap":false,
 			"destroyable":true,
 			"loadContent":true
 		},
 		{
 			"id":"sub1",
-			"class":"sub1-view",
-			"content":[
-				{
-					"condition":"bla",
-					"file":"{base}data/home/sub1/content.json"
-				},
-				{
-					"condition":"bla1"
-				}
-			],
-			"route":"/sub1",
+			"class":"template-sub-view",
+			"content":"{base}data/sub1.json",
+			"route":"/sub-view-01",
 			"destroyable":true,
+			"loadContent":true,
 			"cache":true
 		},
 		{
 			"id":"sub2",
-			"class":"sub2-view",
-			"content":"{base}data/home/sub2/content.json",
-			"route":"/galeria(/{id})?",
+			"class":"template-sub-view",
+			"content":"{base}data/sub2.json",
+			"route":"/sub-view-02",
 			"destroyable":true,
-			"loadContent":true
+			"loadContent":true,
+			"cache":true
 		},
 		{
 			"id":"sub3",
-			"class":"sub3-view",
-			"route":"/blah/sub3/{id}",
+			"class":"template-sub-view",
+			"content":"{base}data/sub3.json",
+			"route":"/sub-view-03",
 			"destroyable":true,
-			"loadContent":true
+			"loadContent":true,
+			"cache":true
 		},
 		{
-			"id":"test",
-			"class":"test1-view",
-			"route":"/test1",
-			"content":"{base}data/test/content.json",
-			"destroyable":false,
-			"loadContent":true
+			"id":"sub4",
+			"class":"template-sub-view",
+			"content":"{base}data/sub4.json",
+			"route":"/sub-view-04",
+			"destroyable":true,
+			"loadContent":true,
+			"cache":true
+		},
+		{
+			"id":"sub5",
+			"class":"template-sub-view",
+			"content":"{base}data/sub5.json",
+			"route":"/sub-view-05",
+			"destroyable":true,
+			"loadContent":true,
+			"cache":true
 		}
 	],
 	"required":
@@ -135,13 +84,9 @@
 			{
 				"id": "preloader-css",
 				"src": "{base}css/preloader.css"
-			}
-		],
-		"tracking":
-		[
+			},
 			{
-				"id": "test-tracking",
-				"src": "{base}data/tracking.json"
+				"content":"{base}data/preloader.json"
 			}
 		],
 		"core":
@@ -153,14 +98,6 @@
 		],
 		"main":
 		[
-			{
-				"content": [
-					{
-						"condition":"bla",
-						"file":"{base}data/main/content.json"
-					}
-				]
-			},
 			{
 				"id": "main-css",
 				"src": "{base}css/main.css"

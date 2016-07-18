@@ -1,58 +1,65 @@
 #import slikland.navigation.types.ScrollNavigationController
-#import slikland.navigation.types.DefaultNavigationController
 #import slikland.core.navigation.NavigationContainer
-#import slikland.utils.Resizer
-#
-#############################
-# 
-# IMPORT ONLY VIEWS BELLOW
-# 
-#############################
-# 
-#import project.views.HomeView
-#import project.views.Test1View
-#import project.views.Sub1View
-#import project.views.Sub2View
-#import project.views.Sub3View
+
+#######################
+# IMPORT VIEWS BELLOW #
+#######################
+
+#import project.views.TemplateHomeView
+#import project.views.TemplateSubView
 
 class Main extends NavigationContainer
+	time = 0
+	_controller = new ScrollNavigationController()
+
 	create:(evt=null)=>
 		menu = new BaseDOM()
+		menu.className = 'menu'
 		@appendChildAt(menu, 0)
-		
-		app.navigation.on(Navigation.CHANGE_VIEW, @tests)
-		# app.navigation.on(Navigation.CHANGE_ROUTE, @test)
 
 		for k, v of app.config.views
-			color = Math.floor(Math.random()*16777215).toString(16)
-			@test = new BaseDOM()
-			menu.appendChild(@test)
-			@test.text = @test.id = v.id
-			@test.css({
-				'width':'50px',
-				'height':'25px',
-				'display':'inline-block',
-				'cursor':'pointer',
-				'background-color': '#'+color
-			})
-			@test.element.on 'click', @go
+			@button = new BaseDOM()
+			menu.appendChild(@button)
+			@button.className = 'menu-button'
+			@button.attr({'id':v.id})
+			@button.text = v.id
+			@button.element.on 'click', @click
+		
+		@bar = new BaseDOM()
+		@bar.className = 'bar'
+		menu.appendChildAt(@bar, 0)
+		_controller.on(ScrollNavigationController.SCROLL, @scroll)
 
-
-		app.resizer = Resizer.getInstance()
-		app.resizer.bounds = {"top":10, "bottom":10, "left":10, "right":10}
-		app.resizer.on Resizer.RESIZE, @resize
+		# Workaround of timeout to come back the listener to listen only change on the previous/current view
+		time = app.config.navigation.options.scrollToTime*1000
+		@timeout = setTimeout(@addListener, time)
 		super
 
-	tests:(evt)->
-		# console.log ">>>", evt.data
+	addListener:()=>
+		app.navigation.on(Navigation.CHANGE_VIEW, @changeNav)
 
-	go:(evt)->
-		app.navigation.gotoView(evt.srcElement.innerText)
+	removeListener:()=>
+		app.navigation.off(Navigation.CHANGE_VIEW, @changeNav)
 
-	resize:(evt)=>
-		# console.log 'Resizer:', evt
+	changeNav:(evt)=>
+		route = evt.data.currentView.route
+		app.navigation.gotoRoute(route, false)
+
+	scroll:(evt)=>
+		@bar.css({
+			width:String((evt.percent*100)+"%")
+		})
+
+	click:(evt)=>
+		@removeListener()
+
+		route = app.config.views[evt.srcElement.id].route
+		app.navigation.gotoRoute(route, true)
+
+		clearTimeout(@timeout)
+		@timeout = setTimeout(@addListener, time)
 
 	@get controller:=>
-		return new ScrollNavigationController()
+		return _controller
 
 return new Main()

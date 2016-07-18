@@ -1,14 +1,9 @@
 #import slikland.core.navigation.NavigationLoader
-#import project.views.PreloaderView
+#import project.views.TemplatePreloaderView
 
 class Preloader extends NavigationLoader
 	constructor:()->
-		super (new PreloaderView())
-
-	preloaderAssetsLoaded:(evt=null)=>
-		# console.log "add age gate"
-		false
-
+		super(new TemplatePreloaderView())
 app.on 'windowLoad', =>
 	new Preloader()
 	
