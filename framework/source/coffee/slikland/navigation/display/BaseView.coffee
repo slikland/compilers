@@ -95,7 +95,7 @@ class BaseView extends BaseDOM
 	@constructor	
 	@param {Object} [p_data=null] 
 	If this data configuration it's not null, some default values is required explained below:
-	Key Name|Type|Required
+	Default Key Name|Type|Required
 	-|-|-
 	id|{{#crossLink "String"}}{{/crossLink}}|__Yes__
 	class|{{#crossLink "String"}}{{/crossLink}}|__Yes__
