@@ -1,26 +1,130 @@
 #import slikland.display.BaseDOM
+###*
+Base View
+@class BaseView
+@extends BaseDOM
+###
 
 class BaseView extends BaseDOM
 
+	###*
+	Triggered before the create rotine view starts. Triggered when {{#crossLink "BaseView/createStart:method"}}{{/crossLink}} is called.
+	@event CREATE_START
+	@static
+	###
 	@CREATE_START: 'create_start'
+	###*
+	Triggered when the create rotine view starts. Triggered when {{#crossLink "BaseView/create:method"}}{{/crossLink}} is called.
+	@event CREATE
+	@static
+	###
 	@CREATE: 'create'
+	###*
+	Triggered when the create rotine view is finished. Triggered when {{#crossLink "BaseView/createComplete:method"}}{{/crossLink}} is called.
+	@event CREATE_COMPLETE
+	@static
+	###
 	@CREATE_COMPLETE: 'create_complete'
 
+	###*
+	Triggered before the show rotine view starts. Triggered when {{#crossLink "BaseView/showStart:method"}}{{/crossLink}} is called.
+	@event SHOW_START
+	@static
+	###
 	@SHOW_START: 'show_start'
+	###*
+	Triggered when the show rotine view starts. Triggered when {{#crossLink "BaseView/show:method"}}{{/crossLink}} is called.
+	@event SHOW
+	@static
+	###
 	@SHOW: 'show'
+	###*
+	Triggered when the show rotine view is finished. Triggered when {{#crossLink "BaseView/showComplete:method"}}{{/crossLink}} is called.
+	@event SHOW_COMPLETE
+	@static
+	###
 	@SHOW_COMPLETE: 'show_complete'
 
+	###*
+	Triggered before the hide rotine view starts. Triggered when {{#crossLink "BaseView/hideStart:method"}}{{/crossLink}} is called.
+	@event HIDE_START
+	@static
+	###
 	@HIDE_START: 'hide_start'
+	###*
+	Triggered when the hide rotine view starts. Triggered when {{#crossLink "BaseView/hide:method"}}{{/crossLink}} is called.
+	@event HIDE
+	@static
+	###
 	@HIDE: 'hide'
+	###*
+	Triggered when the hide rotine view is finished. Triggered when {{#crossLink "BaseView/hideComplete:method"}}{{/crossLink}} is called.
+	@event HIDE_COMPLETE
+	@static
+	###
 	@HIDE_COMPLETE: 'hide_complete'
 
+	###*
+	Triggered when the destroy rotine view starts. Triggered when {{#crossLink "BaseView/destroy:method"}}{{/crossLink}} is called.
+	@event DESTROY
+	@static
+	###
 	@DESTROY: 'destroy'
+	###*
+	Triggered when the destroy rotine view is finished. Triggered when {{#crossLink "BaseView/destroyComplete:method"}}{{/crossLink}} is called.
+	@event DESTROY_COMPLETE
+	@static
+	###
 	@DESTROY_COMPLETE: 'destroy_complete'
 
+	###*
+	Triggered when the view pauses. Usually when {{#crossLink "BaseView/pause:method"}}{{/crossLink}} is called.
+	@event PAUSE
+	@static
+	###
 	@PAUSE: 'pause'
+	###*
+	Triggered when the view resumes. Usually when {{#crossLink "BaseView/resume:method"}}{{/crossLink}} is called.
+	@event RESUME
+	@static
+	###
 	@RESUME: 'resume'
 
-	constructor: (p_data=null, p_className=null) ->
+	###*
+	@class BaseView
+	@constructor	
+	@param {Object} [p_data=null] 
+	If this data configuration it's not null, some default values is required explained below:
+	Key Name|Type|Required
+	-|-|-
+	id|{{#crossLink "String"}}{{/crossLink}}|__Yes__
+	class|{{#crossLink "String"}}{{/crossLink}}|__Yes__
+	route|{{#crossLink "String"}}{{/crossLink}}|__No__
+	content|{{#crossLink "String"}}{{/crossLink}} / {{#crossLink "JSON"}}{{/crossLink}}|__No__
+	cache|{{#crossLink "Boolean"}}{{/crossLink}}|__No__
+	parentView|{{#crossLink "String"}}{{/crossLink}}|__No__
+	destroyable|{{#crossLink "Boolean"}}{{/crossLink}}|__No__
+	loadContent|{{#crossLink "Boolean"}}{{/crossLink}}|__No__
+	subviewsWrapper|<a href="https://developer.mozilla.org/en-US/docs/Web/Guide/CSS/Getting_Started/Selectors" target="_blank" class="crosslink">Selectors</a>|__No__
+	attachToParentWrapper|<a href="https://developer.mozilla.org/en-US/docs/Web/Guide/CSS/Getting_Started/Selectors" target="_blank" class="crosslink">Selectors</a>|__No__
+	@example
+	```
+	{
+		"id":"home",
+		"class":"template-home-view",
+		"route":"/",
+		"content":"data/home.json",
+		"cache":true,
+		"parentView":"someViewID",
+		"destroyable":true,
+		"loadContent":true,
+		"subviewsWrapper":"CSSSelector", //like #ID or .className etc
+		"attachToParentWrapper":"CSSSelector" //like #ID or .className etc
+	}
+	```
+	@param {Object} [p_CSSClassName=null]
+	###
+	constructor: (p_data=null, p_CSSClassName=null) ->
 		@_created = false
 		@_showed = false
 		
@@ -33,7 +137,7 @@ class BaseView extends BaseDOM
 		@subviews = if @_data.subviews? then @_data.subviews
 		@destroyable = if @_data.destroyable? then @_data.destroyable
 
-		super({element:'div', className:p_className})
+		super({element:'div', className:p_CSSClassName})
 
 	@get loader:->
 		return if @_id? then app?.loader?.getGroup(@_id)

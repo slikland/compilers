@@ -4,7 +4,6 @@ paths:
 	coffee: '{paths.source}coffee/'
 	
 sourcePaths: [
-	'{paths.coffee}'
 ]
 
 docs:

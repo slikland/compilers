@@ -42,8 +42,11 @@
                                 <li><a href="../classes/ArrayUtils.html">ArrayUtils</a></li>
                                 <li><a href="../classes/BaseAnimation.html">BaseAnimation</a></li>
                                 <li><a href="../classes/BaseDOM.html">BaseDOM</a></li>
+                                <li><a href="../classes/BaseView.html">BaseView</a></li>
                                 <li><a href="../classes/EventDispatcher.html">EventDispatcher</a></li>
+                                <li><a href="../classes/NavigationLoader.html">NavigationLoader</a></li>
                                 <li><a href="../classes/SpriteSheetAnimation.html">SpriteSheetAnimation</a></li>
+                                <li><a href="../classes/StringUtils.html">StringUtils</a></li>
                             </ul>
                 
                 
@@ -194,17 +197,17 @@ class BaseDOM extends EventDispatcher
 
 	@get width:()-&gt;
 		return @getBounds().width
-	@get height:(value)-&gt;
+	@get height:()-&gt;
 		return @getBounds().height
 	
 	@get left:()-&gt;
 		return @getBounds().left
-	@get top:(value)-&gt;
+	@get top:()-&gt;
 		return @getBounds().top
 
 	@get x:()-&gt;
 		return @getBounds().left
-	@get y:(value)-&gt;
+	@get y:()-&gt;
 		return @getBounds().top
 
 
@@ -306,7 +309,7 @@ class BaseDOM extends EventDispatcher
 	find:(query, onlyInstances = false)-&gt;
 		element = @element.querySelector(query)
 		if onlyInstances
-			return element?.instance
+			return element?.__instance__
 		else
 			return element
 
@@ -322,8 +325,8 @@ class BaseDOM extends EventDispatcher
 			l = elements.length
 			p = 0
 			while ++i &lt; l
-				if elements[i].instance
-					els[p++] = elements[i].instance
+				if elements[i].__instance__
+					els[p++] = elements[i].__instance__
 			elements = els
 		return elements
 

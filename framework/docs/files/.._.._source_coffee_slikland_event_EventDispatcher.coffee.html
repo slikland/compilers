@@ -42,8 +42,11 @@
                                 <li><a href="../classes/ArrayUtils.html">ArrayUtils</a></li>
                                 <li><a href="../classes/BaseAnimation.html">BaseAnimation</a></li>
                                 <li><a href="../classes/BaseDOM.html">BaseDOM</a></li>
+                                <li><a href="../classes/BaseView.html">BaseView</a></li>
                                 <li><a href="../classes/EventDispatcher.html">EventDispatcher</a></li>
+                                <li><a href="../classes/NavigationLoader.html">NavigationLoader</a></li>
                                 <li><a href="../classes/SpriteSheetAnimation.html">SpriteSheetAnimation</a></li>
+                                <li><a href="../classes/StringUtils.html">StringUtils</a></li>
                             </ul>
                 
                 
@@ -128,7 +131,8 @@ class EventDispatcher
 
 	@method off
 	@param {String} [event=null] Event name.
-	@param {function} [handler=null] A callback function added in the {{#crossLink &quot;EventDispatcher/on:method&quot;}}{{/crossLink}} call.
+	@param {function} [handler=null]
+	A callback function added in the {{#crossLink &quot;EventDispatcher/on:method&quot;}}{{/crossLink}} call.
 	###
 	off:(p_event=null, p_handler=null)-&gt;
 		if !@_events
@@ -253,6 +257,7 @@ class EventDispatcher
 
 		@_stackTriggerer.length = 0
 	
+
     </pre>
 </div>
                     </div>

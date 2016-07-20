@@ -41,7 +41,8 @@ class EventDispatcher
 
 	@method off
 	@param {String} [event=null] Event name.
-	@param {function} [handler=null] A callback function added in the {{#crossLink "EventDispatcher/on:method"}}{{/crossLink}} call.
+	@param {function} [handler=null]
+	A callback function added in the {{#crossLink "EventDispatcher/on:method"}}{{/crossLink}} call.
 	###
 	off:(p_event=null, p_handler=null)->
 		if !@_events

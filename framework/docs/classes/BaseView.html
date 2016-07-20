@@ -1,0 +1,709 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>BaseView - Slikland Framework</title>
+    <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
+    <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
+    <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
+    <link rel="icon" href="../assets/favicon.ico">
+    <script src="http://yui.yahooapis.com/combo?3.9.1/build/yui/yui-min.js"></script>
+</head>
+<body class="yui3-skin-sam">
+
+<div id="doc">
+    <div id="hd" class="yui3-g header">
+        <div class="yui3-u-3-4">
+                <h1><img src="http://slikland.com/media/images/logo_docs.png" title="Slikland Framework"></h1>
+        </div>
+        <div class="yui3-u-1-4 version">
+            <em>API Docs for: 1.0</em>
+        </div>
+    </div>
+    <div id="bd" class="yui3-g">
+
+        <div class="yui3-u-1-4">
+            <div id="docs-sidebar" class="sidebar apidocs">
+                <div id="api-list">
+                    <h2 class="off-left">APIs</h2>
+                    <div id="api-tabview" class="tabview">
+                        <ul class="tabs">
+                            <li><a href="#api-classes">Classes</a></li>
+                            <li><a href="#api-modules">Modules</a></li>
+                        </ul>
+                
+                        <div id="api-tabview-filter">
+                            <input type="search" id="api-filter" placeholder="Type to filter APIs">
+                        </div>
+                
+                        <div id="api-tabview-panel">
+                            <ul id="api-classes" class="apis classes">
+                                <li><a href="../classes/AnimationTicker.html">AnimationTicker</a></li>
+                                <li><a href="../classes/ArrayUtils.html">ArrayUtils</a></li>
+                                <li><a href="../classes/BaseAnimation.html">BaseAnimation</a></li>
+                                <li><a href="../classes/BaseDOM.html">BaseDOM</a></li>
+                                <li><a href="../classes/BaseView.html">BaseView</a></li>
+                                <li><a href="../classes/EventDispatcher.html">EventDispatcher</a></li>
+                                <li><a href="../classes/NavigationLoader.html">NavigationLoader</a></li>
+                                <li><a href="../classes/SpriteSheetAnimation.html">SpriteSheetAnimation</a></li>
+                                <li><a href="../classes/StringUtils.html">StringUtils</a></li>
+                            </ul>
+                
+                
+                            <ul id="api-modules" class="apis modules">
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="yui3-u-3-4">
+                <div id="api-options">
+                    Show:
+                    <label for="api-show-inherited">
+                        <input type="checkbox" id="api-show-inherited" checked>
+                        Inherited
+                    </label>
+            
+                    <label for="api-show-protected">
+                        <input type="checkbox" id="api-show-protected">
+                        Protected
+                    </label>
+            
+                    <label for="api-show-private">
+                        <input type="checkbox" id="api-show-private">
+                        Private
+                    </label>
+                    <label for="api-show-deprecated">
+                        <input type="checkbox" id="api-show-deprecated">
+                        Deprecated
+                    </label>
+            
+                </div>
+            
+            <div class="apidocs">
+                <div id="docs-main">
+                    <div class="content">
+<h1>BaseView Class</h1>
+<div class="box meta">
+
+        <div class="extends">
+            Extends <a href="../classes/BaseDOM.html" class="crosslink">BaseDOM</a>
+        </div>
+
+        <div class="foundat">
+            Defined in: <a href="../files/.._.._source_coffee_slikland_navigation_display_BaseView.coffee.html#l93"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;navigation&#x2F;display&#x2F;BaseView.coffee:93</code></a>
+        </div>
+
+
+</div>
+
+
+<div class="box intro">
+    <p>Base View</p>
+
+</div>
+
+    <div class="constructor">
+        <h2>Constructor</h2>
+<div id="method_BaseView" class="method item">
+    <h3 class="name"><code>BaseView</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code class="optional">[p_data=null]</code>
+                </li>
+                <li class="arg">
+                        <code class="optional">[p_CSSClassName=null]</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._.._source_coffee_slikland_navigation_display_BaseView.coffee.html#l93"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;navigation&#x2F;display&#x2F;BaseView.coffee:93</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name optional">[p_data=null]</code>
+                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>
+                        <span class="flag optional" title="This parameter is optional.">optional</span>
+
+
+                    <div class="param-description">
+                        <p>If this data configuration it's not null, some default values is required explained below:</p>
+<table>
+<thead>
+<tr>
+<th>Key Name</th>
+<th>Type</th>
+<th>Required</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>id</td>
+<td><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></td>
+<td><strong>Yes</strong></td>
+</tr>
+<tr>
+<td>class</td>
+<td><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></td>
+<td><strong>Yes</strong></td>
+</tr>
+<tr>
+<td>route</td>
+<td><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></td>
+<td><strong>No</strong></td>
+</tr>
+<tr>
+<td>content</td>
+<td><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a> / <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON" class="crosslink external" target="_blank">JSON</a></td>
+<td><strong>No</strong></td>
+</tr>
+<tr>
+<td>cache</td>
+<td><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean" class="crosslink external" target="_blank">Boolean</a></td>
+<td><strong>No</strong></td>
+</tr>
+<tr>
+<td>parentView</td>
+<td><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></td>
+<td><strong>No</strong></td>
+</tr>
+<tr>
+<td>destroyable</td>
+<td><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean" class="crosslink external" target="_blank">Boolean</a></td>
+<td><strong>No</strong></td>
+</tr>
+<tr>
+<td>loadContent</td>
+<td><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean" class="crosslink external" target="_blank">Boolean</a></td>
+<td><strong>No</strong></td>
+</tr>
+<tr>
+<td>subviewsWrapper</td>
+<td><a href="https://developer.mozilla.org/en-US/docs/Web/Guide/CSS/Getting_Started/Selectors" target="_blank" class="crosslink">Selectors</a></td>
+<td><strong>No</strong></td>
+</tr>
+<tr>
+<td>attachToParentWrapper</td>
+<td><a href="https://developer.mozilla.org/en-US/docs/Web/Guide/CSS/Getting_Started/Selectors" target="_blank" class="crosslink">Selectors</a></td>
+<td><strong>No</strong></td>
+</tr>
+</tbody>
+</table>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name optional">[p_CSSClassName=null]</code>
+                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>
+                        <span class="flag optional" title="This parameter is optional.">optional</span>
+
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+
+
+        <div class="example">
+            <h4>Example:</h4>
+
+            <div class="example-content">
+                <pre class="code prettyprint"><code>{
+    &quot;id&quot;:&quot;home&quot;,
+    &quot;class&quot;:&quot;template-home-view&quot;,
+    &quot;route&quot;:&quot;/&quot;,
+    &quot;content&quot;:&quot;data/home.json&quot;,
+    &quot;cache&quot;:true,
+    &quot;parentView&quot;:&quot;someViewID&quot;,
+    &quot;destroyable&quot;:true,
+    &quot;loadContent&quot;:true,
+    &quot;subviewsWrapper&quot;:&quot;CSSSelector&quot;, //like #ID or .className etc
+    &quot;attachToParentWrapper&quot;:&quot;CSSSelector&quot; //like #ID or .className etc
+}
+</code></pre>
+
+            </div>
+        </div>
+</div>
+    </div>
+
+<div id="classdocs" class="tabview">
+    <ul class="api-class-tabs">
+        <li class="api-class-tab index"><a href="#index">Index</a></li>
+
+            <li class="api-class-tab events"><a href="#events">Events</a></li>
+    </ul>
+
+    <div>
+        <div id="index" class="api-class-tabpanel index">
+            <h2 class="off-left">Item Index</h2>
+
+
+
+
+                <div class="index-section events">
+                    <h3>Events</h3>
+
+                    <ul class="index-list events extends">
+                            <li class="index-item event">
+                                <a href="#event_CREATE">CREATE</a>
+
+                                    <span class="flag static">static</span>
+                            </li>
+                            <li class="index-item event">
+                                <a href="#event_CREATE_COMPLETE">CREATE_COMPLETE</a>
+
+                                    <span class="flag static">static</span>
+                            </li>
+                            <li class="index-item event">
+                                <a href="#event_CREATE_START">CREATE_START</a>
+
+                                    <span class="flag static">static</span>
+                            </li>
+                            <li class="index-item event">
+                                <a href="#event_DESTROY">DESTROY</a>
+
+                                    <span class="flag static">static</span>
+                            </li>
+                            <li class="index-item event">
+                                <a href="#event_DESTROY_COMPLETE">DESTROY_COMPLETE</a>
+
+                                    <span class="flag static">static</span>
+                            </li>
+                            <li class="index-item event">
+                                <a href="#event_HIDE">HIDE</a>
+
+                                    <span class="flag static">static</span>
+                            </li>
+                            <li class="index-item event">
+                                <a href="#event_HIDE_COMPLETE">HIDE_COMPLETE</a>
+
+                                    <span class="flag static">static</span>
+                            </li>
+                            <li class="index-item event">
+                                <a href="#event_HIDE_START">HIDE_START</a>
+
+                                    <span class="flag static">static</span>
+                            </li>
+                            <li class="index-item event">
+                                <a href="#event_PAUSE">PAUSE</a>
+
+                                    <span class="flag static">static</span>
+                            </li>
+                            <li class="index-item event">
+                                <a href="#event_RESUME">RESUME</a>
+
+                                    <span class="flag static">static</span>
+                            </li>
+                            <li class="index-item event">
+                                <a href="#event_SHOW">SHOW</a>
+
+                                    <span class="flag static">static</span>
+                            </li>
+                            <li class="index-item event">
+                                <a href="#event_SHOW_COMPLETE">SHOW_COMPLETE</a>
+
+                                    <span class="flag static">static</span>
+                            </li>
+                            <li class="index-item event">
+                                <a href="#event_SHOW_START">SHOW_START</a>
+
+                                    <span class="flag static">static</span>
+                            </li>
+                    </ul>
+                </div>
+        </div>
+
+
+
+
+            <div id="events" class="api-class-tabpanel">
+                <h2 class="off-left">Events</h2>
+
+                    <div id="event_CREATE" class="events item">
+                        <h3 class="name"><code>CREATE</code></h3>
+                        <span class="type"></span>
+                    
+                    
+                    
+                    
+                            <span class="flag static">static</span>
+                    
+                        <div class="meta">
+                                    <p>
+                                    Defined in
+                            <a href="../files/.._.._source_coffee_slikland_navigation_display_BaseView.coffee.html#l16"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;navigation&#x2F;display&#x2F;BaseView.coffee:16</code></a>
+                            </p>
+                    
+                    
+                        </div>
+                    
+                        <div class="description">
+                            <p>Triggered when the create rotine view starts. Triggered when BaseView/create:method is called.</p>
+                    
+                        </div>
+                    
+                    
+                    
+                    </div>
+                    <div id="event_CREATE_COMPLETE" class="events item">
+                        <h3 class="name"><code>CREATE_COMPLETE</code></h3>
+                        <span class="type"></span>
+                    
+                    
+                    
+                    
+                            <span class="flag static">static</span>
+                    
+                        <div class="meta">
+                                    <p>
+                                    Defined in
+                            <a href="../files/.._.._source_coffee_slikland_navigation_display_BaseView.coffee.html#l22"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;navigation&#x2F;display&#x2F;BaseView.coffee:22</code></a>
+                            </p>
+                    
+                    
+                        </div>
+                    
+                        <div class="description">
+                            <p>Triggered when the create rotine view is finished. Triggered when BaseView/createComplete:method is called.</p>
+                    
+                        </div>
+                    
+                    
+                    
+                    </div>
+                    <div id="event_CREATE_START" class="events item">
+                        <h3 class="name"><code>CREATE_START</code></h3>
+                        <span class="type"></span>
+                    
+                    
+                    
+                    
+                            <span class="flag static">static</span>
+                    
+                        <div class="meta">
+                                    <p>
+                                    Defined in
+                            <a href="../files/.._.._source_coffee_slikland_navigation_display_BaseView.coffee.html#l10"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;navigation&#x2F;display&#x2F;BaseView.coffee:10</code></a>
+                            </p>
+                    
+                    
+                        </div>
+                    
+                        <div class="description">
+                            <p>Triggered before the create rotine view starts. Triggered when BaseView/createStart:method is called.</p>
+                    
+                        </div>
+                    
+                    
+                    
+                    </div>
+                    <div id="event_DESTROY" class="events item">
+                        <h3 class="name"><code>DESTROY</code></h3>
+                        <span class="type"></span>
+                    
+                    
+                    
+                    
+                            <span class="flag static">static</span>
+                    
+                        <div class="meta">
+                                    <p>
+                                    Defined in
+                            <a href="../files/.._.._source_coffee_slikland_navigation_display_BaseView.coffee.html#l67"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;navigation&#x2F;display&#x2F;BaseView.coffee:67</code></a>
+                            </p>
+                    
+                    
+                        </div>
+                    
+                        <div class="description">
+                            <p>Triggered when the destroy rotine view starts. Triggered when BaseView/destroy:method is called.</p>
+                    
+                        </div>
+                    
+                    
+                    
+                    </div>
+                    <div id="event_DESTROY_COMPLETE" class="events item">
+                        <h3 class="name"><code>DESTROY_COMPLETE</code></h3>
+                        <span class="type"></span>
+                    
+                    
+                    
+                    
+                            <span class="flag static">static</span>
+                    
+                        <div class="meta">
+                                    <p>
+                                    Defined in
+                            <a href="../files/.._.._source_coffee_slikland_navigation_display_BaseView.coffee.html#l73"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;navigation&#x2F;display&#x2F;BaseView.coffee:73</code></a>
+                            </p>
+                    
+                    
+                        </div>
+                    
+                        <div class="description">
+                            <p>Triggered when the destroy rotine view is finished. Triggered when BaseView/destroyComplete:method is called.</p>
+                    
+                        </div>
+                    
+                    
+                    
+                    </div>
+                    <div id="event_HIDE" class="events item">
+                        <h3 class="name"><code>HIDE</code></h3>
+                        <span class="type"></span>
+                    
+                    
+                    
+                    
+                            <span class="flag static">static</span>
+                    
+                        <div class="meta">
+                                    <p>
+                                    Defined in
+                            <a href="../files/.._.._source_coffee_slikland_navigation_display_BaseView.coffee.html#l54"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;navigation&#x2F;display&#x2F;BaseView.coffee:54</code></a>
+                            </p>
+                    
+                    
+                        </div>
+                    
+                        <div class="description">
+                            <p>Triggered when the hide rotine view starts. Triggered when BaseView/hide:method is called.</p>
+                    
+                        </div>
+                    
+                    
+                    
+                    </div>
+                    <div id="event_HIDE_COMPLETE" class="events item">
+                        <h3 class="name"><code>HIDE_COMPLETE</code></h3>
+                        <span class="type"></span>
+                    
+                    
+                    
+                    
+                            <span class="flag static">static</span>
+                    
+                        <div class="meta">
+                                    <p>
+                                    Defined in
+                            <a href="../files/.._.._source_coffee_slikland_navigation_display_BaseView.coffee.html#l60"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;navigation&#x2F;display&#x2F;BaseView.coffee:60</code></a>
+                            </p>
+                    
+                    
+                        </div>
+                    
+                        <div class="description">
+                            <p>Triggered when the hide rotine view is finished. Triggered when BaseView/hideComplete:method is called.</p>
+                    
+                        </div>
+                    
+                    
+                    
+                    </div>
+                    <div id="event_HIDE_START" class="events item">
+                        <h3 class="name"><code>HIDE_START</code></h3>
+                        <span class="type"></span>
+                    
+                    
+                    
+                    
+                            <span class="flag static">static</span>
+                    
+                        <div class="meta">
+                                    <p>
+                                    Defined in
+                            <a href="../files/.._.._source_coffee_slikland_navigation_display_BaseView.coffee.html#l48"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;navigation&#x2F;display&#x2F;BaseView.coffee:48</code></a>
+                            </p>
+                    
+                    
+                        </div>
+                    
+                        <div class="description">
+                            <p>Triggered before the hide rotine view starts. Triggered when BaseView/hideStart:method is called.</p>
+                    
+                        </div>
+                    
+                    
+                    
+                    </div>
+                    <div id="event_PAUSE" class="events item">
+                        <h3 class="name"><code>PAUSE</code></h3>
+                        <span class="type"></span>
+                    
+                    
+                    
+                    
+                            <span class="flag static">static</span>
+                    
+                        <div class="meta">
+                                    <p>
+                                    Defined in
+                            <a href="../files/.._.._source_coffee_slikland_navigation_display_BaseView.coffee.html#l80"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;navigation&#x2F;display&#x2F;BaseView.coffee:80</code></a>
+                            </p>
+                    
+                    
+                        </div>
+                    
+                        <div class="description">
+                            <p>Triggered when the view pauses. Usually when BaseView/pause:method is called.</p>
+                    
+                        </div>
+                    
+                    
+                    
+                    </div>
+                    <div id="event_RESUME" class="events item">
+                        <h3 class="name"><code>RESUME</code></h3>
+                        <span class="type"></span>
+                    
+                    
+                    
+                    
+                            <span class="flag static">static</span>
+                    
+                        <div class="meta">
+                                    <p>
+                                    Defined in
+                            <a href="../files/.._.._source_coffee_slikland_navigation_display_BaseView.coffee.html#l86"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;navigation&#x2F;display&#x2F;BaseView.coffee:86</code></a>
+                            </p>
+                    
+                    
+                        </div>
+                    
+                        <div class="description">
+                            <p>Triggered when the view resumes. Usually when BaseView/resume:method is called.</p>
+                    
+                        </div>
+                    
+                    
+                    
+                    </div>
+                    <div id="event_SHOW" class="events item">
+                        <h3 class="name"><code>SHOW</code></h3>
+                        <span class="type"></span>
+                    
+                    
+                    
+                    
+                            <span class="flag static">static</span>
+                    
+                        <div class="meta">
+                                    <p>
+                                    Defined in
+                            <a href="../files/.._.._source_coffee_slikland_navigation_display_BaseView.coffee.html#l35"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;navigation&#x2F;display&#x2F;BaseView.coffee:35</code></a>
+                            </p>
+                    
+                    
+                        </div>
+                    
+                        <div class="description">
+                            <p>Triggered when the show rotine view starts. Triggered when BaseView/show:method is called.</p>
+                    
+                        </div>
+                    
+                    
+                    
+                    </div>
+                    <div id="event_SHOW_COMPLETE" class="events item">
+                        <h3 class="name"><code>SHOW_COMPLETE</code></h3>
+                        <span class="type"></span>
+                    
+                    
+                    
+                    
+                            <span class="flag static">static</span>
+                    
+                        <div class="meta">
+                                    <p>
+                                    Defined in
+                            <a href="../files/.._.._source_coffee_slikland_navigation_display_BaseView.coffee.html#l41"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;navigation&#x2F;display&#x2F;BaseView.coffee:41</code></a>
+                            </p>
+                    
+                    
+                        </div>
+                    
+                        <div class="description">
+                            <p>Triggered when the show rotine view is finished. Triggered when BaseView/showComplete:method is called.</p>
+                    
+                        </div>
+                    
+                    
+                    
+                    </div>
+                    <div id="event_SHOW_START" class="events item">
+                        <h3 class="name"><code>SHOW_START</code></h3>
+                        <span class="type"></span>
+                    
+                    
+                    
+                    
+                            <span class="flag static">static</span>
+                    
+                        <div class="meta">
+                                    <p>
+                                    Defined in
+                            <a href="../files/.._.._source_coffee_slikland_navigation_display_BaseView.coffee.html#l29"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;navigation&#x2F;display&#x2F;BaseView.coffee:29</code></a>
+                            </p>
+                    
+                    
+                        </div>
+                    
+                        <div class="description">
+                            <p>Triggered before the show rotine view starts. Triggered when BaseView/showStart:method is called.</p>
+                    
+                        </div>
+                    
+                    
+                    
+                    </div>
+            </div>
+    </div>
+</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="../assets/vendor/prettify/prettify-min.js"></script>
+<script>prettyPrint();</script>
+<script src="../assets/js/yui-prettify.js"></script>
+<script src="../assets/../api.js"></script>
+<script src="../assets/js/api-filter.js"></script>
+<script src="../assets/js/api-list.js"></script>
+<script src="../assets/js/api-search.js"></script>
+<script src="../assets/js/apidocs.js"></script>
+</body>
+</html>

@@ -5,8 +5,11 @@ YUI.add("yuidoc-meta", function(Y) {
         "ArrayUtils",
         "BaseAnimation",
         "BaseDOM",
+        "BaseView",
         "EventDispatcher",
-        "SpriteSheetAnimation"
+        "NavigationLoader",
+        "SpriteSheetAnimation",
+        "StringUtils"
     ],
     "modules": [],
     "allModules": [],
