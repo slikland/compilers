@@ -10,7 +10,7 @@
 			"orientation":"vertical",
 			"scrollToTime":1,
 			"pauseInvisibleViews":true,
-			"percentToShow":0.5,
+			"percentToShow":0.1,
 			"snap":{
 				"delay":1
 			}
@@ -36,6 +36,7 @@
 			"class":"template-sub-view",
 			"content":"{base}data/sub1.json",
 			"route":"/sub-view-01",
+			"percentToShow":0.5,
 			"destroyable":true,
 			"loadContent":true,
 			"cache":true

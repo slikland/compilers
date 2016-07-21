@@ -199,7 +199,6 @@ class BaseView extends BaseDOM
 	destroyable|{{#crossLink &quot;Boolean&quot;}}{{/crossLink}}|__No__
 	loadContent|{{#crossLink &quot;Boolean&quot;}}{{/crossLink}}|__No__
 	snap *(only for scroll navigation type)*|{{#crossLink &quot;Boolean&quot;}}{{/crossLink}}|__No__
-	percentToShow *(only for scroll navigation type)*|{{#crossLink &quot;Number&quot;}}{{/crossLink}}|__No__
 	subviewsWrapper|&lt;a href=&quot;//developer.mozilla.org/en-US/docs/Web/Guide/CSS/Getting_Started/Selectors&quot; target=&quot;_blank&quot; class=&quot;crosslink&quot;&gt;Selectors&lt;/a&gt;|__No__
 	attachToParentWrapper|&lt;a href=&quot;//developer.mozilla.org/en-US/docs/Web/Guide/CSS/Getting_Started/Selectors&quot; target=&quot;_blank&quot; class=&quot;crosslink&quot;&gt;Selectors&lt;/a&gt;|__No__
 	@example
@@ -214,12 +213,11 @@ class BaseView extends BaseDOM
 		&quot;destroyable&quot;:true,
 		&quot;loadContent&quot;:true,
 		&quot;snap&quot;:true, //only for scroll navigation type
-		&quot;percentToShow&quot;:0.5, //only for scroll navigation type, the valid values are between 0~1
 		&quot;subviewsWrapper&quot;:&quot;CSSSelector&quot;, //like #ID or .className etc
 		&quot;attachToParentWrapper&quot;:&quot;CSSSelector&quot; //like #ID or .className etc
 	}
 	&#x60;&#x60;&#x60;
-	@param {Object} [p_CSSClassName=null]
+	@param {String} [p_CSSClassName=null]
 	###
 	constructor: (p_data=null, p_CSSClassName=null) -&gt;
 		@_created = false

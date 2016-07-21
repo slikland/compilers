@@ -9,6 +9,7 @@
 #import project.views.TemplateSubView
 
 class Main extends NavigationContainer
+	_controller = new DefaultNavigationController()
 	create:(evt=null)=>
 		menu = new BaseDOM()
 		menu.className = 'menu'
@@ -33,6 +34,6 @@ class Main extends NavigationContainer
 		app.navigation.gotoRoute(route, true)
 
 	@get controller:=>
-		return new DefaultNavigationController()
+		return _controller
 
 return new Main()

@@ -3188,7 +3188,6 @@ BaseView = (function(_super) {
   	destroyable|{{#crossLink "Boolean"}}{{/crossLink}}|__No__
   	loadContent|{{#crossLink "Boolean"}}{{/crossLink}}|__No__
   	snap *(only for scroll navigation type)*|{{#crossLink "Boolean"}}{{/crossLink}}|__No__
-  	percentToShow *(only for scroll navigation type)*|{{#crossLink "Number"}}{{/crossLink}}|__No__
   	subviewsWrapper|<a href="//developer.mozilla.org/en-US/docs/Web/Guide/CSS/Getting_Started/Selectors" target="_blank" class="crosslink">Selectors</a>|__No__
   	attachToParentWrapper|<a href="//developer.mozilla.org/en-US/docs/Web/Guide/CSS/Getting_Started/Selectors" target="_blank" class="crosslink">Selectors</a>|__No__
   	@example
@@ -3203,12 +3202,11 @@ BaseView = (function(_super) {
   		"destroyable":true,
   		"loadContent":true,
   		"snap":true, //only for scroll navigation type
-  		"percentToShow":0.5, //only for scroll navigation type, the valid values are between 0~1
   		"subviewsWrapper":"CSSSelector", //like #ID or .className etc
   		"attachToParentWrapper":"CSSSelector" //like #ID or .className etc
   	}
   	```
-  	@param {Object} [p_CSSClassName=null]
+  	@param {String} [p_CSSClassName=null]
    */
 
   function BaseView(p_data, p_CSSClassName) {

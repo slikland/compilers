@@ -92,8 +92,9 @@ class ScrollNavigationController extends BaseNavigationController
 				index = @_visibleViews.indexOf(view)
 				if index >= 0 then ArrayUtils.removeItemByIndex(index, @_visibleViews)
 			
-			percentToShow = if view.percentToShow? then view.percentToShow else @_percentToShow
-			if viewBounds > (@windowValue*percentToShow) and currentView == null
+			# TODO: add option of percentToShow for each view 
+			# percentToShow = if view.percentToShow? then view.percentToShow else @_percentToShow
+			if viewBounds > (@windowValue*@_percentToShow) and currentView == null
 				currentView = view
 				@_snapping(view)
 

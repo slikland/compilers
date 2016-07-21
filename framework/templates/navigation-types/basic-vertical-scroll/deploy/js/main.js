@@ -357,7 +357,7 @@ ScrollNavigationController = (function(_super) {
   };
 
   ScrollNavigationController.prototype._onScroll = function(evt) {
-    var currentView, index, k, percentToShow, v, view, viewBounds, viewOffset, _ref, _ref1;
+    var currentView, index, k, v, view, viewBounds, viewOffset, _ref, _ref1;
     this._visibleViews = this._visibleViews || [];
     currentView = null;
     _ref = app.config.views;
@@ -380,8 +380,7 @@ ScrollNavigationController = (function(_super) {
           ArrayUtils.removeItemByIndex(index, this._visibleViews);
         }
       }
-      percentToShow = view.percentToShow != null ? view.percentToShow : this._percentToShow;
-      if (viewBounds > (this.windowValue * percentToShow) && currentView === null) {
+      if (viewBounds > (this.windowValue * this._percentToShow) && currentView === null) {
         currentView = view;
         this._snapping(view);
         if (((_ref1 = this._currentView) != null ? _ref1.id : void 0) === view.id) {
@@ -1411,10 +1410,7 @@ TemplateSubView = (function(_super) {
     if (evt == null) {
       evt = null;
     }
-    if (this.i == null) {
-      this.i = 0;
-    }
-    return console.log("render", this.id, this.i++);
+    return this.i != null ? this.i : this.i = 0;
   };
 
   TemplateSubView.prototype.pause = function() {
