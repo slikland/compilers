@@ -3,6 +3,7 @@
 ###*
 Bunch of utilities methods for Array
 @class ArrayUtils
+@static
 ###
 class ArrayUtils
 

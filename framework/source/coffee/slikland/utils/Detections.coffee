@@ -1,7 +1,6 @@
 ###*
 Detections Class
 @class Detections
-@constructor
 @extends Class
 ###
 class Detections

@@ -18,7 +18,7 @@ class TemplateSubView extends BaseView
 	
 	render:(evt=null)=>
 		@i ?= 0
-		console.log "render", @id, @i++
+		# console.log "render", @id, @i++
 	
 	pause:()=>
 		clearInterval(@timeout)

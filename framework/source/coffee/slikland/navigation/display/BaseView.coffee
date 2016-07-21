@@ -1,10 +1,10 @@
 #import slikland.display.BaseDOM
+
 ###*
 Base View
 @class BaseView
 @extends BaseDOM
 ###
-
 class BaseView extends BaseDOM
 
 	###*

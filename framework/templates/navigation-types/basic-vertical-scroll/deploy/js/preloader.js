@@ -891,6 +891,7 @@ NumberUtils = (function() {
 /**
 Bunch of utilities methods for Array
 @class ArrayUtils
+@static
  */
 var ArrayUtils;
 
@@ -1743,7 +1744,6 @@ JSONUtils = (function() {
 /**
 Detections Class
 @class Detections
-@constructor
 @extends Class
  */
 var Detections,

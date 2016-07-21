@@ -5,10 +5,13 @@ YUI.add("yuidoc-meta", function(Y) {
         "ArrayUtils",
         "BaseAnimation",
         "BaseDOM",
+        "BaseNavigationController",
         "BaseView",
         "ColorUtils",
         "Detections",
         "EventDispatcher",
+        "Navigation",
+        "NavigationContainer",
         "NavigationLoader",
         "SpriteSheetAnimation",
         "StringUtils"

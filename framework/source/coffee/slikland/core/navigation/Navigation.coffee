@@ -1,17 +1,41 @@
 #import slikland.core.navigation.NavigationRouter
 #import slikland.core.navigation.MetaController
 
-
+###*
+Navigation Class
+@class Navigation
+@extends EventDispatcher
+@uses NavigationRouter
+@uses BaseNavigationController
+@uses MetaController
+###
 class Navigation extends EventDispatcher
 
+	###*
+	@event CHANGE_ROUTE
+	@static
+	###
 	@CHANGE_ROUTE : 'navigation_change_route'
+	###*
+	@event CHANGE_VIEW
+	@static
+	###
 	@CHANGE_VIEW : 'navigation_change_view'
+	###*
+	@event CHANGE_INTERNAL_VIEW
+	@static
+	###
 	@CHANGE_INTERNAL_VIEW : 'navigation_change_internal_view'
 
 	_controller = null
 	_router = null
 	_meta = null
 
+	###*
+	@class Navigation
+	@constructor
+	@param {BaseNavigationController} p_controller
+	###
 	constructor: (p_controller = null) ->
 
 		if !(p_controller instanceof BaseNavigationController) then throw new Error('The instance of '+p_controller+' class is not either BaseNavigationController class')
@@ -23,13 +47,17 @@ class Navigation extends EventDispatcher
 		app.navigation = @
 		super
 
+	###*
+	@method setup
+	@param {Object} p_data
+	###
 	setup:(p_data)=>
-		_controller.on(BaseNavigationController.CHANGE, @_navigationChange)
-		_controller.on(BaseNavigationController.CHANGE_VIEW, @_navigationChange)
+		_controller.on(BaseNavigationController.CHANGE, @_change)
+		_controller.on(BaseNavigationController.CHANGE_VIEW, @_change)
 		_controller.setup(p_data)
 
-		_router.on(NavigationRouter.CHANGE, @_routeChange)
-		_router.on(NavigationRouter.CHANGE_ROUTE, @_routeChange)
+		_router.on(NavigationRouter.CHANGE, @_change)
+		_router.on(NavigationRouter.CHANGE_ROUTE, @_change)
 		_router.setup(app.root, app.config.navigation?.forceHashBang)
 		
 		for k, v of p_data.views
@@ -39,33 +67,57 @@ class Navigation extends EventDispatcher
 			@start()
 		false
 
+	###*
+	@method start
+	@param {Event} [evt=null]
+	###
 	start:(evt=null)=>
 		viewID = null
 		pathData = _router._parsePath(_router.getCurrentPath())
 		routes = _router._checkRoutes(pathData.path)[0]
 		if routes.length > 0
 			current = routes[0].route
-			viewID =  @_getViewByRoute(current)
+			viewID =  @getViewByRoute(current)
 		else
 			viewID = null
 		_controller.start(viewID)
 		false
 	
-	gotoDefault:()=>
-		if app.config.navigation?.defaultView? then @goto(app.config.navigation?.defaultView)
-		false
-
+	###*
+	Returns the visible views in DOM
+	@attribute visibleViews
+	@type {Array}
+	@readOnly
+	###
 	@get visibleViews:->
 		return @_visibleViews || _controller.visibleViews
 
+	###*
+	Returns the current view
+	@attribute currentView
+	@type {BaseView}
+	@readOnly
+	###
 	@get currentView:->
 		view = @_currentView || _controller.currentView
 		view.routeData = @routeData
 		return view
 
+	###*
+	Returns the previous view
+	@attribute previousView
+	@type {BaseView}
+	@readOnly
+	###
 	@get previousView:->
 		return @_previousView || _controller.previousView
 
+	###*
+	Returns the route data
+	@attribute routeData
+	@type {Object}
+	@readOnly
+	###
 	@get routeData:()->
 		pathData = _router._parsePath(_router.getCurrentPath())
 		routeData = _router._checkRoutes(pathData.path)
@@ -78,19 +130,33 @@ class Navigation extends EventDispatcher
 			results.parsed = routeData[1]
 		return results
 	
-	# DEPRECATED
+	###*
+	@method goto
+	@param {String|Object} p_value
+	@deprecated Uses the {{#crossLink "Navigation/gotoRoute:method"}}{{/crossLink}} or {{#crossLink "Navigation/gotoView:method"}}{{/crossLink}}
+	###
 	goto:(p_value)=>
+		# console.log "This method is already deprecated."
 		if p_value.indexOf('/') == 0
 			@gotoRoute(p_value)
 		else
 			@gotoView(p_value)
 		false
-	# 
 
+	###*
+	@method setRoute
+	@param {String} p_value
+	@param {Boolean} [p_trigger=false]
+	###
 	setRoute:(p_value, p_trigger=false)=>
 		@gotoRoute(p_value, p_trigger)
 		false
 
+	###*
+	@method gotoRoute
+	@param {String} p_value
+	@param {Boolean} [p_trigger=false]
+	###
 	gotoRoute:(p_value, p_trigger=false)=>
 		return if !p_value?
 		if p_value.indexOf('/') == 0
@@ -99,6 +165,11 @@ class Navigation extends EventDispatcher
 			throw new Error('The value "'+p_value+'" is not a valid format to route ("/example")')
 		false
 
+	###*
+	@method replaceRoute
+	@param {String} p_value
+	@param {Boolean} [p_trigger=false]
+	###
 	replaceRoute:(p_value, p_trigger=false)=>
 		return if !p_value?
 		if p_value.indexOf('/') == 0
@@ -107,6 +178,22 @@ class Navigation extends EventDispatcher
 			throw new Error('The value "'+p_value+'" is not a valid format to route ("/example")')
 		false
 	
+	###*
+	@method gotoDefault
+	###
+	gotoDefault:()=>
+		if app.config.navigation?.defaultView?
+			view = app.config.navigation.defaultView
+			if view.indexOf('/') == 0
+				@gotoRoute(view)
+			else
+				@gotoView(view)
+		false
+
+	###*
+	@method gotoView
+	@param {String} p_value
+	###
 	gotoView:(p_value)=>
 		if p_value.indexOf('/') == 0
 			throw new Error('The value "'+p_value+'" is not a valid format to viewID ("exampleID")')
@@ -114,20 +201,37 @@ class Navigation extends EventDispatcher
 			_controller.goto(p_value)
 		false
 
-	_getViewByRoute:(p_value)=>
+	###*
+	@method getViewByRoute
+	@param {String} p_value
+	@return {String}
+	@default null
+	###
+	getViewByRoute:(p_value)=>
 		for k, view of app.config.views
 			if view.route? && view.route is p_value
 				return view.id
 		return null
 
-	_getRouteByView:(p_value)=>
+	###*
+	@method getRouteByView
+	@param {String} p_value
+	@return {String}
+	@default null
+	###
+	getRouteByView:(p_value)=>
 		for k, view of app.config.views
 			if view.route? && view.id is p_value
 				return view.route
 		return null
 
-	_navigationChange:(evt)=>
-		# TODO: @setRoute(@_getRouteByView(@_currentView.id))
+	###*
+	@method _change
+	@param {Event} [evt=null]
+	@private
+	###
+	_change:(evt=null)=>
+		# TODO: @setRoute(@getRouteByView(@_currentView.id))
 		switch evt.type
 			when BaseNavigationController.CHANGE_VIEW
 				@_currentView = evt.data.currentView
@@ -139,13 +243,9 @@ class Navigation extends EventDispatcher
 				_meta.change(@currentView.meta)
 			when BaseNavigationController.CHANGE
 				@trigger(Navigation.CHANGE_INTERNAL_VIEW, {view:evt.view, transition:evt.transition})
-		false
-
-	_routeChange:(evt=null)=>
-		switch evt.type
-			# when NavigationRouter.CHANGE
-			# 	@trigger(Navigation.CHANGE, {data:@routeData})
 			when NavigationRouter.CHANGE_ROUTE
 				@trigger(Navigation.CHANGE_ROUTE, {data:@routeData})
-				if @routeData.route? then @goto(@_getViewByRoute(@routeData.route))
-		return null
+				if @routeData.route? then @gotoView(@getViewByRoute(@routeData.route))
+			# when NavigationRouter.CHANGE
+			# 	@trigger(Navigation.CHANGE, {data:@routeData})
+

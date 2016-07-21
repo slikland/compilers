@@ -110,6 +110,14 @@ ViewsData = (function(_super) {
 
 })(EventDispatcher);
 
+
+/**
+BaseNavigationController is a base class for any type of navigation controller.<br>
+Please do not instantiate this class. Use the extended classes.
+
+@class BaseNavigationController
+@extends EventDispatcher
+ */
 var BaseNavigationController,
   __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
   __hasProp = {}.hasOwnProperty,
@@ -118,11 +126,35 @@ var BaseNavigationController,
 BaseNavigationController = (function(_super) {
   __extends(BaseNavigationController, _super);
 
+
+  /**
+  	@event CHANGE
+  	@static
+   */
+
   BaseNavigationController.CHANGE = 'base_navigation_controller_change';
+
+
+  /**
+  	@event CHANGE_VIEW
+  	@static
+   */
 
   BaseNavigationController.CHANGE_VIEW = 'base_navigation_controller_change_view';
 
+
+  /**
+  	@event CHANGE_SUBVIEW
+  	@static
+   */
+
   BaseNavigationController.CHANGE_SUBVIEW = 'base_navigation_controller_change_subview';
+
+
+  /**
+  	@class BaseNavigationController
+  	@constructor
+   */
 
   function BaseNavigationController() {
     this._removeFromWrapper = __bind(this._removeFromWrapper, this);
@@ -130,6 +162,13 @@ BaseNavigationController = (function(_super) {
     this.change = __bind(this.change, this);
     BaseNavigationController.__super__.constructor.apply(this, arguments);
   }
+
+
+  /**
+  	@method setup
+  	@param {Object} p_data
+  	@protected
+   */
 
   BaseNavigationController.prototype.setup = function(p_data) {
     var _ref, _ref1;
@@ -140,8 +179,14 @@ BaseNavigationController = (function(_super) {
     return false;
   };
 
+
+  /**
+  	@method start
+  	@param {String} [p_id=null]
+   */
+
   BaseNavigationController.prototype.start = function(p_id) {
-    var view;
+    var view, _ref;
     if (p_id == null) {
       p_id = null;
     }
@@ -149,6 +194,9 @@ BaseNavigationController = (function(_super) {
       throw new Error('The instance of BaseNavigationController already started');
     }
     this._started = true;
+    if (((_ref = app.config.navigation) != null ? _ref.defaultView : void 0) == null) {
+      throw new Error('The property "defaultView" in config file is null or undefined.');
+    }
     if (!p_id) {
       view = app.config.navigation.defaultView;
     } else {
@@ -158,6 +206,12 @@ BaseNavigationController = (function(_super) {
     return false;
   };
 
+
+  /**
+  	@method goto
+  	@param {String} p_id
+   */
+
   BaseNavigationController.prototype.goto = function(p_id) {
     if (!this._started) {
       throw new Error('The instance of BaseNavigationController is not started');
@@ -166,11 +220,29 @@ BaseNavigationController = (function(_super) {
     return false;
   };
 
+
+  /**
+  	__This getter must be overridden with a type of navigation controller it will be a extended.__<br>
+  	Returns the type of navigation controller.
+  	@attribute type
+  	@type {String}
+  	@readOnly
+   */
+
   BaseNavigationController.get({
     type: function() {
       throw new Error('Override the visibleViews getter in ' + this.constructor.type + ' class');
     }
   });
+
+
+  /**
+  	__This getter must be overridden with a current visible views of navigation controller it will be a extended.__<br>
+  	Returns the current visible views in DOM.
+  	@attribute visibleViews
+  	@type {Array}
+  	@readOnly
+   */
 
   BaseNavigationController.get({
     visibleViews: function() {
@@ -178,11 +250,29 @@ BaseNavigationController = (function(_super) {
     }
   });
 
+
+  /**
+  	__This getter must be overridden with a current view of navigation controller it will be a extended.__<br>
+  	Returns the current view.
+  	@attribute currentView
+  	@type {BaseView}
+  	@readOnly
+   */
+
   BaseNavigationController.get({
     currentView: function() {
       throw new Error('Override the currentView getter in ' + this.constructor.name + ' class');
     }
   });
+
+
+  /**
+  	__This getter must be overridden with a previous view of navigation controller it will be a extended.__<br>
+  	Returns the previous view.
+  	@attribute previousView
+  	@type {BaseView}
+  	@readOnly
+   */
 
   BaseNavigationController.get({
     previousView: function() {
@@ -190,11 +280,29 @@ BaseNavigationController = (function(_super) {
     }
   });
 
+
+  /**
+  	__This getter must be overridden with a data object of navigation controller it will be a extended.__<br>
+  	Returns the data.
+  	@attribute data
+  	@type {Object}
+  	@readOnly
+   */
+
   BaseNavigationController.get({
     data: function() {
       throw new Error('Override the data getter in ' + this.constructor.name + ' class');
     }
   });
+
+
+  /**
+  	__This getter must be overridden with a change method of navigation controller it will be a extended.__<br>
+  	This method trigger the event {{#crossLink "BaseNavigationController/CHANGE_VIEW:event"}}{{/crossLink}} after complete.
+  	@method data
+  	@param {String} p_id
+  	@protected
+   */
 
   BaseNavigationController.prototype.change = function(p_id) {
     this.trigger(BaseNavigationController.CHANGE_VIEW, {
@@ -202,6 +310,13 @@ BaseNavigationController = (function(_super) {
     });
     return false;
   };
+
+
+  /**
+  	@method _appendToWrapper
+  	@param {BaseView} p_view
+  	@private
+   */
 
   BaseNavigationController.prototype._appendToWrapper = function(p_view) {
     var wrapper;
@@ -216,19 +331,30 @@ BaseNavigationController = (function(_super) {
     if (wrapper == null) {
       throw new Error('The instance of wrapper is not attached on the parent view');
     } else {
-      return wrapper.appendChild(p_view);
+      wrapper.appendChild(p_view);
     }
+    return false;
   };
+
+
+  /**
+  	@method _removeFromWrapper
+  	@param {BaseView} p_view
+  	@private
+   */
 
   BaseNavigationController.prototype._removeFromWrapper = function(p_view) {
     var err, wrapper;
     wrapper = (p_view != null ? p_view.parent : void 0) || (p_view != null ? p_view.parentView : void 0);
     try {
-      return wrapper != null ? wrapper.removeChild(p_view) : void 0;
+      if (wrapper != null) {
+        wrapper.removeChild(p_view);
+      }
     } catch (_error) {
       err = _error;
-      return console.log(err.stack);
+      console.log(err.stack);
     }
+    return false;
   };
 
   return BaseNavigationController;
@@ -933,6 +1059,15 @@ MetaController = (function(_super) {
 
 })(EventDispatcher);
 
+
+/**
+Navigation Class
+@class Navigation
+@extends EventDispatcher
+@uses NavigationRouter
+@uses BaseNavigationController
+@uses MetaController
+ */
 var Navigation,
   __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
   __hasProp = {}.hasOwnProperty,
@@ -943,9 +1078,27 @@ Navigation = (function(_super) {
 
   __extends(Navigation, _super);
 
+
+  /**
+  	@event CHANGE_ROUTE
+  	@static
+   */
+
   Navigation.CHANGE_ROUTE = 'navigation_change_route';
 
+
+  /**
+  	@event CHANGE_VIEW
+  	@static
+   */
+
   Navigation.CHANGE_VIEW = 'navigation_change_view';
+
+
+  /**
+  	@event CHANGE_INTERNAL_VIEW
+  	@static
+   */
 
   Navigation.CHANGE_INTERNAL_VIEW = 'navigation_change_internal_view';
 
@@ -955,20 +1108,26 @@ Navigation = (function(_super) {
 
   _meta = null;
 
+
+  /**
+  	@class Navigation
+  	@constructor
+  	@param {BaseNavigationController} p_controller
+   */
+
   function Navigation(p_controller) {
     if (p_controller == null) {
       p_controller = null;
     }
-    this._routeChange = __bind(this._routeChange, this);
-    this._navigationChange = __bind(this._navigationChange, this);
-    this._getRouteByView = __bind(this._getRouteByView, this);
-    this._getViewByRoute = __bind(this._getViewByRoute, this);
+    this._change = __bind(this._change, this);
+    this.getRouteByView = __bind(this.getRouteByView, this);
+    this.getViewByRoute = __bind(this.getViewByRoute, this);
     this.gotoView = __bind(this.gotoView, this);
+    this.gotoDefault = __bind(this.gotoDefault, this);
     this.replaceRoute = __bind(this.replaceRoute, this);
     this.gotoRoute = __bind(this.gotoRoute, this);
     this.setRoute = __bind(this.setRoute, this);
     this.goto = __bind(this.goto, this);
-    this.gotoDefault = __bind(this.gotoDefault, this);
     this.start = __bind(this.start, this);
     this.setup = __bind(this.setup, this);
     if (!(p_controller instanceof BaseNavigationController)) {
@@ -981,13 +1140,19 @@ Navigation = (function(_super) {
     Navigation.__super__.constructor.apply(this, arguments);
   }
 
+
+  /**
+  	@method setup
+  	@param {Object} p_data
+   */
+
   Navigation.prototype.setup = function(p_data) {
     var k, v, _ref, _ref1, _ref2, _ref3;
-    _controller.on(BaseNavigationController.CHANGE, this._navigationChange);
-    _controller.on(BaseNavigationController.CHANGE_VIEW, this._navigationChange);
+    _controller.on(BaseNavigationController.CHANGE, this._change);
+    _controller.on(BaseNavigationController.CHANGE_VIEW, this._change);
     _controller.setup(p_data);
-    _router.on(NavigationRouter.CHANGE, this._routeChange);
-    _router.on(NavigationRouter.CHANGE_ROUTE, this._routeChange);
+    _router.on(NavigationRouter.CHANGE, this._change);
+    _router.on(NavigationRouter.CHANGE_ROUTE, this._change);
     _router.setup(app.root, (_ref = app.config.navigation) != null ? _ref.forceHashBang : void 0);
     _ref1 = p_data.views;
     for (k in _ref1) {
@@ -1002,6 +1167,12 @@ Navigation = (function(_super) {
     return false;
   };
 
+
+  /**
+  	@method start
+  	@param {Event} [evt=null]
+   */
+
   Navigation.prototype.start = function(evt) {
     var current, pathData, routes, viewID;
     if (evt == null) {
@@ -1012,7 +1183,7 @@ Navigation = (function(_super) {
     routes = _router._checkRoutes(pathData.path)[0];
     if (routes.length > 0) {
       current = routes[0].route;
-      viewID = this._getViewByRoute(current);
+      viewID = this.getViewByRoute(current);
     } else {
       viewID = null;
     }
@@ -1020,19 +1191,27 @@ Navigation = (function(_super) {
     return false;
   };
 
-  Navigation.prototype.gotoDefault = function() {
-    var _ref, _ref1;
-    if (((_ref = app.config.navigation) != null ? _ref.defaultView : void 0) != null) {
-      this.goto((_ref1 = app.config.navigation) != null ? _ref1.defaultView : void 0);
-    }
-    return false;
-  };
+
+  /**
+  	Returns the visible views in DOM
+  	@attribute visibleViews
+  	@type {Array}
+  	@readOnly
+   */
 
   Navigation.get({
     visibleViews: function() {
       return this._visibleViews || _controller.visibleViews;
     }
   });
+
+
+  /**
+  	Returns the current view
+  	@attribute currentView
+  	@type {BaseView}
+  	@readOnly
+   */
 
   Navigation.get({
     currentView: function() {
@@ -1043,11 +1222,27 @@ Navigation = (function(_super) {
     }
   });
 
+
+  /**
+  	Returns the previous view
+  	@attribute previousView
+  	@type {BaseView}
+  	@readOnly
+   */
+
   Navigation.get({
     previousView: function() {
       return this._previousView || _controller.previousView;
     }
   });
+
+
+  /**
+  	Returns the route data
+  	@attribute routeData
+  	@type {Object}
+  	@readOnly
+   */
 
   Navigation.get({
     routeData: function() {
@@ -1065,6 +1260,13 @@ Navigation = (function(_super) {
     }
   });
 
+
+  /**
+  	@method goto
+  	@param {String|Object} p_value
+  	@deprecated Uses the {{#crossLink "Navigation/gotoRoute:method"}}{{/crossLink}} or {{#crossLink "Navigation/gotoView:method"}}{{/crossLink}}
+   */
+
   Navigation.prototype.goto = function(p_value) {
     if (p_value.indexOf('/') === 0) {
       this.gotoRoute(p_value);
@@ -1074,6 +1276,13 @@ Navigation = (function(_super) {
     return false;
   };
 
+
+  /**
+  	@method setRoute
+  	@param {String} p_value
+  	@param {Boolean} [p_trigger=false]
+   */
+
   Navigation.prototype.setRoute = function(p_value, p_trigger) {
     if (p_trigger == null) {
       p_trigger = false;
@@ -1081,6 +1290,13 @@ Navigation = (function(_super) {
     this.gotoRoute(p_value, p_trigger);
     return false;
   };
+
+
+  /**
+  	@method gotoRoute
+  	@param {String} p_value
+  	@param {Boolean} [p_trigger=false]
+   */
 
   Navigation.prototype.gotoRoute = function(p_value, p_trigger) {
     if (p_trigger == null) {
@@ -1097,6 +1313,13 @@ Navigation = (function(_super) {
     return false;
   };
 
+
+  /**
+  	@method replaceRoute
+  	@param {String} p_value
+  	@param {Boolean} [p_trigger=false]
+   */
+
   Navigation.prototype.replaceRoute = function(p_value, p_trigger) {
     if (p_trigger == null) {
       p_trigger = false;
@@ -1112,6 +1335,30 @@ Navigation = (function(_super) {
     return false;
   };
 
+
+  /**
+  	@method gotoDefault
+   */
+
+  Navigation.prototype.gotoDefault = function() {
+    var view, _ref;
+    if (((_ref = app.config.navigation) != null ? _ref.defaultView : void 0) != null) {
+      view = app.config.navigation.defaultView;
+      if (view.indexOf('/') === 0) {
+        this.gotoRoute(view);
+      } else {
+        this.gotoView(view);
+      }
+    }
+    return false;
+  };
+
+
+  /**
+  	@method gotoView
+  	@param {String} p_value
+   */
+
   Navigation.prototype.gotoView = function(p_value) {
     if (p_value.indexOf('/') === 0) {
       throw new Error('The value "' + p_value + '" is not a valid format to viewID ("exampleID")');
@@ -1121,7 +1368,15 @@ Navigation = (function(_super) {
     return false;
   };
 
-  Navigation.prototype._getViewByRoute = function(p_value) {
+
+  /**
+  	@method getViewByRoute
+  	@param {String} p_value
+  	@return {String}
+  	@default null
+   */
+
+  Navigation.prototype.getViewByRoute = function(p_value) {
     var k, view, _ref;
     _ref = app.config.views;
     for (k in _ref) {
@@ -1133,7 +1388,15 @@ Navigation = (function(_super) {
     return null;
   };
 
-  Navigation.prototype._getRouteByView = function(p_value) {
+
+  /**
+  	@method getRouteByView
+  	@param {String} p_value
+  	@return {String}
+  	@default null
+   */
+
+  Navigation.prototype.getRouteByView = function(p_value) {
     var k, view, _ref;
     _ref = app.config.views;
     for (k in _ref) {
@@ -1145,7 +1408,17 @@ Navigation = (function(_super) {
     return null;
   };
 
-  Navigation.prototype._navigationChange = function(evt) {
+
+  /**
+  	@method _change
+  	@param {Event} [evt=null]
+  	@private
+   */
+
+  Navigation.prototype._change = function(evt) {
+    if (evt == null) {
+      evt = null;
+    }
     switch (evt.type) {
       case BaseNavigationController.CHANGE_VIEW:
         this._currentView = evt.data.currentView;
@@ -1154,37 +1427,32 @@ Navigation = (function(_super) {
         this.trigger(Navigation.CHANGE_VIEW, {
           data: evt.data
         });
-        _meta.change(this.currentView.meta);
-        break;
+        return _meta.change(this.currentView.meta);
       case BaseNavigationController.CHANGE:
-        this.trigger(Navigation.CHANGE_INTERNAL_VIEW, {
+        return this.trigger(Navigation.CHANGE_INTERNAL_VIEW, {
           view: evt.view,
           transition: evt.transition
         });
-    }
-    return false;
-  };
-
-  Navigation.prototype._routeChange = function(evt) {
-    if (evt == null) {
-      evt = null;
-    }
-    switch (evt.type) {
       case NavigationRouter.CHANGE_ROUTE:
         this.trigger(Navigation.CHANGE_ROUTE, {
           data: this.routeData
         });
         if (this.routeData.route != null) {
-          this.goto(this._getViewByRoute(this.routeData.route));
+          return this.gotoView(this.getViewByRoute(this.routeData.route));
         }
     }
-    return null;
   };
 
   return Navigation;
 
 })(EventDispatcher);
 
+
+/**
+NavigationContainer Class
+@class NavigationContainer
+@extends BaseView
+ */
 var NavigationContainer,
   __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
   __hasProp = {}.hasOwnProperty,
@@ -1193,21 +1461,51 @@ var NavigationContainer,
 NavigationContainer = (function(_super) {
   __extends(NavigationContainer, _super);
 
+
+  /**
+  	@class NavigationContainer
+  	@constructor
+   */
+
   function NavigationContainer() {
     this.setupNavigation = __bind(this.setupNavigation, this);
     NavigationContainer.__super__.constructor.call(this, null, 'nav-container');
   }
 
+
+  /**
+  	@method setup
+  	@param {Object} p_data
+   */
+
   NavigationContainer.prototype.setupNavigation = function(p_data) {
     this._navigation = new Navigation(this.controller);
-    return this._navigation.setup(p_data);
+    this._navigation.setup(p_data);
+    return false;
   };
+
+
+  /**
+  	Returns the current instance of {{#crossLink "Navigation"}}{{/crossLink}}
+  	@attribute navigation
+  	@type {Navigation}
+  	@readOnly
+   */
 
   NavigationContainer.get({
     navigation: function() {
       return this._navigation;
     }
   });
+
+
+  /**
+  	__This getter must be overridden with a instance of {{#crossLink "BaseNavigationController"}}{{/crossLink}}.__<br>
+  	Returns the current navigation controller instance.
+  	@attribute controller
+  	@type {BaseNavigationController}
+  	@readOnly
+   */
 
   NavigationContainer.get({
     controller: function() {
@@ -1410,10 +1708,7 @@ TemplateSubView = (function(_super) {
     if (evt == null) {
       evt = null;
     }
-    if (this.i == null) {
-      this.i = 0;
-    }
-    return console.log("render", this.id, this.i++);
+    return this.i != null ? this.i : this.i = 0;
   };
 
   TemplateSubView.prototype.pause = function() {
