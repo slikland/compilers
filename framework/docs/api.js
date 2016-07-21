@@ -6,6 +6,8 @@ YUI.add("yuidoc-meta", function(Y) {
         "BaseAnimation",
         "BaseDOM",
         "BaseView",
+        "ColorUtils",
+        "Detections",
         "EventDispatcher",
         "NavigationLoader",
         "SpriteSheetAnimation",

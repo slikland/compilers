@@ -77,6 +77,15 @@ class Navigation extends EventDispatcher
 			results.route = routeData[0]?[0]?.route
 			results.parsed = routeData[1]
 		return results
+	
+	# DEPRECATED
+	goto:(p_value)=>
+		if p_value.indexOf('/') == 0
+			@gotoRoute(p_value)
+		else
+			@gotoView(p_value)
+		false
+	# 
 
 	setRoute:(p_value, p_trigger=false)=>
 		@gotoRoute(p_value, p_trigger)
@@ -90,14 +99,14 @@ class Navigation extends EventDispatcher
 			throw new Error('The value "'+p_value+'" is not a valid format to route ("/example")')
 		false
 
-	# DEPRECATED
-	goto:(p_value)=>
+	replaceRoute:(p_value, p_trigger=false)=>
+		return if !p_value?
 		if p_value.indexOf('/') == 0
-			@gotoRoute(p_value)
+			_router.replace(p_value, p_trigger)
 		else
-			@gotoView(p_value)
+			throw new Error('The value "'+p_value+'" is not a valid format to route ("/example")')
 		false
-	# 
+	
 	gotoView:(p_value)=>
 		if p_value.indexOf('/') == 0
 			throw new Error('The value "'+p_value+'" is not a valid format to viewID ("exampleID")')

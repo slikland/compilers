@@ -1,7 +1,7 @@
 #import slikland.utils.NumberUtils
 
 ###*
-Bunch of utilities methods for {Array}
+Bunch of utilities methods for Array
 @class ArrayUtils
 ###
 class ArrayUtils

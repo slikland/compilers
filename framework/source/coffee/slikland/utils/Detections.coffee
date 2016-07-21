@@ -1,3 +1,9 @@
+###*
+Detections Class
+@class Detections
+@constructor
+@extends Class
+###
 class Detections
 	matches: [
 		{name: 'Opera', nick: /opera/i, test: /opera|opr/i, version: /(?:opera|opr)[\s\/](\d+(\.\d+)*)/i},

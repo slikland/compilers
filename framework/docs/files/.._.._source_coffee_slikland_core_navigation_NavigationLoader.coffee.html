@@ -43,6 +43,8 @@
                                 <li><a href="../classes/BaseAnimation.html">BaseAnimation</a></li>
                                 <li><a href="../classes/BaseDOM.html">BaseDOM</a></li>
                                 <li><a href="../classes/BaseView.html">BaseView</a></li>
+                                <li><a href="../classes/ColorUtils.html">ColorUtils</a></li>
+                                <li><a href="../classes/Detections.html">Detections</a></li>
                                 <li><a href="../classes/EventDispatcher.html">EventDispatcher</a></li>
                                 <li><a href="../classes/NavigationLoader.html">NavigationLoader</a></li>
                                 <li><a href="../classes/SpriteSheetAnimation.html">SpriteSheetAnimation</a></li>
@@ -640,6 +642,7 @@ class NavigationLoader extends EventDispatcher
 		false
 
 	###*
+	Called only when the core assets is completely loaded.
 	@method coreAssetsLoaded
 	@param {Event} [evt=null]
 	###
@@ -647,6 +650,7 @@ class NavigationLoader extends EventDispatcher
 		false
 
 	###*
+	Called only when the preloader assets is completely loaded.
 	@method preloaderAssetsLoaded
 	@param {Event} [evt=null]
 	###
@@ -654,6 +658,7 @@ class NavigationLoader extends EventDispatcher
 		false
 
 	###*
+	Called only when the main assets is completely loaded.
 	@method mainAssetsLoaded
 	@param {Event} [evt=null]
 	###

@@ -36,7 +36,7 @@ class ScrollNavigationController extends BaseNavigationController
 					"orientation":"vertical",
 					"scrollToTime":0,
 					"pauseInvisibleViews":true,
-					"showViewLimit":0.5,
+					"percentToShow":0.5,
 					"snap":{
 						"delay":0
 					}
@@ -50,7 +50,7 @@ class ScrollNavigationController extends BaseNavigationController
 		@_orientation = if @_options.orientation? && (@_options.orientation == 'vertical' || @_options.orientation == 'horizontal') then @_options.orientation else 'vertical'
 		@_snapDelay = if @_options.snap?.delay? && @_options.snap.delay > 0 then @_options.snap.delay else 0
 		@_scrollToTime = if @_options.scrollToTime >= 0 then @_options.scrollToTime else .5
-		@_showViewLimit = if @_options.showViewLimit >= 0 || @_options.showViewLimit <= 1 then @_options.showViewLimit else .5
+		@_percentToShow = if @_options.percentToShow >= 0 || @_options.percentToShow <= 1 then @_options.percentToShow else .5
 		@_pauseInvisibleViews = if @_options.pauseInvisibleViews? then @_options.pauseInvisibleViews else true
 
 		for k, v of app.config.views
@@ -92,7 +92,8 @@ class ScrollNavigationController extends BaseNavigationController
 				index = @_visibleViews.indexOf(view)
 				if index >= 0 then ArrayUtils.removeItemByIndex(index, @_visibleViews)
 			
-			if viewBounds > (@windowValue*@_showViewLimit) and currentView == null
+			percentToShow = if view.percentToShow? then view.percentToShow else @_percentToShow
+			if viewBounds > (@windowValue*percentToShow) and currentView == null
 				currentView = view
 				@_snapping(view)
 

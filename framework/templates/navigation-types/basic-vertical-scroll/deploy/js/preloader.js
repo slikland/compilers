@@ -525,7 +525,8 @@ EventDispatcher = (function() {
   
   	@method off
   	@param {String} [event=null] Event name.
-  	@param {function} [handler=null] A callback function added in the {{#crossLink "EventDispatcher/on:method"}}{{/crossLink}} call.
+  	@param {function} [handler=null]
+  	A callback function added in the {{#crossLink "EventDispatcher/on:method"}}{{/crossLink}} call.
    */
 
   EventDispatcher.prototype.off = function(p_event, p_handler) {
@@ -888,7 +889,7 @@ NumberUtils = (function() {
 
 
 /**
-Bunch of utilities methods for {Array}
+Bunch of utilities methods for Array
 @class ArrayUtils
  */
 var ArrayUtils;
@@ -1133,11 +1134,27 @@ ObjectUtils = (function() {
 
 })();
 
+
+/**
+Bunch of utilities methods for String
+@class StringUtils
+@static
+ */
 var StringUtils,
   __slice = [].slice;
 
 StringUtils = (function() {
   function StringUtils() {}
+
+
+  /**
+  	Check in a search in the string and returns whether it contains the sentence.
+  	@method hasString
+  	@static
+  	@param {String} p_string The variable to validate.
+  	@param {String} p_search The value to search in variable.
+  	@return {Boolean}
+   */
 
   StringUtils.hasString = function(p_string, p_search) {
     if (p_string.split(p_search).length !== 1) {
@@ -1147,9 +1164,29 @@ StringUtils = (function() {
     }
   };
 
+
+  /**
+  	A basic method of replace a sentence in a String.
+  	@method replace
+  	@static
+  	@param {String} p_string The variable to replace.
+  	@param {String} p_from - The string to search in variable.
+  	@param {String} p_to - The value to replace.
+  	@return {String}
+   */
+
   StringUtils.replace = function(p_string, p_from, p_to) {
     return p_string.split(p_from).join(p_to);
   };
+
+
+  /**
+  	A method to revert a content of a String.
+  	@method reverse
+  	@static
+  	@param {String} p_string The variable to reverse.
+  	@return {String}
+   */
 
   StringUtils.reverse = function(p_string) {
     if (!p_string) {
@@ -1157,6 +1194,15 @@ StringUtils = (function() {
     }
     return p_string.split("").reverse().join("");
   };
+
+
+  /**
+  	A method to convert the string to camel case
+  	@method toCamelCase
+  	@static
+  	@param {String} p_string - The value to camellcase.
+  	@return {String}
+   */
 
   StringUtils.toCamelCase = function(p_string) {
     var re;
@@ -1166,6 +1212,15 @@ StringUtils = (function() {
     return re.charAt(0).toUpperCase() + re.slice(1);
   };
 
+
+  /**
+  	A method to remove the white spaces in a String.
+  	@method removeWhiteSpace
+  	@static
+  	@param {String} p_string - The value to remove the white spaces.
+  	@return {String}
+   */
+
   StringUtils.removeWhiteSpace = function(p_string) {
     if (!p_string) {
       return "";
@@ -1173,13 +1228,40 @@ StringUtils = (function() {
     return this.trim(p_string).replace(/\s+/g, "");
   };
 
+
+  /**
+  	A method to remove HTML tags in a String.
+  	@method removeHTMLTag
+  	@static
+  	@param {String} p_string - The value to remove the HTML tags.
+  	@return {String}
+   */
+
   StringUtils.removeHTMLTag = function(p_string) {
     return p_string.replace(/<.*?>/g, "");
   };
 
+
+  /**
+  	A method to remove special characters in a String.
+  	@method removeSpecialChars
+  	@static
+  	@param {String} p_string The value to remove the special characters.
+  	@return {String}
+   */
+
   StringUtils.removeSpecialChars = function(p_string) {
     return p_string.replace(/[^a-zA-Z 0-9]+/g, '');
   };
+
+
+  /**
+  	A method to convert a numeric string to brazillian CPF format. (XXX.XXX.XXX-XX)
+  	@method convertToCPF
+  	@static
+  	@param {String} p_string - The value to format.
+  	@return {String}
+   */
 
   StringUtils.convertToCPF = function(p_string) {
     p_string = this.removeSpecialChars(p_string);
@@ -1195,6 +1277,15 @@ StringUtils = (function() {
     return p_string;
   };
 
+
+  /**
+  	A method to convert a numeric string to brazillian CEP format. (XXXXX-XXX)
+  	@method convertToCEP
+  	@static
+  	@param {String} p_string - The value to format.
+  	@return {String}
+   */
+
   StringUtils.convertToCEP = function(p_string) {
     p_string = this.removeSpecialChars(p_string);
     if (p_string.length > 5) {
@@ -1204,6 +1295,15 @@ StringUtils = (function() {
     }
     return p_string;
   };
+
+
+  /**
+  	A method to convert a numeric string to date format. (XX/XX/XXXX)
+  	@method convertToDate
+  	@static
+  	@param {String} p_string - The value to format.
+  	@return {String}
+   */
 
   StringUtils.convertToDate = function(p_string) {
     p_string = this.removeSpecialChars(p_string);
@@ -1217,18 +1317,47 @@ StringUtils = (function() {
     return p_string;
   };
 
+
+  /**
+  	A method to check if the String is empty.
+  	@method isEmpty
+  	@static
+  	@param {String} p_string - The value to remove the white spaces.
+  	@return {Bollean}
+   */
+
   StringUtils.isEmpty = function(p_string) {
     if (!p_string || p_string === "") {
       return true;
+    } else {
+      return false;
     }
-    return !p_string.length;
   };
+
+
+  /**
+  	A method to capitalize case the String
+  	@method toCapitalizeCase
+  	@static
+  	@param {String} p_string - The value to capitalize case.
+  	@return {String}
+   */
 
   StringUtils.toCapitalizeCase = function(p_string) {
     var str;
     str = this.trimLeft(p_string);
     return str.replace(/(^\w)/, this._upperCase);
   };
+
+
+  /**
+  	A method to convert milisecounds (Number) in a String on time format.
+  	@method toTimeFormat
+  	@static
+  	@param {Number} p_miliseconds - The number in milisecounds.
+  	@param {Bollean} p_decimal - Value if is a decimal format.
+  	@return {String}
+   */
 
   StringUtils.toTimeFormat = function(p_miliseconds, p_decimal) {
     var minutes, seconds;
@@ -1240,12 +1369,33 @@ StringUtils = (function() {
     return String(p_decimal ? this.addDecimalZero(minutes) + ":" + this.addDecimalZero(seconds) : minutes + ":" + seconds);
   };
 
+
+  /**
+  	A method to add a zero before if the p_value is smaller that 10 and bigger that -1.
+  	@method addDecimalZero
+  	@static
+  	@param {Number} p_value
+  	@return {String}
+   */
+
   StringUtils.addDecimalZero = function(p_value) {
     if (p_value < 10) {
       return "0" + p_value;
     }
     return String(p_value);
   };
+
+
+  /**
+  	A method to abbreviate a String.
+  	@method abbreviate
+  	@static
+  	@param {String} p_string The text to abbreviate.
+  	@param {Number} p_max_length the length to text.
+  	@param {String} p_indicator - The value of the end String.
+  	@param {String} p_split - The value to before p_indicator and after text.
+  	@return {String}
+   */
 
   StringUtils.abbreviate = function(p_string, p_max_length, p_indicator, p_split) {
     var badChars, charCount, n, pieces, result;
@@ -1285,6 +1435,15 @@ StringUtils = (function() {
     return result;
   };
 
+
+  /**
+  	A method to convert a String to Boolean (yes | true | 1 | no | false | 0).
+  	@method toBoolean
+  	@static
+  	@param {String} p_string The value to converting.
+  	@return {Boolean}
+   */
+
   StringUtils.toBoolean = function(p_string) {
     var f, t;
     t = ['yes', 'true', ' 1', 1, true];
@@ -1298,6 +1457,15 @@ StringUtils = (function() {
     }
   };
 
+
+  /**
+  	A method to returns a random String with the specified length.
+  	@method random
+  	@static
+  	@param {Number} p_length The length of the random.
+  	@return {String}
+   */
+
   StringUtils.random = function(p_length) {
     var i, s, _i;
     if (p_length == null) {
@@ -1310,12 +1478,32 @@ StringUtils = (function() {
     return s;
   };
 
+
+  /**
+  	Trim
+  	@method trim
+  	@static
+  	@param {String} p_str
+  	@param {String} p_char
+  	@return {String}
+   */
+
   StringUtils.trim = function(p_str, p_char) {
     if (p_str === null) {
       return "";
     }
     return this.trimRight(this.trimLeft(p_str, p_char), p_char);
   };
+
+
+  /**
+  	Trim Right
+  	@method trimRight
+  	@static
+  	@param {String} p_str
+  	@param {String} p_char
+  	@return {String}
+   */
 
   StringUtils.trimRight = function(p_str, p_char) {
     var re;
@@ -1328,6 +1516,16 @@ StringUtils = (function() {
     return p_str.replace(re, '');
   };
 
+
+  /**
+  	Trim left
+  	@method trimLeft
+  	@static
+  	@param {String} p_str
+  	@param {String} p_char
+  	@return {String}
+   */
+
   StringUtils.trimLeft = function(p_str, p_char) {
     var re;
     if (!p_str) {
@@ -1338,6 +1536,15 @@ StringUtils = (function() {
     re.multiline = true;
     return p_str.replace(re, '');
   };
+
+
+  /**
+  	Replace special characters
+  	@method replaceSpecialCharacters
+  	@static
+  	@param {String} p_string
+  	@return {String}
+   */
 
   StringUtils.replaceSpecialCharacters = function(p_string) {
     var char, pattern;
@@ -1352,13 +1559,41 @@ StringUtils = (function() {
     return p_string;
   };
 
+
+  /**
+  	Set strings uppercase
+  	@method _upperCase
+  	@private
+  	@param {String} p_char
+  	@param {Object} args
+  	@return {String}
+   */
+
   StringUtils._upperCase = function() {
     var args, p_char;
     p_char = arguments[0], args = 2 <= arguments.length ? __slice.call(arguments, 1) : [];
     return p_char.toUpperCase();
   };
 
+
+  /**
+  	List of space character
+  	@property substitionDict
+  	@type {Array}
+  	@private
+  	@return {String}
+   */
+
   StringUtils.substitionDict = null;
+
+
+  /**
+  	Create list of space character
+  	@property _initDict
+  	@private
+  	@type {Array}
+  	@return {Array}
+   */
 
   StringUtils._initDict = function() {
     var char, _results;
@@ -1504,6 +1739,13 @@ JSONUtils = (function() {
 
 })();
 
+
+/**
+Detections Class
+@class Detections
+@constructor
+@extends Class
+ */
 var Detections,
   __indexOf = [].indexOf || function(item) { for (var i = 0, l = this.length; i < l; i++) { if (i in this && this[i] === item) return i; } return -1; };
 
@@ -2797,6 +3039,12 @@ BaseDOM = (function(_super) {
 
 })(EventDispatcher);
 
+
+/**
+Base View
+@class BaseView
+@extends BaseDOM
+ */
 var BaseView,
   __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
   __hasProp = {}.hasOwnProperty,
@@ -2805,38 +3053,170 @@ var BaseView,
 BaseView = (function(_super) {
   __extends(BaseView, _super);
 
+
+  /**
+  	Triggered before the create routine view starts. Triggered when {{#crossLink "BaseView/createStart:method"}}{{/crossLink}} is called.
+  	@event CREATE_START
+  	@static
+   */
+
   BaseView.CREATE_START = 'create_start';
+
+
+  /**
+  	Triggered when the create routine view starts. Triggered when {{#crossLink "BaseView/create:method"}}{{/crossLink}} is called.
+  	@event CREATE
+  	@static
+   */
 
   BaseView.CREATE = 'create';
 
+
+  /**
+  	Triggered when the create routine view is finished. Triggered when {{#crossLink "BaseView/createComplete:method"}}{{/crossLink}} is called.
+  	@event CREATE_COMPLETE
+  	@static
+   */
+
   BaseView.CREATE_COMPLETE = 'create_complete';
+
+
+  /**
+  	Triggered before the showing routine view starts. Triggered when {{#crossLink "BaseView/showStart:method"}}{{/crossLink}} is called.
+  	@event SHOW_START
+  	@static
+   */
 
   BaseView.SHOW_START = 'show_start';
 
+
+  /**
+  	Triggered when the showing routine view starts. Triggered when {{#crossLink "BaseView/show:method"}}{{/crossLink}} is called.
+  	@event SHOW
+  	@static
+   */
+
   BaseView.SHOW = 'show';
+
+
+  /**
+  	Triggered when the showing routine view is finished. Triggered when {{#crossLink "BaseView/showComplete:method"}}{{/crossLink}} is called.
+  	@event SHOW_COMPLETE
+  	@static
+   */
 
   BaseView.SHOW_COMPLETE = 'show_complete';
 
+
+  /**
+  	Triggered before the hiding routine view starts. Triggered when {{#crossLink "BaseView/hideStart:method"}}{{/crossLink}} is called.
+  	@event HIDE_START
+  	@static
+   */
+
   BaseView.HIDE_START = 'hide_start';
+
+
+  /**
+  	Triggered when the hiding routine view starts. Triggered when {{#crossLink "BaseView/hide:method"}}{{/crossLink}} is called.
+  	@event HIDE
+  	@static
+   */
 
   BaseView.HIDE = 'hide';
 
+
+  /**
+  	Triggered when the hiding routine view is finished. Triggered when {{#crossLink "BaseView/hideComplete:method"}}{{/crossLink}} is called.
+  	@event HIDE_COMPLETE
+  	@static
+   */
+
   BaseView.HIDE_COMPLETE = 'hide_complete';
+
+
+  /**
+  	Triggered when the destroy routine view starts. Triggered when {{#crossLink "BaseView/destroy:method"}}{{/crossLink}} is called.
+  	@event DESTROY
+  	@static
+   */
 
   BaseView.DESTROY = 'destroy';
 
+
+  /**
+  	Triggered when the destroy routine view is finished. Triggered when {{#crossLink "BaseView/destroyComplete:method"}}{{/crossLink}} is called.
+  	@event DESTROY_COMPLETE
+  	@static
+   */
+
   BaseView.DESTROY_COMPLETE = 'destroy_complete';
+
+
+  /**
+  	Triggered when the view pauses. Usually when {{#crossLink "BaseView/pause:method"}}{{/crossLink}} is called.
+  	@event PAUSE
+  	@static
+   */
 
   BaseView.PAUSE = 'pause';
 
+
+  /**
+  	Triggered when the view resumes. Usually when {{#crossLink "BaseView/resume:method"}}{{/crossLink}} is called.
+  	@event RESUME
+  	@static
+   */
+
   BaseView.RESUME = 'resume';
 
-  function BaseView(p_data, p_className) {
+
+  /**
+  	@class BaseView
+  	@constructor	
+  	@param {Object} [p_data=null] 
+  	Data object sets the default and/or custom values of properties of view for navigation controller.<br>
+  	If this object it's not null, some default properties are not required explained below:
+  	Default Key|Type|Required
+  	-|-|-
+  	id|{{#crossLink "String"}}{{/crossLink}}|__Yes__
+  	class|{{#crossLink "String"}}{{/crossLink}}|__Yes__
+  	route|{{#crossLink "String"}}{{/crossLink}} / {{#crossLink "RegExp"}}{{/crossLink}}|__No__
+  	content|{{#crossLink "String"}}{{/crossLink}} / {{#crossLink "JSON"}}{{/crossLink}}|__No__
+  	cache|{{#crossLink "Boolean"}}{{/crossLink}}|__No__
+  	parentView|{{#crossLink "String"}}{{/crossLink}}|__No__
+  	destroyable|{{#crossLink "Boolean"}}{{/crossLink}}|__No__
+  	loadContent|{{#crossLink "Boolean"}}{{/crossLink}}|__No__
+  	snap *(only for scroll navigation type)*|{{#crossLink "Boolean"}}{{/crossLink}}|__No__
+  	percentToShow *(only for scroll navigation type)*|{{#crossLink "Number"}}{{/crossLink}}|__No__
+  	subviewsWrapper|<a href="//developer.mozilla.org/en-US/docs/Web/Guide/CSS/Getting_Started/Selectors" target="_blank" class="crosslink">Selectors</a>|__No__
+  	attachToParentWrapper|<a href="//developer.mozilla.org/en-US/docs/Web/Guide/CSS/Getting_Started/Selectors" target="_blank" class="crosslink">Selectors</a>|__No__
+  	@example
+  	```
+  	{
+  		"id":"home",
+  		"class":"template-home-view", //the valid formats are "ClassName", "class-name", "class name" or "class_name"
+  		"route":"/", //valid formats are String or RegExp
+  		"content":"data/home.json",
+  		"cache":true,
+  		"parentView":"someViewID", //the unique ID of parent view
+  		"destroyable":true,
+  		"loadContent":true,
+  		"snap":true, //only for scroll navigation type
+  		"percentToShow":0.5, //only for scroll navigation type, the valid values are between 0~1
+  		"subviewsWrapper":"CSSSelector", //like #ID or .className etc
+  		"attachToParentWrapper":"CSSSelector" //like #ID or .className etc
+  	}
+  	```
+  	@param {Object} [p_CSSClassName=null]
+   */
+
+  function BaseView(p_data, p_CSSClassName) {
     if (p_data == null) {
       p_data = null;
     }
-    if (p_className == null) {
-      p_className = null;
+    if (p_CSSClassName == null) {
+      p_CSSClassName = null;
     }
     this.destroyComplete = __bind(this.destroyComplete, this);
     this.destroy = __bind(this.destroy, this);
@@ -2864,18 +3244,39 @@ BaseView = (function(_super) {
     this.destroyable = this._data.destroyable != null ? this._data.destroyable : void 0;
     BaseView.__super__.constructor.call(this, {
       element: 'div',
-      className: p_className
+      className: p_CSSClassName
     });
   }
+
+
+  /**
+  	Returns the loader queue of this specific view.
+  	@attribute loader
+  	@type {createjs.LoadQueue}
+  	@default null
+  	@readOnly
+   */
 
   BaseView.get({
     loader: function() {
       var _ref;
       if (this._id != null) {
         return typeof app !== "undefined" && app !== null ? (_ref = app.loader) != null ? _ref.getGroup(this._id) : void 0 : void 0;
+      } else {
+        return null;
       }
     }
   });
+
+
+  /**
+  	Returns true if the view was created.
+  	@attribute created
+  	@type {Boolean}
+  	@default false
+  	@protected
+  	@readOnly
+   */
 
   BaseView.get({
     created: function() {
@@ -2883,11 +3284,29 @@ BaseView = (function(_super) {
     }
   });
 
+
+  /**
+  	Returns true if the view was shown.
+  	@attribute showed
+  	@type {Boolean}
+  	@default false
+  	@protected
+  	@readOnly
+   */
+
   BaseView.get({
     showed: function() {
       return this._showed;
     }
   });
+
+
+  /**
+  	Sets/gets a clone of data object with default and/or custom values of properties of view.
+  	@attribute data
+  	@type {Object}
+  	@default {}
+   */
 
   BaseView.get({
     data: function() {
@@ -2901,6 +3320,14 @@ BaseView = (function(_super) {
     }
   });
 
+
+  /**
+  	Sets/gets the unique ID of view.
+  	@attribute id
+  	@type {String}
+  	@default null
+   */
+
   BaseView.get({
     id: function() {
       return this._id;
@@ -2912,6 +3339,14 @@ BaseView = (function(_super) {
       return this._id = p_value;
     }
   });
+
+
+  /**
+  	Sets/gets the unique ID of view.
+  	@attribute content
+  	@type {String|Object|JSON}
+  	@default null
+   */
 
   BaseView.get({
     content: function() {
@@ -2925,6 +3360,14 @@ BaseView = (function(_super) {
     }
   });
 
+
+  /**
+  	Sets/gets the route of view.
+  	@attribute route
+  	@type {String|RegExp}
+  	@default null
+   */
+
   BaseView.get({
     route: function() {
       return this._route;
@@ -2936,6 +3379,15 @@ BaseView = (function(_super) {
       return this._route = p_value;
     }
   });
+
+
+  /**
+  	Sets/gets the actual route data.
+  	@attribute routeData
+  	@type {Object}
+  	@protected
+  	@default null
+   */
 
   BaseView.get({
     routeData: function() {
@@ -2949,6 +3401,14 @@ BaseView = (function(_super) {
     }
   });
 
+
+  /**
+  	Sets/gets the parent view of this view.
+  	@attribute parentView
+  	@type {BaseView}
+  	@default null
+   */
+
   BaseView.get({
     parentView: function() {
       return this._parentView;
@@ -2960,6 +3420,14 @@ BaseView = (function(_super) {
       return this._parentView = p_value;
     }
   });
+
+
+  /**
+  	Sets/gets a array of {{#crossLink "BaseView"}}{{/crossLink}} instances of subviews of this view.
+  	@attribute subviews
+  	@type {Array}
+  	@default null
+   */
 
   BaseView.get({
     subviews: function() {
@@ -2973,6 +3441,14 @@ BaseView = (function(_super) {
     }
   });
 
+
+  /**
+  	Sets/gets if this views is destroyable.
+  	@attribute destroyable
+  	@type {Boolean}
+  	@default false
+   */
+
   BaseView.get({
     destroyable: function() {
       return this._destroyable;
@@ -2984,6 +3460,15 @@ BaseView = (function(_super) {
       return this._destroyable = p_value;
     }
   });
+
+
+  /**
+  	Sets/gets the type is a 'view' or a 'sub-view'.
+  	@attribute type
+  	@type {String}
+  	@protected
+  	@default null
+   */
 
   BaseView.get({
     type: function() {
@@ -2997,8 +3482,17 @@ BaseView = (function(_super) {
     }
   });
 
+
+  /**
+  	Returns the meta object of his content.
+  	@attribute meta
+  	@type {Object}
+  	@default null
+  	@readOnly
+   */
+
   BaseView.get({
-    meta: function(p_data) {
+    meta: function() {
       var _ref, _ref1;
       if (((_ref = this._content) != null ? _ref.meta : void 0) != null) {
         return (_ref1 = this._content) != null ? _ref1.meta : void 0;
@@ -3006,9 +3500,21 @@ BaseView = (function(_super) {
     }
   });
 
+
+  /**
+  	Sets/gets the loading progress of this view.
+  	@attribute progress
+  	@type {Number}
+  	@protected
+   */
+
   BaseView.get({
     progress: function() {
-      return this._progress;
+      if (this._progress != null) {
+        return this._progress;
+      } else {
+        return this.loader.progress;
+      }
     }
   });
 
@@ -3018,6 +3524,15 @@ BaseView = (function(_super) {
     }
   });
 
+
+  /**
+  	Returns the reverse path of his parent view.
+  	@attribute reverseParentPath
+  	@type {Array}
+  	@protected
+  	@readOnly
+   */
+
   BaseView.get({
     reverseParentPath: function() {
       this.getReverseParentList(this);
@@ -3025,12 +3540,30 @@ BaseView = (function(_super) {
     }
   });
 
+
+  /**
+  	Returns the path of his parent view.
+  	@attribute parentPath
+  	@type {Array}
+  	@protected
+  	@readOnly
+   */
+
   BaseView.get({
     parentPath: function() {
       this.getReverseParentList(this);
       return this._parentPath;
     }
   });
+
+
+  /**
+  	Returns the wrapper container for the sub-views of this view.
+  	@attribute subviewsWrapper
+  	@type {HTMLElement}
+  	@default null
+  	@readOnly
+   */
 
   BaseView.get({
     subviewsWrapper: function() {
@@ -3041,6 +3574,15 @@ BaseView = (function(_super) {
     }
   });
 
+
+  /**
+  	Returns the CSS Selector of the wrapper container for attach this view.
+  	@attribute attachToParentWrapper
+  	@type {String}
+  	@default null
+  	@readOnly
+   */
+
   BaseView.get({
     attachToParentWrapper: function() {
       var _ref;
@@ -3049,6 +3591,15 @@ BaseView = (function(_super) {
       }
     }
   });
+
+
+  /**
+  	Returns a reverse list of the parent path of this view.
+  	@method getReverseParentList
+  	@param {Object|JSON} [p_subview=null]
+  	@private
+  	@readOnly
+   */
 
   BaseView.prototype.getReverseParentList = function(p_subview) {
     if (p_subview == null) {
@@ -3062,6 +3613,14 @@ BaseView = (function(_super) {
     return false;
   };
 
+
+  /**
+  	Usually starts before the creation routine of view calling by the navigation controller.<br>
+  	Callback the method {{#crossLink "BaseView/create:method"}}{{/crossLink}} and trigger the event {{#crossLink "BaseView/CREATE_START:event"}}{{/crossLink}} after complete.
+  	@method createStart
+  	@param {Event} [evt=null]
+   */
+
   BaseView.prototype.createStart = function(evt) {
     if (evt == null) {
       evt = null;
@@ -3070,6 +3629,14 @@ BaseView = (function(_super) {
     this.create();
     return false;
   };
+
+
+  /**
+  	Usually starts when the creation routine of view calling by the navigation controller.<br>
+  	Callback the method {{#crossLink "BaseView/createComplete:method"}}{{/crossLink}} and trigger the event {{#crossLink "BaseView/CREATE:event"}}{{/crossLink}} after complete.
+  	@method create
+  	@param {Event} [evt=null]
+   */
 
   BaseView.prototype.create = function(evt) {
     if (evt == null) {
@@ -3080,6 +3647,13 @@ BaseView = (function(_super) {
     return false;
   };
 
+
+  /**
+  	Usually starts when finished the creation routine of view calling by the navigation controller and trigger the event {{#crossLink "BaseView/CREATE_COMPLETE:event"}}{{/crossLink}} after complete the routine.
+  	@method createComplete
+  	@param {Event} [evt=null]
+   */
+
   BaseView.prototype.createComplete = function(evt) {
     if (evt == null) {
       evt = null;
@@ -3088,6 +3662,14 @@ BaseView = (function(_super) {
     this.trigger(BaseView.CREATE_COMPLETE, this);
     return false;
   };
+
+
+  /**
+  	Usually starts before the showing routine of view calling by the navigation controller.<br>
+  	Callback the method {{#crossLink "BaseView/show:method"}}{{/crossLink}} and trigger the event {{#crossLink "BaseView/SHOW_START:event"}}{{/crossLink}} after complete.
+  	@method showStart
+  	@param {Event} [evt=null]
+   */
 
   BaseView.prototype.showStart = function(evt) {
     if (evt == null) {
@@ -3098,6 +3680,14 @@ BaseView = (function(_super) {
     return false;
   };
 
+
+  /**
+  	Usually starts when the showing routine of view calling by the navigation controller.<br>
+  	Callback the method {{#crossLink "BaseView/showComplete:method"}}{{/crossLink}} and trigger the event {{#crossLink "BaseView/SHOW:event"}}{{/crossLink}} after complete.
+  	@method show
+  	@param {Event} [evt=null]
+   */
+
   BaseView.prototype.show = function(evt) {
     if (evt == null) {
       evt = null;
@@ -3106,6 +3696,13 @@ BaseView = (function(_super) {
     this.showComplete();
     return false;
   };
+
+
+  /**
+  	Usually when finished the showing routine of view calling by the navigation controller and trigger the event {{#crossLink "BaseView/SHOW_COMPLETE:event"}}{{/crossLink}} after complete the routine.
+  	@method showComplete
+  	@param {Event} [evt=null]
+   */
 
   BaseView.prototype.showComplete = function(evt) {
     if (evt == null) {
@@ -3116,6 +3713,14 @@ BaseView = (function(_super) {
     return false;
   };
 
+
+  /**
+  	Usually starts before the hiding routine of view calling by the navigation controller.<br>
+  	Callback the method {{#crossLink "BaseView/hide:method"}}{{/crossLink}} and trigger the event {{#crossLink "BaseView/HIDE_START:event"}}{{/crossLink}} after complete.
+  	@method hideStart
+  	@param {Event} [evt=null]
+   */
+
   BaseView.prototype.hideStart = function(evt) {
     if (evt == null) {
       evt = null;
@@ -3124,6 +3729,14 @@ BaseView = (function(_super) {
     this.hide();
     return false;
   };
+
+
+  /**
+  	Usually starts when the hiding routine of view calling by the navigation controller.<br>
+  	Callback the method {{#crossLink "BaseView/hideComplete:method"}}{{/crossLink}} and trigger the event {{#crossLink "BaseView/HIDE:event"}}{{/crossLink}} after complete.
+  	@method hide
+  	@param {Event} [evt=null]
+   */
 
   BaseView.prototype.hide = function(evt) {
     if (evt == null) {
@@ -3135,6 +3748,13 @@ BaseView = (function(_super) {
     return false;
   };
 
+
+  /**
+  	Usually when finished the hiding routine of view calling by the navigation controller and trigger the event {{#crossLink "BaseView/HIDE_COMPLETE:event"}}{{/crossLink}} after complete the routine.
+  	@method hideComplete
+  	@param {Event} [evt=null]
+   */
+
   BaseView.prototype.hideComplete = function(evt) {
     if (evt == null) {
       evt = null;
@@ -3143,15 +3763,37 @@ BaseView = (function(_super) {
     return false;
   };
 
+
+  /**
+  	Usually used to pauses animations or something else in looping in view.
+  	Trigger the event {{#crossLink "BaseView/PAUSE:event"}}{{/crossLink}} after complete.
+  	@method pause
+   */
+
   BaseView.prototype.pause = function() {
     this.trigger(BaseView.PAUSE, this);
     return false;
   };
 
+
+  /**
+  	Usually used to resumes animations or something else in view.
+  	Trigger the event {{#crossLink "BaseView/RESUME:event"}}{{/crossLink}} after complete.
+  	@method pause
+   */
+
   BaseView.prototype.resume = function() {
     this.trigger(BaseView.RESUME, this);
     return false;
   };
+
+
+  /**
+  	Usually starts when the destroying routine of view calling by the navigation controller.<br>
+  	Callback the method {{#crossLink "BaseView/destroyComplete:method"}}{{/crossLink}} and trigger the event {{#crossLink "BaseView/DESTROY:event"}}{{/crossLink}} after complete.
+  	@method destroy
+  	@param {Event} [evt=null]
+   */
 
   BaseView.prototype.destroy = function(evt) {
     var _ref;
@@ -3171,6 +3813,13 @@ BaseView = (function(_super) {
     return false;
   };
 
+
+  /**
+  	Usually when finished the destroying routine of view calling by the navigation controller and trigger the event {{#crossLink "BaseView/DESTROY_COMPLETE:event"}}{{/crossLink}} after complete the routine.
+  	@method destroyComplete
+  	@param {Event} [evt=null]
+   */
+
   BaseView.prototype.destroyComplete = function(evt) {
     if (evt == null) {
       evt = null;
@@ -3184,6 +3833,13 @@ BaseView = (function(_super) {
 
 })(BaseDOM);
 
+
+/**
+Base class to setup the navigation and start loading of dependencies.
+
+@class NavigationLoader
+@extends EventDispatcher
+ */
 var NavigationLoader,
   __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
   __hasProp = {}.hasOwnProperty,
@@ -3215,6 +3871,15 @@ NavigationLoader = (function(_super) {
   app.conditions = null;
 
   app.detections = null;
+
+
+  /**
+  	@class NavigationLoader
+  	@constructor
+  	@param {BaseView} p_preloaderView The view of the first loading, it's called by the method {{#crossLink "NavigationLoader/createPreloaderView:method"}}{{/crossLink}} and attached on container when the preloader assets is completely loaded.
+  	@param {String} [p_configPath = "data/config.json"] Path of the navigation configuration file.
+  	@param {HTMLElement} [p_wrapper = null] Custom container to attach the navigation.
+   */
 
   function NavigationLoader(p_preloaderView, p_configPath, p_wrapper) {
     var _ref, _ref1;
@@ -3262,6 +3927,13 @@ NavigationLoader = (function(_super) {
     false;
   }
 
+
+  /**
+  	@method _prepareConfigFile
+  	@param {Event} evt
+  	@private
+   */
+
   NavigationLoader.prototype._prepareConfigFile = function(evt) {
     var queue;
     this.queue.off(AssetLoader.COMPLETE_FILE, this._prepareConfigFile);
@@ -3275,6 +3947,13 @@ NavigationLoader = (function(_super) {
     }
     return false;
   };
+
+
+  /**
+  	@method _createLoadQueue
+  	@param {Event} evt
+  	@private
+   */
 
   NavigationLoader.prototype._createLoadQueue = function(evt) {
     var check, firstIndexes, k, queues, total, v, _ref, _ref1;
@@ -3326,6 +4005,14 @@ NavigationLoader = (function(_super) {
     }
     return false;
   };
+
+
+  /**
+  	@method _parseContentFiles
+  	@param {Array} p_views
+  	@param {Object} p_data
+  	@private
+   */
 
   NavigationLoader.prototype._parseContentFiles = function(p_views, p_data) {
     var cache, cloneSrc, filtered, i, index, k, node, obj, results, ts, v, _i, _j, _ref, _ref1, _ref2;
@@ -3441,6 +4128,14 @@ NavigationLoader = (function(_super) {
     }
     return false;
   };
+
+
+  /**
+  	@method _parseConfigFile
+  	@param {Object} p_data
+  	@private
+  	@return {Object}
+   */
 
   NavigationLoader.prototype._parseConfigFile = function(p_data) {
     var cache, i, id, k, temp, ts, v, _i, _j, _k, _ref, _ref1, _ref2, _ref3, _ref4, _ref5;
@@ -3585,6 +4280,14 @@ NavigationLoader = (function(_super) {
     return p_data;
   };
 
+
+  /**
+  	@method _createLoader
+  	@param {String} p_id
+  	@private
+  	@return {createjs.LoadQueue}
+   */
+
   NavigationLoader.prototype._createLoader = function(p_id) {
     var queue;
     queue = this.loader.getGroup(p_id);
@@ -3594,6 +4297,14 @@ NavigationLoader = (function(_super) {
     return queue;
   };
 
+
+  /**
+  	@method _removeLoader
+  	@param {Object} p_queue
+  	@private
+  	@return {createjs.LoadQueue}
+   */
+
   NavigationLoader.prototype._removeLoader = function(p_queue) {
     p_queue.removeAllEventListeners(AssetLoader.COMPLETE_FILE);
     p_queue.removeAllEventListeners(AssetLoader.PROGRESS_ALL);
@@ -3601,6 +4312,13 @@ NavigationLoader = (function(_super) {
     p_queue.destroy();
     return p_queue;
   };
+
+
+  /**
+  	@method _addFiles
+  	@param {Object} p_files
+  	@private
+   */
 
   NavigationLoader.prototype._addFiles = function(p_files) {
     var cache, f, jsRE, ts, _i, _len;
@@ -3637,6 +4355,13 @@ NavigationLoader = (function(_super) {
     return false;
   };
 
+
+  /**
+  	@method _normalizeConfigPaths
+  	@param {Object} p_paths
+  	@private
+   */
+
   NavigationLoader.prototype._normalizeConfigPaths = function(p_paths) {
     var o, p_pathsStr, val;
     p_pathsStr = JSON.stringify(p_paths);
@@ -3651,6 +4376,15 @@ NavigationLoader = (function(_super) {
     return p_paths;
   };
 
+
+  /**
+  	@method _normalizePaths
+  	@param {Object} p_data
+  	@param {Object} p_paths
+  	@return {Object}
+  	@private
+   */
+
   NavigationLoader.prototype._normalizePaths = function(p_data, p_paths) {
     var k, v;
     for (k in p_paths) {
@@ -3662,19 +4396,26 @@ NavigationLoader = (function(_super) {
     return p_data;
   };
 
-  NavigationLoader.prototype._loadFileComplete = function(p_event) {
+
+  /**
+  	@method _loadFileComplete
+  	@param {Event} evt
+  	@private
+   */
+
+  NavigationLoader.prototype._loadFileComplete = function(evt) {
     var data, e, result, si, style;
-    switch (p_event.item.ext) {
+    switch (evt.item.ext) {
       case 'json':
-        data = p_event.result;
-        data = JSONUtils.removeComments(p_event.result);
+        data = evt.result;
+        data = JSONUtils.removeComments(evt.result);
         data = this._normalizePaths(data, app.config.paths);
         if (typeof data !== 'string') {
           data = JSON.stringify(data);
         }
         break;
       case 'js':
-        data = p_event.result;
+        data = evt.result;
         data = data.replace(/^\/\/.*?(\n|$)/igm, '');
         if (this.currentStep.id === 'main') {
           result = eval(data);
@@ -3685,9 +4426,9 @@ NavigationLoader = (function(_super) {
         }
         break;
       case 'css':
-        data = p_event.result;
+        data = evt.result;
         style = document.createElement('style');
-        style.id = p_event.item.id;
+        style.id = evt.item.id;
         style.type = "text/css";
         head.appendChild(style);
         si = head.querySelectorAll('style').length;
@@ -3703,6 +4444,13 @@ NavigationLoader = (function(_super) {
     return false;
   };
 
+
+  /**
+  	@method _loadProgress
+  	@param {Event} evt
+  	@private
+   */
+
   NavigationLoader.prototype._loadProgress = function(evt) {
     if (_preloaderView != null) {
       _preloaderView.progress = (evt.loaded / evt.total) * this.currentStep.ratio + this.loaderRatio;
@@ -3710,7 +4458,14 @@ NavigationLoader = (function(_super) {
     return false;
   };
 
-  NavigationLoader.prototype._loadComplete = function(p_event) {
+
+  /**
+  	@method _loadComplete
+  	@param {Event} evt
+  	@private
+   */
+
+  NavigationLoader.prototype._loadComplete = function(evt) {
     var k, step, v, view, _ref;
     this._removeLoader(this.queue);
     step = this.loaderSteps[this.loaderStep];
@@ -3753,6 +4508,13 @@ NavigationLoader = (function(_super) {
     return false;
   };
 
+
+  /**
+  	@method createPreloaderView
+  	@param {Event} [evt=null]
+  	@protected
+   */
+
   NavigationLoader.prototype.createPreloaderView = function(evt) {
     if (evt == null) {
       evt = null;
@@ -3763,6 +4525,13 @@ NavigationLoader = (function(_super) {
     return false;
   };
 
+
+  /**
+  	@method showPreloaderView
+  	@param {Event} [evt=null]
+  	@protected
+   */
+
   NavigationLoader.prototype.showPreloaderView = function(evt) {
     if (evt == null) {
       evt = null;
@@ -3771,6 +4540,13 @@ NavigationLoader = (function(_super) {
     _preloaderView.showStart();
     return false;
   };
+
+
+  /**
+  	@method hidePreloderView
+  	@param {Event} [evt=null]
+  	@protected
+   */
 
   NavigationLoader.prototype.hidePreloderView = function(evt) {
     if (evt == null) {
@@ -3781,6 +4557,13 @@ NavigationLoader = (function(_super) {
     _preloaderView.hideStart();
     return false;
   };
+
+
+  /**
+  	@method destroyPreloderView
+  	@param {Event} [evt=null]
+  	@protected
+   */
 
   NavigationLoader.prototype.destroyPreloderView = function(evt) {
     var hiddenFonts, _ref;
@@ -3799,6 +4582,12 @@ NavigationLoader = (function(_super) {
     this._removeLoader(this.queue);
     return false;
   };
+
+
+  /**
+  	@method _createMainView
+  	@private
+   */
 
   NavigationLoader.prototype._createMainView = function() {
     var _ref, _ref1;
@@ -3821,6 +4610,13 @@ NavigationLoader = (function(_super) {
     return false;
   };
 
+
+  /**
+  	@method _showMainView
+  	@param {Event} [evt=null]
+  	@private
+   */
+
   NavigationLoader.prototype._showMainView = function(evt) {
     if (evt == null) {
       evt = null;
@@ -3830,6 +4626,13 @@ NavigationLoader = (function(_super) {
     return false;
   };
 
+
+  /**
+  	Called only when the core assets is completely loaded.
+  	@method coreAssetsLoaded
+  	@param {Event} [evt=null]
+   */
+
   NavigationLoader.prototype.coreAssetsLoaded = function(evt) {
     if (evt == null) {
       evt = null;
@@ -3837,12 +4640,26 @@ NavigationLoader = (function(_super) {
     return false;
   };
 
+
+  /**
+  	Called only when the preloader assets is completely loaded.
+  	@method preloaderAssetsLoaded
+  	@param {Event} [evt=null]
+   */
+
   NavigationLoader.prototype.preloaderAssetsLoaded = function(evt) {
     if (evt == null) {
       evt = null;
     }
     return false;
   };
+
+
+  /**
+  	Called only when the main assets is completely loaded.
+  	@method mainAssetsLoaded
+  	@param {Event} [evt=null]
+   */
 
   NavigationLoader.prototype.mainAssetsLoaded = function(evt) {
     if (evt == null) {

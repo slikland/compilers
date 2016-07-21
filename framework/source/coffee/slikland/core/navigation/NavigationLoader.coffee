@@ -550,6 +550,7 @@ class NavigationLoader extends EventDispatcher
 		false
 
 	###*
+	Called only when the core assets is completely loaded.
 	@method coreAssetsLoaded
 	@param {Event} [evt=null]
 	###
@@ -557,6 +558,7 @@ class NavigationLoader extends EventDispatcher
 		false
 
 	###*
+	Called only when the preloader assets is completely loaded.
 	@method preloaderAssetsLoaded
 	@param {Event} [evt=null]
 	###
@@ -564,6 +566,7 @@ class NavigationLoader extends EventDispatcher
 		false
 
 	###*
+	Called only when the main assets is completely loaded.
 	@method mainAssetsLoaded
 	@param {Event} [evt=null]
 	###

@@ -314,7 +314,7 @@ ScrollNavigationController = (function(_super) {
       					"orientation":"vertical",
       					"scrollToTime":0,
       					"pauseInvisibleViews":true,
-      					"showViewLimit":0.5,
+      					"percentToShow":0.5,
       					"snap":{
       						"delay":0
       					}
@@ -327,7 +327,7 @@ ScrollNavigationController = (function(_super) {
     this._orientation = (this._options.orientation != null) && (this._options.orientation === 'vertical' || this._options.orientation === 'horizontal') ? this._options.orientation : 'vertical';
     this._snapDelay = (((_ref = this._options.snap) != null ? _ref.delay : void 0) != null) && this._options.snap.delay > 0 ? this._options.snap.delay : 0;
     this._scrollToTime = this._options.scrollToTime >= 0 ? this._options.scrollToTime : .5;
-    this._showViewLimit = this._options.showViewLimit >= 0 || this._options.showViewLimit <= 1 ? this._options.showViewLimit : .5;
+    this._percentToShow = this._options.percentToShow >= 0 || this._options.percentToShow <= 1 ? this._options.percentToShow : .5;
     this._pauseInvisibleViews = this._options.pauseInvisibleViews != null ? this._options.pauseInvisibleViews : true;
     _ref1 = app.config.views;
     for (k in _ref1) {
@@ -357,7 +357,7 @@ ScrollNavigationController = (function(_super) {
   };
 
   ScrollNavigationController.prototype._onScroll = function(evt) {
-    var currentView, index, k, v, view, viewBounds, viewOffset, _ref, _ref1;
+    var currentView, index, k, percentToShow, v, view, viewBounds, viewOffset, _ref, _ref1;
     this._visibleViews = this._visibleViews || [];
     currentView = null;
     _ref = app.config.views;
@@ -380,7 +380,8 @@ ScrollNavigationController = (function(_super) {
           ArrayUtils.removeItemByIndex(index, this._visibleViews);
         }
       }
-      if (viewBounds > (this.windowValue * this._showViewLimit) && currentView === null) {
+      percentToShow = view.percentToShow != null ? view.percentToShow : this._percentToShow;
+      if (viewBounds > (this.windowValue * percentToShow) && currentView === null) {
         currentView = view;
         this._snapping(view);
         if (((_ref1 = this._currentView) != null ? _ref1.id : void 0) === view.id) {
@@ -964,9 +965,10 @@ Navigation = (function(_super) {
     this._getRouteByView = __bind(this._getRouteByView, this);
     this._getViewByRoute = __bind(this._getViewByRoute, this);
     this.gotoView = __bind(this.gotoView, this);
-    this.goto = __bind(this.goto, this);
+    this.replaceRoute = __bind(this.replaceRoute, this);
     this.gotoRoute = __bind(this.gotoRoute, this);
     this.setRoute = __bind(this.setRoute, this);
+    this.goto = __bind(this.goto, this);
     this.gotoDefault = __bind(this.gotoDefault, this);
     this.start = __bind(this.start, this);
     this.setup = __bind(this.setup, this);
@@ -1064,6 +1066,15 @@ Navigation = (function(_super) {
     }
   });
 
+  Navigation.prototype.goto = function(p_value) {
+    if (p_value.indexOf('/') === 0) {
+      this.gotoRoute(p_value);
+    } else {
+      this.gotoView(p_value);
+    }
+    return false;
+  };
+
   Navigation.prototype.setRoute = function(p_value, p_trigger) {
     if (p_trigger == null) {
       p_trigger = false;
@@ -1087,11 +1098,17 @@ Navigation = (function(_super) {
     return false;
   };
 
-  Navigation.prototype.goto = function(p_value) {
+  Navigation.prototype.replaceRoute = function(p_value, p_trigger) {
+    if (p_trigger == null) {
+      p_trigger = false;
+    }
+    if (p_value == null) {
+      return;
+    }
     if (p_value.indexOf('/') === 0) {
-      this.gotoRoute(p_value);
+      _router.replace(p_value, p_trigger);
     } else {
-      this.gotoView(p_value);
+      throw new Error('The value "' + p_value + '" is not a valid format to route ("/example")');
     }
     return false;
   };

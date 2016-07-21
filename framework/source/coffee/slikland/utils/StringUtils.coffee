@@ -91,7 +91,7 @@ class StringUtils
 
 	
 	###*
-	A method to convert a numeric string to brazillian CPF format. (###.###.###-##)
+	A method to convert a numeric string to brazillian CPF format. (XXX.XXX.XXX-XX)
 	@method convertToCPF
 	@static
 	@param {String} p_string - The value to format.
@@ -110,7 +110,7 @@ class StringUtils
 		return p_string
 
 	###*
-	A method to convert a numeric string to brazillian CEP format. (######-###)
+	A method to convert a numeric string to brazillian CEP format. (XXXXX-XXX)
 	@method convertToCEP
 	@static
 	@param {String} p_string - The value to format.
@@ -125,7 +125,7 @@ class StringUtils
 		return p_string
 
 	###*
-	A method to convert a numeric string to date format. (##/##/####)
+	A method to convert a numeric string to date format. (XX/XX/XXXX)
 	@method convertToDate
 	@static
 	@param {String} p_string - The value to format.

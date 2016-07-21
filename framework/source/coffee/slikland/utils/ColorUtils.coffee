@@ -1,3 +1,7 @@
+###*
+Bunch of utilities methods for Colors
+@class ColorUtils
+###
 class ColorUtils
 	@lightenColor:(p_color, p_amount)->
 		usePound = false

@@ -10,7 +10,7 @@
 			"orientation":"vertical",
 			"scrollToTime":1,
 			"pauseInvisibleViews":true,
-			"showViewLimit":0.5,
+			"percentToShow":0.5,
 			"snap":{
 				"delay":1
 			}

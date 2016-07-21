@@ -43,6 +43,8 @@
                                 <li><a href="../classes/BaseAnimation.html">BaseAnimation</a></li>
                                 <li><a href="../classes/BaseDOM.html">BaseDOM</a></li>
                                 <li><a href="../classes/BaseView.html">BaseView</a></li>
+                                <li><a href="../classes/ColorUtils.html">ColorUtils</a></li>
+                                <li><a href="../classes/Detections.html">Detections</a></li>
                                 <li><a href="../classes/EventDispatcher.html">EventDispatcher</a></li>
                                 <li><a href="../classes/NavigationLoader.html">NavigationLoader</a></li>
                                 <li><a href="../classes/SpriteSheetAnimation.html">SpriteSheetAnimation</a></li>
@@ -98,70 +100,70 @@ Base View
 class BaseView extends BaseDOM
 
 	###*
-	Triggered before the create rotine view starts. Triggered when {{#crossLink &quot;BaseView/createStart:method&quot;}}{{/crossLink}} is called.
+	Triggered before the create routine view starts. Triggered when {{#crossLink &quot;BaseView/createStart:method&quot;}}{{/crossLink}} is called.
 	@event CREATE_START
 	@static
 	###
 	@CREATE_START: &#x27;create_start&#x27;
 	###*
-	Triggered when the create rotine view starts. Triggered when {{#crossLink &quot;BaseView/create:method&quot;}}{{/crossLink}} is called.
+	Triggered when the create routine view starts. Triggered when {{#crossLink &quot;BaseView/create:method&quot;}}{{/crossLink}} is called.
 	@event CREATE
 	@static
 	###
 	@CREATE: &#x27;create&#x27;
 	###*
-	Triggered when the create rotine view is finished. Triggered when {{#crossLink &quot;BaseView/createComplete:method&quot;}}{{/crossLink}} is called.
+	Triggered when the create routine view is finished. Triggered when {{#crossLink &quot;BaseView/createComplete:method&quot;}}{{/crossLink}} is called.
 	@event CREATE_COMPLETE
 	@static
 	###
 	@CREATE_COMPLETE: &#x27;create_complete&#x27;
 
 	###*
-	Triggered before the show rotine view starts. Triggered when {{#crossLink &quot;BaseView/showStart:method&quot;}}{{/crossLink}} is called.
+	Triggered before the showing routine view starts. Triggered when {{#crossLink &quot;BaseView/showStart:method&quot;}}{{/crossLink}} is called.
 	@event SHOW_START
 	@static
 	###
 	@SHOW_START: &#x27;show_start&#x27;
 	###*
-	Triggered when the show rotine view starts. Triggered when {{#crossLink &quot;BaseView/show:method&quot;}}{{/crossLink}} is called.
+	Triggered when the showing routine view starts. Triggered when {{#crossLink &quot;BaseView/show:method&quot;}}{{/crossLink}} is called.
 	@event SHOW
 	@static
 	###
 	@SHOW: &#x27;show&#x27;
 	###*
-	Triggered when the show rotine view is finished. Triggered when {{#crossLink &quot;BaseView/showComplete:method&quot;}}{{/crossLink}} is called.
+	Triggered when the showing routine view is finished. Triggered when {{#crossLink &quot;BaseView/showComplete:method&quot;}}{{/crossLink}} is called.
 	@event SHOW_COMPLETE
 	@static
 	###
 	@SHOW_COMPLETE: &#x27;show_complete&#x27;
 
 	###*
-	Triggered before the hide rotine view starts. Triggered when {{#crossLink &quot;BaseView/hideStart:method&quot;}}{{/crossLink}} is called.
+	Triggered before the hiding routine view starts. Triggered when {{#crossLink &quot;BaseView/hideStart:method&quot;}}{{/crossLink}} is called.
 	@event HIDE_START
 	@static
 	###
 	@HIDE_START: &#x27;hide_start&#x27;
 	###*
-	Triggered when the hide rotine view starts. Triggered when {{#crossLink &quot;BaseView/hide:method&quot;}}{{/crossLink}} is called.
+	Triggered when the hiding routine view starts. Triggered when {{#crossLink &quot;BaseView/hide:method&quot;}}{{/crossLink}} is called.
 	@event HIDE
 	@static
 	###
 	@HIDE: &#x27;hide&#x27;
 	###*
-	Triggered when the hide rotine view is finished. Triggered when {{#crossLink &quot;BaseView/hideComplete:method&quot;}}{{/crossLink}} is called.
+	Triggered when the hiding routine view is finished. Triggered when {{#crossLink &quot;BaseView/hideComplete:method&quot;}}{{/crossLink}} is called.
 	@event HIDE_COMPLETE
 	@static
 	###
 	@HIDE_COMPLETE: &#x27;hide_complete&#x27;
 
 	###*
-	Triggered when the destroy rotine view starts. Triggered when {{#crossLink &quot;BaseView/destroy:method&quot;}}{{/crossLink}} is called.
+	Triggered when the destroy routine view starts. Triggered when {{#crossLink &quot;BaseView/destroy:method&quot;}}{{/crossLink}} is called.
 	@event DESTROY
 	@static
 	###
 	@DESTROY: &#x27;destroy&#x27;
 	###*
-	Triggered when the destroy rotine view is finished. Triggered when {{#crossLink &quot;BaseView/destroyComplete:method&quot;}}{{/crossLink}} is called.
+	Triggered when the destroy routine view is finished. Triggered when {{#crossLink &quot;BaseView/destroyComplete:method&quot;}}{{/crossLink}} is called.
 	@event DESTROY_COMPLETE
 	@static
 	###
@@ -184,30 +186,35 @@ class BaseView extends BaseDOM
 	@class BaseView
 	@constructor	
 	@param {Object} [p_data=null] 
-	If this data configuration it&#x27;s not null, some default values is required explained below:
-	Default Key Name|Type|Required
+	Data object sets the default and/or custom values of properties of view for navigation controller.&lt;br&gt;
+	If this object it&#x27;s not null, some default properties are not required explained below:
+	Default Key|Type|Required
 	-|-|-
 	id|{{#crossLink &quot;String&quot;}}{{/crossLink}}|__Yes__
 	class|{{#crossLink &quot;String&quot;}}{{/crossLink}}|__Yes__
-	route|{{#crossLink &quot;String&quot;}}{{/crossLink}}|__No__
+	route|{{#crossLink &quot;String&quot;}}{{/crossLink}} / {{#crossLink &quot;RegExp&quot;}}{{/crossLink}}|__No__
 	content|{{#crossLink &quot;String&quot;}}{{/crossLink}} / {{#crossLink &quot;JSON&quot;}}{{/crossLink}}|__No__
 	cache|{{#crossLink &quot;Boolean&quot;}}{{/crossLink}}|__No__
 	parentView|{{#crossLink &quot;String&quot;}}{{/crossLink}}|__No__
 	destroyable|{{#crossLink &quot;Boolean&quot;}}{{/crossLink}}|__No__
 	loadContent|{{#crossLink &quot;Boolean&quot;}}{{/crossLink}}|__No__
-	subviewsWrapper|&lt;a href=&quot;https://developer.mozilla.org/en-US/docs/Web/Guide/CSS/Getting_Started/Selectors&quot; target=&quot;_blank&quot; class=&quot;crosslink&quot;&gt;Selectors&lt;/a&gt;|__No__
-	attachToParentWrapper|&lt;a href=&quot;https://developer.mozilla.org/en-US/docs/Web/Guide/CSS/Getting_Started/Selectors&quot; target=&quot;_blank&quot; class=&quot;crosslink&quot;&gt;Selectors&lt;/a&gt;|__No__
+	snap *(only for scroll navigation type)*|{{#crossLink &quot;Boolean&quot;}}{{/crossLink}}|__No__
+	percentToShow *(only for scroll navigation type)*|{{#crossLink &quot;Number&quot;}}{{/crossLink}}|__No__
+	subviewsWrapper|&lt;a href=&quot;//developer.mozilla.org/en-US/docs/Web/Guide/CSS/Getting_Started/Selectors&quot; target=&quot;_blank&quot; class=&quot;crosslink&quot;&gt;Selectors&lt;/a&gt;|__No__
+	attachToParentWrapper|&lt;a href=&quot;//developer.mozilla.org/en-US/docs/Web/Guide/CSS/Getting_Started/Selectors&quot; target=&quot;_blank&quot; class=&quot;crosslink&quot;&gt;Selectors&lt;/a&gt;|__No__
 	@example
 	&#x60;&#x60;&#x60;
 	{
 		&quot;id&quot;:&quot;home&quot;,
-		&quot;class&quot;:&quot;template-home-view&quot;,
-		&quot;route&quot;:&quot;/&quot;,
+		&quot;class&quot;:&quot;template-home-view&quot;, //the valid formats are &quot;ClassName&quot;, &quot;class-name&quot;, &quot;class name&quot; or &quot;class_name&quot;
+		&quot;route&quot;:&quot;/&quot;, //valid formats are String or RegExp
 		&quot;content&quot;:&quot;data/home.json&quot;,
 		&quot;cache&quot;:true,
-		&quot;parentView&quot;:&quot;someViewID&quot;,
+		&quot;parentView&quot;:&quot;someViewID&quot;, //the unique ID of parent view
 		&quot;destroyable&quot;:true,
 		&quot;loadContent&quot;:true,
+		&quot;snap&quot;:true, //only for scroll navigation type
+		&quot;percentToShow&quot;:0.5, //only for scroll navigation type, the valid values are between 0~1
 		&quot;subviewsWrapper&quot;:&quot;CSSSelector&quot;, //like #ID or .className etc
 		&quot;attachToParentWrapper&quot;:&quot;CSSSelector&quot; //like #ID or .className etc
 	}
@@ -229,82 +236,209 @@ class BaseView extends BaseDOM
 
 		super({element:&#x27;div&#x27;, className:p_CSSClassName})
 
+	###*
+	Returns the loader queue of this specific view.
+	@attribute loader
+	@type {createjs.LoadQueue}
+	@default null
+	@readOnly
+	###
 	@get loader:-&gt;
-		return if @_id? then app?.loader?.getGroup(@_id)
+		return if @_id? then app?.loader?.getGroup(@_id) else null
 
+	###*
+	Returns true if the view was created.
+	@attribute created
+	@type {Boolean}
+	@default false
+	@protected
+	@readOnly
+	###
 	@get created:-&gt;
 		return @_created
 
+	###*
+	Returns true if the view was shown.
+	@attribute showed
+	@type {Boolean}
+	@default false
+	@protected
+	@readOnly
+	###
 	@get showed:-&gt;
 		return @_showed
 
+	###*
+	Sets/gets a clone of data object with default and/or custom values of properties of view.
+	@attribute data
+	@type {Object}
+	@default {}
+	###
 	@get data:-&gt;
 		return @_data
 	@set data:(p_value)-&gt;
 		@_data = ObjectUtils.clone(p_value)
 
+	###*
+	Sets/gets the unique ID of view.
+	@attribute id
+	@type {String}
+	@default null
+	###
 	@get id:-&gt;
 		return @_id
 	@set id:(p_value)-&gt;
 		@_id = p_value
 
+	###*
+	Sets/gets the unique ID of view.
+	@attribute content
+	@type {String|Object|JSON}
+	@default null
+	###
 	@get content:-&gt;
 		return @_content
 	@set content:(p_value)-&gt;
 		@_content = p_value
 
+	###*
+	Sets/gets the route of view.
+	@attribute route
+	@type {String|RegExp}
+	@default null
+	###
 	@get route:-&gt;
 		return @_route
 	@set route:(p_value)-&gt;
 		@_route = p_value
 
+	###*
+	Sets/gets the actual route data.
+	@attribute routeData
+	@type {Object}
+	@protected
+	@default null
+	###
 	@get routeData:-&gt;
 		return @_routeData
 	@set routeData:(p_value)-&gt;
 		@_routeData = p_value
 
+	###*
+	Sets/gets the parent view of this view.
+	@attribute parentView
+	@type {BaseView}
+	@default null
+	###
 	@get parentView:-&gt;
 		return @_parentView
 	@set parentView:(p_value)-&gt;
 		@_parentView = p_value
 
+	###*
+	Sets/gets a array of {{#crossLink &quot;BaseView&quot;}}{{/crossLink}} instances of subviews of this view.
+	@attribute subviews
+	@type {Array}
+	@default null
+	###
 	@get subviews:-&gt;
 		return @_subviews
 	@set subviews:(p_value)-&gt;
 		@_subviews = p_value
 
+	###*
+	Sets/gets if this views is destroyable.
+	@attribute destroyable
+	@type {Boolean}
+	@default false
+	###
 	@get destroyable:-&gt;
 		return @_destroyable
 	@set destroyable:(p_value)-&gt;
 		@_destroyable = p_value
 
+	###*
+	Sets/gets the type is a &#x27;view&#x27; or a &#x27;sub-view&#x27;.
+	@attribute type
+	@type {String}
+	@protected
+	@default null
+	###
 	@get type:-&gt;
 		return @_type
 	@set type:(p_value)-&gt;
 		@_type = p_value
 
-	@get meta:(p_data)-&gt;
+	###*
+	Returns the meta object of his content.
+	@attribute meta
+	@type {Object}
+	@default null
+	@readOnly
+	###
+	@get meta:()-&gt;
 		return if @_content?.meta? then @_content?.meta
 
+	###*
+	Sets/gets the loading progress of this view.
+	@attribute progress
+	@type {Number}
+	@protected
+	###
 	@get progress:-&gt;
-		return @_progress
+		return if @_progress? then @_progress else @loader.progress
 	@set progress:(p_value)-&gt;
 		@_progress = p_value
 
+	###*
+	Returns the reverse path of his parent view.
+	@attribute reverseParentPath
+	@type {Array}
+	@protected
+	@readOnly
+	###
 	@get reverseParentPath:-&gt;
 		@getReverseParentList(@)
 		return @_parentPath.reverse()
 
+	###*
+	Returns the path of his parent view.
+	@attribute parentPath
+	@type {Array}
+	@protected
+	@readOnly
+	###
 	@get parentPath:-&gt;
 		@getReverseParentList(@)
 		return @_parentPath
 
+	###*
+	Returns the wrapper container for the sub-views of this view.
+	@attribute subviewsWrapper
+	@type {HTMLElement}
+	@default null
+	@readOnly
+	###
 	@get subviewsWrapper:()-&gt;
 		return if @_data?.subviewsWrapper? then @find(@_data.subviewsWrapper)
 
+	###*
+	Returns the CSS Selector of the wrapper container for attach this view.
+	@attribute attachToParentWrapper
+	@type {String}
+	@default null
+	@readOnly
+	###
 	@get attachToParentWrapper:()-&gt;
 		return if @_data?.attachToParentWrapper? then @_data.attachToParentWrapper
 
+	###*
+	Returns a reverse list of the parent path of this view.
+	@method getReverseParentList
+	@param {Object|JSON} [p_subview=null]
+	@private
+	@readOnly
+	###
 	getReverseParentList:(p_subview=null)=&gt;
 		@_parentPath = []
 		if p_subview?.parentView?
@@ -312,59 +446,126 @@ class BaseView extends BaseDOM
 			@_parentPath.push p_subview.id
 		false
 
+	###*
+	Usually starts before the creation routine of view calling by the navigation controller.&lt;br&gt;
+	Callback the method {{#crossLink &quot;BaseView/create:method&quot;}}{{/crossLink}} and trigger the event {{#crossLink &quot;BaseView/CREATE_START:event&quot;}}{{/crossLink}} after complete.
+	@method createStart
+	@param {Event} [evt=null]
+	###
 	createStart:(evt=null)=&gt;
 		@trigger(BaseView.CREATE_START, @)
 		@create()
 		false
-		
+
+	###*
+	Usually starts when the creation routine of view calling by the navigation controller.&lt;br&gt;
+	Callback the method {{#crossLink &quot;BaseView/createComplete:method&quot;}}{{/crossLink}} and trigger the event {{#crossLink &quot;BaseView/CREATE:event&quot;}}{{/crossLink}} after complete.
+	@method create
+	@param {Event} [evt=null]
+	###
 	create:(evt=null)=&gt;
 		@trigger(BaseView.CREATE, @)
 		@createComplete()
 		false
 
+	###*
+	Usually starts when finished the creation routine of view calling by the navigation controller and trigger the event {{#crossLink &quot;BaseView/CREATE_COMPLETE:event&quot;}}{{/crossLink}} after complete the routine.
+	@method createComplete
+	@param {Event} [evt=null]
+	###
 	createComplete:(evt=null)=&gt;
 		@_created = true
 		@trigger(BaseView.CREATE_COMPLETE, @)
 		false
 		
+	###*
+	Usually starts before the showing routine of view calling by the navigation controller.&lt;br&gt;
+	Callback the method {{#crossLink &quot;BaseView/show:method&quot;}}{{/crossLink}} and trigger the event {{#crossLink &quot;BaseView/SHOW_START:event&quot;}}{{/crossLink}} after complete.
+	@method showStart
+	@param {Event} [evt=null]
+	###
 	showStart:(evt=null)=&gt;
 		@trigger(BaseView.SHOW_START, @)
 		@show()
 		false
 
+	###*
+	Usually starts when the showing routine of view calling by the navigation controller.&lt;br&gt;
+	Callback the method {{#crossLink &quot;BaseView/showComplete:method&quot;}}{{/crossLink}} and trigger the event {{#crossLink &quot;BaseView/SHOW:event&quot;}}{{/crossLink}} after complete.
+	@method show
+	@param {Event} [evt=null]
+	###
 	show:(evt=null)=&gt;
 		@trigger(BaseView.SHOW, @)
 		@showComplete()
 		false
 
+	###*
+	Usually when finished the showing routine of view calling by the navigation controller and trigger the event {{#crossLink &quot;BaseView/SHOW_COMPLETE:event&quot;}}{{/crossLink}} after complete the routine.
+	@method showComplete
+	@param {Event} [evt=null]
+	###
 	showComplete:(evt=null)=&gt;
 		@_showed = true
 		@trigger(BaseView.SHOW_COMPLETE, @)
 		false
 
+	###*
+	Usually starts before the hiding routine of view calling by the navigation controller.&lt;br&gt;
+	Callback the method {{#crossLink &quot;BaseView/hide:method&quot;}}{{/crossLink}} and trigger the event {{#crossLink &quot;BaseView/HIDE_START:event&quot;}}{{/crossLink}} after complete.
+	@method hideStart
+	@param {Event} [evt=null]
+	###
 	hideStart:(evt=null)=&gt;
 		@trigger(BaseView.HIDE_START, @)
 		@hide()
 		false
 
+	###*
+	Usually starts when the hiding routine of view calling by the navigation controller.&lt;br&gt;
+	Callback the method {{#crossLink &quot;BaseView/hideComplete:method&quot;}}{{/crossLink}} and trigger the event {{#crossLink &quot;BaseView/HIDE:event&quot;}}{{/crossLink}} after complete.
+	@method hide
+	@param {Event} [evt=null]
+	###
 	hide:(evt=null)=&gt;
 		@_showed = false
 		@trigger(BaseView.HIDE, @)
 		@hideComplete()
 		false
 
+	###*
+	Usually when finished the hiding routine of view calling by the navigation controller and trigger the event {{#crossLink &quot;BaseView/HIDE_COMPLETE:event&quot;}}{{/crossLink}} after complete the routine.
+	@method hideComplete
+	@param {Event} [evt=null]
+	###
 	hideComplete:(evt=null)=&gt;
 		@trigger(BaseView.HIDE_COMPLETE, @)
 		false
 
+	###*
+	Usually used to pauses animations or something else in looping in view.
+	Trigger the event {{#crossLink &quot;BaseView/PAUSE:event&quot;}}{{/crossLink}} after complete.
+	@method pause
+	###
 	pause:()=&gt;
 		@trigger(BaseView.PAUSE, @)
 		false
 
+	###*
+	Usually used to resumes animations or something else in view.
+	Trigger the event {{#crossLink &quot;BaseView/RESUME:event&quot;}}{{/crossLink}} after complete.
+	@method pause
+	###
 	resume:()=&gt;
 		@trigger(BaseView.RESUME, @)
 		false
 	
+	###*
+	Usually starts when the destroying routine of view calling by the navigation controller.&lt;br&gt;
+	Callback the method {{#crossLink &quot;BaseView/destroyComplete:method&quot;}}{{/crossLink}} and trigger the event {{#crossLink &quot;BaseView/DESTROY:event&quot;}}{{/crossLink}} after complete.
+	@method destroy
+	@param {Event} [evt=null]
+	###
 	destroy:(evt=null)=&gt;
 		@_created = false
 
@@ -380,6 +581,11 @@ class BaseView extends BaseDOM
 		@destroyComplete()
 		false
 
+	###*
+	Usually when finished the destroying routine of view calling by the navigation controller and trigger the event {{#crossLink &quot;BaseView/DESTROY_COMPLETE:event&quot;}}{{/crossLink}} after complete the routine.
+	@method destroyComplete
+	@param {Event} [evt=null]
+	###
 	destroyComplete:(evt=null)=&gt;
 		@trigger(BaseView.DESTROY_COMPLETE, @)
 		@off()

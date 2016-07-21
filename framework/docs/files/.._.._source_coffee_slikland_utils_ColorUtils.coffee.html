@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>BaseDOM - Slikland Framework</title>
+    <title>../../source/coffee/slikland/utils/ColorUtils.coffee - Slikland Framework</title>
     <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
     <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
     <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
@@ -86,43 +86,46 @@
             <div class="apidocs">
                 <div id="docs-main">
                     <div class="content">
-<h1>BaseDOM Class</h1>
-<div class="box meta">
+<h1 class="file-heading">File: ../../source/coffee/slikland/utils/ColorUtils.coffee</h1>
 
+<div class="file">
+    <pre class="code prettyprint linenums">
+###*
+Bunch of utilities methods for Colors
+@class ColorUtils
+###
+class ColorUtils
+	@lightenColor:(p_color, p_amount)-&gt;
+		usePound = false
+		if p_color[0] == &quot;#&quot;
+			p_color = p_color.slice(1)
+			usePound = true
 
-        <div class="foundat">
-            Defined in: <a href="../files/.._.._source_coffee_slikland_display_BaseDOM.coffee.html#l38"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;display&#x2F;BaseDOM.coffee:38</code></a>
-        </div>
+		num = parseInt(p_color, 16)
+		r = (num &gt;&gt; 16) + p_amount
+		if r &gt; 255
+			r = 255
+		else if r &lt; 0
+			r = 0
 
+		b = ((num &gt;&gt; 8) &amp; 0x00FF) + p_amount
+		if b &gt; 255
+			b = 255
+		else if b &lt; 0
+			b = 0
 
-</div>
+		g = (num &amp; 0x0000FF) + p_amount
+		if g &gt; 255
+			g = 255
+		else if g &lt; 0
+			g = 0
 
+		if usePound
+			return &quot;#&quot; + (g | (b &lt;&lt; 8) | (r &lt;&lt; 16)).toString(16)
+		else 
+			return (g | (b &lt;&lt; 8) | (r &lt;&lt; 16)).toString(16)
 
-<div class="box intro">
-    <p>Base DOM manipulation class</p>
-
-</div>
-
-
-<div id="classdocs" class="tabview">
-    <ul class="api-class-tabs">
-        <li class="api-class-tab index"><a href="#index">Index</a></li>
-
-    </ul>
-
-    <div>
-        <div id="index" class="api-class-tabpanel index">
-            <h2 class="off-left">Item Index</h2>
-
-
-
-
-        </div>
-
-
-
-
-    </div>
+    </pre>
 </div>
                     </div>
                 </div>

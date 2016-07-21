@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>BaseDOM - Slikland Framework</title>
+    <title>../../source/coffee/slikland/utils/Detections.coffee - Slikland Framework</title>
     <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
     <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
     <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
@@ -86,43 +86,113 @@
             <div class="apidocs">
                 <div id="docs-main">
                     <div class="content">
-<h1>BaseDOM Class</h1>
-<div class="box meta">
+<h1 class="file-heading">File: ../../source/coffee/slikland/utils/Detections.coffee</h1>
+
+<div class="file">
+    <pre class="code prettyprint linenums">
+###*
+Detections Class
+@class Detections
+@constructor
+@extends Class
+###
+class Detections
+	matches: [
+		{name: &#x27;Opera&#x27;, nick: /opera/i, test: /opera|opr/i, version: /(?:opera|opr)[\s\/](\d+(\.\d+)*)/i},
+		{name: &#x27;Windows Phone&#x27;, nick: /WindowsPhone/i, test: /windows phone/i, version: /iemobile\/(\d+(\.\d+)*)/i},
+		{name: &#x27;Edge&#x27;, nick: /edge|edgehtml/i, test: /edge|msapphost|edgehtml/i, version: /(?:edge|edgehtml)\/(\d+(\.\d+)*)/i},
+		{name: &#x27;Internet Explorer&#x27;, nick: /explorer|internetexplorer|ie/i, test: /msie|trident/i, version: /(?:msie |rv:)(\d+(\.\d+)*)/i},
+		{name: &#x27;Chrome&#x27;, nick: /Chrome/i, test: /chrome|crios|crmo/i, version: /(?:chrome|crios|crmo)\/(\d+(\.\d+)*)/i},
+		{name: &#x27;iPod&#x27;, nick: /iPod/i, test: /ipod/i},
+		{name: &#x27;iPhone&#x27;, nick: /iPhone/i, test: /iphone/i},
+		{name: &#x27;iPad&#x27;, nick: /iPad/i, test: /ipad/i},
+		{name: &#x27;FirefoxOS&#x27;, nick: /FirefoxOS|ffos/i, test: /\((mobile|tablet);[^\)]*rv:[\d\.]+\)firefox|iceweasel/i, version: /(?:firefox|iceweasel)[ \/](\d+(\.\d+)?)/i},
+		{name: &#x27;Firefox&#x27;, nick: /Firefox|ff/i, test: /firefox|iceweasel/i, version: /(?:firefox|iceweasel)[ \/](\d+(\.\d+)?)/i},
+		{name: &#x27;Android&#x27;, nick: /Android/i, test: /android/i},
+		{name: &#x27;BlackBerry&#x27;, nick: /BlackBerry/i, test: /(blackberry)|(\bbb)|(rim\stablet)\d+/i, version: /blackberry[\d]+\/(\d+(\.\d+)?)/i},
+		{name: &#x27;WebOS&#x27;, nick: /WebOS/i, test: /(web|hpw)os/i, version: /w(?:eb)?osbrowser\/(\d+(\.\d+)?)/i},
+		{name: &#x27;Safari&#x27;, nick: /safari/i, test: /safari/i},
+	]
+
+	@getInstance:()=&gt;
+		@_instance ?= new @(arguments...)
+
+	constructor:()-&gt;
+		@matched = null
+		@ua = navigator?.userAgent || &#x27;&#x27;
+		@platform = @os = navigator?.platform || &#x27;&#x27;
+		@version = getFirstMatch(/version\/(\d+(\.\d+)*)/i, @ua)
+		
+		@getBrowser()
+		@versionArr = if !@version? then [] else @version.split(&#x27;.&#x27;)
+		for k, v of @versionArr
+			@versionArr[k] = Number(v)
+		
+		@orientation = if window?.innerWidth &gt; window?.innerHeight then &#x27;landscape&#x27; else &#x27;portrait&#x27;
+		@touch = (&#x27;ontouchstart&#x27; in window) || (navigator.maxTouchPoints &gt; 0) || (navigator.msMaxTouchPoints &gt; 0)
+		@tablet = /(ipad.*|tablet.*|(android.*?chrome((?!mobi).)*))$/i.test(@ua)
+		@mobile = !@tablet &amp;&amp; (getFirstMatch(/(ipod|iphone|ipad)/i, @ua) || /[^-]mobi/i.test(@ua))
+		@desktop = !@mobile &amp;&amp; !@tablet
+
+		@canvas = testCanvas()
+		@webgl = testWebGL()
+		
+	test:(value)-&gt;
+		if !@matched
+			return 0
+		
+		if !(m = value.match(/(?:(?:(\D.*?)(?:\s|$))?(\D.*?)(?:\s|$))?(?:([\d\.]+))?/))
+			return 0
+		result = 0
+		if m[1]
+			if new RegExp(m[1], &#x27;i&#x27;).test(@os)
+				result = 1
+			else
+				return 0
+		if m[2]
+			if @matched.nick?.test(m[2])
+				result = 1
+			else
+				return 0
+		if m[3]
+			v = m[3].split(&#x27;.&#x27;)
+			l = v.length
+			if l &gt; @versionArr.length
+				l = @versionArr.length
+			for i in [0..l]
+				if @versionArr[i] &gt; v[i]
+					return 2
+				else if @versionArr[i] &lt; v[i]
+					return -1
+		return result
 
 
-        <div class="foundat">
-            Defined in: <a href="../files/.._.._source_coffee_slikland_display_BaseDOM.coffee.html#l38"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;display&#x2F;BaseDOM.coffee:38</code></a>
-        </div>
+	getBrowser:()-&gt;
+		for m in @matches
+			if m.test.test(@ua)
+				@name = m.name
+				@version = @version || getFirstMatch(m.version, @ua)
+				@matched = m
+				break
+		return [@name, @version]
+		
+	testWebGL=()-&gt;
+		try
+			return !!window.WebGLRenderingContext &amp;&amp; Boolean(document.createElement(&quot;canvas&quot;).getContext(&#x27;webgl&#x27;)) || Boolean(document.createElement(&quot;canvas&quot;).getContext(&#x27;experimental-webgl&#x27;))
+		catch err
+			return false
 
+	testCanvas=()-&gt;
+		try
+			return !!window.CanvasRenderingContext2D &amp;&amp; Boolean(document.createElement(&quot;canvas&quot;).getContext(&#x27;2d&#x27;))
+		catch err
+			return false
 
-</div>
+	getFirstMatch=(re, val)-&gt;
+		m = val.match(re)
+		return (m &amp;&amp; m.length &gt; 1 &amp;&amp; m[1]) || null
 
-
-<div class="box intro">
-    <p>Base DOM manipulation class</p>
-
-</div>
-
-
-<div id="classdocs" class="tabview">
-    <ul class="api-class-tabs">
-        <li class="api-class-tab index"><a href="#index">Index</a></li>
-
-    </ul>
-
-    <div>
-        <div id="index" class="api-class-tabpanel index">
-            <h2 class="off-left">Item Index</h2>
-
-
-
-
-        </div>
-
-
-
-
-    </div>
+    </pre>
 </div>
                     </div>
                 </div>

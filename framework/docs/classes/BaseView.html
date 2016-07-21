@@ -43,6 +43,8 @@
                                 <li><a href="../classes/BaseAnimation.html">BaseAnimation</a></li>
                                 <li><a href="../classes/BaseDOM.html">BaseDOM</a></li>
                                 <li><a href="../classes/BaseView.html">BaseView</a></li>
+                                <li><a href="../classes/ColorUtils.html">ColorUtils</a></li>
+                                <li><a href="../classes/Detections.html">Detections</a></li>
                                 <li><a href="../classes/EventDispatcher.html">EventDispatcher</a></li>
                                 <li><a href="../classes/NavigationLoader.html">NavigationLoader</a></li>
                                 <li><a href="../classes/SpriteSheetAnimation.html">SpriteSheetAnimation</a></li>
@@ -152,11 +154,12 @@
 
 
                     <div class="param-description">
-                        <p>If this data configuration it's not null, some default values is required explained below:</p>
+                        <p>Data object sets the default and/or custom values of properties of view for navigation controller.<br>
+If this object it's not null, some default properties are not required explained below:</p>
 <table>
 <thead>
 <tr>
-<th>Default Key Name</th>
+<th>Default Key</th>
 <th>Type</th>
 <th>Required</th>
 </tr>
@@ -174,7 +177,7 @@
 </tr>
 <tr>
 <td>route</td>
-<td><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></td>
+<td><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a> / <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RegExp" class="crosslink external" target="_blank">RegExp</a></td>
 <td><strong>No</strong></td>
 </tr>
 <tr>
@@ -203,13 +206,23 @@
 <td><strong>No</strong></td>
 </tr>
 <tr>
+<td>snap <em>(only for scroll navigation type)</em></td>
+<td><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean" class="crosslink external" target="_blank">Boolean</a></td>
+<td><strong>No</strong></td>
+</tr>
+<tr>
+<td>percentToShow <em>(only for scroll navigation type)</em></td>
+<td><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number" class="crosslink external" target="_blank">Number</a></td>
+<td><strong>No</strong></td>
+</tr>
+<tr>
 <td>subviewsWrapper</td>
-<td><a href="https://developer.mozilla.org/en-US/docs/Web/Guide/CSS/Getting_Started/Selectors" target="_blank" class="crosslink">Selectors</a></td>
+<td><a href="//developer.mozilla.org/en-US/docs/Web/Guide/CSS/Getting_Started/Selectors" target="_blank" class="crosslink">Selectors</a></td>
 <td><strong>No</strong></td>
 </tr>
 <tr>
 <td>attachToParentWrapper</td>
-<td><a href="https://developer.mozilla.org/en-US/docs/Web/Guide/CSS/Getting_Started/Selectors" target="_blank" class="crosslink">Selectors</a></td>
+<td><a href="//developer.mozilla.org/en-US/docs/Web/Guide/CSS/Getting_Started/Selectors" target="_blank" class="crosslink">Selectors</a></td>
 <td><strong>No</strong></td>
 </tr>
 </tbody>
@@ -240,13 +253,15 @@
             <div class="example-content">
                 <pre class="code prettyprint"><code>{
     &quot;id&quot;:&quot;home&quot;,
-    &quot;class&quot;:&quot;template-home-view&quot;,
-    &quot;route&quot;:&quot;/&quot;,
+    &quot;class&quot;:&quot;template-home-view&quot;, //the valid formats are &quot;ClassName&quot;, &quot;class-name&quot;, &quot;class name&quot; or &quot;class_name&quot;
+    &quot;route&quot;:&quot;/&quot;, //valid formats are String or RegExp
     &quot;content&quot;:&quot;data/home.json&quot;,
     &quot;cache&quot;:true,
-    &quot;parentView&quot;:&quot;someViewID&quot;,
+    &quot;parentView&quot;:&quot;someViewID&quot;, //the unique ID of parent view
     &quot;destroyable&quot;:true,
     &quot;loadContent&quot;:true,
+    &quot;snap&quot;:true, //only for scroll navigation type
+    &quot;percentToShow&quot;:0.5, //only for scroll navigation type, the valid values are between 0~1
     &quot;subviewsWrapper&quot;:&quot;CSSSelector&quot;, //like #ID or .className etc
     &quot;attachToParentWrapper&quot;:&quot;CSSSelector&quot; //like #ID or .className etc
 }
@@ -261,6 +276,8 @@
     <ul class="api-class-tabs">
         <li class="api-class-tab index"><a href="#index">Index</a></li>
 
+            <li class="api-class-tab methods"><a href="#methods">Methods</a></li>
+            <li class="api-class-tab attrs"><a href="#attrs">Attributes</a></li>
             <li class="api-class-tab events"><a href="#events">Events</a></li>
     </ul>
 
@@ -268,8 +285,130 @@
         <div id="index" class="api-class-tabpanel index">
             <h2 class="off-left">Item Index</h2>
 
+                <div class="index-section methods">
+                    <h3>Methods</h3>
+
+                    <ul class="index-list methods extends">
+                            <li class="index-item method">
+                                <a href="#method_create">create</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_createComplete">createComplete</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_createStart">createStart</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_destroy">destroy</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_destroyComplete">destroyComplete</a>
+
+                            </li>
+                            <li class="index-item method private">
+                                <a href="#method_getReverseParentList">getReverseParentList</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_hide">hide</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_hideComplete">hideComplete</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_hideStart">hideStart</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_pause">pause</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_pause">pause</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_show">show</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_showComplete">showComplete</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_showStart">showStart</a>
+
+                            </li>
+                    </ul>
+                </div>
 
 
+                <div class="index-section attrs">
+                    <h3>Attributes</h3>
+
+                    <ul class="index-list attrs extends">
+                            <li class="index-item attr">
+                                <a href="#attr_attachToParentWrapper">attachToParentWrapper</a>
+                            </li>
+                            <li class="index-item attr">
+                                <a href="#attr_content">content</a>
+                            </li>
+                            <li class="index-item attr protected">
+                                <a href="#attr_created">created</a>
+                            </li>
+                            <li class="index-item attr">
+                                <a href="#attr_data">data</a>
+                            </li>
+                            <li class="index-item attr">
+                                <a href="#attr_destroyable">destroyable</a>
+                            </li>
+                            <li class="index-item attr">
+                                <a href="#attr_id">id</a>
+                            </li>
+                            <li class="index-item attr">
+                                <a href="#attr_loader">loader</a>
+                            </li>
+                            <li class="index-item attr">
+                                <a href="#attr_meta">meta</a>
+                            </li>
+                            <li class="index-item attr protected">
+                                <a href="#attr_parentPath">parentPath</a>
+                            </li>
+                            <li class="index-item attr">
+                                <a href="#attr_parentView">parentView</a>
+                            </li>
+                            <li class="index-item attr protected">
+                                <a href="#attr_progress">progress</a>
+                            </li>
+                            <li class="index-item attr protected">
+                                <a href="#attr_reverseParentPath">reverseParentPath</a>
+                            </li>
+                            <li class="index-item attr">
+                                <a href="#attr_route">route</a>
+                            </li>
+                            <li class="index-item attr protected">
+                                <a href="#attr_routeData">routeData</a>
+                            </li>
+                            <li class="index-item attr protected">
+                                <a href="#attr_showed">showed</a>
+                            </li>
+                            <li class="index-item attr">
+                                <a href="#attr_subviews">subviews</a>
+                            </li>
+                            <li class="index-item attr">
+                                <a href="#attr_subviewsWrapper">subviewsWrapper</a>
+                            </li>
+                            <li class="index-item attr protected">
+                                <a href="#attr_type">type</a>
+                            </li>
+                    </ul>
+                </div>
 
                 <div class="index-section events">
                     <h3>Events</h3>
@@ -344,8 +483,1288 @@
                 </div>
         </div>
 
+            <div id="methods" class="api-class-tabpanel">
+                <h2 class="off-left">Methods</h2>
+
+<div id="method_create" class="method item">
+    <h3 class="name"><code>create</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code class="optional">[evt=null]</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
 
 
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._.._source_coffee_slikland_navigation_display_BaseView.coffee.html#l368"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;navigation&#x2F;display&#x2F;BaseView.coffee:368</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Usually starts when the creation routine of view calling by the navigation controller.<br>
+Callback the method <a href="../classes/BaseView.html#method_createComplete" class="crosslink">createComplete</a> and trigger the event <a href="../classes/BaseView.html#event_CREATE" class="crosslink">CREATE</a> after complete.</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name optional">[evt=null]</code>
+                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/API/Event" class="crosslink external" target="_blank">Event</a></span>
+                        <span class="flag optional" title="This parameter is optional.">optional</span>
+
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+
+
+</div>
+<div id="method_createComplete" class="method item">
+    <h3 class="name"><code>createComplete</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code class="optional">[evt=null]</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._.._source_coffee_slikland_navigation_display_BaseView.coffee.html#l379"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;navigation&#x2F;display&#x2F;BaseView.coffee:379</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Usually starts when finished the creation routine of view calling by the navigation controller and trigger the event <a href="../classes/BaseView.html#event_CREATE_COMPLETE" class="crosslink">CREATE_COMPLETE</a> after complete the routine.</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name optional">[evt=null]</code>
+                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/API/Event" class="crosslink external" target="_blank">Event</a></span>
+                        <span class="flag optional" title="This parameter is optional.">optional</span>
+
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+
+
+</div>
+<div id="method_createStart" class="method item">
+    <h3 class="name"><code>createStart</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code class="optional">[evt=null]</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._.._source_coffee_slikland_navigation_display_BaseView.coffee.html#l357"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;navigation&#x2F;display&#x2F;BaseView.coffee:357</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Usually starts before the creation routine of view calling by the navigation controller.<br>
+Callback the method <a href="../classes/BaseView.html#method_create" class="crosslink">create</a> and trigger the event <a href="../classes/BaseView.html#event_CREATE_START" class="crosslink">CREATE_START</a> after complete.</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name optional">[evt=null]</code>
+                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/API/Event" class="crosslink external" target="_blank">Event</a></span>
+                        <span class="flag optional" title="This parameter is optional.">optional</span>
+
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+
+
+</div>
+<div id="method_destroy" class="method item">
+    <h3 class="name"><code>destroy</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code class="optional">[evt=null]</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._.._source_coffee_slikland_navigation_display_BaseView.coffee.html#l471"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;navigation&#x2F;display&#x2F;BaseView.coffee:471</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Usually starts when the destroying routine of view calling by the navigation controller.<br>
+Callback the method <a href="../classes/BaseView.html#method_destroyComplete" class="crosslink">destroyComplete</a> and trigger the event <a href="../classes/BaseView.html#event_DESTROY" class="crosslink">DESTROY</a> after complete.</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name optional">[evt=null]</code>
+                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/API/Event" class="crosslink external" target="_blank">Event</a></span>
+                        <span class="flag optional" title="This parameter is optional.">optional</span>
+
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+
+
+</div>
+<div id="method_destroyComplete" class="method item">
+    <h3 class="name"><code>destroyComplete</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code class="optional">[evt=null]</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._.._source_coffee_slikland_navigation_display_BaseView.coffee.html#l492"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;navigation&#x2F;display&#x2F;BaseView.coffee:492</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Usually when finished the destroying routine of view calling by the navigation controller and trigger the event <a href="../classes/BaseView.html#event_DESTROY_COMPLETE" class="crosslink">DESTROY_COMPLETE</a> after complete the routine.</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name optional">[evt=null]</code>
+                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/API/Event" class="crosslink external" target="_blank">Event</a></span>
+                        <span class="flag optional" title="This parameter is optional.">optional</span>
+
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+
+
+</div>
+<div id="method_getReverseParentList" class="method item private">
+    <h3 class="name"><code>getReverseParentList</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code class="optional">[p_subview=null]</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+
+
+        <span class="flag private">private</span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._.._source_coffee_slikland_navigation_display_BaseView.coffee.html#l343"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;navigation&#x2F;display&#x2F;BaseView.coffee:343</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Returns a reverse list of the parent path of this view.</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name optional">[p_subview=null]</code>
+                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON" class="crosslink external" target="_blank">JSON</a></span>
+                        <span class="flag optional" title="This parameter is optional.">optional</span>
+
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+
+
+</div>
+<div id="method_hide" class="method item">
+    <h3 class="name"><code>hide</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code class="optional">[evt=null]</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._.._source_coffee_slikland_navigation_display_BaseView.coffee.html#l432"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;navigation&#x2F;display&#x2F;BaseView.coffee:432</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Usually starts when the hiding routine of view calling by the navigation controller.<br>
+Callback the method <a href="../classes/BaseView.html#method_hideComplete" class="crosslink">hideComplete</a> and trigger the event <a href="../classes/BaseView.html#event_HIDE" class="crosslink">HIDE</a> after complete.</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name optional">[evt=null]</code>
+                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/API/Event" class="crosslink external" target="_blank">Event</a></span>
+                        <span class="flag optional" title="This parameter is optional.">optional</span>
+
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+
+
+</div>
+<div id="method_hideComplete" class="method item">
+    <h3 class="name"><code>hideComplete</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code class="optional">[evt=null]</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._.._source_coffee_slikland_navigation_display_BaseView.coffee.html#l444"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;navigation&#x2F;display&#x2F;BaseView.coffee:444</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Usually when finished the hiding routine of view calling by the navigation controller and trigger the event <a href="../classes/BaseView.html#event_HIDE_COMPLETE" class="crosslink">HIDE_COMPLETE</a> after complete the routine.</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name optional">[evt=null]</code>
+                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/API/Event" class="crosslink external" target="_blank">Event</a></span>
+                        <span class="flag optional" title="This parameter is optional.">optional</span>
+
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+
+
+</div>
+<div id="method_hideStart" class="method item">
+    <h3 class="name"><code>hideStart</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code class="optional">[evt=null]</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._.._source_coffee_slikland_navigation_display_BaseView.coffee.html#l421"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;navigation&#x2F;display&#x2F;BaseView.coffee:421</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Usually starts before the hiding routine of view calling by the navigation controller.<br>
+Callback the method <a href="../classes/BaseView.html#method_hide" class="crosslink">hide</a> and trigger the event <a href="../classes/BaseView.html#event_HIDE_START" class="crosslink">HIDE_START</a> after complete.</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name optional">[evt=null]</code>
+                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/API/Event" class="crosslink external" target="_blank">Event</a></span>
+                        <span class="flag optional" title="This parameter is optional.">optional</span>
+
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+
+
+</div>
+<div id="method_pause" class="method item">
+    <h3 class="name"><code>pause</code></h3>
+
+        <span class="paren">()</span>
+
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._.._source_coffee_slikland_navigation_display_BaseView.coffee.html#l453"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;navigation&#x2F;display&#x2F;BaseView.coffee:453</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Usually used to pauses animations or something else in looping in view.
+Trigger the event <a href="../classes/BaseView.html#event_PAUSE" class="crosslink">PAUSE</a> after complete.</p>
+
+    </div>
+
+
+
+
+</div>
+<div id="method_pause" class="method item">
+    <h3 class="name"><code>pause</code></h3>
+
+        <span class="paren">()</span>
+
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._.._source_coffee_slikland_navigation_display_BaseView.coffee.html#l462"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;navigation&#x2F;display&#x2F;BaseView.coffee:462</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Usually used to resumes animations or something else in view.
+Trigger the event <a href="../classes/BaseView.html#event_RESUME" class="crosslink">RESUME</a> after complete.</p>
+
+    </div>
+
+
+
+
+</div>
+<div id="method_show" class="method item">
+    <h3 class="name"><code>show</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code class="optional">[evt=null]</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._.._source_coffee_slikland_navigation_display_BaseView.coffee.html#l400"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;navigation&#x2F;display&#x2F;BaseView.coffee:400</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Usually starts when the showing routine of view calling by the navigation controller.<br>
+Callback the method <a href="../classes/BaseView.html#method_showComplete" class="crosslink">showComplete</a> and trigger the event <a href="../classes/BaseView.html#event_SHOW" class="crosslink">SHOW</a> after complete.</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name optional">[evt=null]</code>
+                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/API/Event" class="crosslink external" target="_blank">Event</a></span>
+                        <span class="flag optional" title="This parameter is optional.">optional</span>
+
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+
+
+</div>
+<div id="method_showComplete" class="method item">
+    <h3 class="name"><code>showComplete</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code class="optional">[evt=null]</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._.._source_coffee_slikland_navigation_display_BaseView.coffee.html#l411"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;navigation&#x2F;display&#x2F;BaseView.coffee:411</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Usually when finished the showing routine of view calling by the navigation controller and trigger the event <a href="../classes/BaseView.html#event_SHOW_COMPLETE" class="crosslink">SHOW_COMPLETE</a> after complete the routine.</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name optional">[evt=null]</code>
+                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/API/Event" class="crosslink external" target="_blank">Event</a></span>
+                        <span class="flag optional" title="This parameter is optional.">optional</span>
+
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+
+
+</div>
+<div id="method_showStart" class="method item">
+    <h3 class="name"><code>showStart</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code class="optional">[evt=null]</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._.._source_coffee_slikland_navigation_display_BaseView.coffee.html#l389"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;navigation&#x2F;display&#x2F;BaseView.coffee:389</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Usually starts before the showing routine of view calling by the navigation controller.<br>
+Callback the method <a href="../classes/BaseView.html#method_show" class="crosslink">show</a> and trigger the event <a href="../classes/BaseView.html#event_SHOW_START" class="crosslink">SHOW_START</a> after complete.</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name optional">[evt=null]</code>
+                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/API/Event" class="crosslink external" target="_blank">Event</a></span>
+                        <span class="flag optional" title="This parameter is optional.">optional</span>
+
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+
+
+</div>
+            </div>
+
+
+            <div id="attrs" class="api-class-tabpanel">
+                <h2 class="off-left">Attributes</h2>
+
+                    <div id="attr_attachToParentWrapper" class="attr item">
+                        <a name="config_attachToParentWrapper"></a> 
+                        <h3 class="name"><code>attachToParentWrapper</code></h3>
+                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                            <span class="flag readonly">readonly</span>
+                    
+                        <div class="meta">
+                                    <p>
+                                    Defined in
+                            <a href="../files/.._.._source_coffee_slikland_navigation_display_BaseView.coffee.html#l333"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;navigation&#x2F;display&#x2F;BaseView.coffee:333</code></a>
+                            </p>
+                    
+                    
+                        </div>
+                    
+                        <div class="description">
+                            <p>Returns the CSS Selector of the wrapper container for attach this view.</p>
+                    
+                        </div>
+                    
+                            <p><strong>Default:</strong> null</p>
+                    
+                    
+                    </div>
+                    <div id="attr_content" class="attr item">
+                        <a name="config_content"></a> 
+                        <h3 class="name"><code>content</code></h3>
+                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON" class="crosslink external" target="_blank">JSON</a></span>
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                        <div class="meta">
+                                    <p>
+                                    Defined in
+                            <a href="../files/.._.._source_coffee_slikland_navigation_display_BaseView.coffee.html#l201"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;navigation&#x2F;display&#x2F;BaseView.coffee:201</code></a>
+                            </p>
+                    
+                    
+                        </div>
+                    
+                        <div class="description">
+                            <p>Sets/gets the unique ID of view.</p>
+                    
+                        </div>
+                    
+                            <p><strong>Default:</strong> null</p>
+                    
+                    
+                    </div>
+                    <div id="attr_created" class="attr item protected">
+                        <a name="config_created"></a> 
+                        <h3 class="name"><code>created</code></h3>
+                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean" class="crosslink external" target="_blank">Boolean</a></span>
+                    
+                    
+                            <span class="flag protected">protected</span>
+                    
+                    
+                    
+                    
+                    
+                            <span class="flag readonly">readonly</span>
+                    
+                        <div class="meta">
+                                    <p>
+                                    Defined in
+                            <a href="../files/.._.._source_coffee_slikland_navigation_display_BaseView.coffee.html#l157"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;navigation&#x2F;display&#x2F;BaseView.coffee:157</code></a>
+                            </p>
+                    
+                    
+                        </div>
+                    
+                        <div class="description">
+                            <p>Returns true if the view was created.</p>
+                    
+                        </div>
+                    
+                            <p><strong>Default:</strong> false</p>
+                    
+                    
+                    </div>
+                    <div id="attr_data" class="attr item">
+                        <a name="config_data"></a> 
+                        <h3 class="name"><code>data</code></h3>
+                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                        <div class="meta">
+                                    <p>
+                                    Defined in
+                            <a href="../files/.._.._source_coffee_slikland_navigation_display_BaseView.coffee.html#l179"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;navigation&#x2F;display&#x2F;BaseView.coffee:179</code></a>
+                            </p>
+                    
+                    
+                        </div>
+                    
+                        <div class="description">
+                            <p>Sets/gets a clone of data object with default and/or custom values of properties of view.</p>
+                    
+                        </div>
+                    
+                            <p><strong>Default:</strong> {}</p>
+                    
+                    
+                    </div>
+                    <div id="attr_destroyable" class="attr item">
+                        <a name="config_destroyable"></a> 
+                        <h3 class="name"><code>destroyable</code></h3>
+                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean" class="crosslink external" target="_blank">Boolean</a></span>
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                        <div class="meta">
+                                    <p>
+                                    Defined in
+                            <a href="../files/.._.._source_coffee_slikland_navigation_display_BaseView.coffee.html#l257"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;navigation&#x2F;display&#x2F;BaseView.coffee:257</code></a>
+                            </p>
+                    
+                    
+                        </div>
+                    
+                        <div class="description">
+                            <p>Sets/gets if this views is destroyable.</p>
+                    
+                        </div>
+                    
+                            <p><strong>Default:</strong> false</p>
+                    
+                    
+                    </div>
+                    <div id="attr_id" class="attr item">
+                        <a name="config_id"></a> 
+                        <h3 class="name"><code>id</code></h3>
+                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                        <div class="meta">
+                                    <p>
+                                    Defined in
+                            <a href="../files/.._.._source_coffee_slikland_navigation_display_BaseView.coffee.html#l190"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;navigation&#x2F;display&#x2F;BaseView.coffee:190</code></a>
+                            </p>
+                    
+                    
+                        </div>
+                    
+                        <div class="description">
+                            <p>Sets/gets the unique ID of view.</p>
+                    
+                        </div>
+                    
+                            <p><strong>Default:</strong> null</p>
+                    
+                    
+                    </div>
+                    <div id="attr_loader" class="attr item">
+                        <a name="config_loader"></a> 
+                        <h3 class="name"><code>loader</code></h3>
+                        <span class="type">createjs.LoadQueue</span>
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                            <span class="flag readonly">readonly</span>
+                    
+                        <div class="meta">
+                                    <p>
+                                    Defined in
+                            <a href="../files/.._.._source_coffee_slikland_navigation_display_BaseView.coffee.html#l147"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;navigation&#x2F;display&#x2F;BaseView.coffee:147</code></a>
+                            </p>
+                    
+                    
+                        </div>
+                    
+                        <div class="description">
+                            <p>Returns the loader queue of this specific view.</p>
+                    
+                        </div>
+                    
+                            <p><strong>Default:</strong> null</p>
+                    
+                    
+                    </div>
+                    <div id="attr_meta" class="attr item">
+                        <a name="config_meta"></a> 
+                        <h3 class="name"><code>meta</code></h3>
+                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                            <span class="flag readonly">readonly</span>
+                    
+                        <div class="meta">
+                                    <p>
+                                    Defined in
+                            <a href="../files/.._.._source_coffee_slikland_navigation_display_BaseView.coffee.html#l280"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;navigation&#x2F;display&#x2F;BaseView.coffee:280</code></a>
+                            </p>
+                    
+                    
+                        </div>
+                    
+                        <div class="description">
+                            <p>Returns the meta object of his content.</p>
+                    
+                        </div>
+                    
+                            <p><strong>Default:</strong> null</p>
+                    
+                    
+                    </div>
+                    <div id="attr_parentPath" class="attr item protected">
+                        <a name="config_parentPath"></a> 
+                        <h3 class="name"><code>parentPath</code></h3>
+                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array" class="crosslink external" target="_blank">Array</a></span>
+                    
+                    
+                            <span class="flag protected">protected</span>
+                    
+                    
+                    
+                    
+                    
+                            <span class="flag readonly">readonly</span>
+                    
+                        <div class="meta">
+                                    <p>
+                                    Defined in
+                            <a href="../files/.._.._source_coffee_slikland_navigation_display_BaseView.coffee.html#l312"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;navigation&#x2F;display&#x2F;BaseView.coffee:312</code></a>
+                            </p>
+                    
+                    
+                        </div>
+                    
+                        <div class="description">
+                            <p>Returns the path of his parent view.</p>
+                    
+                        </div>
+                    
+                    
+                    
+                    </div>
+                    <div id="attr_parentView" class="attr item">
+                        <a name="config_parentView"></a> 
+                        <h3 class="name"><code>parentView</code></h3>
+                        <span class="type"><a href="../classes/BaseView.html" class="crosslink">BaseView</a></span>
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                        <div class="meta">
+                                    <p>
+                                    Defined in
+                            <a href="../files/.._.._source_coffee_slikland_navigation_display_BaseView.coffee.html#l235"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;navigation&#x2F;display&#x2F;BaseView.coffee:235</code></a>
+                            </p>
+                    
+                    
+                        </div>
+                    
+                        <div class="description">
+                            <p>Sets/gets the parent view of this view.</p>
+                    
+                        </div>
+                    
+                            <p><strong>Default:</strong> null</p>
+                    
+                    
+                    </div>
+                    <div id="attr_progress" class="attr item protected">
+                        <a name="config_progress"></a> 
+                        <h3 class="name"><code>progress</code></h3>
+                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number" class="crosslink external" target="_blank">Number</a></span>
+                    
+                    
+                            <span class="flag protected">protected</span>
+                    
+                    
+                    
+                    
+                    
+                    
+                        <div class="meta">
+                                    <p>
+                                    Defined in
+                            <a href="../files/.._.._source_coffee_slikland_navigation_display_BaseView.coffee.html#l290"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;navigation&#x2F;display&#x2F;BaseView.coffee:290</code></a>
+                            </p>
+                    
+                    
+                        </div>
+                    
+                        <div class="description">
+                            <p>Sets/gets the loading progress of this view.</p>
+                    
+                        </div>
+                    
+                    
+                    
+                    </div>
+                    <div id="attr_reverseParentPath" class="attr item protected">
+                        <a name="config_reverseParentPath"></a> 
+                        <h3 class="name"><code>reverseParentPath</code></h3>
+                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array" class="crosslink external" target="_blank">Array</a></span>
+                    
+                    
+                            <span class="flag protected">protected</span>
+                    
+                    
+                    
+                    
+                    
+                            <span class="flag readonly">readonly</span>
+                    
+                        <div class="meta">
+                                    <p>
+                                    Defined in
+                            <a href="../files/.._.._source_coffee_slikland_navigation_display_BaseView.coffee.html#l301"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;navigation&#x2F;display&#x2F;BaseView.coffee:301</code></a>
+                            </p>
+                    
+                    
+                        </div>
+                    
+                        <div class="description">
+                            <p>Returns the reverse path of his parent view.</p>
+                    
+                        </div>
+                    
+                    
+                    
+                    </div>
+                    <div id="attr_route" class="attr item">
+                        <a name="config_route"></a> 
+                        <h3 class="name"><code>route</code></h3>
+                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RegExp" class="crosslink external" target="_blank">RegExp</a></span>
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                        <div class="meta">
+                                    <p>
+                                    Defined in
+                            <a href="../files/.._.._source_coffee_slikland_navigation_display_BaseView.coffee.html#l212"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;navigation&#x2F;display&#x2F;BaseView.coffee:212</code></a>
+                            </p>
+                    
+                    
+                        </div>
+                    
+                        <div class="description">
+                            <p>Sets/gets the route of view.</p>
+                    
+                        </div>
+                    
+                            <p><strong>Default:</strong> null</p>
+                    
+                    
+                    </div>
+                    <div id="attr_routeData" class="attr item protected">
+                        <a name="config_routeData"></a> 
+                        <h3 class="name"><code>routeData</code></h3>
+                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>
+                    
+                    
+                            <span class="flag protected">protected</span>
+                    
+                    
+                    
+                    
+                    
+                    
+                        <div class="meta">
+                                    <p>
+                                    Defined in
+                            <a href="../files/.._.._source_coffee_slikland_navigation_display_BaseView.coffee.html#l223"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;navigation&#x2F;display&#x2F;BaseView.coffee:223</code></a>
+                            </p>
+                    
+                    
+                        </div>
+                    
+                        <div class="description">
+                            <p>Sets/gets the actual route data.</p>
+                    
+                        </div>
+                    
+                            <p><strong>Default:</strong> null</p>
+                    
+                    
+                    </div>
+                    <div id="attr_showed" class="attr item protected">
+                        <a name="config_showed"></a> 
+                        <h3 class="name"><code>showed</code></h3>
+                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean" class="crosslink external" target="_blank">Boolean</a></span>
+                    
+                    
+                            <span class="flag protected">protected</span>
+                    
+                    
+                    
+                    
+                    
+                            <span class="flag readonly">readonly</span>
+                    
+                        <div class="meta">
+                                    <p>
+                                    Defined in
+                            <a href="../files/.._.._source_coffee_slikland_navigation_display_BaseView.coffee.html#l168"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;navigation&#x2F;display&#x2F;BaseView.coffee:168</code></a>
+                            </p>
+                    
+                    
+                        </div>
+                    
+                        <div class="description">
+                            <p>Returns true if the view was shown.</p>
+                    
+                        </div>
+                    
+                            <p><strong>Default:</strong> false</p>
+                    
+                    
+                    </div>
+                    <div id="attr_subviews" class="attr item">
+                        <a name="config_subviews"></a> 
+                        <h3 class="name"><code>subviews</code></h3>
+                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array" class="crosslink external" target="_blank">Array</a></span>
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                        <div class="meta">
+                                    <p>
+                                    Defined in
+                            <a href="../files/.._.._source_coffee_slikland_navigation_display_BaseView.coffee.html#l246"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;navigation&#x2F;display&#x2F;BaseView.coffee:246</code></a>
+                            </p>
+                    
+                    
+                        </div>
+                    
+                        <div class="description">
+                            <p>Sets/gets a array of <a href="../classes/BaseView.html" class="crosslink">BaseView</a> instances of subviews of this view.</p>
+                    
+                        </div>
+                    
+                            <p><strong>Default:</strong> null</p>
+                    
+                    
+                    </div>
+                    <div id="attr_subviewsWrapper" class="attr item">
+                        <a name="config_subviewsWrapper"></a> 
+                        <h3 class="name"><code>subviewsWrapper</code></h3>
+                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement" class="crosslink external" target="_blank">HTMLElement</a></span>
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                            <span class="flag readonly">readonly</span>
+                    
+                        <div class="meta">
+                                    <p>
+                                    Defined in
+                            <a href="../files/.._.._source_coffee_slikland_navigation_display_BaseView.coffee.html#l323"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;navigation&#x2F;display&#x2F;BaseView.coffee:323</code></a>
+                            </p>
+                    
+                    
+                        </div>
+                    
+                        <div class="description">
+                            <p>Returns the wrapper container for the sub-views of this view.</p>
+                    
+                        </div>
+                    
+                            <p><strong>Default:</strong> null</p>
+                    
+                    
+                    </div>
+                    <div id="attr_type" class="attr item protected">
+                        <a name="config_type"></a> 
+                        <h3 class="name"><code>type</code></h3>
+                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>
+                    
+                    
+                            <span class="flag protected">protected</span>
+                    
+                    
+                    
+                    
+                    
+                    
+                        <div class="meta">
+                                    <p>
+                                    Defined in
+                            <a href="../files/.._.._source_coffee_slikland_navigation_display_BaseView.coffee.html#l268"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;navigation&#x2F;display&#x2F;BaseView.coffee:268</code></a>
+                            </p>
+                    
+                    
+                        </div>
+                    
+                        <div class="description">
+                            <p>Sets/gets the type is a 'view' or a 'sub-view'.</p>
+                    
+                        </div>
+                    
+                            <p><strong>Default:</strong> null</p>
+                    
+                    
+                    </div>
+            </div>
 
             <div id="events" class="api-class-tabpanel">
                 <h2 class="off-left">Events</h2>
@@ -369,7 +1788,7 @@
                         </div>
                     
                         <div class="description">
-                            <p>Triggered when the create rotine view starts. Triggered when BaseView/create:method is called.</p>
+                            <p>Triggered when the create routine view starts. Triggered when <a href="../classes/BaseView.html#method_create" class="crosslink">create</a> is called.</p>
                     
                         </div>
                     
@@ -395,7 +1814,7 @@
                         </div>
                     
                         <div class="description">
-                            <p>Triggered when the create rotine view is finished. Triggered when BaseView/createComplete:method is called.</p>
+                            <p>Triggered when the create routine view is finished. Triggered when <a href="../classes/BaseView.html#method_createComplete" class="crosslink">createComplete</a> is called.</p>
                     
                         </div>
                     
@@ -421,7 +1840,7 @@
                         </div>
                     
                         <div class="description">
-                            <p>Triggered before the create rotine view starts. Triggered when BaseView/createStart:method is called.</p>
+                            <p>Triggered before the create routine view starts. Triggered when <a href="../classes/BaseView.html#method_createStart" class="crosslink">createStart</a> is called.</p>
                     
                         </div>
                     
@@ -447,7 +1866,7 @@
                         </div>
                     
                         <div class="description">
-                            <p>Triggered when the destroy rotine view starts. Triggered when BaseView/destroy:method is called.</p>
+                            <p>Triggered when the destroy routine view starts. Triggered when <a href="../classes/BaseView.html#method_destroy" class="crosslink">destroy</a> is called.</p>
                     
                         </div>
                     
@@ -473,7 +1892,7 @@
                         </div>
                     
                         <div class="description">
-                            <p>Triggered when the destroy rotine view is finished. Triggered when BaseView/destroyComplete:method is called.</p>
+                            <p>Triggered when the destroy routine view is finished. Triggered when <a href="../classes/BaseView.html#method_destroyComplete" class="crosslink">destroyComplete</a> is called.</p>
                     
                         </div>
                     
@@ -499,7 +1918,7 @@
                         </div>
                     
                         <div class="description">
-                            <p>Triggered when the hide rotine view starts. Triggered when BaseView/hide:method is called.</p>
+                            <p>Triggered when the hiding routine view starts. Triggered when <a href="../classes/BaseView.html#method_hide" class="crosslink">hide</a> is called.</p>
                     
                         </div>
                     
@@ -525,7 +1944,7 @@
                         </div>
                     
                         <div class="description">
-                            <p>Triggered when the hide rotine view is finished. Triggered when BaseView/hideComplete:method is called.</p>
+                            <p>Triggered when the hiding routine view is finished. Triggered when <a href="../classes/BaseView.html#method_hideComplete" class="crosslink">hideComplete</a> is called.</p>
                     
                         </div>
                     
@@ -551,7 +1970,7 @@
                         </div>
                     
                         <div class="description">
-                            <p>Triggered before the hide rotine view starts. Triggered when BaseView/hideStart:method is called.</p>
+                            <p>Triggered before the hiding routine view starts. Triggered when <a href="../classes/BaseView.html#method_hideStart" class="crosslink">hideStart</a> is called.</p>
                     
                         </div>
                     
@@ -577,7 +1996,7 @@
                         </div>
                     
                         <div class="description">
-                            <p>Triggered when the view pauses. Usually when BaseView/pause:method is called.</p>
+                            <p>Triggered when the view pauses. Usually when <a href="../classes/BaseView.html#method_pause" class="crosslink">pause</a> is called.</p>
                     
                         </div>
                     
@@ -629,7 +2048,7 @@
                         </div>
                     
                         <div class="description">
-                            <p>Triggered when the show rotine view starts. Triggered when BaseView/show:method is called.</p>
+                            <p>Triggered when the showing routine view starts. Triggered when <a href="../classes/BaseView.html#method_show" class="crosslink">show</a> is called.</p>
                     
                         </div>
                     
@@ -655,7 +2074,7 @@
                         </div>
                     
                         <div class="description">
-                            <p>Triggered when the show rotine view is finished. Triggered when BaseView/showComplete:method is called.</p>
+                            <p>Triggered when the showing routine view is finished. Triggered when <a href="../classes/BaseView.html#method_showComplete" class="crosslink">showComplete</a> is called.</p>
                     
                         </div>
                     
@@ -681,7 +2100,7 @@
                         </div>
                     
                         <div class="description">
-                            <p>Triggered before the show rotine view starts. Triggered when BaseView/showStart:method is called.</p>
+                            <p>Triggered before the showing routine view starts. Triggered when <a href="../classes/BaseView.html#method_showStart" class="crosslink">showStart</a> is called.</p>
                     
                         </div>
                     
