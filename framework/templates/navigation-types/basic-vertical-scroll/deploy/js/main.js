@@ -1553,8 +1553,8 @@ Main = (function(_super) {
       evt = null;
     }
     menu = new BaseDOM();
-    menu.className = 'menu';
     this.appendChildAt(menu, 0);
+    menu.className = 'menu';
     _ref = app.config.views;
     for (k in _ref) {
       v = _ref[k];
@@ -1568,8 +1568,11 @@ Main = (function(_super) {
       this.button.element.on('click', this.click);
     }
     this.bar = new BaseDOM();
-    this.bar.className = 'bar';
     menu.appendChildAt(this.bar, 0);
+    this.bar.className = 'bar';
+    this.bar.css({
+      width: "0%"
+    });
     _controller.on(ScrollNavigationController.SCROLL, this.scroll);
     time = app.config.navigation.options.scrollToTime * 1000;
     this.timeout = setTimeout(this.addListener, time);

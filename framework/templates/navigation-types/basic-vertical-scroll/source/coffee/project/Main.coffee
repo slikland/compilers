@@ -14,8 +14,8 @@ class Main extends NavigationContainer
 
 	create:(evt=null)=>
 		menu = new BaseDOM()
-		menu.className = 'menu'
 		@appendChildAt(menu, 0)
+		menu.className = 'menu'
 
 		for k, v of app.config.views
 			@button = new BaseDOM()
@@ -26,8 +26,11 @@ class Main extends NavigationContainer
 			@button.element.on 'click', @click
 		
 		@bar = new BaseDOM()
-		@bar.className = 'bar'
 		menu.appendChildAt(@bar, 0)
+		@bar.className = 'bar'
+		@bar.css({
+			width:"0%"
+		})
 		_controller.on(ScrollNavigationController.SCROLL, @scroll)
 
 		# Workaround of timeout to come back the listener to listen only change on the previous/current view
