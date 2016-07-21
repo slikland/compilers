@@ -1410,7 +1410,10 @@ TemplateSubView = (function(_super) {
     if (evt == null) {
       evt = null;
     }
-    return this.i != null ? this.i : this.i = 0;
+    if (this.i == null) {
+      this.i = 0;
+    }
+    return console.log("render", this.id, this.i++);
   };
 
   TemplateSubView.prototype.pause = function() {

@@ -36,7 +36,6 @@
 			"class":"template-sub-view",
 			"content":"{base}data/sub1.json",
 			"route":"/sub-view-01",
-			"percentToShow":0.5,
 			"destroyable":true,
 			"loadContent":true,
 			"cache":true
