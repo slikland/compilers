@@ -39,3 +39,48 @@ class MetaController extends EventDispatcher
 				link.rel = "icon"
 				link.type = "image/x-icon"
 				link.href = p_value
+
+	@set color:(p_color)->
+		if p_color?
+			if document.querySelector('meta[name=apple-mobile-web-app-capable]')?
+				document.querySelector('meta[name=apple-mobile-web-app-capable]').content = 'yes'
+			else
+				meta = document.createElement('meta')
+				@head.appendChild(meta)
+				meta.name = 'apple-mobile-web-app-capable'
+				meta.content = 'yes'
+
+			if document.querySelector('meta[name=mobile-web-app-capable]')?
+				document.querySelector('meta[name=mobile-web-app-capable]').content = 'yes'
+			else
+				meta = document.createElement('meta')
+				@head.appendChild(meta)
+				meta.name = 'mobile-web-app-capable'
+				meta.content = 'yes'
+
+			# Chrome
+			if document.querySelector('meta[name=theme-color]')?
+				document.querySelector('meta[name=theme-color]').content = p_color
+			else
+				meta = document.createElement('meta')
+				@head.appendChild(meta)
+				meta.name = 'theme-color'
+				meta.content = p_color
+
+			# Windows Phone
+			if document.querySelector('meta[name=msapplication-navbutton-color]')?
+				document.querySelector('meta[name=msapplication-navbutton-color]').content = p_color
+			else
+				meta = document.createElement('meta')
+				@head.appendChild(meta)
+				meta.name = 'msapplication-navbutton-color'
+				meta.content = p_color
+
+			# iOS
+			if document.querySelector('meta[name=apple-mobile-web-app-status-bar-style]')?
+				document.querySelector('meta[name=apple-mobile-web-app-status-bar-style]').content = 'black-translucent'
+			else
+				meta = document.createElement('meta')
+				@head.appendChild(meta)
+				meta.name = 'apple-mobile-web-app-status-bar-style'
+				meta.content = 'black-translucent'

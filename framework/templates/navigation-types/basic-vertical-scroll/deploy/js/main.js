@@ -1055,6 +1055,54 @@ MetaController = (function(_super) {
     }
   });
 
+  MetaController.set({
+    color: function(p_color) {
+      var meta;
+      if (p_color != null) {
+        if (document.querySelector('meta[name=apple-mobile-web-app-capable]') != null) {
+          document.querySelector('meta[name=apple-mobile-web-app-capable]').content = 'yes';
+        } else {
+          meta = document.createElement('meta');
+          this.head.appendChild(meta);
+          meta.name = 'apple-mobile-web-app-capable';
+          meta.content = 'yes';
+        }
+        if (document.querySelector('meta[name=mobile-web-app-capable]') != null) {
+          document.querySelector('meta[name=mobile-web-app-capable]').content = 'yes';
+        } else {
+          meta = document.createElement('meta');
+          this.head.appendChild(meta);
+          meta.name = 'mobile-web-app-capable';
+          meta.content = 'yes';
+        }
+        if (document.querySelector('meta[name=theme-color]') != null) {
+          document.querySelector('meta[name=theme-color]').content = p_color;
+        } else {
+          meta = document.createElement('meta');
+          this.head.appendChild(meta);
+          meta.name = 'theme-color';
+          meta.content = p_color;
+        }
+        if (document.querySelector('meta[name=msapplication-navbutton-color]') != null) {
+          document.querySelector('meta[name=msapplication-navbutton-color]').content = p_color;
+        } else {
+          meta = document.createElement('meta');
+          this.head.appendChild(meta);
+          meta.name = 'msapplication-navbutton-color';
+          meta.content = p_color;
+        }
+        if (document.querySelector('meta[name=apple-mobile-web-app-status-bar-style]') != null) {
+          return document.querySelector('meta[name=apple-mobile-web-app-status-bar-style]').content = 'black-translucent';
+        } else {
+          meta = document.createElement('meta');
+          this.head.appendChild(meta);
+          meta.name = 'apple-mobile-web-app-status-bar-style';
+          return meta.content = 'black-translucent';
+        }
+      }
+    }
+  });
+
   return MetaController;
 
 })(EventDispatcher);
