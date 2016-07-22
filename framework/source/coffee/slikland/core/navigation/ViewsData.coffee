@@ -1,11 +1,23 @@
+###*
+ViewsData Class
+@class ViewsData
+@extends EventDispatcher
+@final
+###
 class ViewsData extends EventDispatcher
 	@VIEW_CREATED: 'view_created'
 	@ALL_VIEWS_CREATED: 'all_views_created'
 
+	###*
+	@class ViewsData
+	@constructor
+	@param {Object} p_data
+	###
 	constructor: (p_data) ->
 		if !p_data? then throw new Error('The param p_data is null')
 		@_data = []
 		@_views = p_data.views
+		super
 
 	getData:(p_id)->
 		if !@_views[p_id]? then throw new Error('The view with id "'+p_id+'" does not exists in config file')

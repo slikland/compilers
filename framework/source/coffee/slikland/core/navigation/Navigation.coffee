@@ -8,6 +8,7 @@ Navigation Class
 @uses NavigationRouter
 @uses BaseNavigationController
 @uses MetaController
+@final
 ###
 class Navigation extends EventDispatcher
 

@@ -1,4 +1,11 @@
 (function() {
+
+/**
+ViewsData Class
+@class ViewsData
+@extends EventDispatcher
+@final
+ */
 var ViewsData,
   __hasProp = {}.hasOwnProperty,
   __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
@@ -10,12 +17,20 @@ ViewsData = (function(_super) {
 
   ViewsData.ALL_VIEWS_CREATED = 'all_views_created';
 
+
+  /**
+  	@class ViewsData
+  	@constructor
+  	@param {Object} p_data
+   */
+
   function ViewsData(p_data) {
     if (p_data == null) {
       throw new Error('The param p_data is null');
     }
     this._data = [];
     this._views = p_data.views;
+    ViewsData.__super__.constructor.apply(this, arguments);
   }
 
   ViewsData.prototype.getData = function(p_id) {
@@ -663,6 +678,12 @@ ScrollNavigationController = (function(_super) {
 
 })(BaseNavigationController);
 
+
+/**
+@class NavigationRouter
+@extends EventDispatcher
+@final
+ */
 var NavigationRouter,
   __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
   __hasProp = {}.hasOwnProperty,
@@ -671,16 +692,43 @@ var NavigationRouter,
 NavigationRouter = (function(_super) {
   __extends(NavigationRouter, _super);
 
+
+  /**
+  	@event CHANGE
+  	@static
+   */
+
   NavigationRouter.CHANGE = 'route_path_change';
 
+
+  /**
+  	@event CHANGE_ROUTE
+  	@static
+   */
+
   NavigationRouter.CHANGE_ROUTE = 'route_match';
+
+
+  /**
+  	@class NavigationRouter
+  	@constructor
+   */
 
   function NavigationRouter() {
     this._onPathChange = __bind(this._onPathChange, this);
     this._routes = [];
     this._numRoutes = 0;
     this._trigger = true;
+    NavigationRouter.__super__.constructor.apply(this, arguments);
   }
+
+
+  /**
+  	@method setup
+  	@param {String} [p_rootPath = null] Use root path if not set in base tag
+  	@param {Boolean} [p_forceHashBang = false] Force hash bang for old browsers
+  	@return {NavigationRouter}
+   */
 
   NavigationRouter.prototype.setup = function(p_rootPath, p_forceHashBang) {
     var base, err, path, _ref;
@@ -735,6 +783,13 @@ NavigationRouter = (function(_super) {
     return this;
   };
 
+
+  /**
+  	@method _getPath
+  	@return {String}
+  	@private
+   */
+
   NavigationRouter.prototype._getPath = function() {
     var hasSlash, rawPath;
     rawPath = window.location.href;
@@ -749,6 +804,14 @@ NavigationRouter = (function(_super) {
     return rawPath;
   };
 
+
+  /**
+  	@method _parsePath
+  	@param {String} p_rawPath
+  	@return {Object}
+  	@private
+   */
+
   NavigationRouter.prototype._parsePath = function(p_rawPath) {
     var params, path, pathParts;
     pathParts = /^(?:#?!?\/*)([^?]*)\??(.*?)$/.exec(p_rawPath);
@@ -760,6 +823,14 @@ NavigationRouter = (function(_super) {
       params: params
     };
   };
+
+
+  /**
+  	@method _parseParams
+  	@param {String} p_path
+  	@return {Object}
+  	@private
+   */
 
   NavigationRouter.prototype._parseParams = function(p_path) {
     var c, o, pRE, params;
@@ -774,6 +845,13 @@ NavigationRouter = (function(_super) {
     return params;
   };
 
+
+  /**
+  	@method _onPathChange
+  	@param {Event} [evt = null]
+  	@private
+   */
+
   NavigationRouter.prototype._onPathChange = function(evt) {
     if (evt == null) {
       evt = null;
@@ -785,40 +863,66 @@ NavigationRouter = (function(_super) {
     this._trigger = true;
     if (this._replaceData) {
       this.goto(this._replaceData[0], false);
-      return this._replaceData = null;
+      this._replaceData = null;
     } else {
-      return this.trigger(NavigationRouter.CHANGE, this._parsePath(this._currentPath));
+      this.trigger(NavigationRouter.CHANGE, this._parsePath(this._currentPath));
     }
+    return false;
   };
 
+
+  /**
+  	@method _triggerPath
+  	@param {String} p_path
+  	@private
+   */
+
   NavigationRouter.prototype._triggerPath = function(p_path) {
-    var i, pathData, route, routeData, routes, _ref, _results;
+    var i, pathData, route, routeData, routes, _ref;
     pathData = this._parsePath(p_path);
     _ref = this._checkRoutes(pathData.path), routes = _ref[0], routeData = _ref[1];
     if (routes) {
       i = routes.length;
-      _results = [];
       while (i-- > 0) {
         route = routes[i];
-        _results.push(this.trigger(NavigationRouter.CHANGE_ROUTE, {
+        this.trigger(NavigationRouter.CHANGE_ROUTE, {
           route: route.route,
           routeData: routeData,
           path: p_path,
           pathData: pathData,
           data: route.data
-        }));
+        });
       }
-      return _results;
     }
+    return false;
   };
+
+
+  /**
+  	@method getCurrentPath
+  	@return {String}
+   */
 
   NavigationRouter.prototype.getCurrentPath = function() {
     return this._currentPath;
   };
 
+
+  /**
+  	@method getParsedPath
+  	@return {Object}
+   */
+
   NavigationRouter.prototype.getParsedPath = function() {
     return this._parsePath(this._currentPath);
   };
+
+
+  /**
+  	@method goto
+  	@param {String} p_path
+  	@param {Boolean} [p_trigger = true]
+   */
 
   NavigationRouter.prototype.goto = function(p_path, p_trigger) {
     if (p_trigger == null) {
@@ -835,11 +939,19 @@ NavigationRouter = (function(_super) {
       if (this._trigger) {
         this._onPathChange();
       }
-      return this._trigger = true;
+      this._trigger = true;
     } else {
-      return window.location.hash = '!' + '/' + p_path;
+      window.location.hash = '!' + '/' + p_path;
     }
+    return false;
   };
+
+
+  /**
+  	@method replace
+  	@param {String} p_path
+  	@param {Boolean} [p_trigger = false]
+   */
 
   NavigationRouter.prototype.replace = function(p_path, p_trigger) {
     if (p_trigger == null) {
@@ -857,17 +969,40 @@ NavigationRouter = (function(_super) {
       }
     }
     if (p_trigger) {
-      return this.triggerPath(p_path);
+      this.triggerPath(p_path);
     }
+    return false;
   };
+
+
+  /**
+  	@method triggerPath
+  	@param {String} p_path
+   */
 
   NavigationRouter.prototype.triggerPath = function(p_path) {
-    return this._triggerPath(p_path);
+    this._triggerPath(p_path);
+    return false;
   };
 
+
+  /**
+  	@method triggerCurrentPath
+  	@param {String} p_path
+   */
+
   NavigationRouter.prototype.triggerCurrentPath = function() {
-    return this._triggerPath(this._getPath());
+    this._triggerPath(this._getPath());
+    return false;
   };
+
+
+  /**
+  	Add a route
+  	@method addRoute
+  	@param {String} p_route
+  	@param {Object} [p_data = null]
+   */
 
   NavigationRouter.prototype.addRoute = function(p_route, p_data) {
     var err, i, labels, o, p, r, routeRE;
@@ -906,8 +1041,16 @@ NavigationRouter = (function(_super) {
       numLabels: labels.length,
       numSlashes: p_route.split('/').length
     };
-    return this._routes.sort(this._sortRoutes);
+    this._routes.sort(this._sortRoutes);
+    return false;
   };
+
+
+  /**
+  	Remove a route
+  	@method removeRoute
+  	@param {String} p_route
+   */
 
   NavigationRouter.prototype.removeRoute = function(p_route) {
     var i, route;
@@ -918,13 +1061,28 @@ NavigationRouter = (function(_super) {
         this._routes.splice(i, 1);
       }
     }
-    return this._numRoutes = this._routes.length;
+    this._numRoutes = this._routes.length;
+    return false;
   };
+
+
+  /**
+  	Remove all routes
+  	@method removeAllRoutes
+   */
 
   NavigationRouter.prototype.removeAllRoutes = function() {
     this._routes.length = 0;
     return this._numRoutes = this._routes.length;
   };
+
+
+  /**
+  	@method _checkRoutes
+  	@param {String} p_path
+  	@private
+  	@return {Array}
+   */
 
   NavigationRouter.prototype._checkRoutes = function(p_path) {
     var data, foundRoute, i, j, label, o, re, route, routes, routesIndex, v, _i, _len, _ref;
@@ -961,6 +1119,15 @@ NavigationRouter = (function(_super) {
     return [routes, data];
   };
 
+
+  /**
+  	@method _sortRoutes
+  	@param {String} p_a
+  	@param {String} p_b
+  	@private
+  	@return {Number}
+   */
+
   NavigationRouter.prototype._sortRoutes = function(p_a, p_b) {
     if (p_a.numLabels < p_b.numLabels) {
       return -1;
@@ -990,6 +1157,12 @@ NavigationRouter = (function(_super) {
 
 })(EventDispatcher);
 
+
+/**
+@class MetaController
+@extends EventDispatcher
+@final
+ */
 var MetaController,
   __hasProp = {}.hasOwnProperty,
   __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
@@ -997,21 +1170,83 @@ var MetaController,
 MetaController = (function(_super) {
   __extends(MetaController, _super);
 
+
+  /**
+  	@class MetaController
+  	@constructor
+   */
+
   function MetaController() {
     MetaController.__super__.constructor.apply(this, arguments);
   }
 
+
+  /**
+  	@method change
+  	@param {Object} p_data
+   */
+
   MetaController.prototype.change = function(p_data) {
     this.title = p_data != null ? p_data.title : void 0;
     this.description = p_data != null ? p_data.description : void 0;
-    return this.favicon = p_data != null ? p_data.favicon : void 0;
+    this.color = p_data != null ? p_data.color : void 0;
+    this.favicon = p_data != null ? p_data.favicon : void 0;
+    this.viewport = p_data != null ? p_data.viewport : void 0;
+    return false;
   };
+
+
+  /**
+  	@method applyMeta
+  	@param {String} p_name
+  	@param {String} p_value
+   */
+
+  MetaController.prototype.applyMeta = function(p_name, p_value) {
+    var meta;
+    if (p_value != null) {
+      if (document.querySelector('meta[name=' + p_name + ']') != null) {
+        document.querySelector('meta[name=' + p_name + ']').content = p_value;
+      } else {
+        meta = document.createElement('meta');
+        meta.name = p_name;
+        meta.content = p_value;
+        this.head.appendChild(meta);
+      }
+    }
+    return false;
+  };
+
+
+  /**
+  	@attribute head
+  	@type {HTMLElement}
+  	@readOnly
+   */
 
   MetaController.get({
     head: function() {
       return document.head || document.getElementsByTagName('head')[0];
     }
   });
+
+
+  /**
+  	@attribute viewport
+  	@type {String}
+   */
+
+  MetaController.set({
+    viewport: function(p_value) {
+      return this.applyMeta('viewport', p_value);
+    }
+  });
+
+
+  /**
+  	@attribute title
+  	@type {String}
+   */
 
   MetaController.set({
     title: function(p_value) {
@@ -1021,21 +1256,23 @@ MetaController = (function(_super) {
     }
   });
 
+
+  /**
+  	@attribute description
+  	@type {String}
+   */
+
   MetaController.set({
     description: function(p_value) {
-      var meta;
-      if (p_value != null) {
-        if (document.querySelector('meta[name=description]') != null) {
-          return document.querySelector('meta[name=description]').content = p_value;
-        } else {
-          meta = document.createElement('meta');
-          this.head.appendChild(meta);
-          meta.name = 'description';
-          return meta.content = p_value;
-        }
-      }
+      return this.applyMeta('description', p_value);
     }
   });
+
+
+  /**
+  	@attribute favicon
+  	@type {String}
+   */
 
   MetaController.set({
     favicon: function(p_value) {
@@ -1043,63 +1280,33 @@ MetaController = (function(_super) {
       if (p_value != null) {
         if (document.querySelector('link[rel=icon]') != null) {
           document.querySelector('link[rel=icon]').type = "image/x-icon";
-          return document.querySelector('link[rel=icon]').href = p_value;
+          document.querySelector('link[rel=icon]').href = p_value;
         } else {
           link = document.createElement('link');
-          this.head.appendChild(link);
           link.rel = "icon";
           link.type = "image/x-icon";
-          return link.href = p_value;
+          link.href = p_value;
+          this.head.appendChild(link);
         }
       }
+      return false;
     }
   });
 
+
+  /**
+  	@attribute color
+  	@type {String}
+   */
+
   MetaController.set({
     color: function(p_color) {
-      var meta;
-      if (p_color != null) {
-        if (document.querySelector('meta[name=apple-mobile-web-app-capable]') != null) {
-          document.querySelector('meta[name=apple-mobile-web-app-capable]').content = 'yes';
-        } else {
-          meta = document.createElement('meta');
-          this.head.appendChild(meta);
-          meta.name = 'apple-mobile-web-app-capable';
-          meta.content = 'yes';
-        }
-        if (document.querySelector('meta[name=mobile-web-app-capable]') != null) {
-          document.querySelector('meta[name=mobile-web-app-capable]').content = 'yes';
-        } else {
-          meta = document.createElement('meta');
-          this.head.appendChild(meta);
-          meta.name = 'mobile-web-app-capable';
-          meta.content = 'yes';
-        }
-        if (document.querySelector('meta[name=theme-color]') != null) {
-          document.querySelector('meta[name=theme-color]').content = p_color;
-        } else {
-          meta = document.createElement('meta');
-          this.head.appendChild(meta);
-          meta.name = 'theme-color';
-          meta.content = p_color;
-        }
-        if (document.querySelector('meta[name=msapplication-navbutton-color]') != null) {
-          document.querySelector('meta[name=msapplication-navbutton-color]').content = p_color;
-        } else {
-          meta = document.createElement('meta');
-          this.head.appendChild(meta);
-          meta.name = 'msapplication-navbutton-color';
-          meta.content = p_color;
-        }
-        if (document.querySelector('meta[name=apple-mobile-web-app-status-bar-style]') != null) {
-          return document.querySelector('meta[name=apple-mobile-web-app-status-bar-style]').content = 'black-translucent';
-        } else {
-          meta = document.createElement('meta');
-          this.head.appendChild(meta);
-          meta.name = 'apple-mobile-web-app-status-bar-style';
-          return meta.content = 'black-translucent';
-        }
-      }
+      this.applyMeta('mobile-web-app-capable', 'yes');
+      this.applyMeta('theme-color', p_color);
+      this.applyMeta('msapplication-navbutton-color', p_color);
+      this.applyMeta('apple-mobile-web-app-capable', 'yes');
+      this.applyMeta('apple-mobile-web-app-status-bar-style', 'black-translucent');
+      return false;
     }
   });
 
@@ -1115,6 +1322,7 @@ Navigation Class
 @uses NavigationRouter
 @uses BaseNavigationController
 @uses MetaController
+@final
  */
 var Navigation,
   __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
@@ -1522,7 +1730,7 @@ NavigationContainer = (function(_super) {
 
 
   /**
-  	@method setup
+  	@method setupNavigation
   	@param {Object} p_data
    */
 

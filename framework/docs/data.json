@@ -42,11 +42,29 @@
             "fors": {},
             "namespaces": {}
         },
+        "../../source/coffee/slikland/core/debug/Debug.coffee": {
+            "name": "../../source/coffee/slikland/core/debug/Debug.coffee",
+            "modules": {},
+            "classes": {
+                "Debug": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
         "../../source/coffee/slikland/core/navigation/BaseNavigationController.coffee": {
             "name": "../../source/coffee/slikland/core/navigation/BaseNavigationController.coffee",
             "modules": {},
             "classes": {
                 "BaseNavigationController": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "../../source/coffee/slikland/core/navigation/MetaController.coffee": {
+            "name": "../../source/coffee/slikland/core/navigation/MetaController.coffee",
+            "modules": {},
+            "classes": {
+                "MetaController": 1
             },
             "fors": {},
             "namespaces": {}
@@ -74,6 +92,24 @@
             "modules": {},
             "classes": {
                 "NavigationLoader": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "../../source/coffee/slikland/core/navigation/NavigationRouter.coffee": {
+            "name": "../../source/coffee/slikland/core/navigation/NavigationRouter.coffee",
+            "modules": {},
+            "classes": {
+                "NavigationRouter": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "../../source/coffee/slikland/core/navigation/ViewsData.coffee": {
+            "name": "../../source/coffee/slikland/core/navigation/ViewsData.coffee",
+            "modules": {},
+            "classes": {
+                "ViewsData": 1
             },
             "fors": {},
             "namespaces": {}
@@ -194,6 +230,20 @@
                 "\n```\nspritesheet = new SpriteSheetAnimation({image: someImage, json: someJson});\ndocument.body.appendChild(spritesheet.element);\nsprithesheet.play({repeat: false});\n```"
             ]
         },
+        "Debug": {
+            "name": "Debug",
+            "shortname": "Debug",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "file": "../../source/coffee/slikland/core/debug/Debug.coffee",
+            "line": 1,
+            "description": "Debug Class",
+            "static": 1,
+            "final": 1
+        },
         "BaseNavigationController": {
             "name": "BaseNavigationController",
             "shortname": "BaseNavigationController",
@@ -210,6 +260,22 @@
             "extends": "EventDispatcher",
             "is_constructor": 1
         },
+        "MetaController": {
+            "name": "MetaController",
+            "shortname": "MetaController",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [
+                "Navigation"
+            ],
+            "file": "../../source/coffee/slikland/core/navigation/MetaController.coffee",
+            "line": 8,
+            "extends": "EventDispatcher",
+            "final": 1,
+            "is_constructor": 1
+        },
         "Navigation": {
             "name": "Navigation",
             "shortname": "Navigation",
@@ -219,7 +285,7 @@
             "plugin_for": [],
             "extension_for": [],
             "file": "../../source/coffee/slikland/core/navigation/Navigation.coffee",
-            "line": 34,
+            "line": 35,
             "description": "Navigation Class",
             "extends": "EventDispatcher",
             "uses": [
@@ -227,6 +293,7 @@
                 "BaseNavigationController",
                 "MetaController"
             ],
+            "final": 1,
             "is_constructor": 1,
             "params": [
                 {
@@ -282,6 +349,44 @@
                     "type": "HTMLElement",
                     "optional": true,
                     "optdefault": " null"
+                }
+            ]
+        },
+        "NavigationRouter": {
+            "name": "NavigationRouter",
+            "shortname": "NavigationRouter",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [
+                "Navigation"
+            ],
+            "file": "../../source/coffee/slikland/core/navigation/NavigationRouter.coffee",
+            "line": 19,
+            "extends": "EventDispatcher",
+            "final": 1,
+            "is_constructor": 1
+        },
+        "ViewsData": {
+            "name": "ViewsData",
+            "shortname": "ViewsData",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "file": "../../source/coffee/slikland/core/navigation/ViewsData.coffee",
+            "line": 11,
+            "description": "ViewsData Class",
+            "extends": "EventDispatcher",
+            "final": 1,
+            "is_constructor": 1,
+            "params": [
+                {
+                    "name": "p_data",
+                    "description": "",
+                    "type": "Object"
                 }
             ]
         },
@@ -662,6 +767,58 @@
             "class": "BaseAnimation"
         },
         {
+            "file": "../../source/coffee/slikland/core/debug/Debug.coffee",
+            "line": 12,
+            "itemtype": "method",
+            "name": "init",
+            "static": 1,
+            "class": "Debug"
+        },
+        {
+            "file": "../../source/coffee/slikland/core/debug/Debug.coffee",
+            "line": 65,
+            "itemtype": "method",
+            "name": "check",
+            "params": [
+                {
+                    "name": "value ",
+                    "description": "",
+                    "type": "String",
+                    "optional": true,
+                    "optdefault": " null"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "String"
+            },
+            "static": 1,
+            "class": "Debug"
+        },
+        {
+            "file": "../../source/coffee/slikland/core/debug/Debug.coffee",
+            "line": 91,
+            "itemtype": "method",
+            "name": "log",
+            "static": 1,
+            "class": "Debug"
+        },
+        {
+            "file": "../../source/coffee/slikland/core/debug/Debug.coffee",
+            "line": 102,
+            "itemtype": "method",
+            "name": "logTime",
+            "params": [
+                {
+                    "name": "args...",
+                    "description": "",
+                    "type": "Array"
+                }
+            ],
+            "static": 1,
+            "class": "Debug"
+        },
+        {
             "file": "../../source/coffee/slikland/core/navigation/BaseNavigationController.coffee",
             "line": 11,
             "itemtype": "event",
@@ -831,8 +988,90 @@
             "class": "BaseNavigationController"
         },
         {
+            "file": "../../source/coffee/slikland/core/navigation/MetaController.coffee",
+            "line": 15,
+            "itemtype": "method",
+            "name": "change",
+            "params": [
+                {
+                    "name": "p_data",
+                    "description": "",
+                    "type": "Object"
+                }
+            ],
+            "class": "MetaController"
+        },
+        {
+            "file": "../../source/coffee/slikland/core/navigation/MetaController.coffee",
+            "line": 27,
+            "itemtype": "method",
+            "name": "applyMeta",
+            "params": [
+                {
+                    "name": "p_name",
+                    "description": "",
+                    "type": "String"
+                },
+                {
+                    "name": "p_value",
+                    "description": "",
+                    "type": "String"
+                }
+            ],
+            "class": "MetaController"
+        },
+        {
+            "file": "../../source/coffee/slikland/core/navigation/MetaController.coffee",
+            "line": 43,
+            "itemtype": "attribute",
+            "name": "head",
+            "type": "{HTMLElement}",
+            "readonly": "",
+            "class": "MetaController"
+        },
+        {
+            "file": "../../source/coffee/slikland/core/navigation/MetaController.coffee",
+            "line": 51,
+            "itemtype": "attribute",
+            "name": "viewport",
+            "type": "{String}",
+            "class": "MetaController"
+        },
+        {
+            "file": "../../source/coffee/slikland/core/navigation/MetaController.coffee",
+            "line": 58,
+            "itemtype": "attribute",
+            "name": "title",
+            "type": "{String}",
+            "class": "MetaController"
+        },
+        {
+            "file": "../../source/coffee/slikland/core/navigation/MetaController.coffee",
+            "line": 66,
+            "itemtype": "attribute",
+            "name": "description",
+            "type": "{String}",
+            "class": "MetaController"
+        },
+        {
+            "file": "../../source/coffee/slikland/core/navigation/MetaController.coffee",
+            "line": 73,
+            "itemtype": "attribute",
+            "name": "favicon",
+            "type": "{String}",
+            "class": "MetaController"
+        },
+        {
+            "file": "../../source/coffee/slikland/core/navigation/MetaController.coffee",
+            "line": 90,
+            "itemtype": "attribute",
+            "name": "color",
+            "type": "{String}",
+            "class": "MetaController"
+        },
+        {
             "file": "../../source/coffee/slikland/core/navigation/Navigation.coffee",
-            "line": 14,
+            "line": 15,
             "itemtype": "event",
             "name": "CHANGE_ROUTE",
             "static": 1,
@@ -840,7 +1079,7 @@
         },
         {
             "file": "../../source/coffee/slikland/core/navigation/Navigation.coffee",
-            "line": 19,
+            "line": 20,
             "itemtype": "event",
             "name": "CHANGE_VIEW",
             "static": 1,
@@ -848,7 +1087,7 @@
         },
         {
             "file": "../../source/coffee/slikland/core/navigation/Navigation.coffee",
-            "line": 24,
+            "line": 25,
             "itemtype": "event",
             "name": "CHANGE_INTERNAL_VIEW",
             "static": 1,
@@ -856,7 +1095,7 @@
         },
         {
             "file": "../../source/coffee/slikland/core/navigation/Navigation.coffee",
-            "line": 50,
+            "line": 51,
             "itemtype": "method",
             "name": "setup",
             "params": [
@@ -870,7 +1109,7 @@
         },
         {
             "file": "../../source/coffee/slikland/core/navigation/Navigation.coffee",
-            "line": 70,
+            "line": 71,
             "itemtype": "method",
             "name": "start",
             "params": [
@@ -886,7 +1125,7 @@
         },
         {
             "file": "../../source/coffee/slikland/core/navigation/Navigation.coffee",
-            "line": 86,
+            "line": 87,
             "description": "Returns the visible views in DOM",
             "itemtype": "attribute",
             "name": "visibleViews",
@@ -896,7 +1135,7 @@
         },
         {
             "file": "../../source/coffee/slikland/core/navigation/Navigation.coffee",
-            "line": 95,
+            "line": 96,
             "description": "Returns the current view",
             "itemtype": "attribute",
             "name": "currentView",
@@ -906,7 +1145,7 @@
         },
         {
             "file": "../../source/coffee/slikland/core/navigation/Navigation.coffee",
-            "line": 106,
+            "line": 107,
             "description": "Returns the previous view",
             "itemtype": "attribute",
             "name": "previousView",
@@ -916,7 +1155,7 @@
         },
         {
             "file": "../../source/coffee/slikland/core/navigation/Navigation.coffee",
-            "line": 115,
+            "line": 116,
             "description": "Returns the route data",
             "itemtype": "attribute",
             "name": "routeData",
@@ -926,7 +1165,7 @@
         },
         {
             "file": "../../source/coffee/slikland/core/navigation/Navigation.coffee",
-            "line": 133,
+            "line": 134,
             "itemtype": "method",
             "name": "goto",
             "params": [
@@ -942,7 +1181,7 @@
         },
         {
             "file": "../../source/coffee/slikland/core/navigation/Navigation.coffee",
-            "line": 146,
+            "line": 147,
             "itemtype": "method",
             "name": "setRoute",
             "params": [
@@ -963,7 +1202,7 @@
         },
         {
             "file": "../../source/coffee/slikland/core/navigation/Navigation.coffee",
-            "line": 155,
+            "line": 156,
             "itemtype": "method",
             "name": "gotoRoute",
             "params": [
@@ -984,7 +1223,7 @@
         },
         {
             "file": "../../source/coffee/slikland/core/navigation/Navigation.coffee",
-            "line": 168,
+            "line": 169,
             "itemtype": "method",
             "name": "replaceRoute",
             "params": [
@@ -1005,14 +1244,14 @@
         },
         {
             "file": "../../source/coffee/slikland/core/navigation/Navigation.coffee",
-            "line": 181,
+            "line": 182,
             "itemtype": "method",
             "name": "gotoDefault",
             "class": "Navigation"
         },
         {
             "file": "../../source/coffee/slikland/core/navigation/Navigation.coffee",
-            "line": 193,
+            "line": 194,
             "itemtype": "method",
             "name": "gotoView",
             "params": [
@@ -1026,7 +1265,7 @@
         },
         {
             "file": "../../source/coffee/slikland/core/navigation/Navigation.coffee",
-            "line": 204,
+            "line": 205,
             "itemtype": "method",
             "name": "getViewByRoute",
             "params": [
@@ -1045,7 +1284,7 @@
         },
         {
             "file": "../../source/coffee/slikland/core/navigation/Navigation.coffee",
-            "line": 216,
+            "line": 217,
             "itemtype": "method",
             "name": "getRouteByView",
             "params": [
@@ -1064,7 +1303,7 @@
         },
         {
             "file": "../../source/coffee/slikland/core/navigation/Navigation.coffee",
-            "line": 228,
+            "line": 229,
             "itemtype": "method",
             "name": "_change",
             "params": [
@@ -1084,7 +1323,7 @@
             "file": "../../source/coffee/slikland/core/navigation/NavigationContainer.coffee",
             "line": 18,
             "itemtype": "method",
-            "name": "setup",
+            "name": "setupNavigation",
             "params": [
                 {
                     "name": "p_data",
@@ -1481,6 +1720,318 @@
                 }
             ],
             "class": "NavigationLoader"
+        },
+        {
+            "file": "../../source/coffee/slikland/core/navigation/NavigationRouter.coffee",
+            "line": 8,
+            "itemtype": "event",
+            "name": "CHANGE",
+            "static": 1,
+            "class": "NavigationRouter"
+        },
+        {
+            "file": "../../source/coffee/slikland/core/navigation/NavigationRouter.coffee",
+            "line": 13,
+            "itemtype": "event",
+            "name": "CHANGE_ROUTE",
+            "static": 1,
+            "class": "NavigationRouter"
+        },
+        {
+            "file": "../../source/coffee/slikland/core/navigation/NavigationRouter.coffee",
+            "line": 29,
+            "itemtype": "method",
+            "name": "setup",
+            "params": [
+                {
+                    "name": "p_rootPath ",
+                    "description": "Use root path if not set in base tag",
+                    "type": "String",
+                    "optional": true,
+                    "optdefault": " null"
+                },
+                {
+                    "name": "p_forceHashBang ",
+                    "description": "Force hash bang for old browsers",
+                    "type": "Boolean",
+                    "optional": true,
+                    "optdefault": " false"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "NavigationRouter"
+            },
+            "class": "NavigationRouter"
+        },
+        {
+            "file": "../../source/coffee/slikland/core/navigation/NavigationRouter.coffee",
+            "line": 75,
+            "itemtype": "method",
+            "name": "_getPath",
+            "return": {
+                "description": "",
+                "type": "String"
+            },
+            "access": "private",
+            "tagname": "",
+            "class": "NavigationRouter"
+        },
+        {
+            "file": "../../source/coffee/slikland/core/navigation/NavigationRouter.coffee",
+            "line": 91,
+            "itemtype": "method",
+            "name": "_parsePath",
+            "params": [
+                {
+                    "name": "p_rawPath",
+                    "description": "",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "Object"
+            },
+            "access": "private",
+            "tagname": "",
+            "class": "NavigationRouter"
+        },
+        {
+            "file": "../../source/coffee/slikland/core/navigation/NavigationRouter.coffee",
+            "line": 103,
+            "itemtype": "method",
+            "name": "_parseParams",
+            "params": [
+                {
+                    "name": "p_path",
+                    "description": "",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "Object"
+            },
+            "access": "private",
+            "tagname": "",
+            "class": "NavigationRouter"
+        },
+        {
+            "file": "../../source/coffee/slikland/core/navigation/NavigationRouter.coffee",
+            "line": 118,
+            "itemtype": "method",
+            "name": "_onPathChange",
+            "params": [
+                {
+                    "name": "evt ",
+                    "description": "",
+                    "type": "Event",
+                    "optional": true,
+                    "optdefault": " null"
+                }
+            ],
+            "access": "private",
+            "tagname": "",
+            "class": "NavigationRouter"
+        },
+        {
+            "file": "../../source/coffee/slikland/core/navigation/NavigationRouter.coffee",
+            "line": 137,
+            "itemtype": "method",
+            "name": "_triggerPath",
+            "params": [
+                {
+                    "name": "p_path",
+                    "description": "",
+                    "type": "String"
+                }
+            ],
+            "access": "private",
+            "tagname": "",
+            "class": "NavigationRouter"
+        },
+        {
+            "file": "../../source/coffee/slikland/core/navigation/NavigationRouter.coffee",
+            "line": 152,
+            "itemtype": "method",
+            "name": "getCurrentPath",
+            "return": {
+                "description": "",
+                "type": "String"
+            },
+            "class": "NavigationRouter"
+        },
+        {
+            "file": "../../source/coffee/slikland/core/navigation/NavigationRouter.coffee",
+            "line": 159,
+            "itemtype": "method",
+            "name": "getParsedPath",
+            "return": {
+                "description": "",
+                "type": "Object"
+            },
+            "class": "NavigationRouter"
+        },
+        {
+            "file": "../../source/coffee/slikland/core/navigation/NavigationRouter.coffee",
+            "line": 166,
+            "itemtype": "method",
+            "name": "goto",
+            "params": [
+                {
+                    "name": "p_path",
+                    "description": "",
+                    "type": "String"
+                },
+                {
+                    "name": "p_trigger ",
+                    "description": "",
+                    "type": "Boolean",
+                    "optional": true,
+                    "optdefault": " true"
+                }
+            ],
+            "class": "NavigationRouter"
+        },
+        {
+            "file": "../../source/coffee/slikland/core/navigation/NavigationRouter.coffee",
+            "line": 186,
+            "itemtype": "method",
+            "name": "replace",
+            "params": [
+                {
+                    "name": "p_path",
+                    "description": "",
+                    "type": "String"
+                },
+                {
+                    "name": "p_trigger ",
+                    "description": "",
+                    "type": "Boolean",
+                    "optional": true,
+                    "optdefault": " false"
+                }
+            ],
+            "class": "NavigationRouter"
+        },
+        {
+            "file": "../../source/coffee/slikland/core/navigation/NavigationRouter.coffee",
+            "line": 205,
+            "itemtype": "method",
+            "name": "triggerPath",
+            "params": [
+                {
+                    "name": "p_path",
+                    "description": "",
+                    "type": "String"
+                }
+            ],
+            "class": "NavigationRouter"
+        },
+        {
+            "file": "../../source/coffee/slikland/core/navigation/NavigationRouter.coffee",
+            "line": 213,
+            "itemtype": "method",
+            "name": "triggerCurrentPath",
+            "params": [
+                {
+                    "name": "p_path",
+                    "description": "",
+                    "type": "String"
+                }
+            ],
+            "class": "NavigationRouter"
+        },
+        {
+            "file": "../../source/coffee/slikland/core/navigation/NavigationRouter.coffee",
+            "line": 221,
+            "description": "Add a route",
+            "itemtype": "method",
+            "name": "addRoute",
+            "params": [
+                {
+                    "name": "p_route",
+                    "description": "",
+                    "type": "String"
+                },
+                {
+                    "name": "p_data ",
+                    "description": "",
+                    "type": "Object",
+                    "optional": true,
+                    "optdefault": " null"
+                }
+            ],
+            "class": "NavigationRouter"
+        },
+        {
+            "file": "../../source/coffee/slikland/core/navigation/NavigationRouter.coffee",
+            "line": 253,
+            "description": "Remove a route",
+            "itemtype": "method",
+            "name": "removeRoute",
+            "params": [
+                {
+                    "name": "p_route",
+                    "description": "",
+                    "type": "String"
+                }
+            ],
+            "class": "NavigationRouter"
+        },
+        {
+            "file": "../../source/coffee/slikland/core/navigation/NavigationRouter.coffee",
+            "line": 268,
+            "description": "Remove all routes",
+            "itemtype": "method",
+            "name": "removeAllRoutes",
+            "class": "NavigationRouter"
+        },
+        {
+            "file": "../../source/coffee/slikland/core/navigation/NavigationRouter.coffee",
+            "line": 276,
+            "itemtype": "method",
+            "name": "_checkRoutes",
+            "params": [
+                {
+                    "name": "p_path",
+                    "description": "",
+                    "type": "String"
+                }
+            ],
+            "access": "private",
+            "tagname": "",
+            "return": {
+                "description": "",
+                "type": "Array"
+            },
+            "class": "NavigationRouter"
+        },
+        {
+            "file": "../../source/coffee/slikland/core/navigation/NavigationRouter.coffee",
+            "line": 310,
+            "itemtype": "method",
+            "name": "_sortRoutes",
+            "params": [
+                {
+                    "name": "p_a",
+                    "description": "",
+                    "type": "String"
+                },
+                {
+                    "name": "p_b",
+                    "description": "",
+                    "type": "String"
+                }
+            ],
+            "access": "private",
+            "tagname": "",
+            "return": {
+                "description": "",
+                "type": "Number"
+            },
+            "class": "NavigationRouter"
         },
         {
             "file": "../../source/coffee/slikland/event/EventDispatcher.coffee",

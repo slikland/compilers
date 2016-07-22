@@ -16,7 +16,7 @@ class NavigationContainer extends BaseView
 		super null, 'nav-container'
 
 	###*
-	@method setup
+	@method setupNavigation
 	@param {Object} p_data
 	###
 	setupNavigation:(p_data)=>

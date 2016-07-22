@@ -1,4 +1,11 @@
 (function() {
+
+/**
+Debug Class
+@class Debug
+@static
+@final
+ */
 var Debug,
   __slice = [].slice;
 
@@ -10,6 +17,12 @@ Debug = (function() {
   Debug.light = 0x48b224;
 
   Debug.dark = 0x2c035d;
+
+
+  /**
+  	@method init
+  	@static
+   */
 
   Debug.init = function() {
     var err, frameworkVersion, projectVersion, re, _ref;
@@ -33,7 +46,7 @@ Debug = (function() {
       Debug.debug = re.test(window.location.href);
     }
     if (!Debug.debug || !window.console) {
-      return window.console = {
+      window.console = {
         assert: function() {},
         clear: function() {},
         count: function() {},
@@ -57,11 +70,20 @@ Debug = (function() {
         warn: function() {}
       };
     } else {
-      frameworkVersion = "v0.1";
-      projectVersion = "v0.1";
-      return console.log("%c=============\nDEBUG MODE ON\n-------------\nFramework    \nversion: " + frameworkVersion + "\n-------------\nProject      \nversion: " + projectVersion + "\n=============", 'background: #272822; color: #f8f8f2');
+      frameworkVersion = "v1.0";
+      projectVersion = "v1.0";
+      console.log("%c=============\nDEBUG MODE ON\n-------------\nFramework    \nversion: " + frameworkVersion + "\n-------------\nProject      \nversion: " + projectVersion + "\n=============", 'background: #272822; color: #f8f8f2');
     }
+    return false;
   };
+
+
+  /**
+  	@method check
+  	@param {String} [value = null]
+  	@return {String}
+  	@static
+   */
 
   Debug.check = function(value) {
     var c, col, o, sign;
@@ -91,6 +113,12 @@ Debug = (function() {
     }
   };
 
+
+  /**
+  	@method log
+  	@static
+   */
+
   Debug.log = function() {
     if (Debug._log != null) {
       return typeof Debug._log === "function" ? Debug._log.apply(Debug, arguments) : void 0;
@@ -100,6 +128,13 @@ Debug = (function() {
       } catch (_error) {}
     }
   };
+
+
+  /**
+  	@method logTime
+  	@param {Array} args...
+  	@static
+   */
 
   Debug.logTime = function() {
     var args, s, st, style, t, v;

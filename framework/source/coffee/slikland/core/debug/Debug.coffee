@@ -1,8 +1,18 @@
+###*
+Debug Class
+@class Debug
+@static
+@final
+###
 class Debug
 	@debug: false
 	@light = 0x48b224
 	@dark = 0x2c035d
 	
+	###*
+	@method init
+	@static
+	###
 	@init:()=>
 		@_console = window.console
 
@@ -47,11 +57,17 @@ class Debug
 				trace: ->
 				warn: ->
 		else
-			frameworkVersion = "v0.1"
-			projectVersion = "v0.1"
+			frameworkVersion = "v1.0"
+			projectVersion = "v1.0"
 			console.log "%c=============\nDEBUG MODE ON\n-------------\nFramework    \nversion: "+frameworkVersion+"\n-------------\nProject      \nversion: "+projectVersion+"\n=============", 'background: #272822; color: #f8f8f2'
+		false	
 
-
+	###*
+	@method check
+	@param {String} [value = null]
+	@return {String}
+	@static
+	###
 	@check:(value = null)->
 		o = ''
 		c = ''
@@ -72,6 +88,10 @@ class Debug
 		else
 			return (sign.charAt(0) == 's' && sign.charAt(1) == 'l')
 
+	###*
+	@method log
+	@static
+	###
 	@log:()=>
 		if @_log?
 			@_log?(arguments...)
@@ -79,6 +99,11 @@ class Debug
 			try
 				console.log(arguments...)
 	
+	###*
+	@method logTime
+	@param {Array} args...
+	@static
+	###
 	@logTime:(args...)->
 		t = new Date().getTime()
 		if !@itm

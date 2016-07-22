@@ -3,6 +3,7 @@
 	{
 		"title": "Default Template - title sub 1",
 		"description":"sub 1",
+		"color":"#ff00ff",
 		"social":{
 			"facebook":{
 				"type":"website",

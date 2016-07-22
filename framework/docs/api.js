@@ -8,13 +8,17 @@ YUI.add("yuidoc-meta", function(Y) {
         "BaseNavigationController",
         "BaseView",
         "ColorUtils",
+        "Debug",
         "Detections",
         "EventDispatcher",
+        "MetaController",
         "Navigation",
         "NavigationContainer",
         "NavigationLoader",
+        "NavigationRouter",
         "SpriteSheetAnimation",
-        "StringUtils"
+        "StringUtils",
+        "ViewsData"
     ],
     "modules": [],
     "allModules": [],
