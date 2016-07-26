@@ -26,7 +26,8 @@
 			"id":"sub1",
 			"class":"template-sub-view",
 			"content":"{base}data/sub1.json",
-			"route":"/sub-view-01",
+			"route":"/teste/sub-view-01",
+			"lightbox":false,
 			"destroyable":true,
 			"loadContent":true,
 			"cache":true

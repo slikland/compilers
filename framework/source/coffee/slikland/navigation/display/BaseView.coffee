@@ -104,6 +104,7 @@ class BaseView extends BaseDOM
 	content|{{#crossLink "String"}}{{/crossLink}} / {{#crossLink "JSON"}}{{/crossLink}}|__No__
 	cache|{{#crossLink "Boolean"}}{{/crossLink}}|__No__
 	parentView|{{#crossLink "String"}}{{/crossLink}}|__No__
+	lightbox|{{#crossLink "Boolean"}}{{/crossLink}}|__No__
 	destroyable|{{#crossLink "Boolean"}}{{/crossLink}}|__No__
 	loadContent|{{#crossLink "Boolean"}}{{/crossLink}}|__No__
 	snap *(only for scroll navigation type)*|{{#crossLink "Boolean"}}{{/crossLink}}|__No__
@@ -118,6 +119,7 @@ class BaseView extends BaseDOM
 		"content":"data/home.json",
 		"cache":true,
 		"parentView":"someViewID", //the unique ID of parent view
+		"lightbox":true,
 		"destroyable":true,
 		"loadContent":true,
 		"snap":true, //only for scroll navigation type
@@ -137,6 +139,7 @@ class BaseView extends BaseDOM
 		@route = if @_data.route? then @_data.route
 		@routeData = if !@_routeData then null
 		@parentView = if @_data.parentView? then @_data.parentView
+		@lightbox = if @_data.lightbox? then @_data.lightbox
 		@subviews = if @_data.subviews? then @_data.subviews
 		@destroyable = if @_data.destroyable? then @_data.destroyable
 
@@ -253,6 +256,17 @@ class BaseView extends BaseDOM
 		@_subviews = p_value
 
 	###*
+	Sets/gets if this views is a lightbox.
+	@attribute lightbox
+	@type {Boolean}
+	@default false
+	###
+	@get lightbox:->
+		return @_lightbox
+	@set lightbox:(p_value)->
+		@_lightbox = p_value
+
+	###*
 	Sets/gets if this views is destroyable.
 	@attribute destroyable
 	@type {Boolean}
@@ -359,7 +373,7 @@ class BaseView extends BaseDOM
 	@param {Event} [evt=null]
 	###
 	createStart:(evt=null)=>
-		@trigger(BaseView.CREATE_START, @)
+		@stackTrigger(BaseView.CREATE_START, @)
 		@create()
 		false
 
@@ -370,7 +384,7 @@ class BaseView extends BaseDOM
 	@param {Event} [evt=null]
 	###
 	create:(evt=null)=>
-		@trigger(BaseView.CREATE, @)
+		@stackTrigger(BaseView.CREATE, @)
 		@createComplete()
 		false
 
@@ -381,7 +395,7 @@ class BaseView extends BaseDOM
 	###
 	createComplete:(evt=null)=>
 		@_created = true
-		@trigger(BaseView.CREATE_COMPLETE, @)
+		@stackTrigger(BaseView.CREATE_COMPLETE, @)
 		false
 		
 	###*
@@ -391,7 +405,7 @@ class BaseView extends BaseDOM
 	@param {Event} [evt=null]
 	###
 	showStart:(evt=null)=>
-		@trigger(BaseView.SHOW_START, @)
+		@stackTrigger(BaseView.SHOW_START, @)
 		@show()
 		false
 
@@ -402,7 +416,7 @@ class BaseView extends BaseDOM
 	@param {Event} [evt=null]
 	###
 	show:(evt=null)=>
-		@trigger(BaseView.SHOW, @)
+		@stackTrigger(BaseView.SHOW, @)
 		@showComplete()
 		false
 
@@ -413,7 +427,7 @@ class BaseView extends BaseDOM
 	###
 	showComplete:(evt=null)=>
 		@_showed = true
-		@trigger(BaseView.SHOW_COMPLETE, @)
+		@stackTrigger(BaseView.SHOW_COMPLETE, @)
 		false
 
 	###*
@@ -423,7 +437,7 @@ class BaseView extends BaseDOM
 	@param {Event} [evt=null]
 	###
 	hideStart:(evt=null)=>
-		@trigger(BaseView.HIDE_START, @)
+		@stackTrigger(BaseView.HIDE_START, @)
 		@hide()
 		false
 
@@ -435,7 +449,7 @@ class BaseView extends BaseDOM
 	###
 	hide:(evt=null)=>
 		@_showed = false
-		@trigger(BaseView.HIDE, @)
+		@stackTrigger(BaseView.HIDE, @)
 		@hideComplete()
 		false
 
@@ -445,7 +459,7 @@ class BaseView extends BaseDOM
 	@param {Event} [evt=null]
 	###
 	hideComplete:(evt=null)=>
-		@trigger(BaseView.HIDE_COMPLETE, @)
+		@stackTrigger(BaseView.HIDE_COMPLETE, @)
 		false
 
 	###*
@@ -454,7 +468,7 @@ class BaseView extends BaseDOM
 	@method pause
 	###
 	pause:()=>
-		@trigger(BaseView.PAUSE, @)
+		@stackTrigger(BaseView.PAUSE, @)
 		false
 
 	###*
@@ -463,7 +477,7 @@ class BaseView extends BaseDOM
 	@method pause
 	###
 	resume:()=>
-		@trigger(BaseView.RESUME, @)
+		@stackTrigger(BaseView.RESUME, @)
 		false
 	
 	###*

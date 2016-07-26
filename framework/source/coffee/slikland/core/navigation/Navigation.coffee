@@ -244,6 +244,7 @@ class Navigation extends EventDispatcher
 				_meta.change(@currentView.meta)
 			when BaseNavigationController.CHANGE
 				@trigger(Navigation.CHANGE_INTERNAL_VIEW, {view:evt.view, transition:evt.transition})
+			
 			when NavigationRouter.CHANGE_ROUTE
 				@trigger(Navigation.CHANGE_ROUTE, {data:@routeData})
 				if @routeData.route? then @gotoView(@getViewByRoute(@routeData.route))

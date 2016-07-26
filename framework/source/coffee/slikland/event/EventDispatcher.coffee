@@ -6,7 +6,6 @@ class EventDispatcher
 
 	# Collection of {Event}
 	_events:null
-	_stackTriggerer:[]
 
 	###*
 	Add a event listener.
@@ -154,6 +153,8 @@ class EventDispatcher
 
 	###
 	stackTrigger:(evt, data = null, target = null)->
+		if !@_stackTriggerer
+			@_stackTriggerer = []
 		@_stackTriggerer.push([evt, data, target])
 
 		clearTimeout(@_stackTriggerTimeout)

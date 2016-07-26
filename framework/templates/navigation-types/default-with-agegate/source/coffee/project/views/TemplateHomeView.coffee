@@ -15,7 +15,7 @@ class TemplateHomeView extends BaseView
 		@image = new BaseDOM({element:@loader.getResult('image')})
 		@background.appendChild(@image)
 		super
-	
+
 	create:(evt=null)=>
 		super
 
