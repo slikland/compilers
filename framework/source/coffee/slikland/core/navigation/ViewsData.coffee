@@ -61,9 +61,6 @@ class ViewsData extends EventDispatcher
 				subview.parentView = view
 				view.subviews[v.id] = subview
 
-		if view.lightbox
-			view.type = 'lightbox'
-
 		# TODO: Try fix array content type
 		# Ugly workaround to get the subviews more easily the first idea is better =(
 		# if !@_data[view.id]? && view.type == 'view'

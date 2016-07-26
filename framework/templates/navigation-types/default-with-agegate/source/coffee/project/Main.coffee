@@ -9,7 +9,9 @@
 #import project.views.TemplateSubView
 
 class Main extends NavigationContainer
+	
 	_controller = new DefaultNavigationController()
+	
 	create:(evt=null)=>
 		menu = new BaseDOM()
 		menu.className = 'menu'

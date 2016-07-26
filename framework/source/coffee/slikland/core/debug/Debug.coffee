@@ -57,9 +57,11 @@ class Debug
 				trace: ->
 				warn: ->
 		else
-			frameworkVersion = "v1.0"
-			projectVersion = "v1.0"
-			console.log "%c=============\nDEBUG MODE ON\n-------------\nFramework    \nversion: "+frameworkVersion+"\n-------------\nProject      \nversion: "+projectVersion+"\n=============", 'background: #272822; color: #f8f8f2'
+			frameworkVersion = "v" + app.version
+
+			# projectVersion = "v1.0"
+			# console.log "%c===============\n DEBUG MODE ON \n---------------\n Framework     \n version: "+frameworkVersion+" \n---------------\n Project       \n version: "+projectVersion+" \n===============", 'background: #272822; color: #f8f8f2'
+			console.log "%c===============\n DEBUG MODE ON \n---------------\n Framework     \n version: "+frameworkVersion+" \n===============", 'background: #272822; color: #f8f8f2'
 		false	
 
 	###*

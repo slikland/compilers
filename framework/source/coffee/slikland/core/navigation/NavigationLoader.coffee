@@ -1,6 +1,6 @@
+#import slikland.core.App
 #import slikland.core.debug.Debug
 #import slikland.utils.Prototypes
-#import slikland.core.App
 
 #import slikland.utils.ArrayUtils
 #import slikland.utils.ObjectUtils

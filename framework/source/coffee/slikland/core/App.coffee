@@ -3,7 +3,7 @@
 class App extends EventDispatcher
 	constructor:()->
 		super
-
+		@version = "1.0"
 		@_checkWindowActivity()
 		# 
 		# TODO: FIX IE8

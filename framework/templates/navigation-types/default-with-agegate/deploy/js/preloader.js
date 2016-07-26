@@ -1,6 +1,345 @@
 (function() {
 
 /**
+EventDispatcher class for handling and triggering events.
+@class EventDispatcher
+ */
+var EventDispatcher,
+  __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
+  __indexOf = [].indexOf || function(item) { for (var i = 0, l = this.length; i < l; i++) { if (i in this && this[i] === item) return i; } return -1; };
+
+EventDispatcher = (function() {
+  function EventDispatcher() {
+    this._triggerStacked = __bind(this._triggerStacked, this);
+    this.trigger = __bind(this.trigger, this);
+  }
+
+  EventDispatcher.prototype._events = null;
+
+
+  /**
+  	Add a event listener.
+  	@method on
+  	@param {String} event Event name.
+  	@param {function} handler A callback function to handle the event.<br>
+  	The callback function can receive 1 or 2 parameters. The first parameter is the event data itself and the second parameter is the custom data of the triggering event.
+  
+  	@example
+  		function someEventHandler(e, data)
+  		{
+  			console.log(e); // Returns event data with it's type and target/currentTarget set to the scope
+  			console.log(data); // If the triggering event has any custom data
+  		}
+  		var ed = new EventDispatcher()
+  		ed.on('someEvent', someEventHandler);
+   */
+
+  EventDispatcher.prototype.on = function(p_event, p_handler) {
+    if (!this._events) {
+      this._events = {};
+    }
+    if (!this._events[p_event]) {
+      this._events[p_event] = [];
+    }
+    if (!(__indexOf.call(this._events[p_event], p_handler) >= 0)) {
+      return this._events[p_event].unshift(p_handler);
+    }
+  };
+
+
+  /**
+  	Remove an event listener.
+  
+  	**BEWARE**
+  
+  	> Calling this method without a handler will remove all listeners attached to this event.
+  
+  	> If calling without the event name, will remove all listeners attached to this instance.
+  
+  	@method off
+  	@param {String} [event=null] Event name.
+  	@param {function} [handler=null]
+  	A callback function added in the {{#crossLink "EventDispatcher/on:method"}}{{/crossLink}} call.
+   */
+
+  EventDispatcher.prototype.off = function(p_event, p_handler) {
+    var events, i;
+    if (p_event == null) {
+      p_event = null;
+    }
+    if (p_handler == null) {
+      p_handler = null;
+    }
+    if (!this._events) {
+      this._events = {};
+      return;
+    }
+    if ((p_event != null) && Boolean(this._events[p_event])) {
+      events = this._events[p_event];
+      if (!p_handler) {
+        return this._events[p_event].length = 0;
+      } else {
+        while ((i = events.indexOf(p_handler)) >= 0) {
+          events.splice(i, 1);
+        }
+        return this._events[p_event] = events;
+      }
+    } else {
+      return this._events = {};
+    }
+  };
+
+
+  /**
+  	Triggers an event.
+  	@method trigger
+  	@param {String} event Event name.
+  	@param {object} [data=null] Custom event data.
+  	@param {object} [target=null] Target that will be specified in the `event.target`. The `event.currentTarget` will always be this instance.
+  
+  	@example
+  		var ed = new EventDispatcher()
+  
+  		// Will just trigger the event
+  		ed.trigger('someEvent'); 
+  
+  		// Will trigger the event with the object which can be retrieved by the second
+  		// parameter of the handler function.
+  		ed.trigger('someEvent', {someData: true}); 
+  
+  		// Will set the event target to window. On the handler's first parameter
+  		//`event.target` will be window, and event.currentTarget will be the `ev` instance.
+  		ed.trigger('someEvent', {someData: true}, window);
+   */
+
+  EventDispatcher.prototype.trigger = function(evt, data, target) {
+    var e, events, i, k, v, _i, _len, _results;
+    if (data == null) {
+      data = null;
+    }
+    if (target == null) {
+      target = null;
+    }
+    if (Array.isArray(evt)) {
+      for (_i = 0, _len = evt.length; _i < _len; _i++) {
+        e = evt[_i];
+        this.trigger(evt, data);
+      }
+      return;
+    }
+    if (!this._events) {
+      this._events = {};
+    }
+    events = this._events[evt];
+    if (!events || events.length === 0) {
+      return;
+    }
+    if (!target) {
+      target = this;
+    }
+    e = {
+      type: evt,
+      target: target,
+      currentTarget: this
+    };
+    if (typeof data === 'object') {
+      for (k in data) {
+        v = data[k];
+        if (!e[k]) {
+          e[k] = v;
+        }
+      }
+    }
+    i = events.length;
+    _results = [];
+    while (i-- > 0) {
+      _results.push(typeof events[i] === "function" ? events[i](e, data) : void 0);
+    }
+    return _results;
+  };
+
+
+  /**
+  	Check if a event handler is already set.
+  	@method hasEvent
+  	@param {String} event Event name.
+  	@param {function} [handler=null] A callback function added in the {{#crossLink "EventDispatcher/on:method"}}{{/crossLink}} call.
+  	@return {Boolean}
+   */
+
+  EventDispatcher.prototype.hasEvent = function(p_event, p_handler) {
+    var event;
+    if (!this._events) {
+      this._events = {};
+      return;
+    }
+    for (event in this._events) {
+      if (event === p_event) {
+        if (this._events[event].indexOf(p_handler) > -1) {
+          return true;
+        }
+      }
+    }
+    return false;
+  };
+
+
+  /**
+  	Triggers an event after the current code block has finished processing.
+  
+  	This is useful for stacking up events that needs to be triggered at the end of the function but it's validating beforehand.
+  	@method stackTrigger
+  	@param {String} event Event name.
+  	@param {object} [data=null] Custom event data.
+  	@param {object} [target=null] Target that will be specified in the `event.target`. The `event.currentTarget` will always be this instance.
+  
+  	@example
+  		var ed = new EventDispatcher()
+  
+  		var someObject = {a: true, b: false, c: true};
+  
+  		ed.on('isA', function(){console.log('Is A!');});
+  		ed.on('isB', function(){console.log('Is B!');});
+  		ed.on('isC', function(){console.log('Is C!');});
+  
+  		function test()
+  		{
+  			console.log("Init test()");
+  			if(someObject.a) ed.stackTrigger('isA');
+  			if(someObject.b) ed.stackTrigger('isB');
+  			if(someObject.c) ed.stackTrigger('isC');
+  			console.log("End test()");
+  		}
+  
+  		// This will result in:
+  		// log: 'Init test()'
+  		// log: 'End test()'
+  		// log: 'isA'
+  		// log: 'isC'
+   */
+
+  EventDispatcher.prototype.stackTrigger = function(evt, data, target) {
+    if (data == null) {
+      data = null;
+    }
+    if (target == null) {
+      target = null;
+    }
+    if (!this._stackTriggerer) {
+      this._stackTriggerer = [];
+    }
+    this._stackTriggerer.push([evt, data, target]);
+    clearTimeout(this._stackTriggerTimeout);
+    return this._stackTriggerTimeout = setTimeout(this._triggerStacked, 0);
+  };
+
+  EventDispatcher.prototype._triggerStacked = function() {
+    var i, l;
+    l = this._stackTriggerer.length;
+    i = -1;
+    while (++i < l) {
+      this.trigger.apply(this, this._stackTriggerer[i]);
+    }
+    return this._stackTriggerer.length = 0;
+  };
+
+  return EventDispatcher;
+
+})();
+
+var App, app, windowLoaded,
+  __hasProp = {}.hasOwnProperty,
+  __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
+  __indexOf = [].indexOf || function(item) { for (var i = 0, l = this.length; i < l; i++) { if (i in this && this[i] === item) return i; } return -1; };
+
+App = (function(_super) {
+  __extends(App, _super);
+
+  function App() {
+    App.__super__.constructor.apply(this, arguments);
+    this.version = "1.0";
+    this._checkWindowActivity();
+  }
+
+  App.prototype._checkWindowActivity = function() {
+    var _ref, _ref1, _ref2, _ref3;
+    this._hidden = 'hidden';
+    if (_ref = this._hidden, __indexOf.call(document, _ref) >= 0) {
+      document.addEventListener('visibilitychange', this._windowVisibilityChange);
+    } else if (_ref1 = (this._hidden = 'mozHidden'), __indexOf.call(document, _ref1) >= 0) {
+      document.addEventListener('mozvisibilitychange', this._windowVisibilityChange);
+    } else if (_ref2 = (this._hidden = 'webkitHidden'), __indexOf.call(document, _ref2) >= 0) {
+      document.addEventListener('webkitvisibilitychange', this._windowVisibilityChange);
+    } else if (_ref3 = (this._hidden = 'msHidden'), __indexOf.call(document, _ref3) >= 0) {
+      document.addEventListener('msvisibilitychange', this._windowVisibilityChange);
+    } else if (__indexOf.call(document, 'onfocusin') >= 0) {
+      document.onfocusin = document.onfocusout = this._windowVisibilityChange;
+    } else {
+      window.onpageshow = window.onpagehide = window.onfocus = window.onblur = this._windowVisibilityChange;
+    }
+    if (document[this._hidden] !== void 0) {
+      return this._windowVisibilityChange({
+        type: document[this._hidden] ? 'blur' : 'focus'
+      });
+    }
+  };
+
+  App.prototype._windowVisibilityChange = function(evt) {
+    var evtMap, h, hidden, v, _ref;
+    v = 'visible';
+    h = 'hidden';
+    evtMap = {
+      focus: false,
+      focusin: false,
+      pageshow: false,
+      blur: true,
+      focusout: true,
+      pagehide: true
+    };
+    evt = evt || window.event;
+    if (_ref = evt.type, __indexOf.call(evtMap, _ref) >= 0) {
+      hidden = evtMap[evt.type];
+    } else {
+      hidden = document[this._hidden];
+    }
+    if (hidden) {
+      return this.dispatchEvent(new Event('windowInactive'));
+    } else {
+      return this.dispatchEvent(new Event('windowActive'));
+    }
+  };
+
+  return App;
+
+})(EventDispatcher);
+
+if (!app) {
+  app = new App();
+}
+
+windowLoaded = (function(_this) {
+  return function() {
+    if (window.remove) {
+      window.remove('load', windowLoaded);
+    } else if (window.detachEvent) {
+      window.detachEvent('onload', windowLoaded);
+    } else {
+      window.onload = null;
+    }
+    return app.trigger('windowLoad');
+  };
+})(this);
+
+if (window.addEventListener) {
+  window.addEventListener('load', windowLoaded);
+} else if (window.attachEvent) {
+  window.attachEvent('onload', windowLoaded);
+} else {
+  window.onload = windowLoaded;
+}
+
+
+/**
 Debug Class
 @class Debug
 @static
@@ -25,7 +364,7 @@ Debug = (function() {
    */
 
   Debug.init = function() {
-    var err, frameworkVersion, projectVersion, re, _ref;
+    var err, frameworkVersion, re, _ref;
     Debug._console = window.console;
     try {
       Debug._log = Function.prototype.bind.call((_ref = Debug._console) != null ? _ref.log : void 0, Debug._console);
@@ -70,9 +409,8 @@ Debug = (function() {
         warn: function() {}
       };
     } else {
-      frameworkVersion = "v1.0";
-      projectVersion = "v1.0";
-      console.log("%c=============\nDEBUG MODE ON\n-------------\nFramework    \nversion: " + frameworkVersion + "\n-------------\nProject      \nversion: " + projectVersion + "\n=============", 'background: #272822; color: #f8f8f2');
+      frameworkVersion = "v" + app.version;
+      console.log("%c===============\n DEBUG MODE ON \n---------------\n Framework     \n version: " + frameworkVersion + " \n===============", 'background: #272822; color: #f8f8f2');
     }
     return false;
   };
@@ -498,344 +836,6 @@ if (navigator.mediaDevices == null) {
 }
 
 navigator.getUserMedia = navigator.mediaDevices.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia;
-
-
-/**
-EventDispatcher class for handling and triggering events.
-@class EventDispatcher
- */
-var EventDispatcher,
-  __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
-  __indexOf = [].indexOf || function(item) { for (var i = 0, l = this.length; i < l; i++) { if (i in this && this[i] === item) return i; } return -1; };
-
-EventDispatcher = (function() {
-  function EventDispatcher() {
-    this._triggerStacked = __bind(this._triggerStacked, this);
-    this.trigger = __bind(this.trigger, this);
-  }
-
-  EventDispatcher.prototype._events = null;
-
-
-  /**
-  	Add a event listener.
-  	@method on
-  	@param {String} event Event name.
-  	@param {function} handler A callback function to handle the event.<br>
-  	The callback function can receive 1 or 2 parameters. The first parameter is the event data itself and the second parameter is the custom data of the triggering event.
-  
-  	@example
-  		function someEventHandler(e, data)
-  		{
-  			console.log(e); // Returns event data with it's type and target/currentTarget set to the scope
-  			console.log(data); // If the triggering event has any custom data
-  		}
-  		var ed = new EventDispatcher()
-  		ed.on('someEvent', someEventHandler);
-   */
-
-  EventDispatcher.prototype.on = function(p_event, p_handler) {
-    if (!this._events) {
-      this._events = {};
-    }
-    if (!this._events[p_event]) {
-      this._events[p_event] = [];
-    }
-    if (!(__indexOf.call(this._events[p_event], p_handler) >= 0)) {
-      return this._events[p_event].unshift(p_handler);
-    }
-  };
-
-
-  /**
-  	Remove an event listener.
-  
-  	**BEWARE**
-  
-  	> Calling this method without a handler will remove all listeners attached to this event.
-  
-  	> If calling without the event name, will remove all listeners attached to this instance.
-  
-  	@method off
-  	@param {String} [event=null] Event name.
-  	@param {function} [handler=null]
-  	A callback function added in the {{#crossLink "EventDispatcher/on:method"}}{{/crossLink}} call.
-   */
-
-  EventDispatcher.prototype.off = function(p_event, p_handler) {
-    var events, i;
-    if (p_event == null) {
-      p_event = null;
-    }
-    if (p_handler == null) {
-      p_handler = null;
-    }
-    if (!this._events) {
-      this._events = {};
-      return;
-    }
-    if ((p_event != null) && Boolean(this._events[p_event])) {
-      events = this._events[p_event];
-      if (!p_handler) {
-        return this._events[p_event].length = 0;
-      } else {
-        while ((i = events.indexOf(p_handler)) >= 0) {
-          events.splice(i, 1);
-        }
-        return this._events[p_event] = events;
-      }
-    } else {
-      return this._events = {};
-    }
-  };
-
-
-  /**
-  	Triggers an event.
-  	@method trigger
-  	@param {String} event Event name.
-  	@param {object} [data=null] Custom event data.
-  	@param {object} [target=null] Target that will be specified in the `event.target`. The `event.currentTarget` will always be this instance.
-  
-  	@example
-  		var ed = new EventDispatcher()
-  
-  		// Will just trigger the event
-  		ed.trigger('someEvent'); 
-  
-  		// Will trigger the event with the object which can be retrieved by the second
-  		// parameter of the handler function.
-  		ed.trigger('someEvent', {someData: true}); 
-  
-  		// Will set the event target to window. On the handler's first parameter
-  		//`event.target` will be window, and event.currentTarget will be the `ev` instance.
-  		ed.trigger('someEvent', {someData: true}, window);
-   */
-
-  EventDispatcher.prototype.trigger = function(evt, data, target) {
-    var e, events, i, k, v, _i, _len, _results;
-    if (data == null) {
-      data = null;
-    }
-    if (target == null) {
-      target = null;
-    }
-    if (Array.isArray(evt)) {
-      for (_i = 0, _len = evt.length; _i < _len; _i++) {
-        e = evt[_i];
-        this.trigger(evt, data);
-      }
-      return;
-    }
-    if (!this._events) {
-      this._events = {};
-    }
-    events = this._events[evt];
-    if (!events || events.length === 0) {
-      return;
-    }
-    if (!target) {
-      target = this;
-    }
-    e = {
-      type: evt,
-      target: target,
-      currentTarget: this
-    };
-    if (typeof data === 'object') {
-      for (k in data) {
-        v = data[k];
-        if (!e[k]) {
-          e[k] = v;
-        }
-      }
-    }
-    i = events.length;
-    _results = [];
-    while (i-- > 0) {
-      _results.push(typeof events[i] === "function" ? events[i](e, data) : void 0);
-    }
-    return _results;
-  };
-
-
-  /**
-  	Check if a event handler is already set.
-  	@method hasEvent
-  	@param {String} event Event name.
-  	@param {function} [handler=null] A callback function added in the {{#crossLink "EventDispatcher/on:method"}}{{/crossLink}} call.
-  	@return {Boolean}
-   */
-
-  EventDispatcher.prototype.hasEvent = function(p_event, p_handler) {
-    var event;
-    if (!this._events) {
-      this._events = {};
-      return;
-    }
-    for (event in this._events) {
-      if (event === p_event) {
-        if (this._events[event].indexOf(p_handler) > -1) {
-          return true;
-        }
-      }
-    }
-    return false;
-  };
-
-
-  /**
-  	Triggers an event after the current code block has finished processing.
-  
-  	This is useful for stacking up events that needs to be triggered at the end of the function but it's validating beforehand.
-  	@method stackTrigger
-  	@param {String} event Event name.
-  	@param {object} [data=null] Custom event data.
-  	@param {object} [target=null] Target that will be specified in the `event.target`. The `event.currentTarget` will always be this instance.
-  
-  	@example
-  		var ed = new EventDispatcher()
-  
-  		var someObject = {a: true, b: false, c: true};
-  
-  		ed.on('isA', function(){console.log('Is A!');});
-  		ed.on('isB', function(){console.log('Is B!');});
-  		ed.on('isC', function(){console.log('Is C!');});
-  
-  		function test()
-  		{
-  			console.log("Init test()");
-  			if(someObject.a) ed.stackTrigger('isA');
-  			if(someObject.b) ed.stackTrigger('isB');
-  			if(someObject.c) ed.stackTrigger('isC');
-  			console.log("End test()");
-  		}
-  
-  		// This will result in:
-  		// log: 'Init test()'
-  		// log: 'End test()'
-  		// log: 'isA'
-  		// log: 'isC'
-   */
-
-  EventDispatcher.prototype.stackTrigger = function(evt, data, target) {
-    if (data == null) {
-      data = null;
-    }
-    if (target == null) {
-      target = null;
-    }
-    if (!this._stackTriggerer) {
-      this._stackTriggerer = [];
-    }
-    this._stackTriggerer.push([evt, data, target]);
-    clearTimeout(this._stackTriggerTimeout);
-    return this._stackTriggerTimeout = setTimeout(this._triggerStacked, 0);
-  };
-
-  EventDispatcher.prototype._triggerStacked = function() {
-    var i, l;
-    l = this._stackTriggerer.length;
-    i = -1;
-    while (++i < l) {
-      this.trigger.apply(this, this._stackTriggerer[i]);
-    }
-    return this._stackTriggerer.length = 0;
-  };
-
-  return EventDispatcher;
-
-})();
-
-var App, app, windowLoaded,
-  __hasProp = {}.hasOwnProperty,
-  __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
-  __indexOf = [].indexOf || function(item) { for (var i = 0, l = this.length; i < l; i++) { if (i in this && this[i] === item) return i; } return -1; };
-
-App = (function(_super) {
-  __extends(App, _super);
-
-  function App() {
-    App.__super__.constructor.apply(this, arguments);
-    this._checkWindowActivity();
-  }
-
-  App.prototype._checkWindowActivity = function() {
-    var _ref, _ref1, _ref2, _ref3;
-    this._hidden = 'hidden';
-    if (_ref = this._hidden, __indexOf.call(document, _ref) >= 0) {
-      document.addEventListener('visibilitychange', this._windowVisibilityChange);
-    } else if (_ref1 = (this._hidden = 'mozHidden'), __indexOf.call(document, _ref1) >= 0) {
-      document.addEventListener('mozvisibilitychange', this._windowVisibilityChange);
-    } else if (_ref2 = (this._hidden = 'webkitHidden'), __indexOf.call(document, _ref2) >= 0) {
-      document.addEventListener('webkitvisibilitychange', this._windowVisibilityChange);
-    } else if (_ref3 = (this._hidden = 'msHidden'), __indexOf.call(document, _ref3) >= 0) {
-      document.addEventListener('msvisibilitychange', this._windowVisibilityChange);
-    } else if (__indexOf.call(document, 'onfocusin') >= 0) {
-      document.onfocusin = document.onfocusout = this._windowVisibilityChange;
-    } else {
-      window.onpageshow = window.onpagehide = window.onfocus = window.onblur = this._windowVisibilityChange;
-    }
-    if (document[this._hidden] !== void 0) {
-      return this._windowVisibilityChange({
-        type: document[this._hidden] ? 'blur' : 'focus'
-      });
-    }
-  };
-
-  App.prototype._windowVisibilityChange = function(evt) {
-    var evtMap, h, hidden, v, _ref;
-    v = 'visible';
-    h = 'hidden';
-    evtMap = {
-      focus: false,
-      focusin: false,
-      pageshow: false,
-      blur: true,
-      focusout: true,
-      pagehide: true
-    };
-    evt = evt || window.event;
-    if (_ref = evt.type, __indexOf.call(evtMap, _ref) >= 0) {
-      hidden = evtMap[evt.type];
-    } else {
-      hidden = document[this._hidden];
-    }
-    if (hidden) {
-      return this.dispatchEvent(new Event('windowInactive'));
-    } else {
-      return this.dispatchEvent(new Event('windowActive'));
-    }
-  };
-
-  return App;
-
-})(EventDispatcher);
-
-if (!app) {
-  app = new App();
-}
-
-windowLoaded = (function(_this) {
-  return function() {
-    if (window.remove) {
-      window.remove('load', windowLoaded);
-    } else if (window.detachEvent) {
-      window.detachEvent('onload', windowLoaded);
-    } else {
-      window.onload = null;
-    }
-    return app.trigger('windowLoad');
-  };
-})(this);
-
-if (window.addEventListener) {
-  window.addEventListener('load', windowLoaded);
-} else if (window.attachEvent) {
-  window.attachEvent('onload', windowLoaded);
-} else {
-  window.onload = windowLoaded;
-}
 
 var NumberUtils;
 
@@ -3221,7 +3221,6 @@ BaseView = (function(_super) {
   	content|{{#crossLink "String"}}{{/crossLink}} / {{#crossLink "JSON"}}{{/crossLink}}|__No__
   	cache|{{#crossLink "Boolean"}}{{/crossLink}}|__No__
   	parentView|{{#crossLink "String"}}{{/crossLink}}|__No__
-  	lightbox|{{#crossLink "Boolean"}}{{/crossLink}}|__No__
   	destroyable|{{#crossLink "Boolean"}}{{/crossLink}}|__No__
   	loadContent|{{#crossLink "Boolean"}}{{/crossLink}}|__No__
   	snap *(only for scroll navigation type)*|{{#crossLink "Boolean"}}{{/crossLink}}|__No__
@@ -3236,7 +3235,6 @@ BaseView = (function(_super) {
   		"content":"data/home.json",
   		"cache":true,
   		"parentView":"someViewID", //the unique ID of parent view
-  		"lightbox":true,
   		"destroyable":true,
   		"loadContent":true,
   		"snap":true, //only for scroll navigation type
@@ -3276,7 +3274,6 @@ BaseView = (function(_super) {
     this.route = this._data.route != null ? this._data.route : void 0;
     this.routeData = !this._routeData ? null : void 0;
     this.parentView = this._data.parentView != null ? this._data.parentView : void 0;
-    this.lightbox = this._data.lightbox != null ? this._data.lightbox : void 0;
     this.subviews = this._data.subviews != null ? this._data.subviews : void 0;
     this.destroyable = this._data.destroyable != null ? this._data.destroyable : void 0;
     BaseView.__super__.constructor.call(this, {
@@ -3475,26 +3472,6 @@ BaseView = (function(_super) {
   BaseView.set({
     subviews: function(p_value) {
       return this._subviews = p_value;
-    }
-  });
-
-
-  /**
-  	Sets/gets if this views is a lightbox.
-  	@attribute lightbox
-  	@type {Boolean}
-  	@default false
-   */
-
-  BaseView.get({
-    lightbox: function() {
-      return this._lightbox;
-    }
-  });
-
-  BaseView.set({
-    lightbox: function(p_value) {
-      return this._lightbox = p_value;
     }
   });
 

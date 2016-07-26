@@ -98,9 +98,6 @@ ViewsData = (function(_super) {
         view.subviews[v.id] = subview;
       }
     }
-    if (view.lightbox) {
-      view.type = 'lightbox';
-    }
     this.set(view);
     this.trigger(ViewsData.VIEW_CREATED, {
       view: view

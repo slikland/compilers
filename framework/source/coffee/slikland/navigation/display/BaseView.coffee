@@ -104,7 +104,6 @@ class BaseView extends BaseDOM
 	content|{{#crossLink "String"}}{{/crossLink}} / {{#crossLink "JSON"}}{{/crossLink}}|__No__
 	cache|{{#crossLink "Boolean"}}{{/crossLink}}|__No__
 	parentView|{{#crossLink "String"}}{{/crossLink}}|__No__
-	lightbox|{{#crossLink "Boolean"}}{{/crossLink}}|__No__
 	destroyable|{{#crossLink "Boolean"}}{{/crossLink}}|__No__
 	loadContent|{{#crossLink "Boolean"}}{{/crossLink}}|__No__
 	snap *(only for scroll navigation type)*|{{#crossLink "Boolean"}}{{/crossLink}}|__No__
@@ -119,7 +118,6 @@ class BaseView extends BaseDOM
 		"content":"data/home.json",
 		"cache":true,
 		"parentView":"someViewID", //the unique ID of parent view
-		"lightbox":true,
 		"destroyable":true,
 		"loadContent":true,
 		"snap":true, //only for scroll navigation type
@@ -139,7 +137,6 @@ class BaseView extends BaseDOM
 		@route = if @_data.route? then @_data.route
 		@routeData = if !@_routeData then null
 		@parentView = if @_data.parentView? then @_data.parentView
-		@lightbox = if @_data.lightbox? then @_data.lightbox
 		@subviews = if @_data.subviews? then @_data.subviews
 		@destroyable = if @_data.destroyable? then @_data.destroyable
 
@@ -254,17 +251,6 @@ class BaseView extends BaseDOM
 		return @_subviews
 	@set subviews:(p_value)->
 		@_subviews = p_value
-
-	###*
-	Sets/gets if this views is a lightbox.
-	@attribute lightbox
-	@type {Boolean}
-	@default false
-	###
-	@get lightbox:->
-		return @_lightbox
-	@set lightbox:(p_value)->
-		@_lightbox = p_value
 
 	###*
 	Sets/gets if this views is destroyable.
