@@ -21,7 +21,7 @@ Node::removeChild = (node) ->
 		el = node.element
 		node.parent = @
 	Node::__removeChild__.call(@, el)
-Node::matches = Node::matches || Node::webkitMatchesSelector || Node::mozMatchesSelector || Node::msMatchesSelector || Node::oMatchesSelector
+Element::matches = Element::matches || Element::webkitMatchesSelector || Element::mozMatchesSelector || Element::msMatchesSelector || Element::oMatchesSelector
 Node::findParents = (query) ->
 	if @parentNode?
 		if @parentNode.matches(query)
