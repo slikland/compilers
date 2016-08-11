@@ -45,6 +45,8 @@
                                 <li><a href="../classes/BaseNavigationController.html">BaseNavigationController</a></li>
                                 <li><a href="../classes/BaseView.html">BaseView</a></li>
                                 <li><a href="../classes/ColorUtils.html">ColorUtils</a></li>
+                                <li><a href="../classes/ConditionsValidation.html">ConditionsValidation</a></li>
+                                <li><a href="../classes/Copyright.html">Copyright</a></li>
                                 <li><a href="../classes/Debug.html">Debug</a></li>
                                 <li><a href="../classes/Detections.html">Detections</a></li>
                                 <li><a href="../classes/EventDispatcher.html">EventDispatcher</a></li>
@@ -53,6 +55,7 @@
                                 <li><a href="../classes/NavigationContainer.html">NavigationContainer</a></li>
                                 <li><a href="../classes/NavigationLoader.html">NavigationLoader</a></li>
                                 <li><a href="../classes/NavigationRouter.html">NavigationRouter</a></li>
+                                <li><a href="../classes/PreloadFiles.html">PreloadFiles</a></li>
                                 <li><a href="../classes/SpriteSheetAnimation.html">SpriteSheetAnimation</a></li>
                                 <li><a href="../classes/StringUtils.html">StringUtils</a></li>
                                 <li><a href="../classes/ViewsData.html">ViewsData</a></li>
@@ -104,7 +107,17 @@ ViewsData Class
 @final
 ###
 class ViewsData extends EventDispatcher
+	###*
+	Triggered after parsing data of view. 
+	@event VIEW_CREATED
+	@static
+	###
 	@VIEW_CREATED: &#x27;view_created&#x27;
+	###*
+	Triggered after parsing data of all views of config file. 
+	@event ALL_VIEWS_CREATED
+	@static
+	###
 	@ALL_VIEWS_CREATED: &#x27;all_views_created&#x27;
 
 	###*
@@ -117,26 +130,47 @@ class ViewsData extends EventDispatcher
 		@_data = []
 		@_views = p_data.views
 		super
-
+	
+	###*
+	@method getData
+	@param {String} p_id
+	@return {Object}
+	###
 	getData:(p_id)-&gt;
 		if !@_views[p_id]? then throw new Error(&#x27;The view with id &quot;&#x27;+p_id+&#x27;&quot; does not exists in config file&#x27;)
 		return @_views[p_id]
 
+	###*
+	@method get
+	@param {String} p_id
+	@return {Object}
+	###
 	get:(p_id)-&gt;
 		return if @_data[p_id]? then @_data[p_id] else null
-		false
 
+	###*
+	@method set
+	@param {String} p_view
+	###
 	set:(p_view)-&gt;
 		if !@get(p_view.id)
 			@_data[p_view.id] = p_view
 		false
 
+	###*
+	@method createAll
+	###
 	createAll:()-&gt;
 		for id of @_views
 			@create(id)
 		@trigger(ViewsData.ALL_VIEWS_CREATED, {views:@_data})
 		false
 
+	###*
+	@method create
+	@param {String} p_id
+	@return {Object}
+	###
 	create:(p_id)-&gt;
 		if @get(p_id)?
 			view = @get(p_id)
@@ -168,11 +202,20 @@ class ViewsData extends EventDispatcher
 		@trigger(ViewsData.VIEW_CREATED, {view:view})
 		return view
 
+	###*
+	@method remove
+	@param {String} p_id
+	###
 	remove:(p_id)-&gt;
 		@_data[p_id] = null
 		delete @_data[p_id]
 		false
 
+	###*
+	@method normalize
+	@param {String} p_id
+	@return {String}
+	###
 	normalize:(p_id)-&gt;
 		view = @_views[p_id]
 		return if view?.parentView? then @normalize(view.parentView) else view?.id

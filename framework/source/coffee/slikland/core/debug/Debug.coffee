@@ -58,7 +58,6 @@ class Debug
 				warn: ->
 		else
 			frameworkVersion = "v" + app.version
-
 			# projectVersion = "v1.0"
 			# console.log "%c===============\n DEBUG MODE ON \n---------------\n Framework     \n version: "+frameworkVersion+" \n---------------\n Project       \n version: "+projectVersion+" \n===============", 'background: #272822; color: #f8f8f2'
 			console.log "%c===============\n DEBUG MODE ON \n---------------\n Framework     \n version: "+frameworkVersion+" \n===============", 'background: #272822; color: #f8f8f2'

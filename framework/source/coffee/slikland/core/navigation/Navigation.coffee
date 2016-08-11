@@ -3,6 +3,7 @@
 
 ###*
 Navigation Class
+The instance of this class can be accessed by `app.navigation` wrapper
 @class Navigation
 @extends EventDispatcher
 @uses NavigationRouter

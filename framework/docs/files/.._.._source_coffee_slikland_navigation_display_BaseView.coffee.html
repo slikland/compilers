@@ -45,6 +45,8 @@
                                 <li><a href="../classes/BaseNavigationController.html">BaseNavigationController</a></li>
                                 <li><a href="../classes/BaseView.html">BaseView</a></li>
                                 <li><a href="../classes/ColorUtils.html">ColorUtils</a></li>
+                                <li><a href="../classes/ConditionsValidation.html">ConditionsValidation</a></li>
+                                <li><a href="../classes/Copyright.html">Copyright</a></li>
                                 <li><a href="../classes/Debug.html">Debug</a></li>
                                 <li><a href="../classes/Detections.html">Detections</a></li>
                                 <li><a href="../classes/EventDispatcher.html">EventDispatcher</a></li>
@@ -53,6 +55,7 @@
                                 <li><a href="../classes/NavigationContainer.html">NavigationContainer</a></li>
                                 <li><a href="../classes/NavigationLoader.html">NavigationLoader</a></li>
                                 <li><a href="../classes/NavigationRouter.html">NavigationRouter</a></li>
+                                <li><a href="../classes/PreloadFiles.html">PreloadFiles</a></li>
                                 <li><a href="../classes/SpriteSheetAnimation.html">SpriteSheetAnimation</a></li>
                                 <li><a href="../classes/StringUtils.html">StringUtils</a></li>
                                 <li><a href="../classes/ViewsData.html">ViewsData</a></li>
@@ -458,7 +461,7 @@ class BaseView extends BaseDOM
 	@param {Event} [evt=null]
 	###
 	createStart:(evt=null)=&gt;
-		@trigger(BaseView.CREATE_START, @)
+		@stackTrigger(BaseView.CREATE_START, @)
 		@create()
 		false
 
@@ -469,7 +472,7 @@ class BaseView extends BaseDOM
 	@param {Event} [evt=null]
 	###
 	create:(evt=null)=&gt;
-		@trigger(BaseView.CREATE, @)
+		@stackTrigger(BaseView.CREATE, @)
 		@createComplete()
 		false
 
@@ -480,7 +483,7 @@ class BaseView extends BaseDOM
 	###
 	createComplete:(evt=null)=&gt;
 		@_created = true
-		@trigger(BaseView.CREATE_COMPLETE, @)
+		@stackTrigger(BaseView.CREATE_COMPLETE, @)
 		false
 		
 	###*
@@ -490,7 +493,7 @@ class BaseView extends BaseDOM
 	@param {Event} [evt=null]
 	###
 	showStart:(evt=null)=&gt;
-		@trigger(BaseView.SHOW_START, @)
+		@stackTrigger(BaseView.SHOW_START, @)
 		@show()
 		false
 
@@ -501,7 +504,7 @@ class BaseView extends BaseDOM
 	@param {Event} [evt=null]
 	###
 	show:(evt=null)=&gt;
-		@trigger(BaseView.SHOW, @)
+		@stackTrigger(BaseView.SHOW, @)
 		@showComplete()
 		false
 
@@ -512,7 +515,7 @@ class BaseView extends BaseDOM
 	###
 	showComplete:(evt=null)=&gt;
 		@_showed = true
-		@trigger(BaseView.SHOW_COMPLETE, @)
+		@stackTrigger(BaseView.SHOW_COMPLETE, @)
 		false
 
 	###*
@@ -522,7 +525,7 @@ class BaseView extends BaseDOM
 	@param {Event} [evt=null]
 	###
 	hideStart:(evt=null)=&gt;
-		@trigger(BaseView.HIDE_START, @)
+		@stackTrigger(BaseView.HIDE_START, @)
 		@hide()
 		false
 
@@ -534,7 +537,7 @@ class BaseView extends BaseDOM
 	###
 	hide:(evt=null)=&gt;
 		@_showed = false
-		@trigger(BaseView.HIDE, @)
+		@stackTrigger(BaseView.HIDE, @)
 		@hideComplete()
 		false
 
@@ -544,7 +547,7 @@ class BaseView extends BaseDOM
 	@param {Event} [evt=null]
 	###
 	hideComplete:(evt=null)=&gt;
-		@trigger(BaseView.HIDE_COMPLETE, @)
+		@stackTrigger(BaseView.HIDE_COMPLETE, @)
 		false
 
 	###*
@@ -553,7 +556,7 @@ class BaseView extends BaseDOM
 	@method pause
 	###
 	pause:()=&gt;
-		@trigger(BaseView.PAUSE, @)
+		@stackTrigger(BaseView.PAUSE, @)
 		false
 
 	###*
@@ -562,7 +565,7 @@ class BaseView extends BaseDOM
 	@method pause
 	###
 	resume:()=&gt;
-		@trigger(BaseView.RESUME, @)
+		@stackTrigger(BaseView.RESUME, @)
 		false
 	
 	###*

@@ -51,6 +51,33 @@
             "fors": {},
             "namespaces": {}
         },
+        "../../source/coffee/slikland/core/debug/Version.coffee": {
+            "name": "../../source/coffee/slikland/core/debug/Version.coffee",
+            "modules": {},
+            "classes": {
+                "Copyright": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "../../source/coffee/slikland/core/loader/ConditionsValidation.coffee": {
+            "name": "../../source/coffee/slikland/core/loader/ConditionsValidation.coffee",
+            "modules": {},
+            "classes": {
+                "ConditionsValidation": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "../../source/coffee/slikland/core/loader/PreloadFiles.coffee": {
+            "name": "../../source/coffee/slikland/core/loader/PreloadFiles.coffee",
+            "modules": {},
+            "classes": {
+                "PreloadFiles": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
         "../../source/coffee/slikland/core/navigation/BaseNavigationController.coffee": {
             "name": "../../source/coffee/slikland/core/navigation/BaseNavigationController.coffee",
             "modules": {},
@@ -244,6 +271,50 @@
             "static": 1,
             "final": 1
         },
+        "Copyright": {
+            "name": "Copyright",
+            "shortname": "Copyright",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "file": "../../source/coffee/slikland/core/debug/Version.coffee",
+            "line": 1,
+            "static": 1
+        },
+        "ConditionsValidation": {
+            "name": "ConditionsValidation",
+            "shortname": "ConditionsValidation",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "file": "../../source/coffee/slikland/core/loader/ConditionsValidation.coffee",
+            "line": 16,
+            "description": "Singleton ConditionsValidation class",
+            "is_constructor": 1,
+            "params": [
+                {
+                    "name": "p_data",
+                    "description": "",
+                    "type": "Object"
+                }
+            ]
+        },
+        "PreloadFiles": {
+            "name": "PreloadFiles",
+            "shortname": "PreloadFiles",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "file": "../../source/coffee/slikland/core/loader/PreloadFiles.coffee",
+            "line": 1,
+            "description": "It's a simple wrapper to PreloadJS.\nSee more info on <a href=\"http://www.createjs.com/docs/preloadjs/\" target=\"_blank\" class=\"crosslink\">PreloadJS Docs</a>"
+        },
         "BaseNavigationController": {
             "name": "BaseNavigationController",
             "shortname": "BaseNavigationController",
@@ -285,8 +356,8 @@
             "plugin_for": [],
             "extension_for": [],
             "file": "../../source/coffee/slikland/core/navigation/Navigation.coffee",
-            "line": 35,
-            "description": "Navigation Class",
+            "line": 36,
+            "description": "Navigation Class\nThe instance of this class can be accessed by `app.navigation` wrapper",
             "extends": "EventDispatcher",
             "uses": [
                 "NavigationRouter",
@@ -377,7 +448,7 @@
             "plugin_for": [],
             "extension_for": [],
             "file": "../../source/coffee/slikland/core/navigation/ViewsData.coffee",
-            "line": 11,
+            "line": 21,
             "description": "ViewsData Class",
             "extends": "EventDispatcher",
             "final": 1,
@@ -776,7 +847,7 @@
         },
         {
             "file": "../../source/coffee/slikland/core/debug/Debug.coffee",
-            "line": 65,
+            "line": 66,
             "itemtype": "method",
             "name": "check",
             "params": [
@@ -797,7 +868,7 @@
         },
         {
             "file": "../../source/coffee/slikland/core/debug/Debug.coffee",
-            "line": 91,
+            "line": 92,
             "itemtype": "method",
             "name": "log",
             "static": 1,
@@ -805,7 +876,7 @@
         },
         {
             "file": "../../source/coffee/slikland/core/debug/Debug.coffee",
-            "line": 102,
+            "line": 103,
             "itemtype": "method",
             "name": "logTime",
             "params": [
@@ -817,6 +888,134 @@
             ],
             "static": 1,
             "class": "Debug"
+        },
+        {
+            "file": "../../source/coffee/slikland/core/debug/Version.coffee",
+            "line": 6,
+            "description": "Returns the version of framework",
+            "itemtype": "attribute",
+            "name": "version",
+            "type": "{String}",
+            "readonly": "",
+            "class": "Copyright"
+        },
+        {
+            "file": "../../source/coffee/slikland/core/debug/Version.coffee",
+            "line": 14,
+            "description": "Returns the name of framework",
+            "itemtype": "attribute",
+            "name": "name",
+            "type": "{String}",
+            "readonly": "",
+            "class": "Copyright"
+        },
+        {
+            "file": "../../source/coffee/slikland/core/loader/ConditionsValidation.coffee",
+            "line": 25,
+            "description": "Add object condition in internal list.",
+            "itemtype": "method",
+            "name": "add",
+            "params": [
+                {
+                    "name": "p_obj",
+                    "description": "",
+                    "type": "Object"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "Boolean"
+            },
+            "class": "ConditionsValidation"
+        },
+        {
+            "file": "../../source/coffee/slikland/core/loader/ConditionsValidation.coffee",
+            "line": 38,
+            "description": "Returns the internal list of registered conditions.",
+            "itemtype": "attribute",
+            "name": "list",
+            "type": "{Object}",
+            "readonly": "",
+            "class": "ConditionsValidation"
+        },
+        {
+            "file": "../../source/coffee/slikland/core/loader/ConditionsValidation.coffee",
+            "line": 47,
+            "description": "Returns the object condition of internal list.",
+            "itemtype": "method",
+            "name": "get",
+            "params": [
+                {
+                    "name": "p_keyID",
+                    "description": "",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "Object"
+            },
+            "class": "ConditionsValidation"
+        },
+        {
+            "file": "../../source/coffee/slikland/core/loader/ConditionsValidation.coffee",
+            "line": 56,
+            "description": "Checks the conditions already added in internal list.",
+            "itemtype": "method",
+            "name": "has",
+            "params": [
+                {
+                    "name": "p_keyID",
+                    "description": "",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "Boolean"
+            },
+            "class": "ConditionsValidation"
+        },
+        {
+            "file": "../../source/coffee/slikland/core/loader/ConditionsValidation.coffee",
+            "line": 65,
+            "description": "Removes the object condition of internal list.",
+            "itemtype": "method",
+            "name": "remove",
+            "params": [
+                {
+                    "name": "p_keyID",
+                    "description": "",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "Boolean"
+            },
+            "class": "ConditionsValidation"
+        },
+        {
+            "file": "../../source/coffee/slikland/core/loader/ConditionsValidation.coffee",
+            "line": 79,
+            "description": "This method accepts the ID of a condition object or a group of ID with a <a href=\"//developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Expressions_and_Operators\" target=\"_blank\" class=\"crosslink\">default operators</a>, to returns if only one condition is a valid condition or a group with a sum of conditions are valid.",
+            "itemtype": "method",
+            "name": "test",
+            "params": [
+                {
+                    "name": "p_args",
+                    "description": "The ID of a condition or a group with a sum of conditions.",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "Boolean"
+            },
+            "example": [
+                "\n```\n//Example of conditions list in config file\n...\n\"conditions\": {\n\t\"small\": {\n\t\t\"size\": {\n\t\t\t\"min-width\":300\n\t\t}\n\t},\n\t\"medium\": {\n\t\t\"orientation\":\"landscape\",\n\t\t\"size\": {\n\t\t\t\"min-width\":992\n\t\t}\n\t},\n\t\"large\": {\n\t\t\"size\": {\n\t\t\t\"min-width\":1200\n\t\t}\n\t},\n\t\"xtra_large\": {\n\t\t\"size\": {\n\t\t\t\"min-width\":1500\n\t\t}\n\t},\n\t\"full\": {\n\t\t\"size\": {\n\t\t\t\"min-width\":1910\n\t\t}\n\t}\n}\n\n...\n//Example condition with operators in some content file\n...\n\"src\":[\n\t{\n\t\t\"condition\":\"xtra_large && full\",\n\t\t\"file\":\"file.json\"\n\t},\n\t{\n\t\t\"condition\":\"medium || xtra_large\",\n\t\t\"file\":\"file.json\"\n\t},\n\t{\n\t\t\"condition\":\"small < medium\",\n\t\t\"file\":\"file.json\"\n\t},\n\t{\n\t\t\"condition\":\"(small > medium) || medium\",\n\t\t\"file\":\"file.json\"\n\t}\n]\n\n//Example single condition in some content file\n...\n\"src\":[\n\t{\n\t\t\"condition\":\"default\",\n\t\t\"file\":\"{base}data/home.json\"\n\t}\n]\n...\n```\t"
+            ],
+            "class": "ConditionsValidation"
         },
         {
             "file": "../../source/coffee/slikland/core/navigation/BaseNavigationController.coffee",
@@ -1071,7 +1270,7 @@
         },
         {
             "file": "../../source/coffee/slikland/core/navigation/Navigation.coffee",
-            "line": 15,
+            "line": 16,
             "itemtype": "event",
             "name": "CHANGE_ROUTE",
             "static": 1,
@@ -1079,7 +1278,7 @@
         },
         {
             "file": "../../source/coffee/slikland/core/navigation/Navigation.coffee",
-            "line": 20,
+            "line": 21,
             "itemtype": "event",
             "name": "CHANGE_VIEW",
             "static": 1,
@@ -1087,7 +1286,7 @@
         },
         {
             "file": "../../source/coffee/slikland/core/navigation/Navigation.coffee",
-            "line": 25,
+            "line": 26,
             "itemtype": "event",
             "name": "CHANGE_INTERNAL_VIEW",
             "static": 1,
@@ -1095,7 +1294,7 @@
         },
         {
             "file": "../../source/coffee/slikland/core/navigation/Navigation.coffee",
-            "line": 51,
+            "line": 52,
             "itemtype": "method",
             "name": "setup",
             "params": [
@@ -1109,7 +1308,7 @@
         },
         {
             "file": "../../source/coffee/slikland/core/navigation/Navigation.coffee",
-            "line": 71,
+            "line": 72,
             "itemtype": "method",
             "name": "start",
             "params": [
@@ -1125,7 +1324,7 @@
         },
         {
             "file": "../../source/coffee/slikland/core/navigation/Navigation.coffee",
-            "line": 87,
+            "line": 88,
             "description": "Returns the visible views in DOM",
             "itemtype": "attribute",
             "name": "visibleViews",
@@ -1135,7 +1334,7 @@
         },
         {
             "file": "../../source/coffee/slikland/core/navigation/Navigation.coffee",
-            "line": 96,
+            "line": 97,
             "description": "Returns the current view",
             "itemtype": "attribute",
             "name": "currentView",
@@ -1145,7 +1344,7 @@
         },
         {
             "file": "../../source/coffee/slikland/core/navigation/Navigation.coffee",
-            "line": 107,
+            "line": 108,
             "description": "Returns the previous view",
             "itemtype": "attribute",
             "name": "previousView",
@@ -1155,7 +1354,7 @@
         },
         {
             "file": "../../source/coffee/slikland/core/navigation/Navigation.coffee",
-            "line": 116,
+            "line": 117,
             "description": "Returns the route data",
             "itemtype": "attribute",
             "name": "routeData",
@@ -1165,7 +1364,7 @@
         },
         {
             "file": "../../source/coffee/slikland/core/navigation/Navigation.coffee",
-            "line": 134,
+            "line": 135,
             "itemtype": "method",
             "name": "goto",
             "params": [
@@ -1181,7 +1380,7 @@
         },
         {
             "file": "../../source/coffee/slikland/core/navigation/Navigation.coffee",
-            "line": 147,
+            "line": 148,
             "itemtype": "method",
             "name": "setRoute",
             "params": [
@@ -1202,7 +1401,7 @@
         },
         {
             "file": "../../source/coffee/slikland/core/navigation/Navigation.coffee",
-            "line": 156,
+            "line": 157,
             "itemtype": "method",
             "name": "gotoRoute",
             "params": [
@@ -1223,7 +1422,7 @@
         },
         {
             "file": "../../source/coffee/slikland/core/navigation/Navigation.coffee",
-            "line": 169,
+            "line": 170,
             "itemtype": "method",
             "name": "replaceRoute",
             "params": [
@@ -1244,14 +1443,14 @@
         },
         {
             "file": "../../source/coffee/slikland/core/navigation/Navigation.coffee",
-            "line": 182,
+            "line": 183,
             "itemtype": "method",
             "name": "gotoDefault",
             "class": "Navigation"
         },
         {
             "file": "../../source/coffee/slikland/core/navigation/Navigation.coffee",
-            "line": 194,
+            "line": 195,
             "itemtype": "method",
             "name": "gotoView",
             "params": [
@@ -1265,7 +1464,7 @@
         },
         {
             "file": "../../source/coffee/slikland/core/navigation/Navigation.coffee",
-            "line": 205,
+            "line": 206,
             "itemtype": "method",
             "name": "getViewByRoute",
             "params": [
@@ -1284,7 +1483,7 @@
         },
         {
             "file": "../../source/coffee/slikland/core/navigation/Navigation.coffee",
-            "line": 217,
+            "line": 218,
             "itemtype": "method",
             "name": "getRouteByView",
             "params": [
@@ -1303,7 +1502,7 @@
         },
         {
             "file": "../../source/coffee/slikland/core/navigation/Navigation.coffee",
-            "line": 229,
+            "line": 230,
             "itemtype": "method",
             "name": "_change",
             "params": [
@@ -2034,8 +2233,133 @@
             "class": "NavigationRouter"
         },
         {
+            "file": "../../source/coffee/slikland/core/navigation/ViewsData.coffee",
+            "line": 8,
+            "description": "Triggered after parsing data of view.",
+            "itemtype": "event",
+            "name": "VIEW_CREATED",
+            "static": 1,
+            "class": "ViewsData"
+        },
+        {
+            "file": "../../source/coffee/slikland/core/navigation/ViewsData.coffee",
+            "line": 14,
+            "description": "Triggered after parsing data of all views of config file.",
+            "itemtype": "event",
+            "name": "ALL_VIEWS_CREATED",
+            "static": 1,
+            "class": "ViewsData"
+        },
+        {
+            "file": "../../source/coffee/slikland/core/navigation/ViewsData.coffee",
+            "line": 32,
+            "itemtype": "method",
+            "name": "getData",
+            "params": [
+                {
+                    "name": "p_id",
+                    "description": "",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "Object"
+            },
+            "class": "ViewsData"
+        },
+        {
+            "file": "../../source/coffee/slikland/core/navigation/ViewsData.coffee",
+            "line": 41,
+            "itemtype": "method",
+            "name": "get",
+            "params": [
+                {
+                    "name": "p_id",
+                    "description": "",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "Object"
+            },
+            "class": "ViewsData"
+        },
+        {
+            "file": "../../source/coffee/slikland/core/navigation/ViewsData.coffee",
+            "line": 49,
+            "itemtype": "method",
+            "name": "set",
+            "params": [
+                {
+                    "name": "p_view",
+                    "description": "",
+                    "type": "String"
+                }
+            ],
+            "class": "ViewsData"
+        },
+        {
+            "file": "../../source/coffee/slikland/core/navigation/ViewsData.coffee",
+            "line": 58,
+            "itemtype": "method",
+            "name": "createAll",
+            "class": "ViewsData"
+        },
+        {
+            "file": "../../source/coffee/slikland/core/navigation/ViewsData.coffee",
+            "line": 67,
+            "itemtype": "method",
+            "name": "create",
+            "params": [
+                {
+                    "name": "p_id",
+                    "description": "",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "Object"
+            },
+            "class": "ViewsData"
+        },
+        {
+            "file": "../../source/coffee/slikland/core/navigation/ViewsData.coffee",
+            "line": 103,
+            "itemtype": "method",
+            "name": "remove",
+            "params": [
+                {
+                    "name": "p_id",
+                    "description": "",
+                    "type": "String"
+                }
+            ],
+            "class": "ViewsData"
+        },
+        {
+            "file": "../../source/coffee/slikland/core/navigation/ViewsData.coffee",
+            "line": 112,
+            "itemtype": "method",
+            "name": "normalize",
+            "params": [
+                {
+                    "name": "p_id",
+                    "description": "",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "String"
+            },
+            "class": "ViewsData"
+        },
+        {
             "file": "../../source/coffee/slikland/event/EventDispatcher.coffee",
-            "line": 11,
+            "line": 10,
             "description": "Add a event listener.",
             "itemtype": "method",
             "name": "on",
@@ -2058,7 +2382,7 @@
         },
         {
             "file": "../../source/coffee/slikland/event/EventDispatcher.coffee",
-            "line": 33,
+            "line": 32,
             "description": "Remove an event listener.\n\n**BEWARE**\n\n> Calling this method without a handler will remove all listeners attached to this event.\n\n> If calling without the event name, will remove all listeners attached to this instance.",
             "itemtype": "method",
             "name": "off",
@@ -2082,7 +2406,7 @@
         },
         {
             "file": "../../source/coffee/slikland/event/EventDispatcher.coffee",
-            "line": 62,
+            "line": 61,
             "description": "Triggers an event.",
             "itemtype": "method",
             "name": "trigger",
@@ -2114,7 +2438,7 @@
         },
         {
             "file": "../../source/coffee/slikland/event/EventDispatcher.coffee",
-            "line": 104,
+            "line": 103,
             "description": "Check if a event handler is already set.",
             "itemtype": "method",
             "name": "hasEvent",
@@ -2140,7 +2464,7 @@
         },
         {
             "file": "../../source/coffee/slikland/event/EventDispatcher.coffee",
-            "line": 122,
+            "line": 121,
             "description": "Triggers an event after the current code block has finished processing.\n\nThis is useful for stacking up events that needs to be triggered at the end of the function but it's validating beforehand.",
             "itemtype": "method",
             "name": "stackTrigger",

@@ -8,6 +8,8 @@ YUI.add("yuidoc-meta", function(Y) {
         "BaseNavigationController",
         "BaseView",
         "ColorUtils",
+        "ConditionsValidation",
+        "Copyright",
         "Debug",
         "Detections",
         "EventDispatcher",
@@ -16,6 +18,7 @@ YUI.add("yuidoc-meta", function(Y) {
         "NavigationContainer",
         "NavigationLoader",
         "NavigationRouter",
+        "PreloadFiles",
         "SpriteSheetAnimation",
         "StringUtils",
         "ViewsData"

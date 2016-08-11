@@ -45,6 +45,8 @@
                                 <li><a href="../classes/BaseNavigationController.html">BaseNavigationController</a></li>
                                 <li><a href="../classes/BaseView.html">BaseView</a></li>
                                 <li><a href="../classes/ColorUtils.html">ColorUtils</a></li>
+                                <li><a href="../classes/ConditionsValidation.html">ConditionsValidation</a></li>
+                                <li><a href="../classes/Copyright.html">Copyright</a></li>
                                 <li><a href="../classes/Debug.html">Debug</a></li>
                                 <li><a href="../classes/Detections.html">Detections</a></li>
                                 <li><a href="../classes/EventDispatcher.html">EventDispatcher</a></li>
@@ -53,6 +55,7 @@
                                 <li><a href="../classes/NavigationContainer.html">NavigationContainer</a></li>
                                 <li><a href="../classes/NavigationLoader.html">NavigationLoader</a></li>
                                 <li><a href="../classes/NavigationRouter.html">NavigationRouter</a></li>
+                                <li><a href="../classes/PreloadFiles.html">PreloadFiles</a></li>
                                 <li><a href="../classes/SpriteSheetAnimation.html">SpriteSheetAnimation</a></li>
                                 <li><a href="../classes/StringUtils.html">StringUtils</a></li>
                                 <li><a href="../classes/ViewsData.html">ViewsData</a></li>
@@ -156,9 +159,10 @@ class Debug
 				trace: -&gt;
 				warn: -&gt;
 		else
-			frameworkVersion = &quot;v1.0&quot;
-			projectVersion = &quot;v1.0&quot;
-			console.log &quot;%c=============\nDEBUG MODE ON\n-------------\nFramework    \nversion: &quot;+frameworkVersion+&quot;\n-------------\nProject      \nversion: &quot;+projectVersion+&quot;\n=============&quot;, &#x27;background: #272822; color: #f8f8f2&#x27;
+			frameworkVersion = &quot;v&quot; + app.version
+			# projectVersion = &quot;v1.0&quot;
+			# console.log &quot;%c===============\n DEBUG MODE ON \n---------------\n Framework     \n version: &quot;+frameworkVersion+&quot; \n---------------\n Project       \n version: &quot;+projectVersion+&quot; \n===============&quot;, &#x27;background: #272822; color: #f8f8f2&#x27;
+			console.log &quot;%c===============\n DEBUG MODE ON \n---------------\n Framework     \n version: &quot;+frameworkVersion+&quot; \n===============&quot;, &#x27;background: #272822; color: #f8f8f2&#x27;
 		false	
 
 	###*
