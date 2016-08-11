@@ -19,7 +19,6 @@ if isIE() == 8
 	__scopeIE8 = document.createElement("IE8_" + Math.random())
 
 Function::const = (p_prop) ->
-	console.log(@)
 	__scope = if __scopeIE8 then __scopeIE8 else @
 	for name, value of p_prop
 		o = {}
