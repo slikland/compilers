@@ -18,6 +18,20 @@ isIE= ->
 if isIE() == 8
 	__scopeIE8 = document.createElement("IE8_" + Math.random())
 
+Function::const = (p_prop) ->
+	console.log(@)
+	__scope = if __scopeIE8 then __scopeIE8 else @
+	for name, value of p_prop
+		o = {}
+		o.get = () ->
+			return value
+		o.set = () ->
+			throw new Error("Can't set const " + name)
+		o.configurable = true
+		o.enumerable = true
+		Object.defineProperty __scope, name, o
+	null
+
 Function::get = (p_prop) ->
 	__scope = if __scopeIE8 then __scopeIE8 else @::
 	for name, getter of p_prop
