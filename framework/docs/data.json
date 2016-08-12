@@ -51,15 +51,6 @@
             "fors": {},
             "namespaces": {}
         },
-        "../../source/coffee/slikland/core/debug/Version.coffee": {
-            "name": "../../source/coffee/slikland/core/debug/Version.coffee",
-            "modules": {},
-            "classes": {
-                "Copyright": 1
-            },
-            "fors": {},
-            "namespaces": {}
-        },
         "../../source/coffee/slikland/core/loader/ConditionsValidation.coffee": {
             "name": "../../source/coffee/slikland/core/loader/ConditionsValidation.coffee",
             "modules": {},
@@ -195,6 +186,15 @@
             "fors": {},
             "namespaces": {}
         },
+        "../../source/coffee/slikland/utils/Prototypes.coffee": {
+            "name": "../../source/coffee/slikland/utils/Prototypes.coffee",
+            "modules": {},
+            "classes": {
+                "Prototypes": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
         "../../source/coffee/slikland/utils/StringUtils.coffee": {
             "name": "../../source/coffee/slikland/utils/StringUtils.coffee",
             "modules": {},
@@ -270,18 +270,6 @@
             "description": "Debug Class",
             "static": 1,
             "final": 1
-        },
-        "Copyright": {
-            "name": "Copyright",
-            "shortname": "Copyright",
-            "classitems": [],
-            "plugins": [],
-            "extensions": [],
-            "plugin_for": [],
-            "extension_for": [],
-            "file": "../../source/coffee/slikland/core/debug/Version.coffee",
-            "line": 1,
-            "static": 1
         },
         "ConditionsValidation": {
             "name": "ConditionsValidation",
@@ -556,6 +544,18 @@
             "line": 1,
             "description": "Detections Class",
             "extends": "Class"
+        },
+        "Prototypes": {
+            "name": "Prototypes",
+            "shortname": "Prototypes",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "file": "../../source/coffee/slikland/utils/Prototypes.coffee",
+            "line": 1,
+            "description": "This is actually not a Class. It's a bunch of helper methods adding prototype methods to native classes."
         },
         "StringUtils": {
             "name": "StringUtils",
@@ -888,26 +888,6 @@
             ],
             "static": 1,
             "class": "Debug"
-        },
-        {
-            "file": "../../source/coffee/slikland/core/debug/Version.coffee",
-            "line": 6,
-            "description": "Returns the version of framework",
-            "itemtype": "attribute",
-            "name": "version",
-            "type": "{String}",
-            "readonly": "",
-            "class": "Copyright"
-        },
-        {
-            "file": "../../source/coffee/slikland/core/debug/Version.coffee",
-            "line": 14,
-            "description": "Returns the name of framework",
-            "itemtype": "attribute",
-            "name": "name",
-            "type": "{String}",
-            "readonly": "",
-            "class": "Copyright"
         },
         {
             "file": "../../source/coffee/slikland/core/loader/ConditionsValidation.coffee",
@@ -3032,6 +3012,39 @@
                 }
             ],
             "class": "BaseView"
+        },
+        {
+            "file": "../../source/coffee/slikland/utils/Prototypes.coffee",
+            "line": 28,
+            "description": "This method is a decorator to create constant variable to a class.  \nA extending class cannot override this constant either can't be reassigned.  \n  \n* Please ignore de backslash on \\\\\\@ as the code formatter doesn't escape atmarks.",
+            "itemtype": "method",
+            "name": "@const",
+            "example": [
+                "\n\tclass A\n\t\t\\@const PI: 3.14\n\tconsole.log(A.PI) // 3.14\n\tclass B extends A\n\t\t\\@const PI: 3.14159 // Will throw error\n\tconsole.log(B.PI) // Already thrown error before, but will be 3.14"
+            ],
+            "class": "Prototypes"
+        },
+        {
+            "file": "../../source/coffee/slikland/utils/Prototypes.coffee",
+            "line": 56,
+            "description": "Getter decorator for a class instance.  \nWith this decorator you're able to assign a getter method to a variable.  \n  \nAlso for a special case, you can assign a scope to the getter so you can create static getter to a class.  \n  \n* Please ignore de backslash on \\\\\\@ as the code formatter doesn't escape atmarks.",
+            "itemtype": "method",
+            "name": "@get",
+            "example": [
+                "\n\n\t// Instance getter\n\tclass A\n\t\t\\@get test:()->\n\t\t\treturn 'Hello world!'\n\ta = new A()\n\tconsole.log(a.test) // Hello world!\n\n\t// Static getter\n\tclass A\n\t\t\\@get \\@, TEST:()->\n\t\t\treturn 'Hello world!'\n\tconsole.log(A.TEST) // Hello world!"
+            ],
+            "class": "Prototypes"
+        },
+        {
+            "file": "../../source/coffee/slikland/utils/Prototypes.coffee",
+            "line": 92,
+            "description": "Setter decorator for a class instance.  \nWith this decorator you're able to assign a setter method to a variable.  \n  \nAlso for a special case, you can assign a scope to the setter so you can create static setter to a class.  \n  \n* Please ignore de backslash on \\\\\\@ as the code formatter doesn't escape atmarks.",
+            "itemtype": "method",
+            "name": "@set",
+            "example": [
+                "\n\n\t// Instance getter / stter\n\tclass A\n\t\t\\@get test:()->\n\t\t\treturn \\@_test\n\t\t\\@set test:(value)->\n\t\t\t\\@_test = value\n\ta = new A()\n\ta.test = 'Hello setter'\n\tconsole.log(a.test) // Hello setter\n\n\t// Static getter / setter\n\tclass A\n\t\t\\@get \\@, TEST:()->\n\t\t\treturn @_TEST\n\t\t\\@set \\@, TEST:(value)->\n\t\t\t\\@_TEST = value\n\tA.TEST = 'Hello setter'\n\tconsole.log(A.TEST) // Hello setter"
+            ],
+            "class": "Prototypes"
         },
         {
             "file": "../../source/coffee/slikland/utils/StringUtils.coffee",

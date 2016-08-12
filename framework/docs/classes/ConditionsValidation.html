@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>EventDispatcher - Slikland Framework</title>
+    <title>ConditionsValidation - Slikland Framework</title>
     <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
     <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
     <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
@@ -96,12 +96,12 @@
             <div class="apidocs">
                 <div id="docs-main">
                     <div class="content">
-<h1>EventDispatcher Class</h1>
+<h1>ConditionsValidation Class</h1>
 <div class="box meta">
 
 
         <div class="foundat">
-            Defined in: <a href="../files/.._.._source_coffee_slikland_event_EventDispatcher.coffee.html#l1"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;event&#x2F;EventDispatcher.coffee:1</code></a>
+            Defined in: <a href="../files/.._.._source_coffee_slikland_core_loader_ConditionsValidation.coffee.html#l16"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;core&#x2F;loader&#x2F;ConditionsValidation.coffee:16</code></a>
         </div>
 
 
@@ -109,16 +109,72 @@
 
 
 <div class="box intro">
-    <p>EventDispatcher class for handling and triggering events.</p>
+    <p>Singleton ConditionsValidation class</p>
 
 </div>
 
+    <div class="constructor">
+        <h2>Constructor</h2>
+<div id="method_ConditionsValidation" class="method item">
+    <h3 class="name"><code>ConditionsValidation</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>p_data</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._.._source_coffee_slikland_core_loader_ConditionsValidation.coffee.html#l16"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;core&#x2F;loader&#x2F;ConditionsValidation.coffee:16</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">p_data</code>
+                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>
+
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+
+
+</div>
+    </div>
 
 <div id="classdocs" class="tabview">
     <ul class="api-class-tabs">
         <li class="api-class-tab index"><a href="#index">Index</a></li>
 
             <li class="api-class-tab methods"><a href="#methods">Methods</a></li>
+            <li class="api-class-tab attrs"><a href="#attrs">Attributes</a></li>
     </ul>
 
     <div>
@@ -130,45 +186,51 @@
 
                     <ul class="index-list methods">
                             <li class="index-item method">
-                                <a href="#method_hasEvent">hasEvent</a>
+                                <a href="#method_add">add</a>
 
                             </li>
                             <li class="index-item method">
-                                <a href="#method_off">off</a>
+                                <a href="#method_get">get</a>
 
                             </li>
                             <li class="index-item method">
-                                <a href="#method_on">on</a>
+                                <a href="#method_has">has</a>
 
                             </li>
                             <li class="index-item method">
-                                <a href="#method_stackTrigger">stackTrigger</a>
+                                <a href="#method_remove">remove</a>
 
                             </li>
                             <li class="index-item method">
-                                <a href="#method_trigger">trigger</a>
+                                <a href="#method_test">test</a>
 
                             </li>
                     </ul>
                 </div>
 
 
+                <div class="index-section attrs">
+                    <h3>Attributes</h3>
+
+                    <ul class="index-list attrs">
+                            <li class="index-item attr">
+                                <a href="#attr_list">list</a>
+                            </li>
+                    </ul>
+                </div>
 
         </div>
 
             <div id="methods" class="api-class-tabpanel">
                 <h2 class="off-left">Methods</h2>
 
-<div id="method_hasEvent" class="method item">
-    <h3 class="name"><code>hasEvent</code></h3>
+<div id="method_add" class="method item">
+    <h3 class="name"><code>add</code></h3>
 
         <div class="args">
             <span class="paren">(</span><ul class="args-list inline commas">
                 <li class="arg">
-                        <code>event</code>
-                </li>
-                <li class="arg">
-                        <code class="optional">[handler=null]</code>
+                        <code>p_obj</code>
                 </li>
             </ul><span class="paren">)</span>
         </div>
@@ -186,7 +248,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._.._source_coffee_slikland_event_EventDispatcher.coffee.html#l103"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;event&#x2F;EventDispatcher.coffee:103</code></a>
+        <a href="../files/.._.._source_coffee_slikland_core_loader_ConditionsValidation.coffee.html#l25"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;core&#x2F;loader&#x2F;ConditionsValidation.coffee:25</code></a>
         </p>
 
 
@@ -194,7 +256,7 @@
     </div>
 
     <div class="description">
-        <p>Check if a event handler is already set.</p>
+        <p>Add object condition in internal list.</p>
 
     </div>
 
@@ -203,25 +265,12 @@
 
             <ul class="params-list">
                 <li class="param">
-                        <code class="param-name">event</code>
-                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>
+                        <code class="param-name">p_obj</code>
+                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>
 
 
                     <div class="param-description">
-                        <p>Event name.</p>
-
-                    </div>
-
-                </li>
-                <li class="param">
-                        <code class="param-name optional">[handler=null]</code>
-                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function" class="crosslink external" target="_blank">Function</a></span>
-                        <span class="flag optional" title="This parameter is optional.">optional</span>
-
-
-                    <div class="param-description">
-                        <p>A callback function added in the <a href="../classes/EventDispatcher.html#method_on" class="crosslink">on</a> call.</p>
-
+                         
                     </div>
 
                 </li>
@@ -238,20 +287,20 @@
 
 
 </div>
-<div id="method_off" class="method item">
-    <h3 class="name"><code>off</code></h3>
+<div id="method_get" class="method item">
+    <h3 class="name"><code>get</code></h3>
 
         <div class="args">
             <span class="paren">(</span><ul class="args-list inline commas">
                 <li class="arg">
-                        <code class="optional">[event=null]</code>
-                </li>
-                <li class="arg">
-                        <code class="optional">[handler=null]</code>
+                        <code>p_keyID</code>
                 </li>
             </ul><span class="paren">)</span>
         </div>
 
+        <span class="returns-inline">
+            <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>
+        </span>
 
 
 
@@ -262,7 +311,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._.._source_coffee_slikland_event_EventDispatcher.coffee.html#l32"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;event&#x2F;EventDispatcher.coffee:32</code></a>
+        <a href="../files/.._.._source_coffee_slikland_core_loader_ConditionsValidation.coffee.html#l47"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;core&#x2F;loader&#x2F;ConditionsValidation.coffee:47</code></a>
         </p>
 
 
@@ -270,14 +319,7 @@
     </div>
 
     <div class="description">
-        <p>Remove an event listener.</p>
-<p><strong>BEWARE</strong></p>
-<blockquote>
-<p>Calling this method without a handler will remove all listeners attached to this event.</p>
-</blockquote>
-<blockquote>
-<p>If calling without the event name, will remove all listeners attached to this instance.</p>
-</blockquote>
+        <p>Returns the object condition of internal list.</p>
 
     </div>
 
@@ -286,135 +328,42 @@
 
             <ul class="params-list">
                 <li class="param">
-                        <code class="param-name optional">[event=null]</code>
+                        <code class="param-name">p_keyID</code>
                         <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>
-                        <span class="flag optional" title="This parameter is optional.">optional</span>
 
 
                     <div class="param-description">
-                        <p>Event name.</p>
-
-                    </div>
-
-                </li>
-                <li class="param">
-                        <code class="param-name optional">[handler=null]</code>
-                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function" class="crosslink external" target="_blank">Function</a></span>
-                        <span class="flag optional" title="This parameter is optional.">optional</span>
-
-
-                    <div class="param-description">
-                        <p>A callback function added in the <a href="../classes/EventDispatcher.html#method_on" class="crosslink">on</a> call.</p>
-
+                         
                     </div>
 
                 </li>
             </ul>
         </div>
 
+        <div class="returns">
+            <h4>Returns:</h4>
 
-
-</div>
-<div id="method_on" class="method item">
-    <h3 class="name"><code>on</code></h3>
-
-        <div class="args">
-            <span class="paren">(</span><ul class="args-list inline commas">
-                <li class="arg">
-                        <code>event</code>
-                </li>
-                <li class="arg">
-                        <code>handler</code>
-                </li>
-            </ul><span class="paren">)</span>
-        </div>
-
-
-
-
-
-
-
-
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/.._.._source_coffee_slikland_event_EventDispatcher.coffee.html#l10"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;event&#x2F;EventDispatcher.coffee:10</code></a>
-        </p>
-
-
-
-    </div>
-
-    <div class="description">
-        <p>Add a event listener.</p>
-
-    </div>
-
-        <div class="params">
-            <h4>Parameters:</h4>
-
-            <ul class="params-list">
-                <li class="param">
-                        <code class="param-name">event</code>
-                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>
-
-
-                    <div class="param-description">
-                        <p>Event name.</p>
-
-                    </div>
-
-                </li>
-                <li class="param">
-                        <code class="param-name">handler</code>
-                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function" class="crosslink external" target="_blank">Function</a></span>
-
-
-                    <div class="param-description">
-                        <p>A callback function to handle the event.<br>
-The callback function can receive 1 or 2 parameters. The first parameter is the event data itself and the second parameter is the custom data of the triggering event.</p>
-
-                    </div>
-
-                </li>
-            </ul>
-        </div>
-
-
-
-        <div class="example">
-            <h4>Example:</h4>
-
-            <div class="example-content">
-                <pre class="code prettyprint"><code>function someEventHandler(e, data)
-{
-    console.log(e); // Returns event data with it's type and target/currentTarget set to the scope
-    console.log(data); // If the triggering event has any custom data
-}
-var ed = new EventDispatcher()
-ed.on('someEvent', someEventHandler);</code></pre>
-
+            <div class="returns-description">
+                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>:
             </div>
         </div>
+
+
 </div>
-<div id="method_stackTrigger" class="method item">
-    <h3 class="name"><code>stackTrigger</code></h3>
+<div id="method_has" class="method item">
+    <h3 class="name"><code>has</code></h3>
 
         <div class="args">
             <span class="paren">(</span><ul class="args-list inline commas">
                 <li class="arg">
-                        <code>event</code>
-                </li>
-                <li class="arg">
-                        <code class="optional">[data=null]</code>
-                </li>
-                <li class="arg">
-                        <code class="optional">[target=null]</code>
+                        <code>p_keyID</code>
                 </li>
             </ul><span class="paren">)</span>
         </div>
 
+        <span class="returns-inline">
+            <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean" class="crosslink external" target="_blank">Boolean</a></span>
+        </span>
 
 
 
@@ -425,7 +374,7 @@ ed.on('someEvent', someEventHandler);</code></pre>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._.._source_coffee_slikland_event_EventDispatcher.coffee.html#l121"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;event&#x2F;EventDispatcher.coffee:121</code></a>
+        <a href="../files/.._.._source_coffee_slikland_core_loader_ConditionsValidation.coffee.html#l56"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;core&#x2F;loader&#x2F;ConditionsValidation.coffee:56</code></a>
         </p>
 
 
@@ -433,8 +382,7 @@ ed.on('someEvent', someEventHandler);</code></pre>
     </div>
 
     <div class="description">
-        <p>Triggers an event after the current code block has finished processing.</p>
-<p>This is useful for stacking up events that needs to be triggered at the end of the function but it's validating beforehand.</p>
+        <p>Checks the conditions already added in internal list.</p>
 
     </div>
 
@@ -443,36 +391,138 @@ ed.on('someEvent', someEventHandler);</code></pre>
 
             <ul class="params-list">
                 <li class="param">
-                        <code class="param-name">event</code>
+                        <code class="param-name">p_keyID</code>
                         <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>
 
 
                     <div class="param-description">
-                        <p>Event name.</p>
-
+                         
                     </div>
 
                 </li>
+            </ul>
+        </div>
+
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean" class="crosslink external" target="_blank">Boolean</a></span>:
+            </div>
+        </div>
+
+
+</div>
+<div id="method_remove" class="method item">
+    <h3 class="name"><code>remove</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>p_keyID</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+        <span class="returns-inline">
+            <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean" class="crosslink external" target="_blank">Boolean</a></span>
+        </span>
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._.._source_coffee_slikland_core_loader_ConditionsValidation.coffee.html#l65"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;core&#x2F;loader&#x2F;ConditionsValidation.coffee:65</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Removes the object condition of internal list.</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
                 <li class="param">
-                        <code class="param-name optional">[data=null]</code>
-                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>
-                        <span class="flag optional" title="This parameter is optional.">optional</span>
+                        <code class="param-name">p_keyID</code>
+                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>
 
 
                     <div class="param-description">
-                        <p>Custom event data.</p>
-
+                         
                     </div>
 
                 </li>
+            </ul>
+        </div>
+
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean" class="crosslink external" target="_blank">Boolean</a></span>:
+            </div>
+        </div>
+
+
+</div>
+<div id="method_test" class="method item">
+    <h3 class="name"><code>test</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>p_args</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+        <span class="returns-inline">
+            <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean" class="crosslink external" target="_blank">Boolean</a></span>
+        </span>
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._.._source_coffee_slikland_core_loader_ConditionsValidation.coffee.html#l79"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;core&#x2F;loader&#x2F;ConditionsValidation.coffee:79</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>This method accepts the ID of a condition object or a group of ID with a <a href="//developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Expressions_and_Operators" target="_blank" class="crosslink">default operators</a>, to returns if only one condition is a valid condition or a group with a sum of conditions are valid.</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
                 <li class="param">
-                        <code class="param-name optional">[target=null]</code>
-                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>
-                        <span class="flag optional" title="This parameter is optional.">optional</span>
+                        <code class="param-name">p_args</code>
+                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>
 
 
                     <div class="param-description">
-                        <p>Target that will be specified in the <code>event.target</code>. The <code>event.currentTarget</code> will always be this instance.</p>
+                        <p>The ID of a condition or a group with a sum of conditions.</p>
 
                     </div>
 
@@ -480,145 +530,123 @@ ed.on('someEvent', someEventHandler);</code></pre>
             </ul>
         </div>
 
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean" class="crosslink external" target="_blank">Boolean</a></span>:
+            </div>
+        </div>
 
 
         <div class="example">
             <h4>Example:</h4>
 
             <div class="example-content">
-                <pre class="code prettyprint"><code>var ed = new EventDispatcher()
-
-var someObject = {a: true, b: false, c: true};
-
-ed.on('isA', function(){console.log('Is A!');});
-ed.on('isB', function(){console.log('Is B!');});
-ed.on('isC', function(){console.log('Is C!');});
-
-function test()
-{
-    console.log(&quot;Init test()&quot;);
-    if(someObject.a) ed.stackTrigger('isA');
-    if(someObject.b) ed.stackTrigger('isB');
-    if(someObject.c) ed.stackTrigger('isC');
-    console.log(&quot;End test()&quot;);
+                <pre class="code prettyprint"><code>//Example of conditions list in config file
+...
+&quot;conditions&quot;: {
+    &quot;small&quot;: {
+        &quot;size&quot;: {
+            &quot;min-width&quot;:300
+        }
+    },
+    &quot;medium&quot;: {
+        &quot;orientation&quot;:&quot;landscape&quot;,
+        &quot;size&quot;: {
+            &quot;min-width&quot;:992
+        }
+    },
+    &quot;large&quot;: {
+        &quot;size&quot;: {
+            &quot;min-width&quot;:1200
+        }
+    },
+    &quot;xtra_large&quot;: {
+        &quot;size&quot;: {
+            &quot;min-width&quot;:1500
+        }
+    },
+    &quot;full&quot;: {
+        &quot;size&quot;: {
+            &quot;min-width&quot;:1910
+        }
+    }
 }
 
-// This will result in:
-// log: 'Init test()'
-// log: 'End test()'
-// log: 'isA'
-// log: 'isC'
+...
+//Example condition with operators in some content file
+...
+&quot;src&quot;:[
+    {
+        &quot;condition&quot;:&quot;xtra_large &amp;&amp; full&quot;,
+        &quot;file&quot;:&quot;file.json&quot;
+    },
+    {
+        &quot;condition&quot;:&quot;medium || xtra_large&quot;,
+        &quot;file&quot;:&quot;file.json&quot;
+    },
+    {
+        &quot;condition&quot;:&quot;small &lt; medium&quot;,
+        &quot;file&quot;:&quot;file.json&quot;
+    },
+    {
+        &quot;condition&quot;:&quot;(small &gt; medium) || medium&quot;,
+        &quot;file&quot;:&quot;file.json&quot;
+    }
+]
+
+//Example single condition in some content file
+...
+&quot;src&quot;:[
+    {
+        &quot;condition&quot;:&quot;default&quot;,
+        &quot;file&quot;:&quot;{base}data/home.json&quot;
+    }
+]
+...
 </code></pre>
 
             </div>
         </div>
 </div>
-<div id="method_trigger" class="method item">
-    <h3 class="name"><code>trigger</code></h3>
-
-        <div class="args">
-            <span class="paren">(</span><ul class="args-list inline commas">
-                <li class="arg">
-                        <code>event</code>
-                </li>
-                <li class="arg">
-                        <code class="optional">[data=null]</code>
-                </li>
-                <li class="arg">
-                        <code class="optional">[target=null]</code>
-                </li>
-            </ul><span class="paren">)</span>
-        </div>
-
-
-
-
-
-
-
-
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/.._.._source_coffee_slikland_event_EventDispatcher.coffee.html#l61"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;event&#x2F;EventDispatcher.coffee:61</code></a>
-        </p>
-
-
-
-    </div>
-
-    <div class="description">
-        <p>Triggers an event.</p>
-
-    </div>
-
-        <div class="params">
-            <h4>Parameters:</h4>
-
-            <ul class="params-list">
-                <li class="param">
-                        <code class="param-name">event</code>
-                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>
-
-
-                    <div class="param-description">
-                        <p>Event name.</p>
-
-                    </div>
-
-                </li>
-                <li class="param">
-                        <code class="param-name optional">[data=null]</code>
-                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>
-                        <span class="flag optional" title="This parameter is optional.">optional</span>
-
-
-                    <div class="param-description">
-                        <p>Custom event data.</p>
-
-                    </div>
-
-                </li>
-                <li class="param">
-                        <code class="param-name optional">[target=null]</code>
-                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>
-                        <span class="flag optional" title="This parameter is optional.">optional</span>
-
-
-                    <div class="param-description">
-                        <p>Target that will be specified in the <code>event.target</code>. The <code>event.currentTarget</code> will always be this instance.</p>
-
-                    </div>
-
-                </li>
-            </ul>
-        </div>
-
-
-
-        <div class="example">
-            <h4>Example:</h4>
-
-            <div class="example-content">
-                <pre class="code prettyprint"><code>var ed = new EventDispatcher()
-
-// Will just trigger the event
-ed.trigger('someEvent'); 
-
-// Will trigger the event with the object which can be retrieved by the second
-// parameter of the handler function.
-ed.trigger('someEvent', {someData: true}); 
-
-// Will set the event target to window. On the handler's first parameter
-//<code>event.target</code> will be window, and event.currentTarget will be the <code>ev</code> instance.
-ed.trigger('someEvent', {someData: true}, window);</code></pre>
-
-            </div>
-        </div>
-</div>
             </div>
 
 
+            <div id="attrs" class="api-class-tabpanel">
+                <h2 class="off-left">Attributes</h2>
+
+                    <div id="attr_list" class="attr item">
+                        <a name="config_list"></a> 
+                        <h3 class="name"><code>list</code></h3>
+                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                            <span class="flag readonly">readonly</span>
+                    
+                        <div class="meta">
+                                    <p>
+                                    Defined in
+                            <a href="../files/.._.._source_coffee_slikland_core_loader_ConditionsValidation.coffee.html#l38"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;core&#x2F;loader&#x2F;ConditionsValidation.coffee:38</code></a>
+                            </p>
+                    
+                    
+                        </div>
+                    
+                        <div class="description">
+                            <p>Returns the internal list of registered conditions.</p>
+                    
+                        </div>
+                    
+                    
+                    
+                    </div>
+            </div>
 
     </div>
 </div>

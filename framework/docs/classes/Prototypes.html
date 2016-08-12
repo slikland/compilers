@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>../../source/coffee/slikland/core/navigation/MetaController.coffee - Slikland Framework</title>
+    <title>Prototypes - Slikland Framework</title>
     <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
     <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
     <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
@@ -96,119 +96,230 @@
             <div class="apidocs">
                 <div id="docs-main">
                     <div class="content">
-<h1 class="file-heading">File: ../../source/coffee/slikland/core/navigation/MetaController.coffee</h1>
+<h1>Prototypes Class</h1>
+<div class="box meta">
 
-<div class="file">
-    <pre class="code prettyprint linenums">
-###*
-@class MetaController
-@extends EventDispatcher
-@final
-###
-class MetaController extends EventDispatcher
 
-	###*
-	@class MetaController
-	@constructor
-	###
-	constructor: () -&gt;
-		super
-		
-	###*
-	@method change
-	@param {Object} p_data
-	###
-	change: (p_data) -&gt;
-		@title = p_data?.title
-		@description = p_data?.description
-		@color = p_data?.color
-		@favicon = p_data?.favicon
-		@viewport = p_data?.viewport
-		false
+        <div class="foundat">
+            Defined in: <a href="../files/.._.._source_coffee_slikland_utils_Prototypes.coffee.html#l1"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;utils&#x2F;Prototypes.coffee:1</code></a>
+        </div>
 
-	###*
-	@method applyMeta
-	@param {String} p_name
-	@param {String} p_value
-	###
-	applyMeta: (p_name, p_value) -&gt;
-		if p_value?
-			if document.querySelector(&#x27;meta[name=&#x27;+p_name+&#x27;]&#x27;)?
-				document.querySelector(&#x27;meta[name=&#x27;+p_name+&#x27;]&#x27;).content = p_value
-			else
-				meta = document.createElement(&#x27;meta&#x27;)
-				meta.name = p_name
-				meta.content = p_value
-				@head.appendChild(meta)
-		false
 
-	###*
-	@attribute head
-	@type {HTMLElement}
-	@readOnly
-	###
-	@get head:()-&gt;
-		return document.head || document.getElementsByTagName(&#x27;head&#x27;)[0]
+</div>
 
-	###*
-	@attribute viewport
-	@type {String}
-	###
-	@set viewport:(p_value)-&gt;
-		@applyMeta(&#x27;viewport&#x27;, p_value)
 
-	###*
-	@attribute title
-	@type {String}
-	###
-	@set title:(p_value)-&gt;
-		if p_value?
-			document.title = p_value
+<div class="box intro">
+    <p>This is actually not a Class. It's a bunch of helper methods adding prototype methods to native classes.</p>
 
-	###*
-	@attribute description
-	@type {String}
-	###
-	@set description:(p_value)-&gt;
-		@applyMeta(&#x27;description&#x27;, p_value)
+</div>
 
-	###*
-	@attribute favicon
-	@type {String}
-	###
-	@set favicon:(p_value)-&gt;
-		if p_value?
-			if document.querySelector(&#x27;link[rel=icon]&#x27;)?
-				document.querySelector(&#x27;link[rel=icon]&#x27;).type = &quot;image/x-icon&quot;
-				document.querySelector(&#x27;link[rel=icon]&#x27;).href = p_value
-			else
-				link = document.createElement(&#x27;link&#x27;)
-				link.rel = &quot;icon&quot;
-				link.type = &quot;image/x-icon&quot;
-				link.href = p_value
-				@head.appendChild(link)
-		false
 
-	###*
-	@attribute color
-	@type {String}
-	###
-	@set color:(p_color)-&gt;
-		# All
-		@applyMeta(&#x27;mobile-web-app-capable&#x27;, &#x27;yes&#x27;)
+<div id="classdocs" class="tabview">
+    <ul class="api-class-tabs">
+        <li class="api-class-tab index"><a href="#index">Index</a></li>
 
-		# Chrome
-		@applyMeta(&#x27;theme-color&#x27;, p_color)
+            <li class="api-class-tab methods"><a href="#methods">Methods</a></li>
+    </ul>
 
-		# Windows Phone
-		@applyMeta(&#x27;msapplication-navbutton-color&#x27;, p_color)
+    <div>
+        <div id="index" class="api-class-tabpanel index">
+            <h2 class="off-left">Item Index</h2>
 
-		# iOS
-		@applyMeta(&#x27;apple-mobile-web-app-capable&#x27;, &#x27;yes&#x27;)
-		@applyMeta(&#x27;apple-mobile-web-app-status-bar-style&#x27;, &#x27;black-translucent&#x27;)
-		false
+                <div class="index-section methods">
+                    <h3>Methods</h3>
 
-    </pre>
+                    <ul class="index-list methods">
+                            <li class="index-item method">
+                                <a href="#method_@const">@const</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_@get">@get</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_@set">@set</a>
+
+                            </li>
+                    </ul>
+                </div>
+
+
+
+        </div>
+
+            <div id="methods" class="api-class-tabpanel">
+                <h2 class="off-left">Methods</h2>
+
+<div id="method_@const" class="method item">
+    <h3 class="name"><code>@const</code></h3>
+
+        <span class="paren">()</span>
+
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._.._source_coffee_slikland_utils_Prototypes.coffee.html#l28"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;utils&#x2F;Prototypes.coffee:28</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>This method is a decorator to create constant variable to a class.<br>
+A extending class cannot override this constant either can't be reassigned.</p>
+<ul>
+<li>Please ignore de backslash on \@ as the code formatter doesn't escape atmarks.</li>
+</ul>
+
+    </div>
+
+
+
+
+        <div class="example">
+            <h4>Example:</h4>
+
+            <div class="example-content">
+                <pre class="code prettyprint"><code>class A
+    \@const PI: 3.14
+console.log(A.PI) // 3.14
+class B extends A
+    \@const PI: 3.14159 // Will throw error
+console.log(B.PI) // Already thrown error before, but will be 3.14</code></pre>
+
+            </div>
+        </div>
+</div>
+<div id="method_@get" class="method item">
+    <h3 class="name"><code>@get</code></h3>
+
+        <span class="paren">()</span>
+
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._.._source_coffee_slikland_utils_Prototypes.coffee.html#l56"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;utils&#x2F;Prototypes.coffee:56</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Getter decorator for a class instance.<br>
+With this decorator you're able to assign a getter method to a variable.</p>
+<p>Also for a special case, you can assign a scope to the getter so you can create static getter to a class.</p>
+<ul>
+<li>Please ignore de backslash on \@ as the code formatter doesn't escape atmarks.</li>
+</ul>
+
+    </div>
+
+
+
+
+        <div class="example">
+            <h4>Example:</h4>
+
+            <div class="example-content">
+                <pre class="code prettyprint"><code>// Instance getter
+class A
+    \@get test:()-&gt;
+        return 'Hello world!'
+a = new A()
+console.log(a.test) // Hello world!
+
+// Static getter
+class A
+    \@get \@, TEST:()-&gt;
+        return 'Hello world!'
+console.log(A.TEST) // Hello world!</code></pre>
+
+            </div>
+        </div>
+</div>
+<div id="method_@set" class="method item">
+    <h3 class="name"><code>@set</code></h3>
+
+        <span class="paren">()</span>
+
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._.._source_coffee_slikland_utils_Prototypes.coffee.html#l92"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;utils&#x2F;Prototypes.coffee:92</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Setter decorator for a class instance.<br>
+With this decorator you're able to assign a setter method to a variable.</p>
+<p>Also for a special case, you can assign a scope to the setter so you can create static setter to a class.</p>
+<ul>
+<li>Please ignore de backslash on \@ as the code formatter doesn't escape atmarks.</li>
+</ul>
+
+    </div>
+
+
+
+
+        <div class="example">
+            <h4>Example:</h4>
+
+            <div class="example-content">
+                <pre class="code prettyprint"><code>// Instance getter / stter
+class A
+    \@get test:()-&gt;
+        return \@_test
+    \@set test:(value)-&gt;
+        \@_test = value
+a = new A()
+a.test = 'Hello setter'
+console.log(a.test) // Hello setter
+
+// Static getter / setter
+class A
+    \@get \@, TEST:()-&gt;
+        return @_TEST
+    \@set \@, TEST:(value)-&gt;
+        \@_TEST = value
+A.TEST = 'Hello setter'
+console.log(A.TEST) // Hello setter</code></pre>
+
+            </div>
+        </div>
+</div>
+            </div>
+
+
+
+    </div>
 </div>
                     </div>
                 </div>

@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>../../source/coffee/slikland/core/navigation/MetaController.coffee - Slikland Framework</title>
+    <title>PreloadFiles - Slikland Framework</title>
     <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
     <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
     <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
@@ -96,119 +96,44 @@
             <div class="apidocs">
                 <div id="docs-main">
                     <div class="content">
-<h1 class="file-heading">File: ../../source/coffee/slikland/core/navigation/MetaController.coffee</h1>
+<h1>PreloadFiles Class</h1>
+<div class="box meta">
 
-<div class="file">
-    <pre class="code prettyprint linenums">
-###*
-@class MetaController
-@extends EventDispatcher
-@final
-###
-class MetaController extends EventDispatcher
 
-	###*
-	@class MetaController
-	@constructor
-	###
-	constructor: () -&gt;
-		super
-		
-	###*
-	@method change
-	@param {Object} p_data
-	###
-	change: (p_data) -&gt;
-		@title = p_data?.title
-		@description = p_data?.description
-		@color = p_data?.color
-		@favicon = p_data?.favicon
-		@viewport = p_data?.viewport
-		false
+        <div class="foundat">
+            Defined in: <a href="../files/.._.._source_coffee_slikland_core_loader_PreloadFiles.coffee.html#l1"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;core&#x2F;loader&#x2F;PreloadFiles.coffee:1</code></a>
+        </div>
 
-	###*
-	@method applyMeta
-	@param {String} p_name
-	@param {String} p_value
-	###
-	applyMeta: (p_name, p_value) -&gt;
-		if p_value?
-			if document.querySelector(&#x27;meta[name=&#x27;+p_name+&#x27;]&#x27;)?
-				document.querySelector(&#x27;meta[name=&#x27;+p_name+&#x27;]&#x27;).content = p_value
-			else
-				meta = document.createElement(&#x27;meta&#x27;)
-				meta.name = p_name
-				meta.content = p_value
-				@head.appendChild(meta)
-		false
 
-	###*
-	@attribute head
-	@type {HTMLElement}
-	@readOnly
-	###
-	@get head:()-&gt;
-		return document.head || document.getElementsByTagName(&#x27;head&#x27;)[0]
+</div>
 
-	###*
-	@attribute viewport
-	@type {String}
-	###
-	@set viewport:(p_value)-&gt;
-		@applyMeta(&#x27;viewport&#x27;, p_value)
 
-	###*
-	@attribute title
-	@type {String}
-	###
-	@set title:(p_value)-&gt;
-		if p_value?
-			document.title = p_value
+<div class="box intro">
+    <p>It's a simple wrapper to PreloadJS.
+See more info on <a href="http://www.createjs.com/docs/preloadjs/" target="_blank" class="crosslink">PreloadJS Docs</a></p>
 
-	###*
-	@attribute description
-	@type {String}
-	###
-	@set description:(p_value)-&gt;
-		@applyMeta(&#x27;description&#x27;, p_value)
+</div>
 
-	###*
-	@attribute favicon
-	@type {String}
-	###
-	@set favicon:(p_value)-&gt;
-		if p_value?
-			if document.querySelector(&#x27;link[rel=icon]&#x27;)?
-				document.querySelector(&#x27;link[rel=icon]&#x27;).type = &quot;image/x-icon&quot;
-				document.querySelector(&#x27;link[rel=icon]&#x27;).href = p_value
-			else
-				link = document.createElement(&#x27;link&#x27;)
-				link.rel = &quot;icon&quot;
-				link.type = &quot;image/x-icon&quot;
-				link.href = p_value
-				@head.appendChild(link)
-		false
 
-	###*
-	@attribute color
-	@type {String}
-	###
-	@set color:(p_color)-&gt;
-		# All
-		@applyMeta(&#x27;mobile-web-app-capable&#x27;, &#x27;yes&#x27;)
+<div id="classdocs" class="tabview">
+    <ul class="api-class-tabs">
+        <li class="api-class-tab index"><a href="#index">Index</a></li>
 
-		# Chrome
-		@applyMeta(&#x27;theme-color&#x27;, p_color)
+    </ul>
 
-		# Windows Phone
-		@applyMeta(&#x27;msapplication-navbutton-color&#x27;, p_color)
+    <div>
+        <div id="index" class="api-class-tabpanel index">
+            <h2 class="off-left">Item Index</h2>
 
-		# iOS
-		@applyMeta(&#x27;apple-mobile-web-app-capable&#x27;, &#x27;yes&#x27;)
-		@applyMeta(&#x27;apple-mobile-web-app-status-bar-style&#x27;, &#x27;black-translucent&#x27;)
-		false
 
-    </pre>
+
+
+        </div>
+
+
+
+
+    </div>
 </div>
                     </div>
                 </div>
