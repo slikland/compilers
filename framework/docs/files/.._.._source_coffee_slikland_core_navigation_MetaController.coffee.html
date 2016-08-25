@@ -46,7 +46,6 @@
                                 <li><a href="../classes/BaseView.html">BaseView</a></li>
                                 <li><a href="../classes/ColorUtils.html">ColorUtils</a></li>
                                 <li><a href="../classes/ConditionsValidation.html">ConditionsValidation</a></li>
-                                <li><a href="../classes/Copyright.html">Copyright</a></li>
                                 <li><a href="../classes/Debug.html">Debug</a></li>
                                 <li><a href="../classes/Detections.html">Detections</a></li>
                                 <li><a href="../classes/EventDispatcher.html">EventDispatcher</a></li>
@@ -108,28 +107,115 @@
 class MetaController extends EventDispatcher
 
 	###*
+	Runtime controls some meta tags of current view.&lt;br&gt;
+	For add/edit these tags or values, put the meta object in content file, like explained below:
+
 	@class MetaController
 	@constructor
+	@example
+	&#x60;&#x60;&#x60;
+	&quot;meta&quot;:
+	{
+		&quot;title&quot;: &quot;Default Template - title&quot;,
+		&quot;description&quot;:&quot;description&quot;,
+		&quot;webAppCapable&quot;:&quot;true&quot;,
+		&quot;color&quot;:&quot;#ff00ff&quot;,
+		&quot;manifest&quot;:&quot;{base}data/manifest.json&quot;,
+		&quot;favicon&quot;:&quot;{images}icons/favicon-default.ico&quot;,
+		&quot;icons&quot;:[
+			{
+				&quot;rel&quot;:&quot;apple-touch-icon&quot;, 
+				&quot;sizes&quot;:&quot;57x57&quot;,
+				&quot;href&quot;:&quot;{images}icons/apple-touch-icon-57x57.png&quot;
+			},
+			{
+				&quot;rel&quot;:&quot;apple-touch-icon&quot;, 
+				&quot;sizes&quot;:&quot;60x60&quot;,
+				&quot;href&quot;:&quot;{images}icons/apple-touch-icon-60x60.png&quot;
+			},
+			{
+				&quot;rel&quot;:&quot;apple-touch-icon&quot;, 
+				&quot;sizes&quot;:&quot;72x72&quot;,
+				&quot;href&quot;:&quot;{images}icons/apple-touch-icon-72x72.png&quot;
+			},
+			{
+				&quot;rel&quot;:&quot;apple-touch-icon&quot;, 
+				&quot;sizes&quot;:&quot;76x76&quot;,
+				&quot;href&quot;:&quot;{images}icons/apple-touch-icon-76x76.png&quot;
+			},
+			{
+				&quot;rel&quot;:&quot;apple-touch-icon&quot;, 
+				&quot;sizes&quot;:&quot;114x114&quot;,
+				&quot;href&quot;:&quot;{images}icons/apple-touch-icon-114x114.png&quot;
+			},
+			{
+				&quot;rel&quot;:&quot;apple-touch-icon&quot;, 
+				&quot;sizes&quot;:&quot;120x120&quot;,
+				&quot;href&quot;:&quot;{images}icons/apple-touch-icon-120x120.png&quot;
+			},
+			{
+				&quot;rel&quot;:&quot;apple-touch-icon&quot;, 
+				&quot;sizes&quot;:&quot;144x144&quot;,
+				&quot;href&quot;:&quot;{images}icons/apple-touch-icon-144x144.png&quot;
+			},
+			{
+				&quot;rel&quot;:&quot;apple-touch-icon&quot;, 
+				&quot;sizes&quot;:&quot;152x152&quot;,
+				&quot;href&quot;:&quot;{images}icons/apple-touch-icon-152x152.png&quot;
+			},
+			{
+				&quot;rel&quot;:&quot;apple-touch-icon&quot;, 
+				&quot;sizes&quot;:&quot;180x180&quot;,
+				&quot;href&quot;:&quot;{images}icons/apple-touch-icon-180x180.png&quot;
+			},
+
+			{
+				&quot;rel&quot;:&quot;icon&quot;,
+				&quot;href&quot;:&quot;{images}icons/favicon-16x16.png&quot;, 
+				&quot;sizes&quot;:&quot;16x16&quot;
+			},
+			{
+				&quot;rel&quot;:&quot;icon&quot;,
+				&quot;href&quot;:&quot;{images}icons/favicon-32x32.png&quot;, 
+				&quot;sizes&quot;:&quot;32x32&quot;
+			},
+			{
+				&quot;rel&quot;:&quot;icon&quot;,
+				&quot;href&quot;:&quot;{images}icons/favicon-96x96.png&quot;, 
+				&quot;sizes&quot;:&quot;96x96&quot;
+			},
+			{
+				&quot;rel&quot;:&quot;icon&quot;,
+				&quot;href&quot;:&quot;{images}icons/android-chrome-192x192.png&quot;, 
+				&quot;sizes&quot;:&quot;192x192&quot;
+			}
+		]
+	}
+	&#x60;&#x60;&#x60;
 	###
 	constructor: () -&gt;
 		super
-		
+
+	@getInstance:()=&gt;
+		@_instance ?= new @()
 	###*
 	@method change
 	@param {Object} p_data
 	###
 	change: (p_data) -&gt;
-		@title = p_data?.title
-		@description = p_data?.description
-		@color = p_data?.color
-		@favicon = p_data?.favicon
-		@viewport = p_data?.viewport
+		if p_data?
+			for k, v of p_data
+				try
+					@[k] = v
+				catch e
+
 		false
 
 	###*
 	@method applyMeta
 	@param {String} p_name
 	@param {String} p_value
+	@private
 	###
 	applyMeta: (p_name, p_value) -&gt;
 		if p_value?
@@ -140,6 +226,22 @@ class MetaController extends EventDispatcher
 				meta.name = p_name
 				meta.content = p_value
 				@head.appendChild(meta)
+		false
+
+	###*
+	@method applyLink
+	@param {String} p_rel
+	@param {String} p_value
+	@private
+	###
+	applyLink: (p_rel, p_href, p_others=null) -&gt;
+		link = document.createElement(&#x27;link&#x27;)
+		link.rel = p_rel
+		link.href = p_href
+		if p_others? &amp;&amp; typeof(p_others) == &quot;object&quot;
+			for k, v of p_others
+				link[k] = v
+		@head.appendChild(link)
 		false
 
 	###*
@@ -164,6 +266,9 @@ class MetaController extends EventDispatcher
 	@set title:(p_value)-&gt;
 		if p_value?
 			document.title = p_value
+			
+			# iOS
+			@applyMeta(&#x27;apple-mobile-web-app-title&#x27;, p_value)
 
 	###*
 	@attribute description
@@ -177,16 +282,40 @@ class MetaController extends EventDispatcher
 	@type {String}
 	###
 	@set favicon:(p_value)-&gt;
-		if p_value?
-			if document.querySelector(&#x27;link[rel=icon]&#x27;)?
-				document.querySelector(&#x27;link[rel=icon]&#x27;).type = &quot;image/x-icon&quot;
-				document.querySelector(&#x27;link[rel=icon]&#x27;).href = p_value
-			else
-				link = document.createElement(&#x27;link&#x27;)
-				link.rel = &quot;icon&quot;
-				link.type = &quot;image/x-icon&quot;
-				link.href = p_value
-				@head.appendChild(link)
+		if !@_favicon?
+			@_favicon = p_value
+			@applyLink(&#x27;icon&#x27;, p_value, {&quot;type&quot;:&quot;image/x-icon&quot;})
+		false
+
+	###*
+	@attribute icons
+	@type {String}
+	###
+	@set icons:(p_value)-&gt;
+		for k, v of p_value
+			@applyLink(v[&#x27;rel&#x27;], v[&#x27;href&#x27;], {&quot;sizes&quot;:v[&quot;sizes&quot;]})
+		false
+
+	###*
+	*Only for iOS
+	@attribute splash
+	@type {String}
+	###
+	@set splash:(p_value)-&gt;
+		@applyLink(&#x27;apple-touch-startup-image&#x27;, p_value)
+		false
+
+	###*
+	@attribute webAppCapable
+	@type {String}
+	###
+	@set webAppCapable:(p_value)-&gt;
+		value = if p_value == true || p_value == &quot;true&quot; then &#x27;yes&#x27; else &#x27;no&#x27;
+		# All
+		@applyMeta(&#x27;mobile-web-app-capable&#x27;, value)
+
+		# iOS
+		@applyMeta(&#x27;apple-mobile-web-app-capable&#x27;, value)
 		false
 
 	###*
@@ -195,7 +324,7 @@ class MetaController extends EventDispatcher
 	###
 	@set color:(p_color)-&gt;
 		# All
-		@applyMeta(&#x27;mobile-web-app-capable&#x27;, &#x27;yes&#x27;)
+		@webAppCapable = true
 
 		# Chrome
 		@applyMeta(&#x27;theme-color&#x27;, p_color)
@@ -204,8 +333,68 @@ class MetaController extends EventDispatcher
 		@applyMeta(&#x27;msapplication-navbutton-color&#x27;, p_color)
 
 		# iOS
-		@applyMeta(&#x27;apple-mobile-web-app-capable&#x27;, &#x27;yes&#x27;)
 		@applyMeta(&#x27;apple-mobile-web-app-status-bar-style&#x27;, &#x27;black-translucent&#x27;)
+		false
+
+	###*
+	*Only for Android
+	@attribute manifest
+	@type {String}
+	@example
+	&#x60;&#x60;&#x60;
+	{
+	  &quot;lang&quot;: &quot;en&quot;,
+	  &quot;scope&quot;: &quot;/scope/&quot;,	  
+	  &quot;name&quot;: &quot;Web Application Manifest Sample&quot;,
+	  &quot;short_name&quot;: &quot;Application&quot;,
+	  &quot;display&quot;: &quot;standalone&quot;,
+	  &quot;orientation&quot;: &quot;landscape&quot;,
+	  &quot;start_url&quot;: &quot;index.html&quot;,
+	  &quot;theme_color&quot;: &quot;aliceblue&quot;,
+	  &quot;background_color&quot;: &quot;blue&quot;,
+	  &quot;icons&quot;: [
+	    {
+	      &quot;src&quot;: &quot;launcher-icon-0-75x.png&quot;,
+	      &quot;sizes&quot;: &quot;36x36&quot;,
+	      &quot;type&quot;: &quot;image/png&quot;,
+	      &quot;density&quot;: 0.75
+	    },
+	    {
+	      &quot;src&quot;: &quot;launcher-icon-1x.png&quot;,
+	      &quot;sizes&quot;: &quot;48x48&quot;,
+	      &quot;type&quot;: &quot;image/png&quot;,
+	      &quot;density&quot;: 1.0
+	    },
+	    {
+	      &quot;src&quot;: &quot;launcher-icon-1-5x.png&quot;,
+	      &quot;sizes&quot;: &quot;72x72&quot;,
+	      &quot;type&quot;: &quot;image/png&quot;,
+	      &quot;density&quot;: 1.5
+	    },
+	    {
+	      &quot;src&quot;: &quot;launcher-icon-2x.png&quot;,
+	      &quot;sizes&quot;: &quot;96x96&quot;,
+	      &quot;type&quot;: &quot;image/png&quot;,
+	      &quot;density&quot;: 2.0
+	    },
+	    {
+	      &quot;src&quot;: &quot;launcher-icon-3x.png&quot;,
+	      &quot;sizes&quot;: &quot;144x144&quot;,
+	      &quot;type&quot;: &quot;image/png&quot;,
+	      &quot;density&quot;: 3.0
+	    },
+	    {
+	      &quot;src&quot;: &quot;launcher-icon-4x.png&quot;,
+	      &quot;sizes&quot;: &quot;192x192&quot;,
+	      &quot;type&quot;: &quot;image/png&quot;,
+	      &quot;density&quot;: 4.0
+	    }
+	  ]
+	}	
+	&#x60;&#x60;&#x60;
+	###
+	@set manifest:(p_value)-&gt;
+		@applyLink(&#x27;manifest&#x27;, p_value)
 		false
 
     </pre>

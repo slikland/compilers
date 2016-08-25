@@ -1,9 +1,11 @@
+#import slikland.core.navigation.MetaController
 #import slikland.display.BaseDOM
 
 ###*
 Base View
 @class BaseView
 @extends BaseDOM
+@uses MetaController
 ###
 class BaseView extends BaseDOM
 
@@ -127,6 +129,7 @@ class BaseView extends BaseDOM
 	```
 	@param {String} [p_CSSClassName=null]
 	###
+	_meta = null
 	constructor: (p_data=null, p_CSSClassName=null) ->
 		@_created = false
 		@_showed = false
@@ -139,7 +142,8 @@ class BaseView extends BaseDOM
 		@parentView = if @_data.parentView? then @_data.parentView
 		@subviews = if @_data.subviews? then @_data.subviews
 		@destroyable = if @_data.destroyable? then @_data.destroyable
-
+		
+		_meta = MetaController.getInstance()
 		super({element:'div', className:p_CSSClassName})
 
 	###*
@@ -392,6 +396,7 @@ class BaseView extends BaseDOM
 	###
 	showStart:(evt=null)=>
 		@stackTrigger(BaseView.SHOW_START, @)
+		_meta.change(@meta)
 		@show()
 		false
 

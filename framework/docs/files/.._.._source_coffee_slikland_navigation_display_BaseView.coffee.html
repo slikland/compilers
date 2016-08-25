@@ -46,7 +46,6 @@
                                 <li><a href="../classes/BaseView.html">BaseView</a></li>
                                 <li><a href="../classes/ColorUtils.html">ColorUtils</a></li>
                                 <li><a href="../classes/ConditionsValidation.html">ConditionsValidation</a></li>
-                                <li><a href="../classes/Copyright.html">Copyright</a></li>
                                 <li><a href="../classes/Debug.html">Debug</a></li>
                                 <li><a href="../classes/Detections.html">Detections</a></li>
                                 <li><a href="../classes/EventDispatcher.html">EventDispatcher</a></li>
@@ -100,12 +99,14 @@
 
 <div class="file">
     <pre class="code prettyprint linenums">
+#import slikland.core.navigation.MetaController
 #import slikland.display.BaseDOM
 
 ###*
 Base View
 @class BaseView
 @extends BaseDOM
+@uses MetaController
 ###
 class BaseView extends BaseDOM
 
@@ -229,6 +230,7 @@ class BaseView extends BaseDOM
 	&#x60;&#x60;&#x60;
 	@param {String} [p_CSSClassName=null]
 	###
+	_meta = null
 	constructor: (p_data=null, p_CSSClassName=null) -&gt;
 		@_created = false
 		@_showed = false
@@ -241,7 +243,8 @@ class BaseView extends BaseDOM
 		@parentView = if @_data.parentView? then @_data.parentView
 		@subviews = if @_data.subviews? then @_data.subviews
 		@destroyable = if @_data.destroyable? then @_data.destroyable
-
+		
+		_meta = MetaController.getInstance()
 		super({element:&#x27;div&#x27;, className:p_CSSClassName})
 
 	###*
@@ -494,6 +497,7 @@ class BaseView extends BaseDOM
 	###
 	showStart:(evt=null)=&gt;
 		@stackTrigger(BaseView.SHOW_START, @)
+		_meta.change(@meta)
 		@show()
 		false
 

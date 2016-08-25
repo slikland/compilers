@@ -46,7 +46,6 @@
                                 <li><a href="../classes/BaseView.html">BaseView</a></li>
                                 <li><a href="../classes/ColorUtils.html">ColorUtils</a></li>
                                 <li><a href="../classes/ConditionsValidation.html">ConditionsValidation</a></li>
-                                <li><a href="../classes/Copyright.html">Copyright</a></li>
                                 <li><a href="../classes/Debug.html">Debug</a></li>
                                 <li><a href="../classes/Detections.html">Detections</a></li>
                                 <li><a href="../classes/EventDispatcher.html">EventDispatcher</a></li>
@@ -101,7 +100,6 @@
 <div class="file">
     <pre class="code prettyprint linenums">
 #import slikland.core.navigation.NavigationRouter
-#import slikland.core.navigation.MetaController
 
 ###*
 Navigation Class
@@ -110,7 +108,6 @@ The instance of this class can be accessed by &#x60;app.navigation&#x60; wrapper
 @extends EventDispatcher
 @uses NavigationRouter
 @uses BaseNavigationController
-@uses MetaController
 @final
 ###
 class Navigation extends EventDispatcher
@@ -133,7 +130,6 @@ class Navigation extends EventDispatcher
 
 	_controller = null
 	_router = null
-	_meta = null
 
 	###*
 	@class Navigation
@@ -146,7 +142,6 @@ class Navigation extends EventDispatcher
 		_controller = p_controller
 
 		_router = new NavigationRouter()
-		_meta = new MetaController()
 		
 		app.navigation = @
 		super
@@ -343,8 +338,6 @@ class Navigation extends EventDispatcher
 				@_visibleViews = evt.data.visibleViews
 				
 				@trigger(Navigation.CHANGE_VIEW, {data:evt.data})
-				
-				_meta.change(@currentView.meta)
 			when BaseNavigationController.CHANGE
 				@trigger(Navigation.CHANGE_INTERNAL_VIEW, {view:evt.view, transition:evt.transition})
 			

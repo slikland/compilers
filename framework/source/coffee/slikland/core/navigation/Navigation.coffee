@@ -1,5 +1,4 @@
 #import slikland.core.navigation.NavigationRouter
-#import slikland.core.navigation.MetaController
 
 ###*
 Navigation Class
@@ -8,7 +7,6 @@ The instance of this class can be accessed by `app.navigation` wrapper
 @extends EventDispatcher
 @uses NavigationRouter
 @uses BaseNavigationController
-@uses MetaController
 @final
 ###
 class Navigation extends EventDispatcher
@@ -31,7 +29,6 @@ class Navigation extends EventDispatcher
 
 	_controller = null
 	_router = null
-	_meta = null
 
 	###*
 	@class Navigation
@@ -44,7 +41,6 @@ class Navigation extends EventDispatcher
 		_controller = p_controller
 
 		_router = new NavigationRouter()
-		_meta = new MetaController()
 		
 		app.navigation = @
 		super
@@ -241,8 +237,6 @@ class Navigation extends EventDispatcher
 				@_visibleViews = evt.data.visibleViews
 				
 				@trigger(Navigation.CHANGE_VIEW, {data:evt.data})
-				
-				_meta.change(@currentView.meta)
 			when BaseNavigationController.CHANGE
 				@trigger(Navigation.CHANGE_INTERNAL_VIEW, {view:evt.view, transition:evt.transition})
 			

@@ -441,10 +441,12 @@ class NavigationLoader extends EventDispatcher
 					break
 				when 'main'
 					view = _mainView
+					view.id = step.id
 					@mainAssetsLoaded()
 					break
 				when 'preloader'
 					view = _preloaderView
+					view.id = step.id
 					@preloaderAssetsLoaded()
 					@createPreloaderView()
 					break

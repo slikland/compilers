@@ -9,7 +9,6 @@ YUI.add("yuidoc-meta", function(Y) {
         "BaseView",
         "ColorUtils",
         "ConditionsValidation",
-        "Copyright",
         "Debug",
         "Detections",
         "EventDispatcher",
