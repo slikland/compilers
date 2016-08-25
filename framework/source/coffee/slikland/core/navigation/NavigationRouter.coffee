@@ -79,12 +79,14 @@ class NavigationRouter extends EventDispatcher
 	###
 	_getPath:()->
 		rawPath = window.location.href
+
+		if rawPath.indexOf(@_rootPath) == 0
+			rawPath = rawPath.substr(@_rootPath.length)
+
 		hasSlash = rawPath.substr(rawPath.length-1, rawPath.length) == '/'
 		if hasSlash
 			rawPath = rawPath.substr(0, rawPath.length-1)
 
-		if rawPath.indexOf(@_rootPath) == 0
-			rawPath = rawPath.substr(@_rootPath.length)
 		rawPath = rawPath.replace(/^(?:#?!?\/*)([^?]*\??.*?)$/, '$1')
 		return rawPath
 
@@ -297,7 +299,7 @@ class NavigationRouter extends EventDispatcher
 			re = route.routeRE
 			re.lastIndex = 0
 
-			if !(o = re.exec(p_path))
+			if !(o = re.exec(p_path) and route.route isnt '/' or p_path is route.route)
 				continue
 			data = {}
 			routes[routesIndex++] = route
