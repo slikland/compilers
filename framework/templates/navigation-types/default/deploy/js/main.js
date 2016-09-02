@@ -1389,6 +1389,7 @@ Resizer = (function(_super) {
       p_start = true;
     }
     this.change = __bind(this.change, this);
+    this.breakpointChange = __bind(this.breakpointChange, this);
     this.stop = __bind(this.stop, this);
     this.start = __bind(this.start, this);
     _body = document.querySelector("body");
@@ -1440,6 +1441,12 @@ Resizer = (function(_super) {
     window.removeEventListener('resize', this.change);
     return window.removeEventListener('orientationchange', this.change);
   };
+  Resizer.prototype.breakpointChange = function(p_key, p_data) {
+    if (this.latestKey !== p_key) {
+      this.latestKey = p_key;
+      return this.trigger(Resizer.BREAKPOINT_CHANGE, p_data);
+    }
+  };
   Resizer.prototype.change = function(evt) {
     var k, v, _data, _ref, _results;
     if (evt != null) {
@@ -1474,7 +1481,8 @@ Resizer = (function(_super) {
               key: k,
               values: v
             };
-            _results.push(this.trigger(Resizer.BREAKPOINT_CHANGE, _data));
+            this.breakpointChange(k, _data);
+            break;
           } else {
             if (this.hasClass(k)) {
               _results.push(this.removeClass(k));

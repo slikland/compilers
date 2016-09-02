@@ -25,22 +25,22 @@
         },
         "ds":{
         	"size": {
-        		"min-width": 768
+        		"max-width": 768
         }
         },
         "dm":{
         	"size": {
-        		"min-width": 960
+        		"max-width": 960
         }
         },
         "dl":{
         	"size": {
-        		"min-width": 1040
+        		"max-width": 1040
         }
         },
         "full":{
         	"size": {
-        		"min-width": 1600
+        		"max-width": 1600
         }}
     },	
 	"views":[
