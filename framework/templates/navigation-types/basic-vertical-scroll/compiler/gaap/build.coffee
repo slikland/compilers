@@ -6,6 +6,7 @@ framework:
 project:
 	root: '../../'
 	deploy: '{project.root}deploy/'
+	config: '{project.deploy}data/config.json'
 	source: '{project.root}source/'
 	coffee: '{project.source}coffee/'
 	stylus: '{project.source}stylus/'

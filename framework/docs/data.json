@@ -832,7 +832,7 @@
         },
         {
             "file": "../../source/coffee/slikland/core/debug/Debug.coffee",
-            "line": 66,
+            "line": 84,
             "itemtype": "method",
             "name": "check",
             "params": [
@@ -853,7 +853,7 @@
         },
         {
             "file": "../../source/coffee/slikland/core/debug/Debug.coffee",
-            "line": 92,
+            "line": 110,
             "itemtype": "method",
             "name": "log",
             "static": 1,
@@ -861,7 +861,7 @@
         },
         {
             "file": "../../source/coffee/slikland/core/debug/Debug.coffee",
-            "line": 103,
+            "line": 121,
             "itemtype": "method",
             "name": "logTime",
             "params": [
@@ -1182,7 +1182,7 @@
                     "type": "String"
                 }
             ],
-            "access": "private",
+            "access": "protected",
             "tagname": "",
             "class": "MetaController"
         },
@@ -1203,7 +1203,7 @@
                     "type": "String"
                 }
             ],
-            "access": "private",
+            "access": "protected",
             "tagname": "",
             "class": "MetaController"
         },
@@ -1390,6 +1390,26 @@
         {
             "file": "../../source/coffee/slikland/core/navigation/Navigation.coffee",
             "line": 131,
+            "description": "Returns the instance of router controller",
+            "itemtype": "attribute",
+            "name": "router",
+            "type": "{NavigationRouter}",
+            "readonly": "",
+            "class": "Navigation"
+        },
+        {
+            "file": "../../source/coffee/slikland/core/navigation/Navigation.coffee",
+            "line": 140,
+            "description": "Returns the instance of navigation controller",
+            "itemtype": "attribute",
+            "name": "navigation",
+            "type": "{BaseNavigationController}",
+            "readonly": "",
+            "class": "Navigation"
+        },
+        {
+            "file": "../../source/coffee/slikland/core/navigation/Navigation.coffee",
+            "line": 149,
             "itemtype": "method",
             "name": "goto",
             "params": [
@@ -1405,7 +1425,7 @@
         },
         {
             "file": "../../source/coffee/slikland/core/navigation/Navigation.coffee",
-            "line": 144,
+            "line": 162,
             "itemtype": "method",
             "name": "setRoute",
             "params": [
@@ -1426,7 +1446,7 @@
         },
         {
             "file": "../../source/coffee/slikland/core/navigation/Navigation.coffee",
-            "line": 153,
+            "line": 171,
             "itemtype": "method",
             "name": "gotoRoute",
             "params": [
@@ -1447,7 +1467,7 @@
         },
         {
             "file": "../../source/coffee/slikland/core/navigation/Navigation.coffee",
-            "line": 166,
+            "line": 184,
             "itemtype": "method",
             "name": "replaceRoute",
             "params": [
@@ -1468,14 +1488,14 @@
         },
         {
             "file": "../../source/coffee/slikland/core/navigation/Navigation.coffee",
-            "line": 179,
+            "line": 197,
             "itemtype": "method",
             "name": "gotoDefault",
             "class": "Navigation"
         },
         {
             "file": "../../source/coffee/slikland/core/navigation/Navigation.coffee",
-            "line": 191,
+            "line": 209,
             "itemtype": "method",
             "name": "gotoView",
             "params": [
@@ -1489,7 +1509,7 @@
         },
         {
             "file": "../../source/coffee/slikland/core/navigation/Navigation.coffee",
-            "line": 202,
+            "line": 221,
             "itemtype": "method",
             "name": "getViewByRoute",
             "params": [
@@ -1508,7 +1528,7 @@
         },
         {
             "file": "../../source/coffee/slikland/core/navigation/Navigation.coffee",
-            "line": 214,
+            "line": 233,
             "itemtype": "method",
             "name": "getRouteByView",
             "params": [
@@ -1527,7 +1547,7 @@
         },
         {
             "file": "../../source/coffee/slikland/core/navigation/Navigation.coffee",
-            "line": 226,
+            "line": 245,
             "itemtype": "method",
             "name": "_change",
             "params": [

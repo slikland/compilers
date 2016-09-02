@@ -57,10 +57,28 @@ class Debug
 				trace: ->
 				warn: ->
 		else
-			frameworkVersion = "v" + app.version
-			# projectVersion = "v1.0"
-			# console.log "%c===============\n DEBUG MODE ON \n---------------\n Framework     \n version: "+frameworkVersion+" \n---------------\n Project       \n version: "+projectVersion+" \n===============", 'background: #272822; color: #f8f8f2'
-			console.log "%c===============\n DEBUG MODE ON \n---------------\n Framework     \n version: "+frameworkVersion+" \n===============", 'background: #272822; color: #f8f8f2'
+			t = '===================='
+			t += '\n'
+			t += '   DEBUG MODE ON'
+			t += '\n'
+			t += '--------------------'
+			t += '\n'
+			t += 'Framework'
+			t += '\n'
+			t += 'Version: '+App.FRAMEWORK_VERSION
+			t += '\n'
+			t += '--------------------'
+			t += '\n'
+			t += 'Project'
+			t += '\n'
+			t += 'Version: '+App.PROJECT_VERSION
+			t += '\n'
+			t += 'Last update: '+App.PROJECT_DATE
+			t += '\n'
+			t += '===================='
+			c = 'color: #' + Math.floor(Math.random()*16777215).toString(16);
+			console.log '%c'+ t, c
+
 		false	
 
 	###*

@@ -1,8 +1,4 @@
 {
-	"meta":
-	{
-	"favicon":"{images}icons/favicon-default666.ico"
-	},
 	"image":{
 		"id": "image",
 		"src":"{images}666x666&text=home+dummy+image.png"

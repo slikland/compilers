@@ -127,6 +127,24 @@ class Navigation extends EventDispatcher
 			results.route = routeData[0]?[0]?.route
 			results.parsed = routeData[1]
 		return results
+
+	###*
+	Returns the instance of router controller
+	@attribute router
+	@type {NavigationRouter}
+	@readOnly
+	###
+	@get router:()->
+		return _router
+	
+	###*
+	Returns the instance of navigation controller
+	@attribute navigation
+	@type {BaseNavigationController}
+	@readOnly
+	###
+	@get controller:()->
+		return _controller
 	
 	###*
 	@method goto
@@ -192,11 +210,12 @@ class Navigation extends EventDispatcher
 	@method gotoView
 	@param {String} p_value
 	###
-	gotoView:(p_value)=>
+	gotoView:(p_value, p_trigger=false)=>
 		if p_value.indexOf('/') == 0
-			throw new Error('The value "'+p_value+'" is not a valid format to viewID ("exampleID")')
+			throw new Error('The value "'+p_value+'" is not a valid format to viewID ("areaID")')
 		else
 			_controller.goto(p_value)
+			_router.triggerCurrentPath()
 		false
 
 	###*

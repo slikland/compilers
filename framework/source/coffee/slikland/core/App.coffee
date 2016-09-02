@@ -1,10 +1,15 @@
 #import slikland.event.EventDispatcher
 
 class App extends EventDispatcher
+	@PROJECT : "SL_PROJECT_VERSION:0.0.0"
+	@DATE : "SL_PROJECT_DATE:0000000000000"
+
+	@FRAMEWORK_VERSION : "2.0.0"
+	@PROJECT_VERSION : App.PROJECT.replace('SL_PROJECT_VERSION:', '')
+	@PROJECT_DATE : new Date(parseFloat(App.DATE.replace('SL_PROJECT_DATE:', '')))
+
 	constructor:()->
 		super
-		@version = "1.0"
-		@author = "© Slikland Creative Development"
 		@_checkWindowActivity()
 		# 
 		# TODO: FIX IE8

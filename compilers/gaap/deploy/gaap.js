@@ -306,6 +306,93 @@ Notifier = (function() {
   };
   return Notifier;
 })();
+var Versioner;
+Versioner = (function(_super) {
+  var path, resultDate, resultVersion;
+  __extends(Versioner, _super);
+  path = null;
+  resultVersion = null;
+  resultDate = null;
+  Versioner.prototype.versionRegex = /(SL_PROJECT_VERSION):\d.\d.\d/g;
+  Versioner.prototype.dateRegex = /(SL_PROJECT_DATE):[\d]+/g;
+  function Versioner(p_path) {
+    this.nextVersion = __bind(this.nextVersion, this);
+    this.readFile = __bind(this.readFile, this);
+    this.notify = __bind(this.notify, this);
+    path = p_path;
+    this.readFile(p_path);
+    Versioner.__super__.constructor.apply(this, arguments);
+  }
+  Versioner.prototype.notify = function(p_text, p_color) {
+    if (p_color == null) {
+      p_color = null;
+    }
+    Log.println();
+    if (p_color != null) {
+      Log.setStyle(p_color);
+    }
+    Log.print(p_text);
+    return Log.println();
+  };
+  Versioner.prototype.readFile = function(p_path) {
+    var data, err;
+    if (!this.hasFile()) {
+      return;
+    }
+    try {
+      data = fs.readFileSync(p_path, 'utf8');
+    } catch (_error) {
+      err = _error;
+      this.notify(err, 'magenta');
+    }
+    if (this.versionRegex.test(data)) {
+      resultVersion = String(data.match(this.versionRegex));
+      return resultDate = String(data.match(this.dateRegex));
+    }
+  };
+  Versioner.prototype.nextVersion = function(p_type) {
+    var bugfix, build, date, release, values, version;
+    if (!resultVersion) {
+      return null;
+    }
+    version = resultVersion.replace('SL_PROJECT_VERSION:', '');
+    date = resultDate.replace('SL_PROJECT_DATE:', '');
+    values = version.split('.');
+    release = parseInt(values[0]);
+    build = parseInt(values[1]);
+    bugfix = parseInt(values[2]);
+    switch (p_type) {
+      case 'release':
+        release += 1;
+        date = Date.now();
+        break;
+      case 'build':
+        build += 1;
+        date = Date.now();
+        break;
+      case 'bugfix':
+        bugfix += 1;
+        date = Date.now();
+    }
+    resultDate = 'SL_PROJECT_DATE:' + date;
+    resultVersion = 'SL_PROJECT_VERSION:' + release + '.' + build + '.' + bugfix;
+    this.notify('Current project version: ' + release + '.' + build + '.' + bugfix, 'yellow');
+    return [resultVersion, resultDate];
+  };
+  Versioner.prototype.hasFile = function() {
+    var err, result;
+    try {
+      result = fs.statSync(path);
+      if ((result != null) && result.isFile()) {
+        return true;
+      }
+    } catch (_error) {
+      err = _error;
+    }
+    return false;
+  };
+  return Versioner;
+})(EventDispatcher);
 var StylusCompiler;
 StylusCompiler = (function() {
   var Task;
@@ -1020,19 +1107,25 @@ CoffeeCompiler = (function() {
     }
     return this._runTasks();
   };
-  CoffeeCompiler.prototype.runTasks = function(ugly) {
+  CoffeeCompiler.prototype.runTasks = function(ugly, version) {
     if (ugly == null) {
       ugly = false;
     }
-    return this._runTasks(null, ugly);
+    if (version == null) {
+      version = null;
+    }
+    return this._runTasks(null, ugly, version);
   };
-  CoffeeCompiler.prototype._runTasks = function(file, ugly) {
+  CoffeeCompiler.prototype._runTasks = function(file, ugly, version) {
     var c, files, i, t;
     if (file == null) {
       file = null;
     }
     if (ugly == null) {
       ugly = false;
+    }
+    if (version == null) {
+      version = null;
     }
     ugly = ugly;
     this._initTime = new Date().getTime();
@@ -1045,11 +1138,11 @@ CoffeeCompiler = (function() {
       if (file) {
         if (files.indexOf(file) >= 0) {
           c++;
-          this._tasks[i].output(ugly);
+          this._tasks[i].output(ugly, version);
         }
       } else {
         c++;
-        this._tasks[i].output(ugly);
+        this._tasks[i].output(ugly, version);
       }
     }
     if (c > 0) {
@@ -1193,10 +1286,13 @@ CoffeeCompiler = (function() {
       usedFiles = this._parseFilesRecursive(cache, sourcePaths, files);
       return this.usedFiles = this._removeDuplicates(usedFiles);
     };
-    Task.prototype.output = function(ugly) {
-      var dir, e, out, p;
+    Task.prototype.output = function(ugly, version) {
+      var dir, e, out, p, results, versioner;
       if (ugly == null) {
         ugly = false;
+      }
+      if (version == null) {
+        version = null;
       }
       out = null;
       Log.setStyle('magenta');
@@ -1206,10 +1302,18 @@ CoffeeCompiler = (function() {
         Log.print(' minified');
       }
       Log.println();
+      versioner = new Versioner(this.data.output);
       p = path.resolve(this.data.output);
       dir = path.dirname(p);
       if (!fs.existsSync(dir)) {
         this._mkdir(dir);
+      }
+      if (versioner.versionRegex.test(this.rawSource)) {
+        results = versioner.nextVersion(version);
+      }
+      if (results) {
+        this.rawSource = this.rawSource.replace(versioner.versionRegex, results[0]);
+        this.rawSource = this.rawSource.replace(versioner.dateRegex, results[1]);
       }
       out = this.rawSource;
       if (ugly) {
@@ -1486,10 +1590,9 @@ Main = (function() {
       o = options[_i];
       switch (o) {
         case 'uglify':
-        case 'deploy':
           this.ugly = true;
           break;
-        case '-docs':
+        case 'docs':
           this.docs = true;
       }
       if (o.indexOf('.coffee') >= 1) {
@@ -1556,7 +1659,6 @@ Main = (function() {
           this.stylusCompiler.runTasks(false);
           return this.jsCompiler.runTasks(false);
         case 'uglify':
-        case 'deploy':
           this.coffeeCompiler.runTasks(true);
           this.lessCompiler.runTasks(true);
           this.stylusCompiler.runTasks(true);
@@ -1564,6 +1666,17 @@ Main = (function() {
         case 'docs':
           this.docs = true;
           return this._buildDocs();
+        case 'deploy':
+        case 'minify':
+          Log.setStyle('yellow');
+          return Log.println('This command has been deprecated, please use [bugfix || build || release] to compile with correct version.');
+        case 'bugfix':
+        case 'build':
+        case 'release':
+          this.coffeeCompiler.runTasks(true, data);
+          this.lessCompiler.runTasks(true);
+          this.stylusCompiler.runTasks(true);
+          return this.jsCompiler.runTasks(true);
         default:
           Log.setStyle('yellow');
           Log.print('No command ');

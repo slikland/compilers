@@ -2,10 +2,8 @@ paths:
 	root: '../'
 	deploy: '{paths.root}deploy/'
 	source: '{paths.root}source/'
-	vendors: '{paths.root}source/vendors/'
 sourcePaths: [
 	'{paths.source}'
-	'{paths.vendors}'
 ]
 tasks:
 	preloader:

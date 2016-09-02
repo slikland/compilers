@@ -114,7 +114,7 @@ class MetaController extends EventDispatcher
 	@method applyMeta
 	@param {String} p_name
 	@param {String} p_value
-	@private
+	@protected
 	###
 	applyMeta: (p_name, p_value) ->
 		if p_value?
@@ -131,7 +131,7 @@ class MetaController extends EventDispatcher
 	@method applyLink
 	@param {String} p_rel
 	@param {String} p_value
-	@private
+	@protected
 	###
 	applyLink: (p_rel, p_href, p_others=null) ->
 		link = document.createElement('link')

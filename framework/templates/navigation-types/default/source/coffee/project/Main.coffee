@@ -24,6 +24,7 @@ class Main extends NavigationContainer
 			@button.attr({'id':v.id})
 			@button.text = v.id
 			@button.element.on 'click', @click
+
 		super
 
 	change:(evt)->
