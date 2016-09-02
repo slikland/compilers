@@ -253,13 +253,13 @@ App = (function(_super) {
       window.onpageshow = window.onpagehide = window.onfocus = window.onblur = this._windowVisibilityChange;
     }
     if (document[this._hidden] !== void 0) {
-      return this._windowVisibilityChange({
+      return this._windowVisibilityChange.call(window, {
         type: document[this._hidden] ? 'blur' : 'focus'
       });
     }
   };
   App.prototype._windowVisibilityChange = function(evt) {
-    var evtMap, h, hidden, v, _ref;
+    var err, eventType, evtMap, h, hidden, newEvent, v, _ref;
     v = 'visible';
     h = 'hidden';
     evtMap = {
@@ -276,10 +276,14 @@ App = (function(_super) {
     } else {
       hidden = document[this._hidden];
     }
-    if (hidden) {
-      return this.dispatchEvent(new Event('windowInactive'));
-    } else {
-      return this.dispatchEvent(new Event('windowActive'));
+    eventType = hidden ? 'windowInactive' : 'windowActive';
+    try {
+      return this.dispatchEvent(new Event(eventType));
+    } catch (_error) {
+      err = _error;
+      newEvent = document.createEvent('Event');
+      newEvent.initEvent(eventType, true, true);
+      return this.dispatchEvent(newEvent);
     }
   };
   return App;

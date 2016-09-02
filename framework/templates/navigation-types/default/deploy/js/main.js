@@ -660,12 +660,12 @@ NavigationRouter = (function(_super) {
   NavigationRouter.prototype._getPath = function() {
     var hasSlash, rawPath;
     rawPath = window.location.href;
+    if (rawPath.indexOf(this._rootPath) === 0) {
+      rawPath = rawPath.substr(this._rootPath.length);
+    }
     hasSlash = rawPath.substr(rawPath.length - 1, rawPath.length) === '/';
     if (hasSlash) {
       rawPath = rawPath.substr(0, rawPath.length - 1);
-    }
-    if (rawPath.indexOf(this._rootPath) === 0) {
-      rawPath = rawPath.substr(this._rootPath.length);
     }
     rawPath = rawPath.replace(/^(?:#?!?\/*)([^?]*\??.*?)$/, '$1');
     return rawPath;
@@ -928,7 +928,7 @@ NavigationRouter = (function(_super) {
       }
       re = route.routeRE;
       re.lastIndex = 0;
-      if (!(o = re.exec(p_path) && route.route !== "/")) {
+      if (!(o = re.exec(p_path) && route.route !== '/' || p_path === route.route)) {
         continue;
       }
       data = {};
