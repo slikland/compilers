@@ -197,13 +197,13 @@ class Navigation extends EventDispatcher
 	###*
 	@method gotoDefault
 	###
-	gotoDefault:()=>
+	gotoDefault:(p_trigger=false)=>
 		if app.config.navigation?.defaultView?
 			view = app.config.navigation.defaultView
 			if view.indexOf('/') == 0
-				@gotoRoute(view)
+				@gotoRoute(view, p_trigger)
 			else
-				@gotoView(view)
+				@gotoView(view, p_trigger)
 		false
 
 	###*
@@ -215,7 +215,7 @@ class Navigation extends EventDispatcher
 			throw new Error('The value "'+p_value+'" is not a valid format to viewID ("areaID")')
 		else
 			_controller.goto(p_value)
-			_router.triggerCurrentPath()
+			if p_trigger then _router.triggerPath(@getRouteByView(p_value))
 		false
 
 	###*

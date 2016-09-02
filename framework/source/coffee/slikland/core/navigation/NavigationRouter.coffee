@@ -79,14 +79,12 @@ class NavigationRouter extends EventDispatcher
 	###
 	_getPath:()->
 		rawPath = window.location.href
-
-		if rawPath.indexOf(@_rootPath) == 0
-			rawPath = rawPath.substr(@_rootPath.length)
-
 		hasSlash = rawPath.substr(rawPath.length-1, rawPath.length) == '/'
 		if hasSlash
 			rawPath = rawPath.substr(0, rawPath.length-1)
 
+		if rawPath.indexOf(@_rootPath) == 0
+			rawPath = rawPath.substr(@_rootPath.length)
 		rawPath = rawPath.replace(/^(?:#?!?\/*)([^?]*\??.*?)$/, '$1')
 		return rawPath
 

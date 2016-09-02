@@ -41,11 +41,6 @@ class Resizer extends EventDispatcher
 		window.removeEventListener 'resize', @change
 		window.removeEventListener 'orientationchange', @change
 
-	breakpointChange:(p_key, p_data)=>
-		if @latestKey != p_key
-			@latestKey = p_key
-			@trigger Resizer.BREAKPOINT_CHANGE, p_data
-
 	change:(evt)=>
 		evt?.preventDefault()
 		evt?.stopImmediatePropagation()
@@ -64,11 +59,18 @@ class Resizer extends EventDispatcher
 				if v['size']? || v['orientation']?
 					if app.conditions.test(k)
 						if !@hasClass(k) then @addClass(k)
-						_data['breakpoint'] = {key:k, values:v}
-						@breakpointChange(k, _data)
-						break
 					else
 						if @hasClass(k) then @removeClass(k)
+			
+			for k, v of app.conditions.list
+				if v['size']? || v['orientation']?
+					if app.conditions.test(k)
+						_data['breakpoint'] = {key:k, values:v}
+						if @latestKey != k
+							@latestKey = k
+							@trigger Resizer.BREAKPOINT_CHANGE, _data
+						break
+
 				
 	addClass:(className)->
 		if typeof(className) is 'string'

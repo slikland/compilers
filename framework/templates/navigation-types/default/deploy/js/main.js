@@ -660,12 +660,12 @@ NavigationRouter = (function(_super) {
   NavigationRouter.prototype._getPath = function() {
     var hasSlash, rawPath;
     rawPath = window.location.href;
-    if (rawPath.indexOf(this._rootPath) === 0) {
-      rawPath = rawPath.substr(this._rootPath.length);
-    }
     hasSlash = rawPath.substr(rawPath.length - 1, rawPath.length) === '/';
     if (hasSlash) {
       rawPath = rawPath.substr(0, rawPath.length - 1);
+    }
+    if (rawPath.indexOf(this._rootPath) === 0) {
+      rawPath = rawPath.substr(this._rootPath.length);
     }
     rawPath = rawPath.replace(/^(?:#?!?\/*)([^?]*\??.*?)$/, '$1');
     return rawPath;
@@ -1224,14 +1224,17 @@ Navigation = (function(_super) {
   /**
   	@method gotoDefault
    */
-  Navigation.prototype.gotoDefault = function() {
+  Navigation.prototype.gotoDefault = function(p_trigger) {
     var view, _ref;
+    if (p_trigger == null) {
+      p_trigger = false;
+    }
     if (((_ref = app.config.navigation) != null ? _ref.defaultView : void 0) != null) {
       view = app.config.navigation.defaultView;
       if (view.indexOf('/') === 0) {
-        this.gotoRoute(view);
+        this.gotoRoute(view, p_trigger);
       } else {
-        this.gotoView(view);
+        this.gotoView(view, p_trigger);
       }
     }
     return false;
@@ -1248,7 +1251,9 @@ Navigation = (function(_super) {
       throw new Error('The value "' + p_value + '" is not a valid format to viewID ("areaID")');
     } else {
       _controller.goto(p_value);
-      _router.triggerCurrentPath();
+      if (p_trigger) {
+        _router.triggerPath(this.getRouteByView(p_value));
+      }
     }
     return false;
   };
@@ -1389,7 +1394,6 @@ Resizer = (function(_super) {
       p_start = true;
     }
     this.change = __bind(this.change, this);
-    this.breakpointChange = __bind(this.breakpointChange, this);
     this.stop = __bind(this.stop, this);
     this.start = __bind(this.start, this);
     _body = document.querySelector("body");
@@ -1441,14 +1445,8 @@ Resizer = (function(_super) {
     window.removeEventListener('resize', this.change);
     return window.removeEventListener('orientationchange', this.change);
   };
-  Resizer.prototype.breakpointChange = function(p_key, p_data) {
-    if (this.latestKey !== p_key) {
-      this.latestKey = p_key;
-      return this.trigger(Resizer.BREAKPOINT_CHANGE, p_data);
-    }
-  };
   Resizer.prototype.change = function(evt) {
-    var k, v, _data, _ref, _results;
+    var k, v, _data, _ref, _ref1, _results;
     if (evt != null) {
       evt.preventDefault();
     }
@@ -1469,7 +1467,6 @@ Resizer = (function(_super) {
     }
     if (app.conditions != null) {
       _ref = app.conditions.list;
-      _results = [];
       for (k in _ref) {
         v = _ref[k];
         if ((v['size'] != null) || (v['orientation'] != null)) {
@@ -1477,18 +1474,30 @@ Resizer = (function(_super) {
             if (!this.hasClass(k)) {
               this.addClass(k);
             }
+          } else {
+            if (this.hasClass(k)) {
+              this.removeClass(k);
+            }
+          }
+        }
+      }
+      _ref1 = app.conditions.list;
+      _results = [];
+      for (k in _ref1) {
+        v = _ref1[k];
+        if ((v['size'] != null) || (v['orientation'] != null)) {
+          if (app.conditions.test(k)) {
             _data['breakpoint'] = {
               key: k,
               values: v
             };
-            this.breakpointChange(k, _data);
+            if (this.latestKey !== k) {
+              this.latestKey = k;
+              this.trigger(Resizer.BREAKPOINT_CHANGE, _data);
+            }
             break;
           } else {
-            if (this.hasClass(k)) {
-              _results.push(this.removeClass(k));
-            } else {
-              _results.push(void 0);
-            }
+            _results.push(void 0);
           }
         } else {
           _results.push(void 0);
