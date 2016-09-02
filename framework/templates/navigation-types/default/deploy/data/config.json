@@ -12,6 +12,37 @@
 		"instantiateViews":true,
 		"defaultView":"home"
 	},
+	"conditions": {
+        "mobile":{
+            "browser":{
+            	"mobile": true
+            }
+        },
+        "mobile_size": {
+            "size": {
+                "max-width": 767
+            }
+        },
+        "ds":{
+        	"size": {
+        		"min-width": 768
+        }
+        },
+        "dm":{
+        	"size": {
+        		"min-width": 960
+        }
+        },
+        "dl":{
+        	"size": {
+        		"min-width": 1040
+        }
+        },
+        "full":{
+        	"size": {
+        		"min-width": 1600
+        }}
+    },	
 	"views":[
 		{
 			"id":"home",

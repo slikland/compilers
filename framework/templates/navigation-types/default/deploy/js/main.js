@@ -1369,6 +1369,179 @@ NavigationContainer = (function(_super) {
   });
   return NavigationContainer;
 })(BaseView);
+var Resizer;
+Resizer = (function(_super) {
+  var _body, _bounds;
+  __extends(Resizer, _super);
+  Resizer.RESIZE = 'resize_resizer';
+  Resizer.ORIENTATION_CHANGE = 'orientation_change_resizer';
+  Resizer.BREAKPOINT_CHANGE = 'breakpoint_changed_resizer';
+  _bounds = null;
+  _body = null;
+  Resizer.getInstance = function(p_start) {
+    if (p_start == null) {
+      p_start = true;
+    }
+    return Resizer._instance != null ? Resizer._instance : Resizer._instance = new Resizer(p_start);
+  };
+  function Resizer(p_start) {
+    if (p_start == null) {
+      p_start = true;
+    }
+    this.change = __bind(this.change, this);
+    this.stop = __bind(this.stop, this);
+    this.start = __bind(this.start, this);
+    _body = document.querySelector("body");
+    _bounds = {
+      "top": 0,
+      "bottom": 0,
+      "left": 0,
+      "right": 0
+    };
+    if (p_start != null) {
+      this.start();
+    }
+  }
+  Resizer.get({
+    width: function() {
+      return window.innerWidth;
+    }
+  });
+  Resizer.get({
+    height: function() {
+      return window.innerHeight;
+    }
+  });
+  Resizer.get({
+    orientation: function() {
+      if (window.innerWidth > window.innerHeight) {
+        return 'landscape';
+      } else {
+        return 'portrait';
+      }
+    }
+  });
+  Resizer.get({
+    bounds: function() {
+      return _bounds;
+    }
+  });
+  Resizer.set({
+    bounds: function(p_value) {
+      return _bounds = p_value;
+    }
+  });
+  Resizer.prototype.start = function() {
+    window.addEventListener('resize', this.change);
+    window.addEventListener('orientationchange', this.change);
+    return this.change();
+  };
+  Resizer.prototype.stop = function() {
+    window.removeEventListener('resize', this.change);
+    return window.removeEventListener('orientationchange', this.change);
+  };
+  Resizer.prototype.change = function(evt) {
+    var k, v, _data, _ref, _results;
+    if (evt != null) {
+      evt.preventDefault();
+    }
+    if (evt != null) {
+      evt.stopImmediatePropagation();
+    }
+    _data = {
+      "width": this.width,
+      "height": this.height,
+      "bounds": this.bounds,
+      "orientation": this.orientation
+    };
+    if ((evt != null ? evt.type : void 0) === "resize") {
+      this.trigger(Resizer.RESIZE, _data);
+    }
+    if ((evt != null ? evt.type : void 0) === "orientationchange") {
+      this.trigger(Resizer.ORIENTATION_CHANGE, _data);
+    }
+    if (app.conditions != null) {
+      _ref = app.conditions.list;
+      _results = [];
+      for (k in _ref) {
+        v = _ref[k];
+        if ((v['size'] != null) || (v['orientation'] != null)) {
+          if (app.conditions.test(k)) {
+            if (!this.hasClass(k)) {
+              this.addClass(k);
+            }
+            _data['breakpoint'] = {
+              key: k,
+              values: v
+            };
+            _results.push(this.trigger(Resizer.BREAKPOINT_CHANGE, _data));
+          } else {
+            if (this.hasClass(k)) {
+              _results.push(this.removeClass(k));
+            } else {
+              _results.push(void 0);
+            }
+          }
+        } else {
+          _results.push(void 0);
+        }
+      }
+      return _results;
+    }
+  };
+  Resizer.prototype.addClass = function(className) {
+    var classNames, i, p;
+    if (typeof className === 'string') {
+      className = className.replace(/\s+/ig, ' ').split(' ');
+    } else if (typeof className !== 'Array') {
+      return;
+    }
+    classNames = _body.className.replace(/\s+/ig, ' ').split(' ');
+    p = classNames.length;
+    i = className.length;
+    while (i-- > 0) {
+      if (classNames.indexOf(className[i]) >= 0) {
+        continue;
+      }
+      classNames[p++] = className[i];
+    }
+    _body.className = classNames.join(' ');
+    return false;
+  };
+  Resizer.prototype.removeClass = function(className) {
+    var classNames, i, p;
+    if (typeof className === 'string') {
+      className = className.replace(/\s+/ig, ' ').split(' ');
+    } else if (typeof className !== 'Array') {
+      return;
+    }
+    classNames = _body.className.replace(/\s+/ig, ' ').split(' ');
+    i = className.length;
+    while (i-- > 0) {
+      if ((p = classNames.indexOf(className[i])) >= 0) {
+        classNames.splice(p, 1);
+      }
+    }
+    _body.className = classNames.join(' ');
+    return false;
+  };
+  Resizer.prototype.hasClass = function(className) {
+    var classNames, hasClass, i;
+    if (typeof className === 'string') {
+      className = className.replace(/\s+/ig, ' ').split(' ');
+    } else if (typeof className !== 'Array') {
+      return;
+    }
+    classNames = _body.className.replace(/\s+/ig, ' ').split(' ');
+    i = className.length;
+    hasClass = true;
+    while (i-- > 0) {
+      hasClass &= classNames.indexOf(className[i]) >= 0;
+    }
+    return hasClass;
+  };
+  return Resizer;
+})(EventDispatcher);
 var TemplateHomeView;
 TemplateHomeView = (function(_super) {
   __extends(TemplateHomeView, _super);
@@ -1609,13 +1782,14 @@ TemplateSubView = (function(_super) {
 })(BaseView);
 var Main;
 Main = (function(_super) {
-  var _controller;
+  var re, _controller;
   __extends(Main, _super);
   function Main() {
     this.create = __bind(this.create, this);
     return Main.__super__.constructor.apply(this, arguments);
   }
   _controller = new DefaultNavigationController();
+  re = Resizer.getInstance();
   Main.prototype.create = function(evt) {
     var k, menu, v, _ref;
     if (evt == null) {
@@ -1624,7 +1798,6 @@ Main = (function(_super) {
     menu = new BaseDOM();
     menu.className = 'menu';
     this.appendChildAt(menu, 0);
-    app.navigation.on(Navigation.CHANGE_ROUTE, this.change);
     _ref = app.config.views;
     for (k in _ref) {
       v = _ref[k];
@@ -1637,10 +1810,11 @@ Main = (function(_super) {
       this.button.text = v.id;
       this.button.element.on('click', this.click);
     }
+    re.on(Resizer.BREAKPOINT_CHANGE, this.change);
     return Main.__super__.create.apply(this, arguments);
   };
   Main.prototype.change = function(evt) {
-    return console.log(evt.data);
+    return console.log(evt);
   };
   Main.prototype.click = function(evt) {
     var route;
