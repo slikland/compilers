@@ -186,6 +186,15 @@
             "fors": {},
             "namespaces": {}
         },
+        "../../source/coffee/slikland/utils/Prototypes.coffee": {
+            "name": "../../source/coffee/slikland/utils/Prototypes.coffee",
+            "modules": {},
+            "classes": {
+                "Prototypes": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
         "../../source/coffee/slikland/utils/StringUtils.coffee": {
             "name": "../../source/coffee/slikland/utils/StringUtils.coffee",
             "modules": {},
@@ -541,6 +550,18 @@
             "line": 1,
             "description": "Detections Class",
             "extends": "Class"
+        },
+        "Prototypes": {
+            "name": "Prototypes",
+            "shortname": "Prototypes",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "file": "../../source/coffee/slikland/utils/Prototypes.coffee",
+            "line": 1,
+            "description": "This is actually not a Class. It's a bunch of helper methods adding prototype methods to native classes."
         },
         "StringUtils": {
             "name": "StringUtils",
@@ -2023,7 +2044,7 @@
         },
         {
             "file": "../../source/coffee/slikland/core/navigation/NavigationRouter.coffee",
-            "line": 91,
+            "line": 93,
             "itemtype": "method",
             "name": "_parsePath",
             "params": [
@@ -2043,7 +2064,7 @@
         },
         {
             "file": "../../source/coffee/slikland/core/navigation/NavigationRouter.coffee",
-            "line": 103,
+            "line": 105,
             "itemtype": "method",
             "name": "_parseParams",
             "params": [
@@ -2063,7 +2084,7 @@
         },
         {
             "file": "../../source/coffee/slikland/core/navigation/NavigationRouter.coffee",
-            "line": 118,
+            "line": 120,
             "itemtype": "method",
             "name": "_onPathChange",
             "params": [
@@ -2081,7 +2102,7 @@
         },
         {
             "file": "../../source/coffee/slikland/core/navigation/NavigationRouter.coffee",
-            "line": 137,
+            "line": 139,
             "itemtype": "method",
             "name": "_triggerPath",
             "params": [
@@ -2097,7 +2118,7 @@
         },
         {
             "file": "../../source/coffee/slikland/core/navigation/NavigationRouter.coffee",
-            "line": 152,
+            "line": 154,
             "itemtype": "method",
             "name": "getCurrentPath",
             "return": {
@@ -2108,7 +2129,7 @@
         },
         {
             "file": "../../source/coffee/slikland/core/navigation/NavigationRouter.coffee",
-            "line": 159,
+            "line": 161,
             "itemtype": "method",
             "name": "getParsedPath",
             "return": {
@@ -2119,7 +2140,7 @@
         },
         {
             "file": "../../source/coffee/slikland/core/navigation/NavigationRouter.coffee",
-            "line": 166,
+            "line": 168,
             "itemtype": "method",
             "name": "goto",
             "params": [
@@ -2140,7 +2161,7 @@
         },
         {
             "file": "../../source/coffee/slikland/core/navigation/NavigationRouter.coffee",
-            "line": 186,
+            "line": 188,
             "itemtype": "method",
             "name": "replace",
             "params": [
@@ -2161,7 +2182,7 @@
         },
         {
             "file": "../../source/coffee/slikland/core/navigation/NavigationRouter.coffee",
-            "line": 205,
+            "line": 207,
             "itemtype": "method",
             "name": "triggerPath",
             "params": [
@@ -2175,7 +2196,7 @@
         },
         {
             "file": "../../source/coffee/slikland/core/navigation/NavigationRouter.coffee",
-            "line": 213,
+            "line": 215,
             "itemtype": "method",
             "name": "triggerCurrentPath",
             "params": [
@@ -2189,7 +2210,7 @@
         },
         {
             "file": "../../source/coffee/slikland/core/navigation/NavigationRouter.coffee",
-            "line": 221,
+            "line": 223,
             "description": "Add a route",
             "itemtype": "method",
             "name": "addRoute",
@@ -2211,7 +2232,7 @@
         },
         {
             "file": "../../source/coffee/slikland/core/navigation/NavigationRouter.coffee",
-            "line": 253,
+            "line": 255,
             "description": "Remove a route",
             "itemtype": "method",
             "name": "removeRoute",
@@ -2226,7 +2247,7 @@
         },
         {
             "file": "../../source/coffee/slikland/core/navigation/NavigationRouter.coffee",
-            "line": 268,
+            "line": 270,
             "description": "Remove all routes",
             "itemtype": "method",
             "name": "removeAllRoutes",
@@ -2234,7 +2255,7 @@
         },
         {
             "file": "../../source/coffee/slikland/core/navigation/NavigationRouter.coffee",
-            "line": 276,
+            "line": 278,
             "itemtype": "method",
             "name": "_checkRoutes",
             "params": [
@@ -2254,7 +2275,7 @@
         },
         {
             "file": "../../source/coffee/slikland/core/navigation/NavigationRouter.coffee",
-            "line": 310,
+            "line": 316,
             "itemtype": "method",
             "name": "_sortRoutes",
             "params": [
@@ -2483,7 +2504,7 @@
         },
         {
             "file": "../../source/coffee/slikland/event/EventDispatcher.coffee",
-            "line": 103,
+            "line": 108,
             "description": "Check if a event handler is already set.",
             "itemtype": "method",
             "name": "hasEvent",
@@ -2509,7 +2530,7 @@
         },
         {
             "file": "../../source/coffee/slikland/event/EventDispatcher.coffee",
-            "line": 121,
+            "line": 126,
             "description": "Triggers an event after the current code block has finished processing.\n\nThis is useful for stacking up events that needs to be triggered at the end of the function but it's validating beforehand.",
             "itemtype": "method",
             "name": "stackTrigger",
@@ -3077,6 +3098,39 @@
                 }
             ],
             "class": "BaseView"
+        },
+        {
+            "file": "../../source/coffee/slikland/utils/Prototypes.coffee",
+            "line": 28,
+            "description": "This method is a decorator to create constant variable to a class.  \nA extending class cannot override this constant either can't be reassigned.  \n  \n* Please ignore de backslash on \\\\\\@ as the code formatter doesn't escape atmarks.",
+            "itemtype": "method",
+            "name": "@const",
+            "example": [
+                "\n\tclass A\n\t\t\\@const PI: 3.14\n\tconsole.log(A.PI) // 3.14\n\tclass B extends A\n\t\t\\@const PI: 3.14159 // Will throw error\n\tconsole.log(B.PI) // Already thrown error before, but will be 3.14"
+            ],
+            "class": "Prototypes"
+        },
+        {
+            "file": "../../source/coffee/slikland/utils/Prototypes.coffee",
+            "line": 56,
+            "description": "Getter decorator for a class instance.  \nWith this decorator you're able to assign a getter method to a variable.  \n  \nAlso for a special case, you can assign a scope to the getter so you can create static getter to a class.  \n  \n* Please ignore de backslash on \\\\\\@ as the code formatter doesn't escape atmarks.",
+            "itemtype": "method",
+            "name": "@get",
+            "example": [
+                "\n\n\t// Instance getter\n\tclass A\n\t\t\\@get test:()->\n\t\t\treturn 'Hello world!'\n\ta = new A()\n\tconsole.log(a.test) // Hello world!\n\n\t// Static getter\n\tclass A\n\t\t\\@get \\@, TEST:()->\n\t\t\treturn 'Hello world!'\n\tconsole.log(A.TEST) // Hello world!"
+            ],
+            "class": "Prototypes"
+        },
+        {
+            "file": "../../source/coffee/slikland/utils/Prototypes.coffee",
+            "line": 92,
+            "description": "Setter decorator for a class instance.  \nWith this decorator you're able to assign a setter method to a variable.  \n  \nAlso for a special case, you can assign a scope to the setter so you can create static setter to a class.  \n  \n* Please ignore de backslash on \\\\\\@ as the code formatter doesn't escape atmarks.",
+            "itemtype": "method",
+            "name": "@set",
+            "example": [
+                "\n\n\t// Instance getter / stter\n\tclass A\n\t\t\\@get test:()->\n\t\t\treturn \\@_test\n\t\t\\@set test:(value)->\n\t\t\t\\@_test = value\n\ta = new A()\n\ta.test = 'Hello setter'\n\tconsole.log(a.test) // Hello setter\n\n\t// Static getter / setter\n\tclass A\n\t\t\\@get \\@, TEST:()->\n\t\t\treturn @_TEST\n\t\t\\@set \\@, TEST:(value)->\n\t\t\t\\@_TEST = value\n\tA.TEST = 'Hello setter'\n\tconsole.log(A.TEST) // Hello setter"
+            ],
+            "class": "Prototypes"
         },
         {
             "file": "../../source/coffee/slikland/utils/StringUtils.coffee",

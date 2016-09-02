@@ -55,6 +55,7 @@
                                 <li><a href="../classes/NavigationLoader.html">NavigationLoader</a></li>
                                 <li><a href="../classes/NavigationRouter.html">NavigationRouter</a></li>
                                 <li><a href="../classes/PreloadFiles.html">PreloadFiles</a></li>
+                                <li><a href="../classes/Prototypes.html">Prototypes</a></li>
                                 <li><a href="../classes/SpriteSheetAnimation.html">SpriteSheetAnimation</a></li>
                                 <li><a href="../classes/StringUtils.html">StringUtils</a></li>
                                 <li><a href="../classes/ViewsData.html">ViewsData</a></li>
@@ -261,16 +262,13 @@ class BaseDOM extends EventDispatcher
 	##--------------------------------------
 
 	@get isAttached:()-&gt;
-		return document.contains(@element) || document.body.contains(@element)
+		return document.contains?(@element) || document.body.contains(@element)
 
 	@get attributes:()-&gt;
 		return @element.attributes
 
 	appendChild:(child)-&gt;
-		el = child
-		if child instanceof BaseDOM
-			el = child.element
-		@appendChildAt(el)
+		@appendChildAt(child)
 
 	appendChildAt:(child, index = -1)-&gt;
 		el = child

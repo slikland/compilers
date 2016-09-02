@@ -93,13 +93,16 @@ EventDispatcher = (function() {
   		//`event.target` will be window, and event.currentTarget will be the `ev` instance.
   		ed.trigger('someEvent', {someData: true}, window);
    */
-  EventDispatcher.prototype.trigger = function(evt, data, target) {
+  EventDispatcher.prototype.trigger = function(evt, data, target, sourceEvent) {
     var e, events, i, k, v, _i, _len, _results;
     if (data == null) {
       data = null;
     }
     if (target == null) {
       target = null;
+    }
+    if (sourceEvent == null) {
+      sourceEvent = null;
     }
     if (Array.isArray(evt)) {
       for (_i = 0, _len = evt.length; _i < _len; _i++) {
@@ -121,8 +124,17 @@ EventDispatcher = (function() {
     e = {
       type: evt,
       target: target,
-      currentTarget: this
+      currentTarget: this,
+      originalEvent: sourceEvent
     };
+    if (sourceEvent != null) {
+      e.preventDefault = function() {
+        return typeof sourceEvent.preventDefault === "function" ? sourceEvent.preventDefault() : void 0;
+      };
+      e.stopPropagation = function() {
+        return typeof sourceEvent.stopPropagation === "function" ? sourceEvent.stopPropagation() : void 0;
+      };
+    }
     if (typeof data === 'object') {
       for (k in data) {
         v = data[k];
@@ -524,6 +536,10 @@ if (!window.atob) {
 }
 window.Debug = Debug;
 Debug.init();
+/**
+This is actually not a Class. It's a bunch of helper methods adding prototype methods to native classes.
+@class Prototypes
+ */
 var isIE, __scopeIE8;
 isIE = function() {
   var nav;
@@ -537,6 +553,19 @@ isIE = function() {
 if (isIE() === 8) {
   __scopeIE8 = document.createElement("IE8_" + Math.random());
 }
+/**
+This method is a decorator to create constant variable to a class.  
+A extending class cannot override this constant either can't be reassigned.  
+* Please ignore de backslash on \\\@ as the code formatter doesn't escape atmarks.
+@method @const
+@example
+	class A
+		\@const PI: 3.14
+	console.log(A.PI) // 3.14
+	class B extends A
+		\@const PI: 3.14159 // Will throw error
+	console.log(B.PI) // Already thrown error before, but will be 3.14
+ */
 Function.prototype["const"] = function(p_prop) {
   var name, o, value, __scope;
   __scope = __scopeIE8 ? __scopeIE8 : this;
@@ -555,26 +584,86 @@ Function.prototype["const"] = function(p_prop) {
   }
   return null;
 };
-Function.prototype.get = function(p_prop) {
-  var getter, name, __scope;
-  __scope = __scopeIE8 ? __scopeIE8 : this.prototype;
+/**
+Getter decorator for a class instance.  
+With this decorator you're able to assign a getter method to a variable.  
+Also for a special case, you can assign a scope to the getter so you can create static getter to a class.  
+* Please ignore de backslash on \\\@ as the code formatter doesn't escape atmarks.
+@method @get
+@example
+	// Instance getter
+	class A
+		\@get test:()->
+			return 'Hello world!'
+	a = new A()
+	console.log(a.test) // Hello world!
+	// Static getter
+	class A
+		\@get \@, TEST:()->
+			return 'Hello world!'
+	console.log(A.TEST) // Hello world!
+ */
+Function.prototype.get = function(scope, p_prop) {
+  var enumerable, getter, name, __scope;
+  enumerable = false;
+  if (!p_prop) {
+    p_prop = scope;
+    __scope = __scopeIE8 ? __scopeIE8 : this.prototype;
+  } else {
+    enumerable = true;
+    __scope = scope;
+  }
   for (name in p_prop) {
     getter = p_prop[name];
     Object.defineProperty(__scope, name, {
       get: getter,
-      configurable: true
+      configurable: true,
+      enumerable: enumerable
     });
   }
   return null;
 };
-Function.prototype.set = function(p_prop) {
-  var name, setter, __scope;
-  __scope = __scopeIE8 ? __scopeIE8 : this.prototype;
+/**
+Setter decorator for a class instance.  
+With this decorator you're able to assign a setter method to a variable.  
+Also for a special case, you can assign a scope to the setter so you can create static setter to a class.  
+* Please ignore de backslash on \\\@ as the code formatter doesn't escape atmarks.
+@method @set
+@example
+	// Instance getter / stter
+	class A
+		\@get test:()->
+			return \@_test
+		\@set test:(value)->
+			\@_test = value
+	a = new A()
+	a.test = 'Hello setter'
+	console.log(a.test) // Hello setter
+	// Static getter / setter
+	class A
+		\@get \@, TEST:()->
+			return @_TEST
+		\@set \@, TEST:(value)->
+			\@_TEST = value
+	A.TEST = 'Hello setter'
+	console.log(A.TEST) // Hello setter
+ */
+Function.prototype.set = function(scope, p_prop) {
+  var enumerable, name, setter, __scope;
+  enumerable = false;
+  if (!p_prop) {
+    p_prop = scope;
+    __scope = __scopeIE8 ? __scopeIE8 : this.prototype;
+  } else {
+    enumerable = true;
+    __scope = scope;
+  }
   for (name in p_prop) {
     setter = p_prop[name];
     Object.defineProperty(__scope, name, {
       set: setter,
-      configurable: true
+      configurable: true,
+      enumerable: enumerable
     });
   }
   return null;
@@ -2934,7 +3023,7 @@ BaseDOM = (function(_super) {
   });
   BaseDOM.get({
     isAttached: function() {
-      return document.contains(this.element) || document.body.contains(this.element);
+      return (typeof document.contains === "function" ? document.contains(this.element) : void 0) || document.body.contains(this.element);
     }
   });
   BaseDOM.get({
@@ -2943,12 +3032,7 @@ BaseDOM = (function(_super) {
     }
   });
   BaseDOM.prototype.appendChild = function(child) {
-    var el;
-    el = child;
-    if (child instanceof BaseDOM) {
-      el = child.element;
-    }
-    return this.appendChildAt(el);
+    return this.appendChildAt(child);
   };
   BaseDOM.prototype.appendChildAt = function(child, index) {
     var el;

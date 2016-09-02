@@ -55,6 +55,7 @@
                                 <li><a href="../classes/NavigationLoader.html">NavigationLoader</a></li>
                                 <li><a href="../classes/NavigationRouter.html">NavigationRouter</a></li>
                                 <li><a href="../classes/PreloadFiles.html">PreloadFiles</a></li>
+                                <li><a href="../classes/Prototypes.html">Prototypes</a></li>
                                 <li><a href="../classes/SpriteSheetAnimation.html">SpriteSheetAnimation</a></li>
                                 <li><a href="../classes/StringUtils.html">StringUtils</a></li>
                                 <li><a href="../classes/ViewsData.html">ViewsData</a></li>
@@ -180,7 +181,7 @@ class EventDispatcher
 		//&#x60;event.target&#x60; will be window, and event.currentTarget will be the &#x60;ev&#x60; instance.
 		ed.trigger(&#x27;someEvent&#x27;, {someData: true}, window);
 	###
-	trigger:(evt, data = null, target = null)=&gt;
+	trigger:(evt, data = null, target = null, sourceEvent = null)=&gt;
 		if Array.isArray(evt)
 			for e in evt
 				@trigger(evt, data)
@@ -192,7 +193,12 @@ class EventDispatcher
 			return
 		if !target
 			target = @
-		e = {type: evt, target: target, currentTarget: @}
+		e = {type: evt, target: target, currentTarget: @, originalEvent: sourceEvent}
+		if sourceEvent?
+			e.preventDefault = ()-&gt;
+				sourceEvent.preventDefault?()
+			e.stopPropagation = ()-&gt;
+				sourceEvent.stopPropagation?()
 		if typeof(data) == &#x27;object&#x27;
 			for k, v of data
 				if !e[k]

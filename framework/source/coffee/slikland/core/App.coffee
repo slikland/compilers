@@ -10,10 +10,14 @@ class App extends EventDispatcher
 
 	constructor:()->
 		super
+<<<<<<< HEAD
+=======
+
+>>>>>>> c6702d0c3c71359c09ed448635d44f911e78d173
 		@_checkWindowActivity()
-		# 
+		#
 		# TODO: FIX IE8
-		# 
+		#
 	_checkWindowActivity:()->
 		@_hidden = 'hidden'
 		if @_hidden in document
@@ -28,14 +32,14 @@ class App extends EventDispatcher
 			document.onfocusin = document.onfocusout = @_windowVisibilityChange
 		else
 			window.onpageshow = window.onpagehide = window.onfocus = window.onblur = @_windowVisibilityChange
-		
+
 		if document[@_hidden] != undefined
-			@_windowVisibilityChange type: if document[@_hidden] then 'blur' else 'focus'
-	
+			@_windowVisibilityChange.call window, type: if document[@_hidden] then 'blur' else 'focus'
+
 	_windowVisibilityChange:(evt)->
 		v = 'visible'
 		h = 'hidden'
-		evtMap = 
+		evtMap =
 			focus: false
 			focusin: false
 			pageshow: false
@@ -48,10 +52,14 @@ class App extends EventDispatcher
 		else
 			hidden = document[@_hidden]
 
-		if hidden
-			@dispatchEvent(new Event('windowInactive'))
-		else
-			@dispatchEvent(new Event('windowActive'))
+		eventType = if hidden then 'windowInactive' else 'windowActive'
+
+		try
+			@dispatchEvent(new Event(eventType))
+		catch err
+			newEvent = document.createEvent('Event')
+			newEvent.initEvent(eventType, true, true)
+			@dispatchEvent(newEvent)
 
 if !app
 	app = new App()
