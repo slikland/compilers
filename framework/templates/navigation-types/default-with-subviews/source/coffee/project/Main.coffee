@@ -33,7 +33,10 @@ class Main extends NavigationContainer
 		console.log evt
 
 	click:(evt)->
-		route = app.config.views[evt.srcElement.id].route
+		if evt.srcElement.id == "sub2"
+			route = "/sub-view-02/test-dynamic-route"
+		else
+			route = app.config.views[evt.srcElement.id].route
 		app.navigation.gotoRoute(route, true)
 
 	@get controller:=>

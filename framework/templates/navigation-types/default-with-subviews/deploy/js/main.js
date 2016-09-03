@@ -1823,7 +1823,11 @@ Main = (function(_super) {
   };
   Main.prototype.click = function(evt) {
     var route;
-    route = app.config.views[evt.srcElement.id].route;
+    if (evt.srcElement.id === "sub2") {
+      route = "/sub-view-02/test-dynamic-route";
+    } else {
+      route = app.config.views[evt.srcElement.id].route;
+    }
     return app.navigation.gotoRoute(route, true);
   };
   Main.get({

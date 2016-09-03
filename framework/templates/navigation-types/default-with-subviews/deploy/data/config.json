@@ -37,7 +37,7 @@
 			"id":"sub2",
 			"class":"template-sub-view",
 			"content":"{base}data/sub2.json",
-			"route":"/sub-view-02",
+			"route":"/sub-view-02({id})?",
 			"parentView":"sub1",
 			"destroyable":true,
 			"loadContent":true,

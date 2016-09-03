@@ -229,7 +229,7 @@ App = (function(_super) {
   __extends(App, _super);
   App.PROJECT = "SL_PROJECT_VERSION:0.1.0";
   App.DATE = "SL_PROJECT_DATE:1472798577777";
-  App.FRAMEWORK_VERSION = "2.0.7";
+  App.FRAMEWORK_VERSION = "2.1.8";
   App.PROJECT_VERSION = App.PROJECT.replace('SL_PROJECT_VERSION:', '');
   App.PROJECT_DATE = new Date(parseFloat(App.DATE.replace('SL_PROJECT_DATE:', '')));
   function App() {
