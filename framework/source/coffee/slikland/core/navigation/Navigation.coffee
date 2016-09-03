@@ -152,11 +152,11 @@ class Navigation extends EventDispatcher
 	@deprecated Uses the {{#crossLink "Navigation/gotoRoute:method"}}{{/crossLink}} or {{#crossLink "Navigation/gotoView:method"}}{{/crossLink}}
 	###
 	goto:(p_value)=>
-		# console.log "This method is already deprecated."
-		if p_value.indexOf('/') == 0
-			@gotoRoute(p_value)
-		else
-			@gotoView(p_value)
+		throw new Error('This method is already deprecated.')
+		# if p_value.indexOf('/') == 0
+		# 	@gotoRoute(p_value)
+		# else
+		# 	@gotoView(p_value)
 		false
 
 	###*
@@ -201,21 +201,20 @@ class Navigation extends EventDispatcher
 		if app.config.navigation?.defaultView?
 			view = app.config.navigation.defaultView
 			if view.indexOf('/') == 0
-				@gotoRoute(view, p_trigger)
+				@gotoRoute(@getRouteByView(view), p_trigger)
 			else
-				@gotoView(view, p_trigger)
+				@gotoView(view)
 		false
 
 	###*
 	@method gotoView
 	@param {String} p_value
 	###
-	gotoView:(p_value, p_trigger=false)=>
+	gotoView:(p_value)=>
 		if p_value.indexOf('/') == 0
 			throw new Error('The value "'+p_value+'" is not a valid format to viewID ("areaID")')
 		else
 			_controller.goto(p_value)
-			if p_trigger then _router.triggerPath(@getRouteByView(p_value))
 		false
 
 	###*

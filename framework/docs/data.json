@@ -1530,7 +1530,7 @@
         },
         {
             "file": "../../source/coffee/slikland/core/navigation/Navigation.coffee",
-            "line": 221,
+            "line": 220,
             "itemtype": "method",
             "name": "getViewByRoute",
             "params": [
@@ -1549,7 +1549,7 @@
         },
         {
             "file": "../../source/coffee/slikland/core/navigation/Navigation.coffee",
-            "line": 233,
+            "line": 232,
             "itemtype": "method",
             "name": "getRouteByView",
             "params": [
@@ -1568,7 +1568,7 @@
         },
         {
             "file": "../../source/coffee/slikland/core/navigation/Navigation.coffee",
-            "line": 245,
+            "line": 244,
             "itemtype": "method",
             "name": "_change",
             "params": [
@@ -2044,7 +2044,7 @@
         },
         {
             "file": "../../source/coffee/slikland/core/navigation/NavigationRouter.coffee",
-            "line": 93,
+            "line": 91,
             "itemtype": "method",
             "name": "_parsePath",
             "params": [
@@ -2064,7 +2064,7 @@
         },
         {
             "file": "../../source/coffee/slikland/core/navigation/NavigationRouter.coffee",
-            "line": 105,
+            "line": 103,
             "itemtype": "method",
             "name": "_parseParams",
             "params": [
@@ -2084,7 +2084,7 @@
         },
         {
             "file": "../../source/coffee/slikland/core/navigation/NavigationRouter.coffee",
-            "line": 120,
+            "line": 118,
             "itemtype": "method",
             "name": "_onPathChange",
             "params": [
@@ -2102,7 +2102,7 @@
         },
         {
             "file": "../../source/coffee/slikland/core/navigation/NavigationRouter.coffee",
-            "line": 139,
+            "line": 137,
             "itemtype": "method",
             "name": "_triggerPath",
             "params": [
@@ -2118,7 +2118,7 @@
         },
         {
             "file": "../../source/coffee/slikland/core/navigation/NavigationRouter.coffee",
-            "line": 154,
+            "line": 152,
             "itemtype": "method",
             "name": "getCurrentPath",
             "return": {
@@ -2129,7 +2129,7 @@
         },
         {
             "file": "../../source/coffee/slikland/core/navigation/NavigationRouter.coffee",
-            "line": 161,
+            "line": 159,
             "itemtype": "method",
             "name": "getParsedPath",
             "return": {
@@ -2140,7 +2140,7 @@
         },
         {
             "file": "../../source/coffee/slikland/core/navigation/NavigationRouter.coffee",
-            "line": 168,
+            "line": 166,
             "itemtype": "method",
             "name": "goto",
             "params": [
@@ -2161,7 +2161,7 @@
         },
         {
             "file": "../../source/coffee/slikland/core/navigation/NavigationRouter.coffee",
-            "line": 188,
+            "line": 186,
             "itemtype": "method",
             "name": "replace",
             "params": [
@@ -2182,7 +2182,7 @@
         },
         {
             "file": "../../source/coffee/slikland/core/navigation/NavigationRouter.coffee",
-            "line": 207,
+            "line": 205,
             "itemtype": "method",
             "name": "triggerPath",
             "params": [
@@ -2196,7 +2196,7 @@
         },
         {
             "file": "../../source/coffee/slikland/core/navigation/NavigationRouter.coffee",
-            "line": 215,
+            "line": 213,
             "itemtype": "method",
             "name": "triggerCurrentPath",
             "params": [
@@ -2210,7 +2210,7 @@
         },
         {
             "file": "../../source/coffee/slikland/core/navigation/NavigationRouter.coffee",
-            "line": 223,
+            "line": 221,
             "description": "Add a route",
             "itemtype": "method",
             "name": "addRoute",
@@ -2232,7 +2232,7 @@
         },
         {
             "file": "../../source/coffee/slikland/core/navigation/NavigationRouter.coffee",
-            "line": 255,
+            "line": 253,
             "description": "Remove a route",
             "itemtype": "method",
             "name": "removeRoute",
@@ -2247,7 +2247,7 @@
         },
         {
             "file": "../../source/coffee/slikland/core/navigation/NavigationRouter.coffee",
-            "line": 270,
+            "line": 268,
             "description": "Remove all routes",
             "itemtype": "method",
             "name": "removeAllRoutes",
@@ -2255,7 +2255,7 @@
         },
         {
             "file": "../../source/coffee/slikland/core/navigation/NavigationRouter.coffee",
-            "line": 278,
+            "line": 276,
             "itemtype": "method",
             "name": "_checkRoutes",
             "params": [
@@ -2275,7 +2275,7 @@
         },
         {
             "file": "../../source/coffee/slikland/core/navigation/NavigationRouter.coffee",
-            "line": 316,
+            "line": 311,
             "itemtype": "method",
             "name": "_sortRoutes",
             "params": [

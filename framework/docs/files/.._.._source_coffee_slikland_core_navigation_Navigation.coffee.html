@@ -254,11 +254,11 @@ class Navigation extends EventDispatcher
 	@deprecated Uses the {{#crossLink &quot;Navigation/gotoRoute:method&quot;}}{{/crossLink}} or {{#crossLink &quot;Navigation/gotoView:method&quot;}}{{/crossLink}}
 	###
 	goto:(p_value)=&gt;
-		# console.log &quot;This method is already deprecated.&quot;
-		if p_value.indexOf(&#x27;/&#x27;) == 0
-			@gotoRoute(p_value)
-		else
-			@gotoView(p_value)
+		throw new Error(&#x27;This method is already deprecated.&#x27;)
+		# if p_value.indexOf(&#x27;/&#x27;) == 0
+		# 	@gotoRoute(p_value)
+		# else
+		# 	@gotoView(p_value)
 		false
 
 	###*
@@ -299,11 +299,11 @@ class Navigation extends EventDispatcher
 	###*
 	@method gotoDefault
 	###
-	gotoDefault:()=&gt;
+	gotoDefault:(p_trigger=false)=&gt;
 		if app.config.navigation?.defaultView?
 			view = app.config.navigation.defaultView
 			if view.indexOf(&#x27;/&#x27;) == 0
-				@gotoRoute(view)
+				@gotoRoute(@getRouteByView(view), p_trigger)
 			else
 				@gotoView(view)
 		false
@@ -312,12 +312,11 @@ class Navigation extends EventDispatcher
 	@method gotoView
 	@param {String} p_value
 	###
-	gotoView:(p_value, p_trigger=false)=&gt;
+	gotoView:(p_value)=&gt;
 		if p_value.indexOf(&#x27;/&#x27;) == 0
 			throw new Error(&#x27;The value &quot;&#x27;+p_value+&#x27;&quot; is not a valid format to viewID (&quot;areaID&quot;)&#x27;)
 		else
 			_controller.goto(p_value)
-			_router.triggerCurrentPath()
 		false
 
 	###*

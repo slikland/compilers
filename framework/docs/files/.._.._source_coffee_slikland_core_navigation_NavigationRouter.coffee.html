@@ -181,14 +181,12 @@ class NavigationRouter extends EventDispatcher
 	###
 	_getPath:()-&gt;
 		rawPath = window.location.href
-
-		if rawPath.indexOf(@_rootPath) == 0
-			rawPath = rawPath.substr(@_rootPath.length)
-
 		hasSlash = rawPath.substr(rawPath.length-1, rawPath.length) == &#x27;/&#x27;
 		if hasSlash
 			rawPath = rawPath.substr(0, rawPath.length-1)
 
+		if rawPath.indexOf(@_rootPath) == 0
+			rawPath = rawPath.substr(@_rootPath.length)
 		rawPath = rawPath.replace(/^(?:#?!?\/*)([^?]*\??.*?)$/, &#x27;$1&#x27;)
 		return rawPath
 
@@ -401,11 +399,8 @@ class NavigationRouter extends EventDispatcher
 			re = route.routeRE
 			re.lastIndex = 0
 
-&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD
-			if !(o = re.exec(p_path) &amp;&amp; route.route isnt &quot;/&quot;)
-=======
-			if !(o = re.exec(p_path) and route.route isnt &#x27;/&#x27; or p_path is route.route)
-&gt;&gt;&gt;&gt;&gt;&gt;&gt; c6702d0c3c71359c09ed448635d44f911e78d173
+			# if !(o = re.exec(p_path) and route.route isnt &#x27;/&#x27; or p_path is route.route)
+			if !(o = re.exec(p_path))
 				continue
 			data = {}
 			routes[routesIndex++] = route

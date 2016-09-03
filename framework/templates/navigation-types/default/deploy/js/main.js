@@ -928,7 +928,7 @@ NavigationRouter = (function(_super) {
       }
       re = route.routeRE;
       re.lastIndex = 0;
-      if (!(o = re.exec(p_path) && route.route !== '/' || p_path === route.route)) {
+      if (!(o = re.exec(p_path))) {
         continue;
       }
       data = {};
@@ -1164,11 +1164,7 @@ Navigation = (function(_super) {
   	@deprecated Uses the {{#crossLink "Navigation/gotoRoute:method"}}{{/crossLink}} or {{#crossLink "Navigation/gotoView:method"}}{{/crossLink}}
    */
   Navigation.prototype.goto = function(p_value) {
-    if (p_value.indexOf('/') === 0) {
-      this.gotoRoute(p_value);
-    } else {
-      this.gotoView(p_value);
-    }
+    throw new Error('This method is already deprecated.');
     return false;
   };
   /**
@@ -1232,9 +1228,9 @@ Navigation = (function(_super) {
     if (((_ref = app.config.navigation) != null ? _ref.defaultView : void 0) != null) {
       view = app.config.navigation.defaultView;
       if (view.indexOf('/') === 0) {
-        this.gotoRoute(view, p_trigger);
+        this.gotoRoute(this.getRouteByView(view), p_trigger);
       } else {
-        this.gotoView(view, p_trigger);
+        this.gotoView(view);
       }
     }
     return false;
@@ -1243,17 +1239,11 @@ Navigation = (function(_super) {
   	@method gotoView
   	@param {String} p_value
    */
-  Navigation.prototype.gotoView = function(p_value, p_trigger) {
-    if (p_trigger == null) {
-      p_trigger = false;
-    }
+  Navigation.prototype.gotoView = function(p_value) {
     if (p_value.indexOf('/') === 0) {
       throw new Error('The value "' + p_value + '" is not a valid format to viewID ("areaID")');
     } else {
       _controller.goto(p_value);
-      if (p_trigger) {
-        _router.triggerPath(this.getRouteByView(p_value));
-      }
     }
     return false;
   };
