@@ -363,7 +363,7 @@ class BaseView extends BaseDOM
 	@param {Event} [evt=null]
 	###
 	createStart:(evt=null)=>
-		@stackTrigger(BaseView.CREATE_START, @)
+		@trigger(BaseView.CREATE_START, @)
 		@create()
 		false
 
@@ -374,7 +374,7 @@ class BaseView extends BaseDOM
 	@param {Event} [evt=null]
 	###
 	create:(evt=null)=>
-		@stackTrigger(BaseView.CREATE, @)
+		@trigger(BaseView.CREATE, @)
 		@createComplete()
 		false
 
@@ -385,7 +385,7 @@ class BaseView extends BaseDOM
 	###
 	createComplete:(evt=null)=>
 		@_created = true
-		@stackTrigger(BaseView.CREATE_COMPLETE, @)
+		@trigger(BaseView.CREATE_COMPLETE, @)
 		false
 		
 	###*
@@ -395,7 +395,7 @@ class BaseView extends BaseDOM
 	@param {Event} [evt=null]
 	###
 	showStart:(evt=null)=>
-		@stackTrigger(BaseView.SHOW_START, @)
+		@trigger(BaseView.SHOW_START, @)
 		_meta.change(@meta)
 		@show()
 		false
@@ -407,7 +407,7 @@ class BaseView extends BaseDOM
 	@param {Event} [evt=null]
 	###
 	show:(evt=null)=>
-		@stackTrigger(BaseView.SHOW, @)
+		@trigger(BaseView.SHOW, @)
 		@showComplete()
 		false
 
@@ -418,7 +418,7 @@ class BaseView extends BaseDOM
 	###
 	showComplete:(evt=null)=>
 		@_showed = true
-		@stackTrigger(BaseView.SHOW_COMPLETE, @)
+		@trigger(BaseView.SHOW_COMPLETE, @)
 		false
 
 	###*
@@ -428,7 +428,7 @@ class BaseView extends BaseDOM
 	@param {Event} [evt=null]
 	###
 	hideStart:(evt=null)=>
-		@stackTrigger(BaseView.HIDE_START, @)
+		@trigger(BaseView.HIDE_START, @)
 		@hide()
 		false
 
@@ -440,7 +440,7 @@ class BaseView extends BaseDOM
 	###
 	hide:(evt=null)=>
 		@_showed = false
-		@stackTrigger(BaseView.HIDE, @)
+		@trigger(BaseView.HIDE, @)
 		@hideComplete()
 		false
 
@@ -450,7 +450,7 @@ class BaseView extends BaseDOM
 	@param {Event} [evt=null]
 	###
 	hideComplete:(evt=null)=>
-		@stackTrigger(BaseView.HIDE_COMPLETE, @)
+		@trigger(BaseView.HIDE_COMPLETE, @)
 		false
 
 	###*
@@ -459,7 +459,7 @@ class BaseView extends BaseDOM
 	@method pause
 	###
 	pause:()=>
-		@stackTrigger(BaseView.PAUSE, @)
+		@trigger(BaseView.PAUSE, @)
 		false
 
 	###*
@@ -468,7 +468,7 @@ class BaseView extends BaseDOM
 	@method pause
 	###
 	resume:()=>
-		@stackTrigger(BaseView.RESUME, @)
+		@trigger(BaseView.RESUME, @)
 		false
 	
 	###*
