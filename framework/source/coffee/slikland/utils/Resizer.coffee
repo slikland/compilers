@@ -9,13 +9,13 @@ class Resizer extends EventDispatcher
 	_bounds = null
 	_body = null
 
-	@getInstance:()=>
-		@_instance ?= new @()
+	@getInstance:(p_start=true)=>
+		@_instance ?= new @(p_start)
 
-	constructor:()->
+	constructor:(p_start=true)->
 		_body = document.querySelector("body")
 		_bounds = {"top":0, "bottom":0, "left":0, "right":0}
-		@start()
+		if p_start? then @start()
 		
 	@get width:->
 		return window.innerWidth
@@ -23,14 +23,14 @@ class Resizer extends EventDispatcher
 	@get height:->
 		return window.innerHeight
 
+	@get orientation:->
+		return if window.innerWidth > window.innerHeight then 'landscape' else 'portrait'
+
 	@get bounds:->
 		return _bounds
 
 	@set bounds:(p_value)->
 		_bounds = p_value
-
-	@get orientation:->
-		return if window.innerWidth > window.innerHeight then 'landscape' else 'portrait'
 
 	start:()=>
 		window.addEventListener 'resize', @change
@@ -61,8 +61,16 @@ class Resizer extends EventDispatcher
 						if !@hasClass(k) then @addClass(k)
 					else
 						if @hasClass(k) then @removeClass(k)
-					_data['breakpoint'] = {key:k, values:v}
-					@trigger Resizer.BREAKPOINT_CHANGE, _data
+			
+			for k, v of app.conditions.list
+				if v['size']? || v['orientation']?
+					if app.conditions.test(k)
+						_data['breakpoint'] = {key:k, values:v}
+						if @latestKey != k
+							@latestKey = k
+							@trigger Resizer.BREAKPOINT_CHANGE, _data
+						break
+
 				
 	addClass:(className)->
 		if typeof(className) is 'string'

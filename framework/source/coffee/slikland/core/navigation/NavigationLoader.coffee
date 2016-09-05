@@ -1,20 +1,30 @@
-#import slikland.debug.Debug
-#import slikland.utils.Prototypes
 #import slikland.core.App
+#import slikland.core.debug.Debug
+#import slikland.utils.Prototypes
 
 #import slikland.utils.ArrayUtils
 #import slikland.utils.ObjectUtils
 #import slikland.utils.StringUtils
 #import slikland.utils.JSONUtils
+#import slikland.utils.Detections
 
 #import slikland.loader.AssetLoader
-#import slikland.loader.ConditionsValidation
-#import slikland.core.navigation.BaseView
+#import slikland.core.loader.ConditionsValidation
+#import slikland.navigation.display.BaseView
 
+###*
+Base class to setup the navigation and start loading of dependencies.
+
+@class NavigationLoader
+@extends EventDispatcher
+###
 class NavigationLoader extends EventDispatcher
 
 	head = null
 	wrapper = null
+	
+	_mainView = null
+	_preloaderView = null
 
 	app.root = null
 	app.loader = null
@@ -22,7 +32,15 @@ class NavigationLoader extends EventDispatcher
 	app.container = {}
 	app.navigation = {}
 	app.conditions = null
+	app.detections = null
 
+	###*
+	@class NavigationLoader
+	@constructor
+	@param {BaseView} p_preloaderView The view of the first loading, it's called by the method {{#crossLink "NavigationLoader/createPreloaderView:method"}}{{/crossLink}} and attached on container when the preloader assets is completely loaded.
+	@param {String} [p_configPath = "data/config.json"] Path of the navigation configuration file.
+	@param {HTMLElement} [p_wrapper = null] Custom container to attach the navigation.
+	###
 	constructor:(p_preloaderView, p_configPath = "data/config.json", p_wrapper=null)->
 		wrapper = if !(p_wrapper)? then document.body else p_wrapper
 
@@ -31,19 +49,26 @@ class NavigationLoader extends EventDispatcher
 		if !(p_preloaderView instanceof BaseView)
 			throw new Error('The param p_preloaderView is null or the instance of param p_preloaderView is not either BaseView class')
 		else
-			@_preloaderView = p_preloaderView 
+			_preloaderView = p_preloaderView 
 		
 		head = document.querySelector("head") || document.getElementsByTagName("head")[0]
 		app.root = document.querySelector("base")?.href || document.getElementsByTagName("base")[0]?.href
 		app.loader = @loader = AssetLoader.getInstance()
+		app.detections = Detections.getInstance()
 
+		@loaded = false
 		@queue = @loader.getGroup('config')
 		@queue.on(AssetLoader.COMPLETE_FILE, @_prepareConfigFile)
 		@queue.loadFile 
-				id: 'config',
-				src: if app.root? then app.root+p_configPath else p_configPath
+			id: 'config',
+			src: if app.root? then app.root+p_configPath else p_configPath
 		false
-
+	
+	###*
+	@method _prepareConfigFile
+	@param {Event} evt
+	@private
+	###
 	_prepareConfigFile:(evt)=>
 		@queue.off(AssetLoader.COMPLETE_FILE, @_prepareConfigFile)
 		
@@ -58,6 +83,11 @@ class NavigationLoader extends EventDispatcher
 			@_createLoadQueue(null)
 		false 
 
+	###*
+	@method _createLoadQueue
+	@param {Event} evt
+	@private
+	###
 	_createLoadQueue:(evt)=>
 		evt?.currentTarget?.off(AssetLoader.COMPLETE_ALL, @_createLoadQueue)
 		
@@ -87,7 +117,13 @@ class NavigationLoader extends EventDispatcher
 		@queue = @_createLoader(@currentStep.id)
 		if check>0 then @queue.load()
 		false
-
+	
+	###*
+	@method _parseContentFiles
+	@param {Array} p_views
+	@param {Object} p_data
+	@private
+	###
 	_parseContentFiles:(p_views, p_data)=>
 		ts = new Date().getTime()
 		for node of app.config.required
@@ -172,6 +208,12 @@ class NavigationLoader extends EventDispatcher
 			if v.subviews then @_parseContentFiles(v.subviews, p_data)
 		false
 
+	###*
+	@method _parseConfigFile
+	@param {Object} p_data
+	@private
+	@return {Object}
+	###
 	_parseConfigFile:(p_data)->
 		p_data.paths = @_normalizeConfigPaths(p_data.paths)
 		p_data = @_normalizePaths(p_data, p_data.paths)
@@ -255,6 +297,12 @@ class NavigationLoader extends EventDispatcher
 		app.config = p_data
 		return p_data
 
+	###*
+	@method _createLoader
+	@param {String} p_id
+	@private
+	@return {createjs.LoadQueue}
+	###
 	_createLoader:(p_id)->
 		# console.log "id:", p_id
 		queue = @loader.getGroup(p_id)
@@ -263,6 +311,12 @@ class NavigationLoader extends EventDispatcher
 		queue.on(AssetLoader.COMPLETE_ALL, @_loadComplete)
 		return queue
 
+	###*
+	@method _removeLoader
+	@param {Object} p_queue
+	@private
+	@return {createjs.LoadQueue}
+	###
 	_removeLoader:(p_queue)->
 		p_queue.removeAllEventListeners(AssetLoader.COMPLETE_FILE)
 		p_queue.removeAllEventListeners(AssetLoader.PROGRESS_ALL)
@@ -270,6 +324,11 @@ class NavigationLoader extends EventDispatcher
 		p_queue.destroy()
 		return p_queue
 
+	###*
+	@method _addFiles
+	@param {Object} p_files
+	@private
+	###
 	_addFiles:(p_files)->
 		ts = new Date().getTime()
 		jsRE = /.*\.(js|css|svg)$/g
@@ -289,6 +348,12 @@ class NavigationLoader extends EventDispatcher
 		if p_files.length > 0
 			@queue.load()
 		false
+	
+	###*
+	@method _normalizeConfigPaths
+	@param {Object} p_paths
+	@private
+	###
 	_normalizeConfigPaths:(p_paths)->
 		p_pathsStr = JSON.stringify(p_paths)
 		while (o = /\{([^\"\{\}]+)\}/.exec(p_pathsStr))
@@ -299,6 +364,13 @@ class NavigationLoader extends EventDispatcher
 			p_paths = JSON.parse(p_pathsStr)
 		return p_paths
 
+	###*
+	@method _normalizePaths
+	@param {Object} p_data
+	@param {Object} p_paths
+	@return {Object}
+	@private
+	###
 	_normalizePaths:(p_data, p_paths)->
 		for k, v of p_paths
 			p_data = JSON.stringify(p_data)
@@ -306,28 +378,33 @@ class NavigationLoader extends EventDispatcher
 			p_data = JSON.parse(p_data)
 		return p_data
 
-	_loadFileComplete:(p_event)=>
-		switch p_event.item.ext
+	###*
+	@method _loadFileComplete
+	@param {Event} evt
+	@private
+	###
+	_loadFileComplete:(evt)=>
+		switch evt.item.ext
 			when 'json'
-				data = p_event.result
-				data = JSONUtils.removeComments(p_event.result)
+				data = evt.result
+				data = JSONUtils.removeComments(evt.result)
 				data = @_normalizePaths(data, app.config.paths)
 				if typeof(data) isnt 'string' then data = JSON.stringify(data)
 
 			when 'js'
-				data = p_event.result
+				data = evt.result
 				data = data.replace(/^\/\/.*?(\n|$)/igm, '')
 				if @currentStep.id == 'main'
 					result = eval(data)
-					@_mainView = result
-					@_mainView.id = 'main'
+					_mainView = result
+					_mainView.id = 'main'
 				else
 					eval('(function (){' + data + '}).call(self)')
 					
 			when 'css'
-				data = p_event.result
+				data = evt.result
 				style = document.createElement('style')
-				style.id = p_event.item.id
+				style.id = evt.item.id
 				style.type = "text/css"
 				head.appendChild(style)
 				si = head.querySelectorAll('style').length
@@ -339,11 +416,21 @@ class NavigationLoader extends EventDispatcher
 						document.styleSheets[si].cssText = data
 		false
 
+	###*
+	@method _loadProgress
+	@param {Event} evt
+	@private
+	###
 	_loadProgress:(evt)=>
-		@_preloaderView?.progress = ((evt.loaded / evt.total) * @currentStep.ratio + @loaderRatio)
+		_preloaderView?.progress = ((evt.loaded / evt.total) * @currentStep.ratio + @loaderRatio)
 		false
 
-	_loadComplete:(p_event)=>
+	###*
+	@method _loadComplete
+	@param {Event} evt
+	@private
+	###
+	_loadComplete:(evt)=>
 		@_removeLoader(@queue)
 
 		step = @loaderSteps[@loaderStep]
@@ -353,21 +440,27 @@ class NavigationLoader extends EventDispatcher
 					@coreAssetsLoaded()
 					break
 				when 'main'
-					for k, v of app.config.required.main
-						if v?.content?
-							@_mainView.content = v.content
-							break
+					view = _mainView
+					view.id = step.id
 					@mainAssetsLoaded()
 					break
 				when 'preloader'
+					view = _preloaderView
+					view.id = step.id
 					@preloaderAssetsLoaded()
-					@_createPreloaderView()
+					@createPreloaderView()
+					break
+			for k, v of app.config.required[step.id]
+				if v?.content?
+					view.content = v.content
 					break
 
 		@loaderRatio += step.ratio
 		@loaderStep++
 		
-		if @loaderStep >= @loaderSteps.length then return @_hidePreloderView()
+		if @loaderStep >= @loaderSteps.length
+			@loaded = true
+			return @hidePreloderView()
 
 		@currentStep = @loaderSteps[@loaderStep]
 		@queue = @_createLoader(@currentStep.id)
@@ -376,64 +469,108 @@ class NavigationLoader extends EventDispatcher
 		if @queue._loadQueue.length + @queue._currentLoads.length is 0 then @_loadComplete()
 		false
 
-	_createPreloaderView:(evt=null)=>
-		wrapper.appendChild(@_preloaderView.element)
-		@_preloaderView.on(BaseView.CREATE_COMPLETE, @_showPreloaderView)
-		@_preloaderView.createStart()
+	###*
+	@method createPreloaderView
+	@param {Event} [evt=null]
+	@protected
+	###
+	createPreloaderView:(evt=null)=>
+		wrapper.appendChild(_preloaderView.element)
+		_preloaderView.on(BaseView.CREATE_COMPLETE, @showPreloaderView)
+		_preloaderView.createStart()
 		false
 		
-	_showPreloaderView:(evt=null)=>
-		@_preloaderView.off(BaseView.CREATE_COMPLETE, @_showPreloaderView)
-		@_preloaderView.showStart()
+	###*
+	@method showPreloaderView
+	@param {Event} [evt=null]
+	@protected
+	###
+	showPreloaderView:(evt=null)=>
+		_preloaderView.off(BaseView.CREATE_COMPLETE, @showPreloaderView)
+		_preloaderView.showStart()
 		false
 
-	_hidePreloderView:(evt=null)->
-		@_preloaderView.on(BaseView.HIDE_COMPLETE, @_destroyPreloderView)
-		@_preloaderView.progress = 1
-		@_preloaderView.hideStart()
+	###*
+	@method hidePreloderView
+	@param {Event} [evt=null]
+	@protected
+	###
+	hidePreloderView:(evt=null)=>
+		_preloaderView.on(BaseView.HIDE_COMPLETE, @destroyPreloderView)
+		_preloaderView.progress = 1
+		_preloaderView.hideStart()
 		false
 
-	_destroyPreloderView:(evt=null)=>
+	###*
+	@method destroyPreloderView
+	@param {Event} [evt=null]
+	@protected
+	###
+	destroyPreloderView:(evt=null)=>
 		hiddenFonts = document.getElementById('hiddenFonts')
 		hiddenFonts?.parentNode?.removeChild(hiddenFonts)
 
-		@_preloaderView.off(BaseView.HIDE_COMPLETE, @_destroyPreloderView)
-		@_preloaderView.on(BaseView.DESTROY_COMPLETE, @_createMainView)
-		@_preloaderView.destroy()
+		_preloaderView.off(BaseView.HIDE_COMPLETE, @destroyPreloderView)
+		_preloaderView.on(BaseView.DESTROY_COMPLETE, @_createMainView)
+		_preloaderView.destroy()
 
 		@_removeLoader(@queue)
 		false
 
+	###*
+	@method _createMainView
+	@private
+	###
 	_createMainView:()=>
-		@_preloaderView.off(BaseView.DESTROY_COMPLETE, @_createMainView)
-		wrapper.removeChild(@_preloaderView.element)
-		@_preloaderView = null
-		delete @_preloaderView
+		_preloaderView.off(BaseView.DESTROY_COMPLETE, @_createMainView)
+		wrapper.removeChild(_preloaderView.element)
+		_preloaderView = null
 
-		if !(@_mainView instanceof BaseView) then throw new Error('The instance of Main class is not either BaseView class')
+		if !(_mainView instanceof BaseView) then throw new Error('The instance of Main class is not either BaseView class')
 
-		app.container = @_mainView
-		wrapper.appendChild(@_mainView.element)
+		app.container = _mainView
+		wrapper.appendChild(_mainView.element)
 
-		@_mainView.on(BaseView.CREATE_COMPLETE, @_showMainView)
+		_mainView.on(BaseView.CREATE_COMPLETE, @_showMainView)
 		if app.config.navigation?.startBefore || app.config.navigation?.startBefore is undefined
-			@_mainView.setupNavigation(app.config)
-			@_mainView.createStart()
+			_mainView.setupNavigation(app.config)
+			_mainView.createStart()
 		else
-			@_mainView.createStart()
-			@_mainView.setupNavigation(app.config)
+			_mainView.createStart()
+			_mainView.setupNavigation(app.config)
 
 		false
 	
+	###*
+	@method _showMainView
+	@param {Event} [evt=null]
+	@private
+	###
 	_showMainView:(evt=null)=>
-		@_mainView.off(BaseView.CREATE_COMPLETE, @_showMainView)
+		_mainView.off(BaseView.CREATE_COMPLETE, @_showMainView)
+		_mainView.showStart()
 		false
 
+	###*
+	Called only when the core assets is completely loaded.
+	@method coreAssetsLoaded
+	@param {Event} [evt=null]
+	###
 	coreAssetsLoaded:(evt=null)=>
 		false
 
+	###*
+	Called only when the preloader assets is completely loaded.
+	@method preloaderAssetsLoaded
+	@param {Event} [evt=null]
+	###
 	preloaderAssetsLoaded:(evt=null)=>
 		false
 
+	###*
+	Called only when the main assets is completely loaded.
+	@method mainAssetsLoaded
+	@param {Event} [evt=null]
+	###
 	mainAssetsLoaded:(evt=null)=>
 		false

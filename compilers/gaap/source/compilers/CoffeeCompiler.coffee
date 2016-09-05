@@ -1,5 +1,13 @@
 class CoffeeCompiler
 	@_ADD_NAMESPACE_FN: 'function __addNamespace(scope, obj){for(k in obj){if(!scope[k]) scope[k] = {};__addNamespace(scope[k], obj[k])}};'
+
+	@_REWRITE_CS_FUNCTIONS: {
+		__bind: 'function(fn, me){ return function(){ return fn.apply(me, arguments); }; }'
+		__hasProp: '{}.hasOwnProperty'
+		__indexOf: '[].indexOf || function(item) { for (var i = 0, l = this.length; i < l; i++) { if (i in this && this[i] === item) return i; } return -1; }'
+		__extends: 'function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) Object.defineProperty(child, key, Object.getOwnPropertyDescriptor(parent, key)); } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; }'
+	}
+
 	constructor:()->
 		@_cache = {}
 		@_tasks = []
@@ -41,10 +49,10 @@ class CoffeeCompiler
 				@_cache[file].dispose()
 				delete @_cache[file]
 		@_runTasks()
-	runTasks:(ugly = false)->
-		@_runTasks(null, ugly)
+	runTasks:(ugly = false, version = null)->
+		@_runTasks(null, ugly, version)
 
-	_runTasks:(file = null, ugly = false)->
+	_runTasks:(file = null, ugly = false, version = null)->
 		ugly = ugly
 		@_initTime = new Date().getTime()
 		@_updateTasks()
@@ -58,16 +66,15 @@ class CoffeeCompiler
 			if file
 				if files.indexOf(file) >= 0
 					c++
-					@_tasks[i].output(ugly)
+					@_tasks[i].output(ugly, version)
 			else
 				c++
-				@_tasks[i].output(ugly)
+				@_tasks[i].output(ugly, version)
 		if c > 0
 			t = ((new Date().getTime() - @_initTime) * 0.001).toFixed(3)
 			Log.setStyle('cyan')
 			Log.println('In: ' + t + 's')
 			Notifier.notify('Compiler', 'Coffee compilation completed!')
-
 
 	_updateTasks:()->
 		i = @_tasks.length
@@ -92,7 +99,7 @@ class CoffeeCompiler
 				if !t
 					continue
 				usedFiles = @_filterTask(t)
-				j = files.length
+				j = usedFiles.length
 				while j-- > 0
 					if (k = files.indexOf(usedFiles[j])) >= 0
 						files.splice(k, 1)
@@ -111,10 +118,24 @@ class CoffeeCompiler
 				source += c.js + '\n'
 		if hasNamespaces
 			source = @constructor._ADD_NAMESPACE_FN + '\n' + '__addNamespace(this, '+JSON.stringify(namespaces)+');\n' + source
+		source = @_rewriteCsFuncs(source)
 		if !task.bare
 			source = '(function() {\n' + source + '}).call(this);'
 		task.rawSource = source
 		return files
+
+	_rewriteCsFuncs:(source)->
+		s = source
+		fs = []
+		for k, v of @constructor._REWRITE_CS_FUNCTIONS
+			re = new RegExp('^\\s*' + k + '\\s*=.*?(,|;)\\s*$', 'gm')
+			s = s.replace(re, '$1')
+			fs.push(k + '=' + v)
+		s = s.replace(/^\s*,?(;)?\s*\n/gm, '$1')
+		s = s.replace(/,\s*\n\s*;/g, ';\n')
+		if fs.length > 0
+			s = 'var ' + fs.join(',\n') + ';\n' + s
+		return s
 
 	_addNamespaces:(namespaces, nsObj)->
 		added = false
@@ -152,7 +173,8 @@ class CoffeeCompiler
 				v.usedBy = {}
 			usedFiles = @_parseFilesRecursive(cache, sourcePaths, files)
 			@usedFiles = @_removeDuplicates(usedFiles)
-		output:(ugly = false)->
+
+		output:(ugly = false, version=null)->
 			out = null
 
 			Log.setStyle('magenta')
@@ -162,23 +184,37 @@ class CoffeeCompiler
 				Log.print(' minified')
 			Log.println()
 
+			versioner = new Versioner(@data.output)
+			
 			p = path.resolve(@data.output)
 			dir = path.dirname(p)
 			if !fs.existsSync(dir)
 				@_mkdir(dir)
+			
+			if versioner.versionRegex.test(@rawSource)
+				results = versioner.nextVersion(version)
+			
+			if results
+				@rawSource = @rawSource.replace(versioner.versionRegex, results[0])
+				@rawSource = @rawSource.replace(versioner.dateRegex, results[1])
 			out = @rawSource
+
 			if ugly
 				try
 					out = uglify.minify(out, {fromString: true, comments:true}).code
 				catch e
 					console.log(e)
+
 			if @isNode
 				out = '#!/usr/bin/env node\n' + out
+			
 			fs.writeFileSync(p, out, {encoding: 'utf-8'})
 			Log.setStyle('green')
 			Log.print('Saved to: ')
 			Log.setStyle('magenta')
 			Log.println(@data.output)
+
+
 		_mkdir:(dir)->
 			d = path.dirname(dir)
 			if !fs.existsSync(d)

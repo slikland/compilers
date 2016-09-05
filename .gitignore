@@ -1,0 +1,4 @@
+$ cat .gitignore
+
+.com.apple.timemachine.supported
+.DS_Store

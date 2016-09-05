@@ -1,3 +1,10 @@
+###*
+This is actually not a Class. It's a bunch of helper methods adding prototype methods to native classes.
+
+@class Prototypes
+###
+
+
 ##--------------------------------------
 ##	Getter / Setter
 ##	@example
@@ -18,15 +25,111 @@ isIE= ->
 if isIE() == 8
 	__scopeIE8 = document.createElement("IE8_" + Math.random())
 
-Function::get = (p_prop) ->
-	__scope = if __scopeIE8 then __scopeIE8 else @::
-	for name, getter of p_prop
-		Object.defineProperty __scope, name, get: getter, configurable: true
+###*
+This method is a decorator to create constant variable to a class.  
+A extending class cannot override this constant either can't be reassigned.  
+  
+* Please ignore de backslash on \\\@ as the code formatter doesn't escape atmarks.
+
+@method @const
+@example
+	class A
+		\@const PI: 3.14
+	console.log(A.PI) // 3.14
+	class B extends A
+		\@const PI: 3.14159 // Will throw error
+	console.log(B.PI) // Already thrown error before, but will be 3.14
+###
+Function::const = (p_prop) ->
+	__scope = if __scopeIE8 then __scopeIE8 else @
+	for name, value of p_prop
+		o = {}
+		o.get = () ->
+			return value
+		o.set = () ->
+			throw new Error("Can't set const " + name)
+		o.configurable = true
+		o.enumerable = true
+		Object.defineProperty __scope, name, o
 	null
-Function::set = (p_prop) ->
-	__scope = if __scopeIE8 then __scopeIE8 else @::
+
+###*
+Getter decorator for a class instance.  
+With this decorator you're able to assign a getter method to a variable.  
+  
+Also for a special case, you can assign a scope to the getter so you can create static getter to a class.  
+  
+* Please ignore de backslash on \\\@ as the code formatter doesn't escape atmarks.
+
+@method @get
+@example
+
+	// Instance getter
+	class A
+		\@get test:()->
+			return 'Hello world!'
+	a = new A()
+	console.log(a.test) // Hello world!
+
+	// Static getter
+	class A
+		\@get \@, TEST:()->
+			return 'Hello world!'
+	console.log(A.TEST) // Hello world!
+###
+Function::get = (scope, p_prop) ->
+	enumerable = false
+	if !p_prop
+		p_prop = scope
+		__scope = if __scopeIE8 then __scopeIE8 else @::
+	else
+		enumerable = true
+		__scope = scope
+	for name, getter of p_prop
+		Object.defineProperty __scope, name, get: getter, configurable: true, enumerable: enumerable
+	null
+
+###*
+Setter decorator for a class instance.  
+With this decorator you're able to assign a setter method to a variable.  
+  
+Also for a special case, you can assign a scope to the setter so you can create static setter to a class.  
+  
+* Please ignore de backslash on \\\@ as the code formatter doesn't escape atmarks.
+
+@method @set
+@example
+
+	// Instance getter / stter
+	class A
+		\@get test:()->
+			return \@_test
+		\@set test:(value)->
+			\@_test = value
+	a = new A()
+	a.test = 'Hello setter'
+	console.log(a.test) // Hello setter
+
+	// Static getter / setter
+	class A
+		\@get \@, TEST:()->
+			return @_TEST
+		\@set \@, TEST:(value)->
+			\@_TEST = value
+	A.TEST = 'Hello setter'
+	console.log(A.TEST) // Hello setter
+###
+
+Function::set = (scope, p_prop) ->
+	enumerable = false
+	if !p_prop
+		p_prop = scope
+		__scope = if __scopeIE8 then __scopeIE8 else @::
+	else
+		enumerable = true
+		__scope = scope
 	for name, setter of p_prop
-		Object.defineProperty __scope, name, set: setter, configurable: true
+		Object.defineProperty __scope, name, set: setter, configurable: true, enumerable: enumerable
 	null
 
 ##------------------------------------------------------------------------------
@@ -183,5 +286,6 @@ Node::off = Node::removeEventListener
 #
 # ADDED OLDER BROWSERS SUPPORT
 # 
+navigator.mediaDevices ?= {}
 navigator.getUserMedia = navigator.mediaDevices.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia
 

@@ -21,7 +21,7 @@ Node::removeChild = (node) ->
 		el = node.element
 		node.parent = @
 	Node::__removeChild__.call(@, el)
-Node::matches = Node::matches || Node::webkitMatchesSelector || Node::mozMatchesSelector || Node::msMatchesSelector || Node::oMatchesSelector
+Element::matches = Element::matches || Element::webkitMatchesSelector || Element::mozMatchesSelector || Element::msMatchesSelector || Element::oMatchesSelector
 Node::findParents = (query) ->
 	if @parentNode?
 		if @parentNode.matches(query)
@@ -107,17 +107,17 @@ class BaseDOM extends EventDispatcher
 
 	@get width:()->
 		return @getBounds().width
-	@get height:(value)->
+	@get height:()->
 		return @getBounds().height
 	
 	@get left:()->
 		return @getBounds().left
-	@get top:(value)->
+	@get top:()->
 		return @getBounds().top
 
 	@get x:()->
 		return @getBounds().left
-	@get y:(value)->
+	@get y:()->
 		return @getBounds().top
 
 
@@ -160,16 +160,13 @@ class BaseDOM extends EventDispatcher
 	##--------------------------------------
 
 	@get isAttached:()->
-		return document.contains(@element) || document.body.contains(@element)
+		return document.contains?(@element) || document.body.contains(@element)
 
 	@get attributes:()->
 		return @element.attributes
 
 	appendChild:(child)->
-		el = child
-		if child instanceof BaseDOM
-			el = child.element
-		@appendChildAt(el)
+		@appendChildAt(child)
 
 	appendChildAt:(child, index = -1)->
 		el = child
@@ -219,7 +216,7 @@ class BaseDOM extends EventDispatcher
 	find:(query, onlyInstances = false)->
 		element = @element.querySelector(query)
 		if onlyInstances
-			return element?.instance
+			return element?.__instance__
 		else
 			return element
 
@@ -235,8 +232,8 @@ class BaseDOM extends EventDispatcher
 			l = elements.length
 			p = 0
 			while ++i < l
-				if elements[i].instance
-					els[p++] = elements[i].instance
+				if elements[i].__instance__
+					els[p++] = elements[i].__instance__
 			elements = els
 		return elements
 

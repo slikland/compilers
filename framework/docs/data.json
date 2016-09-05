@@ -1,0 +1,3663 @@
+{
+    "project": {
+        "name": "Slikland Framework",
+        "description": "Slikland Framework",
+        "version": "1.0",
+        "url": "http://slikland.com/",
+        "logo": "http://slikland.com/media/images/logo_docs.png",
+        "source": "../../source/",
+        "linkNatives": true,
+        "attributesEmit": false,
+        "selleck": true,
+        "syntaxtype": "coffee",
+        "extension": ".coffee",
+        "paths": "../../source/",
+        "outdir": "../../docs"
+    },
+    "files": {
+        "../../source/coffee/slikland/anim/AnimationTicker.coffee": {
+            "name": "../../source/coffee/slikland/anim/AnimationTicker.coffee",
+            "modules": {},
+            "classes": {
+                "AnimationTicker": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "../../source/coffee/slikland/anim/BaseAnimation.coffee": {
+            "name": "../../source/coffee/slikland/anim/BaseAnimation.coffee",
+            "modules": {},
+            "classes": {
+                "BaseAnimation": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "../../source/coffee/slikland/anim/SpriteSheetAnimation.coffee": {
+            "name": "../../source/coffee/slikland/anim/SpriteSheetAnimation.coffee",
+            "modules": {},
+            "classes": {
+                "SpriteSheetAnimation": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "../../source/coffee/slikland/core/debug/Debug.coffee": {
+            "name": "../../source/coffee/slikland/core/debug/Debug.coffee",
+            "modules": {},
+            "classes": {
+                "Debug": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "../../source/coffee/slikland/core/loader/ConditionsValidation.coffee": {
+            "name": "../../source/coffee/slikland/core/loader/ConditionsValidation.coffee",
+            "modules": {},
+            "classes": {
+                "ConditionsValidation": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "../../source/coffee/slikland/core/loader/PreloadFiles.coffee": {
+            "name": "../../source/coffee/slikland/core/loader/PreloadFiles.coffee",
+            "modules": {},
+            "classes": {
+                "PreloadFiles": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "../../source/coffee/slikland/core/navigation/BaseNavigationController.coffee": {
+            "name": "../../source/coffee/slikland/core/navigation/BaseNavigationController.coffee",
+            "modules": {},
+            "classes": {
+                "BaseNavigationController": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "../../source/coffee/slikland/core/navigation/MetaController.coffee": {
+            "name": "../../source/coffee/slikland/core/navigation/MetaController.coffee",
+            "modules": {},
+            "classes": {
+                "MetaController": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "../../source/coffee/slikland/core/navigation/Navigation.coffee": {
+            "name": "../../source/coffee/slikland/core/navigation/Navigation.coffee",
+            "modules": {},
+            "classes": {
+                "Navigation": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "../../source/coffee/slikland/core/navigation/NavigationContainer.coffee": {
+            "name": "../../source/coffee/slikland/core/navigation/NavigationContainer.coffee",
+            "modules": {},
+            "classes": {
+                "NavigationContainer": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "../../source/coffee/slikland/core/navigation/NavigationLoader.coffee": {
+            "name": "../../source/coffee/slikland/core/navigation/NavigationLoader.coffee",
+            "modules": {},
+            "classes": {
+                "NavigationLoader": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "../../source/coffee/slikland/core/navigation/NavigationRouter.coffee": {
+            "name": "../../source/coffee/slikland/core/navigation/NavigationRouter.coffee",
+            "modules": {},
+            "classes": {
+                "NavigationRouter": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "../../source/coffee/slikland/core/navigation/ViewsData.coffee": {
+            "name": "../../source/coffee/slikland/core/navigation/ViewsData.coffee",
+            "modules": {},
+            "classes": {
+                "ViewsData": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "../../source/coffee/slikland/display/BaseDOM.coffee": {
+            "name": "../../source/coffee/slikland/display/BaseDOM.coffee",
+            "modules": {},
+            "classes": {
+                "BaseDOM": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "../../source/coffee/slikland/event/EventDispatcher.coffee": {
+            "name": "../../source/coffee/slikland/event/EventDispatcher.coffee",
+            "modules": {},
+            "classes": {
+                "EventDispatcher": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "../../source/coffee/slikland/navigation/display/BaseView.coffee": {
+            "name": "../../source/coffee/slikland/navigation/display/BaseView.coffee",
+            "modules": {},
+            "classes": {
+                "BaseView": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "../../source/coffee/slikland/utils/ArrayUtils.coffee": {
+            "name": "../../source/coffee/slikland/utils/ArrayUtils.coffee",
+            "modules": {},
+            "classes": {
+                "ArrayUtils": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "../../source/coffee/slikland/utils/ColorUtils.coffee": {
+            "name": "../../source/coffee/slikland/utils/ColorUtils.coffee",
+            "modules": {},
+            "classes": {
+                "ColorUtils": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "../../source/coffee/slikland/utils/Detections.coffee": {
+            "name": "../../source/coffee/slikland/utils/Detections.coffee",
+            "modules": {},
+            "classes": {
+                "Detections": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "../../source/coffee/slikland/utils/Prototypes.coffee": {
+            "name": "../../source/coffee/slikland/utils/Prototypes.coffee",
+            "modules": {},
+            "classes": {
+                "Prototypes": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "../../source/coffee/slikland/utils/StringUtils.coffee": {
+            "name": "../../source/coffee/slikland/utils/StringUtils.coffee",
+            "modules": {},
+            "classes": {
+                "StringUtils": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        }
+    },
+    "modules": {},
+    "classes": {
+        "AnimationTicker": {
+            "name": "AnimationTicker",
+            "shortname": "AnimationTicker",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "file": "../../source/coffee/slikland/anim/AnimationTicker.coffee",
+            "line": 1,
+            "description": "Class to controll animation. It calls a callback method every requestAnimation frame.<br>\nIn case of Internet Explorer 9, it uses a setTimeout with 16 ms.",
+            "static": 1
+        },
+        "BaseAnimation": {
+            "name": "BaseAnimation",
+            "shortname": "BaseAnimation",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "file": "../../source/coffee/slikland/anim/BaseAnimation.coffee",
+            "line": 3,
+            "description": "BaseAnimation interface class for most frame / time based animation.<br>\nPlease do not instantiate this class. Use the extended classes.",
+            "extends": "BaseDOM"
+        },
+        "SpriteSheetAnimation": {
+            "name": "SpriteSheetAnimation",
+            "shortname": "SpriteSheetAnimation",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "file": "../../source/coffee/slikland/anim/SpriteSheetAnimation.coffee",
+            "line": 20,
+            "description": "Spritesheet Animation class\n\nThis class will animate a spritesheet. It already handles responsiveness.<br>\nSo If the size of the SpriteSheetAnimation div is set, the animation will fit in the defined size.<br>\nIf a size is not set, it'll use the size defined in the JSON object.",
+            "is_constructor": 1,
+            "extends": "BaseAnimation",
+            "params": [
+                {
+                    "name": "data",
+                    "description": "Object defining spritesheet.\n\nThe Spritesheet image and json needs to be generated by Adobe Flash.<br>\nIt also accepts *trim* and *border* parameters set when exporting the Spritesheet from Adobe Flash.\n\nName |Type|Default|Description\n-----|----|:------|-----------\nimage|Image|null|Image of spritesheet. It can either be a Image Element or PreloadJS image loader, which gives *data.tag* as image.\njson|Object|null|JSON object defining the spritesheet. It can either be an Object or PreloadJS json loader, which gives *data.tag* as object.\nuseBackground|Bool|false|Boolean indicating if the Spritesheet Animation should use as background-image or a image element. Default is **false**. It's safer using an Image element instead of background-image for cross-browser integration.",
+                    "type": "Object"
+                }
+            ],
+            "example": [
+                "\n```\nspritesheet = new SpriteSheetAnimation({image: someImage, json: someJson});\ndocument.body.appendChild(spritesheet.element);\nsprithesheet.play({repeat: false});\n```"
+            ]
+        },
+        "Debug": {
+            "name": "Debug",
+            "shortname": "Debug",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "file": "../../source/coffee/slikland/core/debug/Debug.coffee",
+            "line": 1,
+            "description": "Debug Class",
+            "static": 1,
+            "final": 1
+        },
+        "ConditionsValidation": {
+            "name": "ConditionsValidation",
+            "shortname": "ConditionsValidation",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "file": "../../source/coffee/slikland/core/loader/ConditionsValidation.coffee",
+            "line": 16,
+            "description": "Singleton ConditionsValidation class",
+            "is_constructor": 1,
+            "params": [
+                {
+                    "name": "p_data",
+                    "description": "",
+                    "type": "Object"
+                }
+            ]
+        },
+        "PreloadFiles": {
+            "name": "PreloadFiles",
+            "shortname": "PreloadFiles",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "file": "../../source/coffee/slikland/core/loader/PreloadFiles.coffee",
+            "line": 1,
+            "description": "It's a simple wrapper to PreloadJS.\nSee more info on <a href=\"http://www.createjs.com/docs/preloadjs/\" target=\"_blank\" class=\"crosslink\">PreloadJS Docs</a>"
+        },
+        "BaseNavigationController": {
+            "name": "BaseNavigationController",
+            "shortname": "BaseNavigationController",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [
+                "Navigation"
+            ],
+            "file": "../../source/coffee/slikland/core/navigation/BaseNavigationController.coffee",
+            "line": 27,
+            "description": "BaseNavigationController is a base class for any type of navigation controller.<br>\nPlease do not instantiate this class. Use the extended classes.",
+            "extends": "EventDispatcher",
+            "is_constructor": 1
+        },
+        "MetaController": {
+            "name": "MetaController",
+            "shortname": "MetaController",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [
+                "BaseView"
+            ],
+            "file": "../../source/coffee/slikland/core/navigation/MetaController.coffee",
+            "line": 8,
+            "extends": "EventDispatcher",
+            "final": 1,
+            "description": "Runtime controls some meta tags of current view.<br>\nFor add/edit these tags or values, put the meta object in content file, like explained below:",
+            "is_constructor": 1,
+            "example": [
+                "\n```\n\"meta\":\n{\n\t\"title\": \"Default Template - title\",\n\t\"description\":\"description\",\n\t\"webAppCapable\":\"true\",\n\t\"color\":\"#ff00ff\",\n\t\"manifest\":\"{base}data/manifest.json\",\n\t\"favicon\":\"{images}icons/favicon-default.ico\",\n\t\"icons\":[\n\t\t{\n\t\t\t\"rel\":\"apple-touch-icon\", \n\t\t\t\"sizes\":\"57x57\",\n\t\t\t\"href\":\"{images}icons/apple-touch-icon-57x57.png\"\n\t\t},\n\t\t{\n\t\t\t\"rel\":\"apple-touch-icon\", \n\t\t\t\"sizes\":\"60x60\",\n\t\t\t\"href\":\"{images}icons/apple-touch-icon-60x60.png\"\n\t\t},\n\t\t{\n\t\t\t\"rel\":\"apple-touch-icon\", \n\t\t\t\"sizes\":\"72x72\",\n\t\t\t\"href\":\"{images}icons/apple-touch-icon-72x72.png\"\n\t\t},\n\t\t{\n\t\t\t\"rel\":\"apple-touch-icon\", \n\t\t\t\"sizes\":\"76x76\",\n\t\t\t\"href\":\"{images}icons/apple-touch-icon-76x76.png\"\n\t\t},\n\t\t{\n\t\t\t\"rel\":\"apple-touch-icon\", \n\t\t\t\"sizes\":\"114x114\",\n\t\t\t\"href\":\"{images}icons/apple-touch-icon-114x114.png\"\n\t\t},\n\t\t{\n\t\t\t\"rel\":\"apple-touch-icon\", \n\t\t\t\"sizes\":\"120x120\",\n\t\t\t\"href\":\"{images}icons/apple-touch-icon-120x120.png\"\n\t\t},\n\t\t{\n\t\t\t\"rel\":\"apple-touch-icon\", \n\t\t\t\"sizes\":\"144x144\",\n\t\t\t\"href\":\"{images}icons/apple-touch-icon-144x144.png\"\n\t\t},\n\t\t{\n\t\t\t\"rel\":\"apple-touch-icon\", \n\t\t\t\"sizes\":\"152x152\",\n\t\t\t\"href\":\"{images}icons/apple-touch-icon-152x152.png\"\n\t\t},\n\t\t{\n\t\t\t\"rel\":\"apple-touch-icon\", \n\t\t\t\"sizes\":\"180x180\",\n\t\t\t\"href\":\"{images}icons/apple-touch-icon-180x180.png\"\n\t\t},\n\n\t\t{\n\t\t\t\"rel\":\"icon\",\n\t\t\t\"href\":\"{images}icons/favicon-16x16.png\", \n\t\t\t\"sizes\":\"16x16\"\n\t\t},\n\t\t{\n\t\t\t\"rel\":\"icon\",\n\t\t\t\"href\":\"{images}icons/favicon-32x32.png\", \n\t\t\t\"sizes\":\"32x32\"\n\t\t},\n\t\t{\n\t\t\t\"rel\":\"icon\",\n\t\t\t\"href\":\"{images}icons/favicon-96x96.png\", \n\t\t\t\"sizes\":\"96x96\"\n\t\t},\n\t\t{\n\t\t\t\"rel\":\"icon\",\n\t\t\t\"href\":\"{images}icons/android-chrome-192x192.png\", \n\t\t\t\"sizes\":\"192x192\"\n\t\t}\n\t]\n}\n```"
+            ]
+        },
+        "Navigation": {
+            "name": "Navigation",
+            "shortname": "Navigation",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "file": "../../source/coffee/slikland/core/navigation/Navigation.coffee",
+            "line": 33,
+            "description": "Navigation Class\nThe instance of this class can be accessed by `app.navigation` wrapper",
+            "extends": "EventDispatcher",
+            "uses": [
+                "NavigationRouter",
+                "BaseNavigationController"
+            ],
+            "final": 1,
+            "is_constructor": 1,
+            "params": [
+                {
+                    "name": "p_controller",
+                    "description": "",
+                    "type": "BaseNavigationController"
+                }
+            ]
+        },
+        "NavigationContainer": {
+            "name": "NavigationContainer",
+            "shortname": "NavigationContainer",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "file": "../../source/coffee/slikland/core/navigation/NavigationContainer.coffee",
+            "line": 11,
+            "description": "NavigationContainer Class",
+            "extends": "BaseView",
+            "is_constructor": 1
+        },
+        "NavigationLoader": {
+            "name": "NavigationLoader",
+            "shortname": "NavigationLoader",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "file": "../../source/coffee/slikland/core/navigation/NavigationLoader.coffee",
+            "line": 37,
+            "description": "Base class to setup the navigation and start loading of dependencies.",
+            "extends": "EventDispatcher",
+            "is_constructor": 1,
+            "params": [
+                {
+                    "name": "p_preloaderView",
+                    "description": "The view of the first loading, it's called by the method {{#crossLink \"NavigationLoader/createPreloaderView:method\"}}{{/crossLink}} and attached on container when the preloader assets is completely loaded.",
+                    "type": "BaseView"
+                },
+                {
+                    "name": "p_configPath ",
+                    "description": "Path of the navigation configuration file.",
+                    "type": "String",
+                    "optional": true,
+                    "optdefault": " \"data/config.json\""
+                },
+                {
+                    "name": "p_wrapper ",
+                    "description": "Custom container to attach the navigation.",
+                    "type": "HTMLElement",
+                    "optional": true,
+                    "optdefault": " null"
+                }
+            ]
+        },
+        "NavigationRouter": {
+            "name": "NavigationRouter",
+            "shortname": "NavigationRouter",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [
+                "Navigation"
+            ],
+            "file": "../../source/coffee/slikland/core/navigation/NavigationRouter.coffee",
+            "line": 19,
+            "extends": "EventDispatcher",
+            "final": 1,
+            "is_constructor": 1
+        },
+        "ViewsData": {
+            "name": "ViewsData",
+            "shortname": "ViewsData",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "file": "../../source/coffee/slikland/core/navigation/ViewsData.coffee",
+            "line": 21,
+            "description": "ViewsData Class",
+            "extends": "EventDispatcher",
+            "final": 1,
+            "is_constructor": 1,
+            "params": [
+                {
+                    "name": "p_data",
+                    "description": "",
+                    "type": "Object"
+                }
+            ]
+        },
+        "BaseDOM": {
+            "name": "BaseDOM",
+            "shortname": "BaseDOM",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "file": "../../source/coffee/slikland/display/BaseDOM.coffee",
+            "line": 38,
+            "description": "Base DOM manipulation class"
+        },
+        "EventDispatcher": {
+            "name": "EventDispatcher",
+            "shortname": "EventDispatcher",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "file": "../../source/coffee/slikland/event/EventDispatcher.coffee",
+            "line": 1,
+            "description": "EventDispatcher class for handling and triggering events."
+        },
+        "BaseView": {
+            "name": "BaseView",
+            "shortname": "BaseView",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "file": "../../source/coffee/slikland/navigation/display/BaseView.coffee",
+            "line": 95,
+            "description": "Base View",
+            "extends": "BaseDOM",
+            "uses": [
+                "MetaController"
+            ],
+            "is_constructor": 1,
+            "params": [
+                {
+                    "name": "p_data",
+                    "description": "\nData object sets the default and/or custom values of properties of view for navigation controller.<br>\nIf this object it's not null, some default properties are not required explained below:\nDefault Key|Type|Required\n-|-|-\nid|{{#crossLink \"String\"}}{{/crossLink}}|__Yes__\nclass|{{#crossLink \"String\"}}{{/crossLink}}|__Yes__\nroute|{{#crossLink \"String\"}}{{/crossLink}} / {{#crossLink \"RegExp\"}}{{/crossLink}}|__No__\ncontent|{{#crossLink \"String\"}}{{/crossLink}} / {{#crossLink \"JSON\"}}{{/crossLink}}|__No__\ncache|{{#crossLink \"Boolean\"}}{{/crossLink}}|__No__\nparentView|{{#crossLink \"String\"}}{{/crossLink}}|__No__\ndestroyable|{{#crossLink \"Boolean\"}}{{/crossLink}}|__No__\nloadContent|{{#crossLink \"Boolean\"}}{{/crossLink}}|__No__\nsnap *(only for scroll navigation type)*|{{#crossLink \"Boolean\"}}{{/crossLink}}|__No__\nsubviewsWrapper|<a href=\"//developer.mozilla.org/en-US/docs/Web/Guide/CSS/Getting_Started/Selectors\" target=\"_blank\" class=\"crosslink\">Selectors</a>|__No__\nattachToParentWrapper|<a href=\"//developer.mozilla.org/en-US/docs/Web/Guide/CSS/Getting_Started/Selectors\" target=\"_blank\" class=\"crosslink\">Selectors</a>|__No__",
+                    "type": "Object",
+                    "optional": true,
+                    "optdefault": "null"
+                },
+                {
+                    "name": "p_CSSClassName",
+                    "description": "",
+                    "type": "String",
+                    "optional": true,
+                    "optdefault": "null"
+                }
+            ],
+            "example": [
+                "\n```\n{\n\t\"id\":\"home\",\n\t\"class\":\"template-home-view\", //the valid formats are \"ClassName\", \"class-name\", \"class name\" or \"class_name\"\n\t\"route\":\"/\", //valid formats are String or RegExp\n\t\"content\":\"data/home.json\",\n\t\"cache\":true,\n\t\"parentView\":\"someViewID\", //the unique ID of parent view\n\t\"destroyable\":true,\n\t\"loadContent\":true,\n\t\"snap\":true, //only for scroll navigation type\n\t\"subviewsWrapper\":\"CSSSelector\", //like #ID or .className etc\n\t\"attachToParentWrapper\":\"CSSSelector\" //like #ID or .className etc\n}\n```"
+            ]
+        },
+        "ArrayUtils": {
+            "name": "ArrayUtils",
+            "shortname": "ArrayUtils",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "file": "../../source/coffee/slikland/utils/ArrayUtils.coffee",
+            "line": 3,
+            "description": "Bunch of utilities methods for Array",
+            "static": 1
+        },
+        "ColorUtils": {
+            "name": "ColorUtils",
+            "shortname": "ColorUtils",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "file": "../../source/coffee/slikland/utils/ColorUtils.coffee",
+            "line": 1,
+            "description": "Bunch of utilities methods for Colors",
+            "static": 1
+        },
+        "Detections": {
+            "name": "Detections",
+            "shortname": "Detections",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "file": "../../source/coffee/slikland/utils/Detections.coffee",
+            "line": 1,
+            "description": "Detections Class",
+            "extends": "Class"
+        },
+        "Prototypes": {
+            "name": "Prototypes",
+            "shortname": "Prototypes",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "file": "../../source/coffee/slikland/utils/Prototypes.coffee",
+            "line": 1,
+            "description": "This is actually not a Class. It's a bunch of helper methods adding prototype methods to native classes."
+        },
+        "StringUtils": {
+            "name": "StringUtils",
+            "shortname": "StringUtils",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "file": "../../source/coffee/slikland/utils/StringUtils.coffee",
+            "line": 3,
+            "description": "Bunch of utilities methods for String",
+            "static": 1
+        }
+    },
+    "elements": {},
+    "classitems": [
+        {
+            "file": "../../source/coffee/slikland/anim/AnimationTicker.coffee",
+            "line": 25,
+            "description": "Add a callback method that will be called every requestAnimation.",
+            "itemtype": "method",
+            "name": "add",
+            "static": 1,
+            "params": [
+                {
+                    "name": "callback\nCallback",
+                    "description": "function to be called on every browser update.<br>\nThe callback method will be called passing a `data` parameter which will contain the `data` passed in this method and the `frame` number if the `fps` value is set in the `data`.<br>\nIf the callback function already exists, it'll only update the `data`.",
+                    "type": "Function"
+                },
+                {
+                    "name": "data",
+                    "description": "All values in this object are optional.\n```\n{\n\t\"fps\": 0 // Number. Frame rate to update.\n\t\"initFrame\": 0 // Number. Use value when adding a animation that doesn't start at frame 0. Ex: starting a animation from a middle.\n\t\"delay\": 0 // Number. Delay in seconds to start triggering the callback.\n}\n```",
+                    "type": "Object",
+                    "optional": true,
+                    "optdefault": "{}"
+                }
+            ],
+            "class": "AnimationTicker"
+        },
+        {
+            "file": "../../source/coffee/slikland/anim/AnimationTicker.coffee",
+            "line": 58,
+            "description": "Remove a callback method added by {{#crossLink \"AnimationTicker/add:method\"}}{{/crossLink}}",
+            "itemtype": "method",
+            "name": "remove",
+            "static": 1,
+            "params": [
+                {
+                    "name": "callback",
+                    "description": "Callback function to be removed.",
+                    "type": "Function"
+                }
+            ],
+            "class": "AnimationTicker"
+        },
+        {
+            "file": "../../source/coffee/slikland/anim/BaseAnimation.coffee",
+            "line": 13,
+            "description": "Triggered when animation starts. Usually when {{#crossLink \"BaseAnimation/play:method\"}}{{/crossLink}} is called.",
+            "itemtype": "event",
+            "name": "PLAY",
+            "class": "BaseAnimation"
+        },
+        {
+            "file": "../../source/coffee/slikland/anim/BaseAnimation.coffee",
+            "line": 19,
+            "description": "Triggered when animation stops. Usually when {{#crossLink \"BaseAnimation/stop:method\"}}{{/crossLink}} is called.",
+            "itemtype": "event",
+            "name": "STOP",
+            "class": "BaseAnimation"
+        },
+        {
+            "file": "../../source/coffee/slikland/anim/BaseAnimation.coffee",
+            "line": 25,
+            "description": "Triggered when animation resumes. Usually when {{#crossLink \"BaseAnimation/resume:method\"}}{{/crossLink}} is called.",
+            "itemtype": "event",
+            "name": "RESUME",
+            "class": "BaseAnimation"
+        },
+        {
+            "file": "../../source/coffee/slikland/anim/BaseAnimation.coffee",
+            "line": 31,
+            "description": "Triggered when animation pauses. Usually when {{#crossLink \"BaseAnimation/pause:method\"}}{{/crossLink}} is called.",
+            "itemtype": "event",
+            "name": "PAUSE",
+            "class": "BaseAnimation"
+        },
+        {
+            "file": "../../source/coffee/slikland/anim/BaseAnimation.coffee",
+            "line": 37,
+            "description": "Triggered when animation finishes.",
+            "itemtype": "event",
+            "name": "COMPLETE",
+            "class": "BaseAnimation"
+        },
+        {
+            "file": "../../source/coffee/slikland/anim/BaseAnimation.coffee",
+            "line": 43,
+            "description": "Triggered when animation reached the end and repeats.",
+            "itemtype": "event",
+            "name": "REPEAT",
+            "class": "BaseAnimation"
+        },
+        {
+            "file": "../../source/coffee/slikland/anim/BaseAnimation.coffee",
+            "line": 49,
+            "description": "Triggered when animation changes it's frame.",
+            "itemtype": "event",
+            "name": "UPDATE",
+            "class": "BaseAnimation"
+        },
+        {
+            "file": "../../source/coffee/slikland/anim/BaseAnimation.coffee",
+            "line": 77,
+            "description": "Return true if the animation was paused",
+            "itemtype": "attribute",
+            "name": "paused",
+            "type": "Boolean",
+            "readonly": "",
+            "class": "BaseAnimation"
+        },
+        {
+            "file": "../../source/coffee/slikland/anim/BaseAnimation.coffee",
+            "line": 88,
+            "description": "Define if the animation will repeat or not.<br>\nBy default it's set to false.<br>\nIf the value is set to true, it will repeat infinitely.<br>\nThis value can also be changed when calling the {{#crossLink \"BaseAnimation/play:method\"}}{{/crossLink}} method.",
+            "itemtype": "attribute",
+            "name": "repeat",
+            "default": "false",
+            "type": "Boolean | Number",
+            "class": "BaseAnimation"
+        },
+        {
+            "file": "../../source/coffee/slikland/anim/BaseAnimation.coffee",
+            "line": 104,
+            "description": "Frame rate of animation.",
+            "itemtype": "attribute",
+            "name": "fps",
+            "type": "Number",
+            "class": "BaseAnimation"
+        },
+        {
+            "file": "../../source/coffee/slikland/anim/BaseAnimation.coffee",
+            "line": 119,
+            "description": "Current time of the animation in seconds.\nIf it's playing a specific label, it refers to the portion of the label.",
+            "itemtype": "attribute",
+            "name": "currentTime",
+            "type": "Number",
+            "class": "BaseAnimation"
+        },
+        {
+            "file": "../../source/coffee/slikland/anim/BaseAnimation.coffee",
+            "line": 134,
+            "description": "Total time of the animation in seconds.\nIf it's playing a specific label, it refers to the portion of the label.",
+            "itemtype": "attribute",
+            "name": "totalTime",
+            "type": "Number",
+            "readonly": "",
+            "class": "BaseAnimation"
+        },
+        {
+            "file": "../../source/coffee/slikland/anim/BaseAnimation.coffee",
+            "line": 145,
+            "description": "Current frame number of the animation.\nIf it's playing a specific label, it refers to the portion of the label.",
+            "itemtype": "attribute",
+            "name": "currentFrame",
+            "type": "Number",
+            "class": "BaseAnimation"
+        },
+        {
+            "file": "../../source/coffee/slikland/anim/BaseAnimation.coffee",
+            "line": 161,
+            "description": "Duration in frames of the animation.\nIf it's playing a specific label, it refers to the portion of the label.",
+            "itemtype": "attribute",
+            "name": "durationFrames",
+            "type": "Number",
+            "readonly": "",
+            "class": "BaseAnimation"
+        },
+        {
+            "file": "../../source/coffee/slikland/anim/BaseAnimation.coffee",
+            "line": 173,
+            "description": "Total number of frames of the animation.",
+            "itemtype": "attribute",
+            "name": "totalFrames",
+            "type": "Number",
+            "readonly": "",
+            "class": "BaseAnimation"
+        },
+        {
+            "file": "../../source/coffee/slikland/anim/BaseAnimation.coffee",
+            "line": 184,
+            "description": "The name of label currently playing.",
+            "itemtype": "attribute",
+            "name": "currentLabel",
+            "type": "String",
+            "readonly": "",
+            "class": "BaseAnimation"
+        },
+        {
+            "file": "../../source/coffee/slikland/anim/BaseAnimation.coffee",
+            "line": 207,
+            "description": "Add a section of frames with a label name.",
+            "itemtype": "method",
+            "name": "addLabel",
+            "params": [
+                {
+                    "name": "name",
+                    "description": "Name of the label",
+                    "type": "String"
+                },
+                {
+                    "name": "start",
+                    "description": "Number of frame that the animation should start",
+                    "type": "Number"
+                },
+                {
+                    "name": "end",
+                    "description": "Last frame of the section. If this parameter is not set, will get the next label's `start` or the last frame of entire animation.",
+                    "type": "Number",
+                    "optional": true
+                }
+            ],
+            "class": "BaseAnimation"
+        },
+        {
+            "file": "../../source/coffee/slikland/anim/BaseAnimation.coffee",
+            "line": 219,
+            "description": "Remove a label",
+            "itemtype": "method",
+            "name": "removeLabel",
+            "params": [
+                {
+                    "name": "name",
+                    "description": "Name of the label",
+                    "type": "String"
+                }
+            ],
+            "class": "BaseAnimation"
+        },
+        {
+            "file": "../../source/coffee/slikland/anim/BaseAnimation.coffee",
+            "line": 257,
+            "description": "Play the animation.<br>\nIt receives a `data` object which is optional with some settings.",
+            "itemtype": "method",
+            "name": "play",
+            "params": [
+                {
+                    "name": "data",
+                    "description": "Data with values explained below:\nName |Type|Default|Description\n-----|----|:------|-----------\ndelay|Number|0|Delay in seconds to start the animation\n{{#crossLink \"BaseAnimation/repeat:attribute\"}}{{/crossLink}}|Boolean&nbsp;\\|&nbsp;Number|false|If the animation should repeat. If number is passed, will repeat the amount of number defined.\nlabel|String|null|The label of the animation to play. If nothing is passed, will play the entire animation.",
+                    "type": "Object",
+                    "optional": true,
+                    "optdefault": "{}"
+                }
+            ],
+            "class": "BaseAnimation"
+        },
+        {
+            "file": "../../source/coffee/slikland/anim/BaseAnimation.coffee",
+            "line": 279,
+            "description": "Resume the animation. If the {{#crossLink \"BaseAnimation/play:method\"}}{{/crossLink}} method was called with a label, it will resume the portion of the specified label",
+            "itemtype": "method",
+            "name": "resume",
+            "class": "BaseAnimation"
+        },
+        {
+            "file": "../../source/coffee/slikland/anim/BaseAnimation.coffee",
+            "line": 290,
+            "description": "Pause the animation.",
+            "itemtype": "method",
+            "name": "pause",
+            "class": "BaseAnimation"
+        },
+        {
+            "file": "../../source/coffee/slikland/anim/BaseAnimation.coffee",
+            "line": 301,
+            "description": "Stop the animation and goes to last frame.",
+            "itemtype": "method",
+            "name": "stop",
+            "class": "BaseAnimation"
+        },
+        {
+            "file": "../../source/coffee/slikland/core/debug/Debug.coffee",
+            "line": 12,
+            "itemtype": "method",
+            "name": "init",
+            "static": 1,
+            "class": "Debug"
+        },
+        {
+            "file": "../../source/coffee/slikland/core/debug/Debug.coffee",
+            "line": 84,
+            "itemtype": "method",
+            "name": "check",
+            "params": [
+                {
+                    "name": "value ",
+                    "description": "",
+                    "type": "String",
+                    "optional": true,
+                    "optdefault": " null"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "String"
+            },
+            "static": 1,
+            "class": "Debug"
+        },
+        {
+            "file": "../../source/coffee/slikland/core/debug/Debug.coffee",
+            "line": 110,
+            "itemtype": "method",
+            "name": "log",
+            "static": 1,
+            "class": "Debug"
+        },
+        {
+            "file": "../../source/coffee/slikland/core/debug/Debug.coffee",
+            "line": 121,
+            "itemtype": "method",
+            "name": "logTime",
+            "params": [
+                {
+                    "name": "args...",
+                    "description": "",
+                    "type": "Array"
+                }
+            ],
+            "static": 1,
+            "class": "Debug"
+        },
+        {
+            "file": "../../source/coffee/slikland/core/loader/ConditionsValidation.coffee",
+            "line": 25,
+            "description": "Add object condition in internal list.",
+            "itemtype": "method",
+            "name": "add",
+            "params": [
+                {
+                    "name": "p_obj",
+                    "description": "",
+                    "type": "Object"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "Boolean"
+            },
+            "class": "ConditionsValidation"
+        },
+        {
+            "file": "../../source/coffee/slikland/core/loader/ConditionsValidation.coffee",
+            "line": 38,
+            "description": "Returns the internal list of registered conditions.",
+            "itemtype": "attribute",
+            "name": "list",
+            "type": "{Object}",
+            "readonly": "",
+            "class": "ConditionsValidation"
+        },
+        {
+            "file": "../../source/coffee/slikland/core/loader/ConditionsValidation.coffee",
+            "line": 47,
+            "description": "Returns the object condition of internal list.",
+            "itemtype": "method",
+            "name": "get",
+            "params": [
+                {
+                    "name": "p_keyID",
+                    "description": "",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "Object"
+            },
+            "class": "ConditionsValidation"
+        },
+        {
+            "file": "../../source/coffee/slikland/core/loader/ConditionsValidation.coffee",
+            "line": 56,
+            "description": "Checks the conditions already added in internal list.",
+            "itemtype": "method",
+            "name": "has",
+            "params": [
+                {
+                    "name": "p_keyID",
+                    "description": "",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "Boolean"
+            },
+            "class": "ConditionsValidation"
+        },
+        {
+            "file": "../../source/coffee/slikland/core/loader/ConditionsValidation.coffee",
+            "line": 65,
+            "description": "Removes the object condition of internal list.",
+            "itemtype": "method",
+            "name": "remove",
+            "params": [
+                {
+                    "name": "p_keyID",
+                    "description": "",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "Boolean"
+            },
+            "class": "ConditionsValidation"
+        },
+        {
+            "file": "../../source/coffee/slikland/core/loader/ConditionsValidation.coffee",
+            "line": 79,
+            "description": "This method accepts the ID of a condition object or a group of ID with a <a href=\"//developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Expressions_and_Operators\" target=\"_blank\" class=\"crosslink\">default operators</a>, to returns if only one condition is a valid condition or a group with a sum of conditions are valid.",
+            "itemtype": "method",
+            "name": "test",
+            "params": [
+                {
+                    "name": "p_args",
+                    "description": "The ID of a condition or a group with a sum of conditions.",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "Boolean"
+            },
+            "example": [
+                "\n```\n//Example of conditions list in config file\n...\n\"conditions\": {\n\t\"small\": {\n\t\t\"size\": {\n\t\t\t\"min-width\":300\n\t\t}\n\t},\n\t\"medium\": {\n\t\t\"orientation\":\"landscape\",\n\t\t\"size\": {\n\t\t\t\"min-width\":992\n\t\t}\n\t},\n\t\"large\": {\n\t\t\"size\": {\n\t\t\t\"min-width\":1200\n\t\t}\n\t},\n\t\"xtra_large\": {\n\t\t\"size\": {\n\t\t\t\"min-width\":1500\n\t\t}\n\t},\n\t\"full\": {\n\t\t\"size\": {\n\t\t\t\"min-width\":1910\n\t\t}\n\t}\n}\n\n...\n//Example condition with operators in some content file\n...\n\"src\":[\n\t{\n\t\t\"condition\":\"xtra_large && full\",\n\t\t\"file\":\"file.json\"\n\t},\n\t{\n\t\t\"condition\":\"medium || xtra_large\",\n\t\t\"file\":\"file.json\"\n\t},\n\t{\n\t\t\"condition\":\"small < medium\",\n\t\t\"file\":\"file.json\"\n\t},\n\t{\n\t\t\"condition\":\"(small > medium) || medium\",\n\t\t\"file\":\"file.json\"\n\t}\n]\n\n//Example single condition in some content file\n...\n\"src\":[\n\t{\n\t\t\"condition\":\"default\",\n\t\t\"file\":\"{base}data/home.json\"\n\t}\n]\n...\n```\t"
+            ],
+            "class": "ConditionsValidation"
+        },
+        {
+            "file": "../../source/coffee/slikland/core/navigation/BaseNavigationController.coffee",
+            "line": 11,
+            "itemtype": "event",
+            "name": "CHANGE",
+            "static": 1,
+            "class": "BaseNavigationController"
+        },
+        {
+            "file": "../../source/coffee/slikland/core/navigation/BaseNavigationController.coffee",
+            "line": 16,
+            "itemtype": "event",
+            "name": "CHANGE_VIEW",
+            "static": 1,
+            "class": "BaseNavigationController"
+        },
+        {
+            "file": "../../source/coffee/slikland/core/navigation/BaseNavigationController.coffee",
+            "line": 21,
+            "itemtype": "event",
+            "name": "CHANGE_SUBVIEW",
+            "static": 1,
+            "class": "BaseNavigationController"
+        },
+        {
+            "file": "../../source/coffee/slikland/core/navigation/BaseNavigationController.coffee",
+            "line": 34,
+            "itemtype": "method",
+            "name": "setup",
+            "params": [
+                {
+                    "name": "p_data",
+                    "description": "",
+                    "type": "Object"
+                }
+            ],
+            "access": "protected",
+            "tagname": "",
+            "class": "BaseNavigationController"
+        },
+        {
+            "file": "../../source/coffee/slikland/core/navigation/BaseNavigationController.coffee",
+            "line": 45,
+            "itemtype": "method",
+            "name": "start",
+            "params": [
+                {
+                    "name": "p_id",
+                    "description": "",
+                    "type": "String",
+                    "optional": true,
+                    "optdefault": "null"
+                }
+            ],
+            "class": "BaseNavigationController"
+        },
+        {
+            "file": "../../source/coffee/slikland/core/navigation/BaseNavigationController.coffee",
+            "line": 62,
+            "itemtype": "method",
+            "name": "goto",
+            "params": [
+                {
+                    "name": "p_id",
+                    "description": "",
+                    "type": "String"
+                }
+            ],
+            "class": "BaseNavigationController"
+        },
+        {
+            "file": "../../source/coffee/slikland/core/navigation/BaseNavigationController.coffee",
+            "line": 71,
+            "description": "__This getter must be overridden with a type of navigation controller it will be a extended.__<br>\nReturns the type of navigation controller.",
+            "itemtype": "attribute",
+            "name": "type",
+            "type": "{String}",
+            "readonly": "",
+            "class": "BaseNavigationController"
+        },
+        {
+            "file": "../../source/coffee/slikland/core/navigation/BaseNavigationController.coffee",
+            "line": 81,
+            "description": "__This getter must be overridden with a current visible views of navigation controller it will be a extended.__<br>\nReturns the current visible views in DOM.",
+            "itemtype": "attribute",
+            "name": "visibleViews",
+            "type": "{Array}",
+            "readonly": "",
+            "class": "BaseNavigationController"
+        },
+        {
+            "file": "../../source/coffee/slikland/core/navigation/BaseNavigationController.coffee",
+            "line": 91,
+            "description": "__This getter must be overridden with a current view of navigation controller it will be a extended.__<br>\nReturns the current view.",
+            "itemtype": "attribute",
+            "name": "currentView",
+            "type": "{BaseView}",
+            "readonly": "",
+            "class": "BaseNavigationController"
+        },
+        {
+            "file": "../../source/coffee/slikland/core/navigation/BaseNavigationController.coffee",
+            "line": 101,
+            "description": "__This getter must be overridden with a previous view of navigation controller it will be a extended.__<br>\nReturns the previous view.",
+            "itemtype": "attribute",
+            "name": "previousView",
+            "type": "{BaseView}",
+            "readonly": "",
+            "class": "BaseNavigationController"
+        },
+        {
+            "file": "../../source/coffee/slikland/core/navigation/BaseNavigationController.coffee",
+            "line": 111,
+            "description": "__This getter must be overridden with a data object of navigation controller it will be a extended.__<br>\nReturns the data.",
+            "itemtype": "attribute",
+            "name": "data",
+            "type": "{Object}",
+            "readonly": "",
+            "class": "BaseNavigationController"
+        },
+        {
+            "file": "../../source/coffee/slikland/core/navigation/BaseNavigationController.coffee",
+            "line": 121,
+            "description": "__This getter must be overridden with a change method of navigation controller it will be a extended.__<br>\nThis method trigger the event {{#crossLink \"BaseNavigationController/CHANGE_VIEW:event\"}}{{/crossLink}} after complete.",
+            "itemtype": "method",
+            "name": "data",
+            "params": [
+                {
+                    "name": "p_id",
+                    "description": "",
+                    "type": "String"
+                }
+            ],
+            "access": "protected",
+            "tagname": "",
+            "class": "BaseNavigationController"
+        },
+        {
+            "file": "../../source/coffee/slikland/core/navigation/BaseNavigationController.coffee",
+            "line": 132,
+            "itemtype": "method",
+            "name": "_appendToWrapper",
+            "params": [
+                {
+                    "name": "p_view",
+                    "description": "",
+                    "type": "BaseView"
+                }
+            ],
+            "access": "private",
+            "tagname": "",
+            "class": "BaseNavigationController"
+        },
+        {
+            "file": "../../source/coffee/slikland/core/navigation/BaseNavigationController.coffee",
+            "line": 155,
+            "itemtype": "method",
+            "name": "_removeFromWrapper",
+            "params": [
+                {
+                    "name": "p_view",
+                    "description": "",
+                    "type": "BaseView"
+                }
+            ],
+            "access": "private",
+            "tagname": "",
+            "class": "BaseNavigationController"
+        },
+        {
+            "file": "../../source/coffee/slikland/core/navigation/MetaController.coffee",
+            "line": 100,
+            "itemtype": "method",
+            "name": "change",
+            "params": [
+                {
+                    "name": "p_data",
+                    "description": "",
+                    "type": "Object"
+                }
+            ],
+            "class": "MetaController"
+        },
+        {
+            "file": "../../source/coffee/slikland/core/navigation/MetaController.coffee",
+            "line": 113,
+            "itemtype": "method",
+            "name": "applyMeta",
+            "params": [
+                {
+                    "name": "p_name",
+                    "description": "",
+                    "type": "String"
+                },
+                {
+                    "name": "p_value",
+                    "description": "",
+                    "type": "String"
+                }
+            ],
+            "access": "protected",
+            "tagname": "",
+            "class": "MetaController"
+        },
+        {
+            "file": "../../source/coffee/slikland/core/navigation/MetaController.coffee",
+            "line": 130,
+            "itemtype": "method",
+            "name": "applyLink",
+            "params": [
+                {
+                    "name": "p_rel",
+                    "description": "",
+                    "type": "String"
+                },
+                {
+                    "name": "p_value",
+                    "description": "",
+                    "type": "String"
+                }
+            ],
+            "access": "protected",
+            "tagname": "",
+            "class": "MetaController"
+        },
+        {
+            "file": "../../source/coffee/slikland/core/navigation/MetaController.coffee",
+            "line": 146,
+            "itemtype": "attribute",
+            "name": "head",
+            "type": "{HTMLElement}",
+            "readonly": "",
+            "class": "MetaController"
+        },
+        {
+            "file": "../../source/coffee/slikland/core/navigation/MetaController.coffee",
+            "line": 154,
+            "itemtype": "attribute",
+            "name": "viewport",
+            "type": "{String}",
+            "class": "MetaController"
+        },
+        {
+            "file": "../../source/coffee/slikland/core/navigation/MetaController.coffee",
+            "line": 161,
+            "itemtype": "attribute",
+            "name": "title",
+            "type": "{String}",
+            "class": "MetaController"
+        },
+        {
+            "file": "../../source/coffee/slikland/core/navigation/MetaController.coffee",
+            "line": 172,
+            "itemtype": "attribute",
+            "name": "description",
+            "type": "{String}",
+            "class": "MetaController"
+        },
+        {
+            "file": "../../source/coffee/slikland/core/navigation/MetaController.coffee",
+            "line": 179,
+            "itemtype": "attribute",
+            "name": "favicon",
+            "type": "{String}",
+            "class": "MetaController"
+        },
+        {
+            "file": "../../source/coffee/slikland/core/navigation/MetaController.coffee",
+            "line": 189,
+            "itemtype": "attribute",
+            "name": "icons",
+            "type": "{String}",
+            "class": "MetaController"
+        },
+        {
+            "file": "../../source/coffee/slikland/core/navigation/MetaController.coffee",
+            "line": 198,
+            "description": "Only for iOS",
+            "itemtype": "attribute",
+            "name": "splash",
+            "type": "{String}",
+            "class": "MetaController"
+        },
+        {
+            "file": "../../source/coffee/slikland/core/navigation/MetaController.coffee",
+            "line": 207,
+            "itemtype": "attribute",
+            "name": "webAppCapable",
+            "type": "{String}",
+            "class": "MetaController"
+        },
+        {
+            "file": "../../source/coffee/slikland/core/navigation/MetaController.coffee",
+            "line": 220,
+            "itemtype": "attribute",
+            "name": "color",
+            "type": "{String}",
+            "class": "MetaController"
+        },
+        {
+            "file": "../../source/coffee/slikland/core/navigation/MetaController.coffee",
+            "line": 238,
+            "description": "Only for Android",
+            "itemtype": "attribute",
+            "name": "manifest",
+            "type": "{String}",
+            "example": [
+                "\n\t```\n\t{\n\t  \"lang\": \"en\",\n\t  \"scope\": \"/scope/\",\t  \n\t  \"name\": \"Web Application Manifest Sample\",\n\t  \"short_name\": \"Application\",\n\t  \"display\": \"standalone\",\n\t  \"orientation\": \"landscape\",\n\t  \"start_url\": \"index.html\",\n\t  \"theme_color\": \"aliceblue\",\n\t  \"background_color\": \"blue\",\n\t  \"icons\": [\n\t    {\n\t      \"src\": \"launcher-icon-0-75x.png\",\n\t      \"sizes\": \"36x36\",\n\t      \"type\": \"image/png\",\n\t      \"density\": 0.75\n\t    },\n\t    {\n\t      \"src\": \"launcher-icon-1x.png\",\n\t      \"sizes\": \"48x48\",\n\t      \"type\": \"image/png\",\n\t      \"density\": 1.0\n\t    },\n\t    {\n\t      \"src\": \"launcher-icon-1-5x.png\",\n\t      \"sizes\": \"72x72\",\n\t      \"type\": \"image/png\",\n\t      \"density\": 1.5\n\t    },\n\t    {\n\t      \"src\": \"launcher-icon-2x.png\",\n\t      \"sizes\": \"96x96\",\n\t      \"type\": \"image/png\",\n\t      \"density\": 2.0\n\t    },\n\t    {\n\t      \"src\": \"launcher-icon-3x.png\",\n\t      \"sizes\": \"144x144\",\n\t      \"type\": \"image/png\",\n\t      \"density\": 3.0\n\t    },\n\t    {\n\t      \"src\": \"launcher-icon-4x.png\",\n\t      \"sizes\": \"192x192\",\n\t      \"type\": \"image/png\",\n\t      \"density\": 4.0\n\t    }\n\t  ]\n\t}\t\n\t```"
+            ],
+            "class": "MetaController"
+        },
+        {
+            "file": "../../source/coffee/slikland/core/navigation/Navigation.coffee",
+            "line": 14,
+            "itemtype": "event",
+            "name": "CHANGE_ROUTE",
+            "static": 1,
+            "class": "Navigation"
+        },
+        {
+            "file": "../../source/coffee/slikland/core/navigation/Navigation.coffee",
+            "line": 19,
+            "itemtype": "event",
+            "name": "CHANGE_VIEW",
+            "static": 1,
+            "class": "Navigation"
+        },
+        {
+            "file": "../../source/coffee/slikland/core/navigation/Navigation.coffee",
+            "line": 24,
+            "itemtype": "event",
+            "name": "CHANGE_INTERNAL_VIEW",
+            "static": 1,
+            "class": "Navigation"
+        },
+        {
+            "file": "../../source/coffee/slikland/core/navigation/Navigation.coffee",
+            "line": 48,
+            "itemtype": "method",
+            "name": "setup",
+            "params": [
+                {
+                    "name": "p_data",
+                    "description": "",
+                    "type": "Object"
+                }
+            ],
+            "class": "Navigation"
+        },
+        {
+            "file": "../../source/coffee/slikland/core/navigation/Navigation.coffee",
+            "line": 68,
+            "itemtype": "method",
+            "name": "start",
+            "params": [
+                {
+                    "name": "evt",
+                    "description": "",
+                    "type": "Event",
+                    "optional": true,
+                    "optdefault": "null"
+                }
+            ],
+            "class": "Navigation"
+        },
+        {
+            "file": "../../source/coffee/slikland/core/navigation/Navigation.coffee",
+            "line": 84,
+            "description": "Returns the visible views in DOM",
+            "itemtype": "attribute",
+            "name": "visibleViews",
+            "type": "{Array}",
+            "readonly": "",
+            "class": "Navigation"
+        },
+        {
+            "file": "../../source/coffee/slikland/core/navigation/Navigation.coffee",
+            "line": 93,
+            "description": "Returns the current view",
+            "itemtype": "attribute",
+            "name": "currentView",
+            "type": "{BaseView}",
+            "readonly": "",
+            "class": "Navigation"
+        },
+        {
+            "file": "../../source/coffee/slikland/core/navigation/Navigation.coffee",
+            "line": 104,
+            "description": "Returns the previous view",
+            "itemtype": "attribute",
+            "name": "previousView",
+            "type": "{BaseView}",
+            "readonly": "",
+            "class": "Navigation"
+        },
+        {
+            "file": "../../source/coffee/slikland/core/navigation/Navigation.coffee",
+            "line": 113,
+            "description": "Returns the route data",
+            "itemtype": "attribute",
+            "name": "routeData",
+            "type": "{Object}",
+            "readonly": "",
+            "class": "Navigation"
+        },
+        {
+            "file": "../../source/coffee/slikland/core/navigation/Navigation.coffee",
+            "line": 131,
+            "description": "Returns the instance of router controller",
+            "itemtype": "attribute",
+            "name": "router",
+            "type": "{NavigationRouter}",
+            "readonly": "",
+            "class": "Navigation"
+        },
+        {
+            "file": "../../source/coffee/slikland/core/navigation/Navigation.coffee",
+            "line": 140,
+            "description": "Returns the instance of navigation controller",
+            "itemtype": "attribute",
+            "name": "navigation",
+            "type": "{BaseNavigationController}",
+            "readonly": "",
+            "class": "Navigation"
+        },
+        {
+            "file": "../../source/coffee/slikland/core/navigation/Navigation.coffee",
+            "line": 149,
+            "itemtype": "method",
+            "name": "goto",
+            "params": [
+                {
+                    "name": "p_value",
+                    "description": "",
+                    "type": "String|Object"
+                }
+            ],
+            "deprecated": true,
+            "deprecationMessage": "Uses the {{#crossLink \"Navigation/gotoRoute:method\"}}{{/crossLink}} or {{#crossLink \"Navigation/gotoView:method\"}}{{/crossLink}}",
+            "class": "Navigation"
+        },
+        {
+            "file": "../../source/coffee/slikland/core/navigation/Navigation.coffee",
+            "line": 162,
+            "itemtype": "method",
+            "name": "setRoute",
+            "params": [
+                {
+                    "name": "p_value",
+                    "description": "",
+                    "type": "String"
+                },
+                {
+                    "name": "p_trigger",
+                    "description": "",
+                    "type": "Boolean",
+                    "optional": true,
+                    "optdefault": "false"
+                }
+            ],
+            "class": "Navigation"
+        },
+        {
+            "file": "../../source/coffee/slikland/core/navigation/Navigation.coffee",
+            "line": 171,
+            "itemtype": "method",
+            "name": "gotoRoute",
+            "params": [
+                {
+                    "name": "p_value",
+                    "description": "",
+                    "type": "String"
+                },
+                {
+                    "name": "p_trigger",
+                    "description": "",
+                    "type": "Boolean",
+                    "optional": true,
+                    "optdefault": "false"
+                }
+            ],
+            "class": "Navigation"
+        },
+        {
+            "file": "../../source/coffee/slikland/core/navigation/Navigation.coffee",
+            "line": 184,
+            "itemtype": "method",
+            "name": "replaceRoute",
+            "params": [
+                {
+                    "name": "p_value",
+                    "description": "",
+                    "type": "String"
+                },
+                {
+                    "name": "p_trigger",
+                    "description": "",
+                    "type": "Boolean",
+                    "optional": true,
+                    "optdefault": "false"
+                }
+            ],
+            "class": "Navigation"
+        },
+        {
+            "file": "../../source/coffee/slikland/core/navigation/Navigation.coffee",
+            "line": 197,
+            "itemtype": "method",
+            "name": "gotoDefault",
+            "class": "Navigation"
+        },
+        {
+            "file": "../../source/coffee/slikland/core/navigation/Navigation.coffee",
+            "line": 209,
+            "itemtype": "method",
+            "name": "gotoView",
+            "params": [
+                {
+                    "name": "p_value",
+                    "description": "",
+                    "type": "String"
+                }
+            ],
+            "class": "Navigation"
+        },
+        {
+            "file": "../../source/coffee/slikland/core/navigation/Navigation.coffee",
+            "line": 220,
+            "itemtype": "method",
+            "name": "getViewByRoute",
+            "params": [
+                {
+                    "name": "p_value",
+                    "description": "",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "String"
+            },
+            "default": "null",
+            "class": "Navigation"
+        },
+        {
+            "file": "../../source/coffee/slikland/core/navigation/Navigation.coffee",
+            "line": 232,
+            "itemtype": "method",
+            "name": "getRouteByView",
+            "params": [
+                {
+                    "name": "p_value",
+                    "description": "",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "String"
+            },
+            "default": "null",
+            "class": "Navigation"
+        },
+        {
+            "file": "../../source/coffee/slikland/core/navigation/Navigation.coffee",
+            "line": 244,
+            "itemtype": "method",
+            "name": "_change",
+            "params": [
+                {
+                    "name": "evt",
+                    "description": "",
+                    "type": "Event",
+                    "optional": true,
+                    "optdefault": "null"
+                }
+            ],
+            "access": "private",
+            "tagname": "",
+            "class": "Navigation"
+        },
+        {
+            "file": "../../source/coffee/slikland/core/navigation/NavigationContainer.coffee",
+            "line": 18,
+            "itemtype": "method",
+            "name": "setupNavigation",
+            "params": [
+                {
+                    "name": "p_data",
+                    "description": "",
+                    "type": "Object"
+                }
+            ],
+            "class": "NavigationContainer"
+        },
+        {
+            "file": "../../source/coffee/slikland/core/navigation/NavigationContainer.coffee",
+            "line": 27,
+            "description": "Returns the current instance of {{#crossLink \"Navigation\"}}{{/crossLink}}",
+            "itemtype": "attribute",
+            "name": "navigation",
+            "type": "{Navigation}",
+            "readonly": "",
+            "class": "NavigationContainer"
+        },
+        {
+            "file": "../../source/coffee/slikland/core/navigation/NavigationContainer.coffee",
+            "line": 36,
+            "description": "__This getter must be overridden with a instance of {{#crossLink \"BaseNavigationController\"}}{{/crossLink}}.__<br>\nReturns the current navigation controller instance.",
+            "itemtype": "attribute",
+            "name": "controller",
+            "type": "{BaseNavigationController}",
+            "readonly": "",
+            "class": "NavigationContainer"
+        },
+        {
+            "file": "../../source/coffee/slikland/core/navigation/NavigationLoader.coffee",
+            "line": 67,
+            "itemtype": "method",
+            "name": "_prepareConfigFile",
+            "params": [
+                {
+                    "name": "evt",
+                    "description": "",
+                    "type": "Event"
+                }
+            ],
+            "access": "private",
+            "tagname": "",
+            "class": "NavigationLoader"
+        },
+        {
+            "file": "../../source/coffee/slikland/core/navigation/NavigationLoader.coffee",
+            "line": 86,
+            "itemtype": "method",
+            "name": "_createLoadQueue",
+            "params": [
+                {
+                    "name": "evt",
+                    "description": "",
+                    "type": "Event"
+                }
+            ],
+            "access": "private",
+            "tagname": "",
+            "class": "NavigationLoader"
+        },
+        {
+            "file": "../../source/coffee/slikland/core/navigation/NavigationLoader.coffee",
+            "line": 121,
+            "itemtype": "method",
+            "name": "_parseContentFiles",
+            "params": [
+                {
+                    "name": "p_views",
+                    "description": "",
+                    "type": "Array"
+                },
+                {
+                    "name": "p_data",
+                    "description": "",
+                    "type": "Object"
+                }
+            ],
+            "access": "private",
+            "tagname": "",
+            "class": "NavigationLoader"
+        },
+        {
+            "file": "../../source/coffee/slikland/core/navigation/NavigationLoader.coffee",
+            "line": 211,
+            "itemtype": "method",
+            "name": "_parseConfigFile",
+            "params": [
+                {
+                    "name": "p_data",
+                    "description": "",
+                    "type": "Object"
+                }
+            ],
+            "access": "private",
+            "tagname": "",
+            "return": {
+                "description": "",
+                "type": "Object"
+            },
+            "class": "NavigationLoader"
+        },
+        {
+            "file": "../../source/coffee/slikland/core/navigation/NavigationLoader.coffee",
+            "line": 300,
+            "itemtype": "method",
+            "name": "_createLoader",
+            "params": [
+                {
+                    "name": "p_id",
+                    "description": "",
+                    "type": "String"
+                }
+            ],
+            "access": "private",
+            "tagname": "",
+            "return": {
+                "description": "",
+                "type": "createjs.LoadQueue"
+            },
+            "class": "NavigationLoader"
+        },
+        {
+            "file": "../../source/coffee/slikland/core/navigation/NavigationLoader.coffee",
+            "line": 314,
+            "itemtype": "method",
+            "name": "_removeLoader",
+            "params": [
+                {
+                    "name": "p_queue",
+                    "description": "",
+                    "type": "Object"
+                }
+            ],
+            "access": "private",
+            "tagname": "",
+            "return": {
+                "description": "",
+                "type": "createjs.LoadQueue"
+            },
+            "class": "NavigationLoader"
+        },
+        {
+            "file": "../../source/coffee/slikland/core/navigation/NavigationLoader.coffee",
+            "line": 327,
+            "itemtype": "method",
+            "name": "_addFiles",
+            "params": [
+                {
+                    "name": "p_files",
+                    "description": "",
+                    "type": "Object"
+                }
+            ],
+            "access": "private",
+            "tagname": "",
+            "class": "NavigationLoader"
+        },
+        {
+            "file": "../../source/coffee/slikland/core/navigation/NavigationLoader.coffee",
+            "line": 352,
+            "itemtype": "method",
+            "name": "_normalizeConfigPaths",
+            "params": [
+                {
+                    "name": "p_paths",
+                    "description": "",
+                    "type": "Object"
+                }
+            ],
+            "access": "private",
+            "tagname": "",
+            "class": "NavigationLoader"
+        },
+        {
+            "file": "../../source/coffee/slikland/core/navigation/NavigationLoader.coffee",
+            "line": 367,
+            "itemtype": "method",
+            "name": "_normalizePaths",
+            "params": [
+                {
+                    "name": "p_data",
+                    "description": "",
+                    "type": "Object"
+                },
+                {
+                    "name": "p_paths",
+                    "description": "",
+                    "type": "Object"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "Object"
+            },
+            "access": "private",
+            "tagname": "",
+            "class": "NavigationLoader"
+        },
+        {
+            "file": "../../source/coffee/slikland/core/navigation/NavigationLoader.coffee",
+            "line": 381,
+            "itemtype": "method",
+            "name": "_loadFileComplete",
+            "params": [
+                {
+                    "name": "evt",
+                    "description": "",
+                    "type": "Event"
+                }
+            ],
+            "access": "private",
+            "tagname": "",
+            "class": "NavigationLoader"
+        },
+        {
+            "file": "../../source/coffee/slikland/core/navigation/NavigationLoader.coffee",
+            "line": 419,
+            "itemtype": "method",
+            "name": "_loadProgress",
+            "params": [
+                {
+                    "name": "evt",
+                    "description": "",
+                    "type": "Event"
+                }
+            ],
+            "access": "private",
+            "tagname": "",
+            "class": "NavigationLoader"
+        },
+        {
+            "file": "../../source/coffee/slikland/core/navigation/NavigationLoader.coffee",
+            "line": 428,
+            "itemtype": "method",
+            "name": "_loadComplete",
+            "params": [
+                {
+                    "name": "evt",
+                    "description": "",
+                    "type": "Event"
+                }
+            ],
+            "access": "private",
+            "tagname": "",
+            "class": "NavigationLoader"
+        },
+        {
+            "file": "../../source/coffee/slikland/core/navigation/NavigationLoader.coffee",
+            "line": 472,
+            "itemtype": "method",
+            "name": "createPreloaderView",
+            "params": [
+                {
+                    "name": "evt",
+                    "description": "",
+                    "type": "Event",
+                    "optional": true,
+                    "optdefault": "null"
+                }
+            ],
+            "access": "protected",
+            "tagname": "",
+            "class": "NavigationLoader"
+        },
+        {
+            "file": "../../source/coffee/slikland/core/navigation/NavigationLoader.coffee",
+            "line": 483,
+            "itemtype": "method",
+            "name": "showPreloaderView",
+            "params": [
+                {
+                    "name": "evt",
+                    "description": "",
+                    "type": "Event",
+                    "optional": true,
+                    "optdefault": "null"
+                }
+            ],
+            "access": "protected",
+            "tagname": "",
+            "class": "NavigationLoader"
+        },
+        {
+            "file": "../../source/coffee/slikland/core/navigation/NavigationLoader.coffee",
+            "line": 493,
+            "itemtype": "method",
+            "name": "hidePreloderView",
+            "params": [
+                {
+                    "name": "evt",
+                    "description": "",
+                    "type": "Event",
+                    "optional": true,
+                    "optdefault": "null"
+                }
+            ],
+            "access": "protected",
+            "tagname": "",
+            "class": "NavigationLoader"
+        },
+        {
+            "file": "../../source/coffee/slikland/core/navigation/NavigationLoader.coffee",
+            "line": 504,
+            "itemtype": "method",
+            "name": "destroyPreloderView",
+            "params": [
+                {
+                    "name": "evt",
+                    "description": "",
+                    "type": "Event",
+                    "optional": true,
+                    "optdefault": "null"
+                }
+            ],
+            "access": "protected",
+            "tagname": "",
+            "class": "NavigationLoader"
+        },
+        {
+            "file": "../../source/coffee/slikland/core/navigation/NavigationLoader.coffee",
+            "line": 520,
+            "itemtype": "method",
+            "name": "_createMainView",
+            "access": "private",
+            "tagname": "",
+            "class": "NavigationLoader"
+        },
+        {
+            "file": "../../source/coffee/slikland/core/navigation/NavigationLoader.coffee",
+            "line": 544,
+            "itemtype": "method",
+            "name": "_showMainView",
+            "params": [
+                {
+                    "name": "evt",
+                    "description": "",
+                    "type": "Event",
+                    "optional": true,
+                    "optdefault": "null"
+                }
+            ],
+            "access": "private",
+            "tagname": "",
+            "class": "NavigationLoader"
+        },
+        {
+            "file": "../../source/coffee/slikland/core/navigation/NavigationLoader.coffee",
+            "line": 554,
+            "description": "Called only when the core assets is completely loaded.",
+            "itemtype": "method",
+            "name": "coreAssetsLoaded",
+            "params": [
+                {
+                    "name": "evt",
+                    "description": "",
+                    "type": "Event",
+                    "optional": true,
+                    "optdefault": "null"
+                }
+            ],
+            "class": "NavigationLoader"
+        },
+        {
+            "file": "../../source/coffee/slikland/core/navigation/NavigationLoader.coffee",
+            "line": 562,
+            "description": "Called only when the preloader assets is completely loaded.",
+            "itemtype": "method",
+            "name": "preloaderAssetsLoaded",
+            "params": [
+                {
+                    "name": "evt",
+                    "description": "",
+                    "type": "Event",
+                    "optional": true,
+                    "optdefault": "null"
+                }
+            ],
+            "class": "NavigationLoader"
+        },
+        {
+            "file": "../../source/coffee/slikland/core/navigation/NavigationLoader.coffee",
+            "line": 570,
+            "description": "Called only when the main assets is completely loaded.",
+            "itemtype": "method",
+            "name": "mainAssetsLoaded",
+            "params": [
+                {
+                    "name": "evt",
+                    "description": "",
+                    "type": "Event",
+                    "optional": true,
+                    "optdefault": "null"
+                }
+            ],
+            "class": "NavigationLoader"
+        },
+        {
+            "file": "../../source/coffee/slikland/core/navigation/NavigationRouter.coffee",
+            "line": 8,
+            "itemtype": "event",
+            "name": "CHANGE",
+            "static": 1,
+            "class": "NavigationRouter"
+        },
+        {
+            "file": "../../source/coffee/slikland/core/navigation/NavigationRouter.coffee",
+            "line": 13,
+            "itemtype": "event",
+            "name": "CHANGE_ROUTE",
+            "static": 1,
+            "class": "NavigationRouter"
+        },
+        {
+            "file": "../../source/coffee/slikland/core/navigation/NavigationRouter.coffee",
+            "line": 29,
+            "itemtype": "method",
+            "name": "setup",
+            "params": [
+                {
+                    "name": "p_rootPath ",
+                    "description": "Use root path if not set in base tag",
+                    "type": "String",
+                    "optional": true,
+                    "optdefault": " null"
+                },
+                {
+                    "name": "p_forceHashBang ",
+                    "description": "Force hash bang for old browsers",
+                    "type": "Boolean",
+                    "optional": true,
+                    "optdefault": " false"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "NavigationRouter"
+            },
+            "class": "NavigationRouter"
+        },
+        {
+            "file": "../../source/coffee/slikland/core/navigation/NavigationRouter.coffee",
+            "line": 75,
+            "itemtype": "method",
+            "name": "_getPath",
+            "return": {
+                "description": "",
+                "type": "String"
+            },
+            "access": "private",
+            "tagname": "",
+            "class": "NavigationRouter"
+        },
+        {
+            "file": "../../source/coffee/slikland/core/navigation/NavigationRouter.coffee",
+            "line": 91,
+            "itemtype": "method",
+            "name": "_parsePath",
+            "params": [
+                {
+                    "name": "p_rawPath",
+                    "description": "",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "Object"
+            },
+            "access": "private",
+            "tagname": "",
+            "class": "NavigationRouter"
+        },
+        {
+            "file": "../../source/coffee/slikland/core/navigation/NavigationRouter.coffee",
+            "line": 103,
+            "itemtype": "method",
+            "name": "_parseParams",
+            "params": [
+                {
+                    "name": "p_path",
+                    "description": "",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "Object"
+            },
+            "access": "private",
+            "tagname": "",
+            "class": "NavigationRouter"
+        },
+        {
+            "file": "../../source/coffee/slikland/core/navigation/NavigationRouter.coffee",
+            "line": 118,
+            "itemtype": "method",
+            "name": "_onPathChange",
+            "params": [
+                {
+                    "name": "evt ",
+                    "description": "",
+                    "type": "Event",
+                    "optional": true,
+                    "optdefault": " null"
+                }
+            ],
+            "access": "private",
+            "tagname": "",
+            "class": "NavigationRouter"
+        },
+        {
+            "file": "../../source/coffee/slikland/core/navigation/NavigationRouter.coffee",
+            "line": 137,
+            "itemtype": "method",
+            "name": "_triggerPath",
+            "params": [
+                {
+                    "name": "p_path",
+                    "description": "",
+                    "type": "String"
+                }
+            ],
+            "access": "private",
+            "tagname": "",
+            "class": "NavigationRouter"
+        },
+        {
+            "file": "../../source/coffee/slikland/core/navigation/NavigationRouter.coffee",
+            "line": 152,
+            "itemtype": "method",
+            "name": "getCurrentPath",
+            "return": {
+                "description": "",
+                "type": "String"
+            },
+            "class": "NavigationRouter"
+        },
+        {
+            "file": "../../source/coffee/slikland/core/navigation/NavigationRouter.coffee",
+            "line": 159,
+            "itemtype": "method",
+            "name": "getParsedPath",
+            "return": {
+                "description": "",
+                "type": "Object"
+            },
+            "class": "NavigationRouter"
+        },
+        {
+            "file": "../../source/coffee/slikland/core/navigation/NavigationRouter.coffee",
+            "line": 166,
+            "itemtype": "method",
+            "name": "goto",
+            "params": [
+                {
+                    "name": "p_path",
+                    "description": "",
+                    "type": "String"
+                },
+                {
+                    "name": "p_trigger ",
+                    "description": "",
+                    "type": "Boolean",
+                    "optional": true,
+                    "optdefault": " true"
+                }
+            ],
+            "class": "NavigationRouter"
+        },
+        {
+            "file": "../../source/coffee/slikland/core/navigation/NavigationRouter.coffee",
+            "line": 186,
+            "itemtype": "method",
+            "name": "replace",
+            "params": [
+                {
+                    "name": "p_path",
+                    "description": "",
+                    "type": "String"
+                },
+                {
+                    "name": "p_trigger ",
+                    "description": "",
+                    "type": "Boolean",
+                    "optional": true,
+                    "optdefault": " false"
+                }
+            ],
+            "class": "NavigationRouter"
+        },
+        {
+            "file": "../../source/coffee/slikland/core/navigation/NavigationRouter.coffee",
+            "line": 205,
+            "itemtype": "method",
+            "name": "triggerPath",
+            "params": [
+                {
+                    "name": "p_path",
+                    "description": "",
+                    "type": "String"
+                }
+            ],
+            "class": "NavigationRouter"
+        },
+        {
+            "file": "../../source/coffee/slikland/core/navigation/NavigationRouter.coffee",
+            "line": 213,
+            "itemtype": "method",
+            "name": "triggerCurrentPath",
+            "params": [
+                {
+                    "name": "p_path",
+                    "description": "",
+                    "type": "String"
+                }
+            ],
+            "class": "NavigationRouter"
+        },
+        {
+            "file": "../../source/coffee/slikland/core/navigation/NavigationRouter.coffee",
+            "line": 221,
+            "description": "Add a route",
+            "itemtype": "method",
+            "name": "addRoute",
+            "params": [
+                {
+                    "name": "p_route",
+                    "description": "",
+                    "type": "String"
+                },
+                {
+                    "name": "p_data ",
+                    "description": "",
+                    "type": "Object",
+                    "optional": true,
+                    "optdefault": " null"
+                }
+            ],
+            "class": "NavigationRouter"
+        },
+        {
+            "file": "../../source/coffee/slikland/core/navigation/NavigationRouter.coffee",
+            "line": 253,
+            "description": "Remove a route",
+            "itemtype": "method",
+            "name": "removeRoute",
+            "params": [
+                {
+                    "name": "p_route",
+                    "description": "",
+                    "type": "String"
+                }
+            ],
+            "class": "NavigationRouter"
+        },
+        {
+            "file": "../../source/coffee/slikland/core/navigation/NavigationRouter.coffee",
+            "line": 268,
+            "description": "Remove all routes",
+            "itemtype": "method",
+            "name": "removeAllRoutes",
+            "class": "NavigationRouter"
+        },
+        {
+            "file": "../../source/coffee/slikland/core/navigation/NavigationRouter.coffee",
+            "line": 276,
+            "itemtype": "method",
+            "name": "_checkRoutes",
+            "params": [
+                {
+                    "name": "p_path",
+                    "description": "",
+                    "type": "String"
+                }
+            ],
+            "access": "private",
+            "tagname": "",
+            "return": {
+                "description": "",
+                "type": "Array"
+            },
+            "class": "NavigationRouter"
+        },
+        {
+            "file": "../../source/coffee/slikland/core/navigation/NavigationRouter.coffee",
+            "line": 311,
+            "itemtype": "method",
+            "name": "_sortRoutes",
+            "params": [
+                {
+                    "name": "p_a",
+                    "description": "",
+                    "type": "String"
+                },
+                {
+                    "name": "p_b",
+                    "description": "",
+                    "type": "String"
+                }
+            ],
+            "access": "private",
+            "tagname": "",
+            "return": {
+                "description": "",
+                "type": "Number"
+            },
+            "class": "NavigationRouter"
+        },
+        {
+            "file": "../../source/coffee/slikland/core/navigation/ViewsData.coffee",
+            "line": 8,
+            "description": "Triggered after parsing data of view.",
+            "itemtype": "event",
+            "name": "VIEW_CREATED",
+            "static": 1,
+            "class": "ViewsData"
+        },
+        {
+            "file": "../../source/coffee/slikland/core/navigation/ViewsData.coffee",
+            "line": 14,
+            "description": "Triggered after parsing data of all views of config file.",
+            "itemtype": "event",
+            "name": "ALL_VIEWS_CREATED",
+            "static": 1,
+            "class": "ViewsData"
+        },
+        {
+            "file": "../../source/coffee/slikland/core/navigation/ViewsData.coffee",
+            "line": 32,
+            "itemtype": "method",
+            "name": "getData",
+            "params": [
+                {
+                    "name": "p_id",
+                    "description": "",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "Object"
+            },
+            "class": "ViewsData"
+        },
+        {
+            "file": "../../source/coffee/slikland/core/navigation/ViewsData.coffee",
+            "line": 41,
+            "itemtype": "method",
+            "name": "get",
+            "params": [
+                {
+                    "name": "p_id",
+                    "description": "",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "Object"
+            },
+            "class": "ViewsData"
+        },
+        {
+            "file": "../../source/coffee/slikland/core/navigation/ViewsData.coffee",
+            "line": 49,
+            "itemtype": "method",
+            "name": "set",
+            "params": [
+                {
+                    "name": "p_view",
+                    "description": "",
+                    "type": "String"
+                }
+            ],
+            "class": "ViewsData"
+        },
+        {
+            "file": "../../source/coffee/slikland/core/navigation/ViewsData.coffee",
+            "line": 58,
+            "itemtype": "method",
+            "name": "createAll",
+            "class": "ViewsData"
+        },
+        {
+            "file": "../../source/coffee/slikland/core/navigation/ViewsData.coffee",
+            "line": 67,
+            "itemtype": "method",
+            "name": "create",
+            "params": [
+                {
+                    "name": "p_id",
+                    "description": "",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "Object"
+            },
+            "class": "ViewsData"
+        },
+        {
+            "file": "../../source/coffee/slikland/core/navigation/ViewsData.coffee",
+            "line": 103,
+            "itemtype": "method",
+            "name": "remove",
+            "params": [
+                {
+                    "name": "p_id",
+                    "description": "",
+                    "type": "String"
+                }
+            ],
+            "class": "ViewsData"
+        },
+        {
+            "file": "../../source/coffee/slikland/core/navigation/ViewsData.coffee",
+            "line": 112,
+            "itemtype": "method",
+            "name": "normalize",
+            "params": [
+                {
+                    "name": "p_id",
+                    "description": "",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "String"
+            },
+            "class": "ViewsData"
+        },
+        {
+            "file": "../../source/coffee/slikland/event/EventDispatcher.coffee",
+            "line": 10,
+            "description": "Add a event listener.",
+            "itemtype": "method",
+            "name": "on",
+            "params": [
+                {
+                    "name": "event",
+                    "description": "Event name.",
+                    "type": "String"
+                },
+                {
+                    "name": "handler",
+                    "description": "A callback function to handle the event.<br>\nThe callback function can receive 1 or 2 parameters. The first parameter is the event data itself and the second parameter is the custom data of the triggering event.",
+                    "type": "Function"
+                }
+            ],
+            "example": [
+                "\n\tfunction someEventHandler(e, data)\n\t{\n\t\tconsole.log(e); // Returns event data with it's type and target/currentTarget set to the scope\n\t\tconsole.log(data); // If the triggering event has any custom data\n\t}\n\tvar ed = new EventDispatcher()\n\ted.on('someEvent', someEventHandler);"
+            ],
+            "class": "EventDispatcher"
+        },
+        {
+            "file": "../../source/coffee/slikland/event/EventDispatcher.coffee",
+            "line": 32,
+            "description": "Remove an event listener.\n\n**BEWARE**\n\n> Calling this method without a handler will remove all listeners attached to this event.\n\n> If calling without the event name, will remove all listeners attached to this instance.",
+            "itemtype": "method",
+            "name": "off",
+            "params": [
+                {
+                    "name": "event",
+                    "description": "Event name.",
+                    "type": "String",
+                    "optional": true,
+                    "optdefault": "null"
+                },
+                {
+                    "name": "handler",
+                    "description": "\nA callback function added in the {{#crossLink \"EventDispatcher/on:method\"}}{{/crossLink}} call.",
+                    "type": "Function",
+                    "optional": true,
+                    "optdefault": "null"
+                }
+            ],
+            "class": "EventDispatcher"
+        },
+        {
+            "file": "../../source/coffee/slikland/event/EventDispatcher.coffee",
+            "line": 61,
+            "description": "Triggers an event.",
+            "itemtype": "method",
+            "name": "trigger",
+            "params": [
+                {
+                    "name": "event",
+                    "description": "Event name.",
+                    "type": "String"
+                },
+                {
+                    "name": "data",
+                    "description": "Custom event data.",
+                    "type": "Object",
+                    "optional": true,
+                    "optdefault": "null"
+                },
+                {
+                    "name": "target",
+                    "description": "Target that will be specified in the `event.target`. The `event.currentTarget` will always be this instance.",
+                    "type": "Object",
+                    "optional": true,
+                    "optdefault": "null"
+                }
+            ],
+            "example": [
+                "\n\tvar ed = new EventDispatcher()\n\n\t// Will just trigger the event\n\ted.trigger('someEvent'); \n\n\t// Will trigger the event with the object which can be retrieved by the second\n\t// parameter of the handler function.\n\ted.trigger('someEvent', {someData: true}); \n\n\t// Will set the event target to window. On the handler's first parameter\n\t//`event.target` will be window, and event.currentTarget will be the `ev` instance.\n\ted.trigger('someEvent', {someData: true}, window);"
+            ],
+            "class": "EventDispatcher"
+        },
+        {
+            "file": "../../source/coffee/slikland/event/EventDispatcher.coffee",
+            "line": 108,
+            "description": "Check if a event handler is already set.",
+            "itemtype": "method",
+            "name": "hasEvent",
+            "params": [
+                {
+                    "name": "event",
+                    "description": "Event name.",
+                    "type": "String"
+                },
+                {
+                    "name": "handler",
+                    "description": "A callback function added in the {{#crossLink \"EventDispatcher/on:method\"}}{{/crossLink}} call.",
+                    "type": "Function",
+                    "optional": true,
+                    "optdefault": "null"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "Boolean"
+            },
+            "class": "EventDispatcher"
+        },
+        {
+            "file": "../../source/coffee/slikland/event/EventDispatcher.coffee",
+            "line": 126,
+            "description": "Triggers an event after the current code block has finished processing.\n\nThis is useful for stacking up events that needs to be triggered at the end of the function but it's validating beforehand.",
+            "itemtype": "method",
+            "name": "stackTrigger",
+            "params": [
+                {
+                    "name": "event",
+                    "description": "Event name.",
+                    "type": "String"
+                },
+                {
+                    "name": "data",
+                    "description": "Custom event data.",
+                    "type": "Object",
+                    "optional": true,
+                    "optdefault": "null"
+                },
+                {
+                    "name": "target",
+                    "description": "Target that will be specified in the `event.target`. The `event.currentTarget` will always be this instance.",
+                    "type": "Object",
+                    "optional": true,
+                    "optdefault": "null"
+                }
+            ],
+            "example": [
+                "\n\tvar ed = new EventDispatcher()\n\n\tvar someObject = {a: true, b: false, c: true};\n\n\ted.on('isA', function(){console.log('Is A!');});\n\ted.on('isB', function(){console.log('Is B!');});\n\ted.on('isC', function(){console.log('Is C!');});\n\n\tfunction test()\n\t{\n\t\tconsole.log(\"Init test()\");\n\t\tif(someObject.a) ed.stackTrigger('isA');\n\t\tif(someObject.b) ed.stackTrigger('isB');\n\t\tif(someObject.c) ed.stackTrigger('isC');\n\t\tconsole.log(\"End test()\");\n\t}\n\n\t// This will result in:\n\t// log: 'Init test()'\n\t// log: 'End test()'\n\t// log: 'isA'\n\t// log: 'isC'\n"
+            ],
+            "class": "EventDispatcher"
+        },
+        {
+            "file": "../../source/coffee/slikland/navigation/display/BaseView.coffee",
+            "line": 12,
+            "description": "Triggered before the create routine view starts. Triggered when {{#crossLink \"BaseView/createStart:method\"}}{{/crossLink}} is called.",
+            "itemtype": "event",
+            "name": "CREATE_START",
+            "static": 1,
+            "class": "BaseView"
+        },
+        {
+            "file": "../../source/coffee/slikland/navigation/display/BaseView.coffee",
+            "line": 18,
+            "description": "Triggered when the create routine view starts. Triggered when {{#crossLink \"BaseView/create:method\"}}{{/crossLink}} is called.",
+            "itemtype": "event",
+            "name": "CREATE",
+            "static": 1,
+            "class": "BaseView"
+        },
+        {
+            "file": "../../source/coffee/slikland/navigation/display/BaseView.coffee",
+            "line": 24,
+            "description": "Triggered when the create routine view is finished. Triggered when {{#crossLink \"BaseView/createComplete:method\"}}{{/crossLink}} is called.",
+            "itemtype": "event",
+            "name": "CREATE_COMPLETE",
+            "static": 1,
+            "class": "BaseView"
+        },
+        {
+            "file": "../../source/coffee/slikland/navigation/display/BaseView.coffee",
+            "line": 31,
+            "description": "Triggered before the showing routine view starts. Triggered when {{#crossLink \"BaseView/showStart:method\"}}{{/crossLink}} is called.",
+            "itemtype": "event",
+            "name": "SHOW_START",
+            "static": 1,
+            "class": "BaseView"
+        },
+        {
+            "file": "../../source/coffee/slikland/navigation/display/BaseView.coffee",
+            "line": 37,
+            "description": "Triggered when the showing routine view starts. Triggered when {{#crossLink \"BaseView/show:method\"}}{{/crossLink}} is called.",
+            "itemtype": "event",
+            "name": "SHOW",
+            "static": 1,
+            "class": "BaseView"
+        },
+        {
+            "file": "../../source/coffee/slikland/navigation/display/BaseView.coffee",
+            "line": 43,
+            "description": "Triggered when the showing routine view is finished. Triggered when {{#crossLink \"BaseView/showComplete:method\"}}{{/crossLink}} is called.",
+            "itemtype": "event",
+            "name": "SHOW_COMPLETE",
+            "static": 1,
+            "class": "BaseView"
+        },
+        {
+            "file": "../../source/coffee/slikland/navigation/display/BaseView.coffee",
+            "line": 50,
+            "description": "Triggered before the hiding routine view starts. Triggered when {{#crossLink \"BaseView/hideStart:method\"}}{{/crossLink}} is called.",
+            "itemtype": "event",
+            "name": "HIDE_START",
+            "static": 1,
+            "class": "BaseView"
+        },
+        {
+            "file": "../../source/coffee/slikland/navigation/display/BaseView.coffee",
+            "line": 56,
+            "description": "Triggered when the hiding routine view starts. Triggered when {{#crossLink \"BaseView/hide:method\"}}{{/crossLink}} is called.",
+            "itemtype": "event",
+            "name": "HIDE",
+            "static": 1,
+            "class": "BaseView"
+        },
+        {
+            "file": "../../source/coffee/slikland/navigation/display/BaseView.coffee",
+            "line": 62,
+            "description": "Triggered when the hiding routine view is finished. Triggered when {{#crossLink \"BaseView/hideComplete:method\"}}{{/crossLink}} is called.",
+            "itemtype": "event",
+            "name": "HIDE_COMPLETE",
+            "static": 1,
+            "class": "BaseView"
+        },
+        {
+            "file": "../../source/coffee/slikland/navigation/display/BaseView.coffee",
+            "line": 69,
+            "description": "Triggered when the destroy routine view starts. Triggered when {{#crossLink \"BaseView/destroy:method\"}}{{/crossLink}} is called.",
+            "itemtype": "event",
+            "name": "DESTROY",
+            "static": 1,
+            "class": "BaseView"
+        },
+        {
+            "file": "../../source/coffee/slikland/navigation/display/BaseView.coffee",
+            "line": 75,
+            "description": "Triggered when the destroy routine view is finished. Triggered when {{#crossLink \"BaseView/destroyComplete:method\"}}{{/crossLink}} is called.",
+            "itemtype": "event",
+            "name": "DESTROY_COMPLETE",
+            "static": 1,
+            "class": "BaseView"
+        },
+        {
+            "file": "../../source/coffee/slikland/navigation/display/BaseView.coffee",
+            "line": 82,
+            "description": "Triggered when the view pauses. Usually when {{#crossLink \"BaseView/pause:method\"}}{{/crossLink}} is called.",
+            "itemtype": "event",
+            "name": "PAUSE",
+            "static": 1,
+            "class": "BaseView"
+        },
+        {
+            "file": "../../source/coffee/slikland/navigation/display/BaseView.coffee",
+            "line": 88,
+            "description": "Triggered when the view resumes. Usually when {{#crossLink \"BaseView/resume:method\"}}{{/crossLink}} is called.",
+            "itemtype": "event",
+            "name": "RESUME",
+            "static": 1,
+            "class": "BaseView"
+        },
+        {
+            "file": "../../source/coffee/slikland/navigation/display/BaseView.coffee",
+            "line": 149,
+            "description": "Returns the loader queue of this specific view.",
+            "itemtype": "attribute",
+            "name": "loader",
+            "type": "{createjs.LoadQueue}",
+            "default": "null",
+            "readonly": "",
+            "class": "BaseView"
+        },
+        {
+            "file": "../../source/coffee/slikland/navigation/display/BaseView.coffee",
+            "line": 159,
+            "description": "Returns true if the view was created.",
+            "itemtype": "attribute",
+            "name": "created",
+            "type": "{Boolean}",
+            "default": "false",
+            "access": "protected",
+            "tagname": "",
+            "readonly": "",
+            "class": "BaseView"
+        },
+        {
+            "file": "../../source/coffee/slikland/navigation/display/BaseView.coffee",
+            "line": 170,
+            "description": "Returns true if the view was shown.",
+            "itemtype": "attribute",
+            "name": "showed",
+            "type": "{Boolean}",
+            "default": "false",
+            "access": "protected",
+            "tagname": "",
+            "readonly": "",
+            "class": "BaseView"
+        },
+        {
+            "file": "../../source/coffee/slikland/navigation/display/BaseView.coffee",
+            "line": 181,
+            "description": "Sets/gets a clone of data object with default and/or custom values of properties of view.",
+            "itemtype": "attribute",
+            "name": "data",
+            "type": "{Object}",
+            "default": "{}",
+            "class": "BaseView"
+        },
+        {
+            "file": "../../source/coffee/slikland/navigation/display/BaseView.coffee",
+            "line": 192,
+            "description": "Sets/gets the unique ID of view.",
+            "itemtype": "attribute",
+            "name": "id",
+            "type": "{String}",
+            "default": "null",
+            "class": "BaseView"
+        },
+        {
+            "file": "../../source/coffee/slikland/navigation/display/BaseView.coffee",
+            "line": 203,
+            "description": "Sets/gets the unique ID of view.",
+            "itemtype": "attribute",
+            "name": "content",
+            "type": "{String|Object|JSON}",
+            "default": "null",
+            "class": "BaseView"
+        },
+        {
+            "file": "../../source/coffee/slikland/navigation/display/BaseView.coffee",
+            "line": 214,
+            "description": "Sets/gets the route of view.",
+            "itemtype": "attribute",
+            "name": "route",
+            "type": "{String|RegExp}",
+            "default": "null",
+            "class": "BaseView"
+        },
+        {
+            "file": "../../source/coffee/slikland/navigation/display/BaseView.coffee",
+            "line": 225,
+            "description": "Sets/gets the actual route data.",
+            "itemtype": "attribute",
+            "name": "routeData",
+            "type": "{Object}",
+            "access": "protected",
+            "tagname": "",
+            "default": "null",
+            "class": "BaseView"
+        },
+        {
+            "file": "../../source/coffee/slikland/navigation/display/BaseView.coffee",
+            "line": 237,
+            "description": "Sets/gets the parent view of this view.",
+            "itemtype": "attribute",
+            "name": "parentView",
+            "type": "{BaseView}",
+            "default": "null",
+            "class": "BaseView"
+        },
+        {
+            "file": "../../source/coffee/slikland/navigation/display/BaseView.coffee",
+            "line": 248,
+            "description": "Sets/gets a array of {{#crossLink \"BaseView\"}}{{/crossLink}} instances of subviews of this view.",
+            "itemtype": "attribute",
+            "name": "subviews",
+            "type": "{Array}",
+            "default": "null",
+            "class": "BaseView"
+        },
+        {
+            "file": "../../source/coffee/slikland/navigation/display/BaseView.coffee",
+            "line": 259,
+            "description": "Sets/gets if this views is destroyable.",
+            "itemtype": "attribute",
+            "name": "destroyable",
+            "type": "{Boolean}",
+            "default": "false",
+            "class": "BaseView"
+        },
+        {
+            "file": "../../source/coffee/slikland/navigation/display/BaseView.coffee",
+            "line": 270,
+            "description": "Sets/gets the type is a 'view' or a 'sub-view'.",
+            "itemtype": "attribute",
+            "name": "type",
+            "type": "{String}",
+            "access": "protected",
+            "tagname": "",
+            "default": "null",
+            "class": "BaseView"
+        },
+        {
+            "file": "../../source/coffee/slikland/navigation/display/BaseView.coffee",
+            "line": 282,
+            "description": "Returns the meta object of his content.",
+            "itemtype": "attribute",
+            "name": "meta",
+            "type": "{Object}",
+            "default": "null",
+            "readonly": "",
+            "class": "BaseView"
+        },
+        {
+            "file": "../../source/coffee/slikland/navigation/display/BaseView.coffee",
+            "line": 292,
+            "description": "Sets/gets the loading progress of this view.",
+            "itemtype": "attribute",
+            "name": "progress",
+            "type": "{Number}",
+            "access": "protected",
+            "tagname": "",
+            "class": "BaseView"
+        },
+        {
+            "file": "../../source/coffee/slikland/navigation/display/BaseView.coffee",
+            "line": 303,
+            "description": "Returns the reverse path of his parent view.",
+            "itemtype": "attribute",
+            "name": "reverseParentPath",
+            "type": "{Array}",
+            "access": "protected",
+            "tagname": "",
+            "readonly": "",
+            "class": "BaseView"
+        },
+        {
+            "file": "../../source/coffee/slikland/navigation/display/BaseView.coffee",
+            "line": 314,
+            "description": "Returns the path of his parent view.",
+            "itemtype": "attribute",
+            "name": "parentPath",
+            "type": "{Array}",
+            "access": "protected",
+            "tagname": "",
+            "readonly": "",
+            "class": "BaseView"
+        },
+        {
+            "file": "../../source/coffee/slikland/navigation/display/BaseView.coffee",
+            "line": 325,
+            "description": "Returns the wrapper container for the sub-views of this view.",
+            "itemtype": "attribute",
+            "name": "subviewsWrapper",
+            "type": "{HTMLElement}",
+            "default": "null",
+            "readonly": "",
+            "class": "BaseView"
+        },
+        {
+            "file": "../../source/coffee/slikland/navigation/display/BaseView.coffee",
+            "line": 335,
+            "description": "Returns the CSS Selector of the wrapper container for attach this view.",
+            "itemtype": "attribute",
+            "name": "attachToParentWrapper",
+            "type": "{String}",
+            "default": "null",
+            "readonly": "",
+            "class": "BaseView"
+        },
+        {
+            "file": "../../source/coffee/slikland/navigation/display/BaseView.coffee",
+            "line": 345,
+            "description": "Returns a reverse list of the parent path of this view.",
+            "itemtype": "method",
+            "name": "getReverseParentList",
+            "params": [
+                {
+                    "name": "p_subview",
+                    "description": "",
+                    "type": "Object|JSON",
+                    "optional": true,
+                    "optdefault": "null"
+                }
+            ],
+            "access": "private",
+            "tagname": "",
+            "readonly": "",
+            "class": "BaseView"
+        },
+        {
+            "file": "../../source/coffee/slikland/navigation/display/BaseView.coffee",
+            "line": 359,
+            "description": "Usually starts before the creation routine of view calling by the navigation controller.<br>\nCallback the method {{#crossLink \"BaseView/create:method\"}}{{/crossLink}} and trigger the event {{#crossLink \"BaseView/CREATE_START:event\"}}{{/crossLink}} after complete.",
+            "itemtype": "method",
+            "name": "createStart",
+            "params": [
+                {
+                    "name": "evt",
+                    "description": "",
+                    "type": "Event",
+                    "optional": true,
+                    "optdefault": "null"
+                }
+            ],
+            "class": "BaseView"
+        },
+        {
+            "file": "../../source/coffee/slikland/navigation/display/BaseView.coffee",
+            "line": 370,
+            "description": "Usually starts when the creation routine of view calling by the navigation controller.<br>\nCallback the method {{#crossLink \"BaseView/createComplete:method\"}}{{/crossLink}} and trigger the event {{#crossLink \"BaseView/CREATE:event\"}}{{/crossLink}} after complete.",
+            "itemtype": "method",
+            "name": "create",
+            "params": [
+                {
+                    "name": "evt",
+                    "description": "",
+                    "type": "Event",
+                    "optional": true,
+                    "optdefault": "null"
+                }
+            ],
+            "class": "BaseView"
+        },
+        {
+            "file": "../../source/coffee/slikland/navigation/display/BaseView.coffee",
+            "line": 381,
+            "description": "Usually starts when finished the creation routine of view calling by the navigation controller and trigger the event {{#crossLink \"BaseView/CREATE_COMPLETE:event\"}}{{/crossLink}} after complete the routine.",
+            "itemtype": "method",
+            "name": "createComplete",
+            "params": [
+                {
+                    "name": "evt",
+                    "description": "",
+                    "type": "Event",
+                    "optional": true,
+                    "optdefault": "null"
+                }
+            ],
+            "class": "BaseView"
+        },
+        {
+            "file": "../../source/coffee/slikland/navigation/display/BaseView.coffee",
+            "line": 391,
+            "description": "Usually starts before the showing routine of view calling by the navigation controller.<br>\nCallback the method {{#crossLink \"BaseView/show:method\"}}{{/crossLink}} and trigger the event {{#crossLink \"BaseView/SHOW_START:event\"}}{{/crossLink}} after complete.",
+            "itemtype": "method",
+            "name": "showStart",
+            "params": [
+                {
+                    "name": "evt",
+                    "description": "",
+                    "type": "Event",
+                    "optional": true,
+                    "optdefault": "null"
+                }
+            ],
+            "class": "BaseView"
+        },
+        {
+            "file": "../../source/coffee/slikland/navigation/display/BaseView.coffee",
+            "line": 403,
+            "description": "Usually starts when the showing routine of view calling by the navigation controller.<br>\nCallback the method {{#crossLink \"BaseView/showComplete:method\"}}{{/crossLink}} and trigger the event {{#crossLink \"BaseView/SHOW:event\"}}{{/crossLink}} after complete.",
+            "itemtype": "method",
+            "name": "show",
+            "params": [
+                {
+                    "name": "evt",
+                    "description": "",
+                    "type": "Event",
+                    "optional": true,
+                    "optdefault": "null"
+                }
+            ],
+            "class": "BaseView"
+        },
+        {
+            "file": "../../source/coffee/slikland/navigation/display/BaseView.coffee",
+            "line": 414,
+            "description": "Usually when finished the showing routine of view calling by the navigation controller and trigger the event {{#crossLink \"BaseView/SHOW_COMPLETE:event\"}}{{/crossLink}} after complete the routine.",
+            "itemtype": "method",
+            "name": "showComplete",
+            "params": [
+                {
+                    "name": "evt",
+                    "description": "",
+                    "type": "Event",
+                    "optional": true,
+                    "optdefault": "null"
+                }
+            ],
+            "class": "BaseView"
+        },
+        {
+            "file": "../../source/coffee/slikland/navigation/display/BaseView.coffee",
+            "line": 424,
+            "description": "Usually starts before the hiding routine of view calling by the navigation controller.<br>\nCallback the method {{#crossLink \"BaseView/hide:method\"}}{{/crossLink}} and trigger the event {{#crossLink \"BaseView/HIDE_START:event\"}}{{/crossLink}} after complete.",
+            "itemtype": "method",
+            "name": "hideStart",
+            "params": [
+                {
+                    "name": "evt",
+                    "description": "",
+                    "type": "Event",
+                    "optional": true,
+                    "optdefault": "null"
+                }
+            ],
+            "class": "BaseView"
+        },
+        {
+            "file": "../../source/coffee/slikland/navigation/display/BaseView.coffee",
+            "line": 435,
+            "description": "Usually starts when the hiding routine of view calling by the navigation controller.<br>\nCallback the method {{#crossLink \"BaseView/hideComplete:method\"}}{{/crossLink}} and trigger the event {{#crossLink \"BaseView/HIDE:event\"}}{{/crossLink}} after complete.",
+            "itemtype": "method",
+            "name": "hide",
+            "params": [
+                {
+                    "name": "evt",
+                    "description": "",
+                    "type": "Event",
+                    "optional": true,
+                    "optdefault": "null"
+                }
+            ],
+            "class": "BaseView"
+        },
+        {
+            "file": "../../source/coffee/slikland/navigation/display/BaseView.coffee",
+            "line": 447,
+            "description": "Usually when finished the hiding routine of view calling by the navigation controller and trigger the event {{#crossLink \"BaseView/HIDE_COMPLETE:event\"}}{{/crossLink}} after complete the routine.",
+            "itemtype": "method",
+            "name": "hideComplete",
+            "params": [
+                {
+                    "name": "evt",
+                    "description": "",
+                    "type": "Event",
+                    "optional": true,
+                    "optdefault": "null"
+                }
+            ],
+            "class": "BaseView"
+        },
+        {
+            "file": "../../source/coffee/slikland/navigation/display/BaseView.coffee",
+            "line": 456,
+            "description": "Usually used to pauses animations or something else in looping in view.\nTrigger the event {{#crossLink \"BaseView/PAUSE:event\"}}{{/crossLink}} after complete.",
+            "itemtype": "method",
+            "name": "pause",
+            "class": "BaseView"
+        },
+        {
+            "file": "../../source/coffee/slikland/navigation/display/BaseView.coffee",
+            "line": 465,
+            "description": "Usually used to resumes animations or something else in view.\nTrigger the event {{#crossLink \"BaseView/RESUME:event\"}}{{/crossLink}} after complete.",
+            "itemtype": "method",
+            "name": "pause",
+            "class": "BaseView"
+        },
+        {
+            "file": "../../source/coffee/slikland/navigation/display/BaseView.coffee",
+            "line": 474,
+            "description": "Usually starts when the destroying routine of view calling by the navigation controller.<br>\nCallback the method {{#crossLink \"BaseView/destroyComplete:method\"}}{{/crossLink}} and trigger the event {{#crossLink \"BaseView/DESTROY:event\"}}{{/crossLink}} after complete.",
+            "itemtype": "method",
+            "name": "destroy",
+            "params": [
+                {
+                    "name": "evt",
+                    "description": "",
+                    "type": "Event",
+                    "optional": true,
+                    "optdefault": "null"
+                }
+            ],
+            "class": "BaseView"
+        },
+        {
+            "file": "../../source/coffee/slikland/navigation/display/BaseView.coffee",
+            "line": 495,
+            "description": "Usually when finished the destroying routine of view calling by the navigation controller and trigger the event {{#crossLink \"BaseView/DESTROY_COMPLETE:event\"}}{{/crossLink}} after complete the routine.",
+            "itemtype": "method",
+            "name": "destroyComplete",
+            "params": [
+                {
+                    "name": "evt",
+                    "description": "",
+                    "type": "Event",
+                    "optional": true,
+                    "optdefault": "null"
+                }
+            ],
+            "class": "BaseView"
+        },
+        {
+            "file": "../../source/coffee/slikland/utils/Prototypes.coffee",
+            "line": 28,
+            "description": "This method is a decorator to create constant variable to a class.  \nA extending class cannot override this constant either can't be reassigned.  \n  \n* Please ignore de backslash on \\\\\\@ as the code formatter doesn't escape atmarks.",
+            "itemtype": "method",
+            "name": "@const",
+            "example": [
+                "\n\tclass A\n\t\t\\@const PI: 3.14\n\tconsole.log(A.PI) // 3.14\n\tclass B extends A\n\t\t\\@const PI: 3.14159 // Will throw error\n\tconsole.log(B.PI) // Already thrown error before, but will be 3.14"
+            ],
+            "class": "Prototypes"
+        },
+        {
+            "file": "../../source/coffee/slikland/utils/Prototypes.coffee",
+            "line": 56,
+            "description": "Getter decorator for a class instance.  \nWith this decorator you're able to assign a getter method to a variable.  \n  \nAlso for a special case, you can assign a scope to the getter so you can create static getter to a class.  \n  \n* Please ignore de backslash on \\\\\\@ as the code formatter doesn't escape atmarks.",
+            "itemtype": "method",
+            "name": "@get",
+            "example": [
+                "\n\n\t// Instance getter\n\tclass A\n\t\t\\@get test:()->\n\t\t\treturn 'Hello world!'\n\ta = new A()\n\tconsole.log(a.test) // Hello world!\n\n\t// Static getter\n\tclass A\n\t\t\\@get \\@, TEST:()->\n\t\t\treturn 'Hello world!'\n\tconsole.log(A.TEST) // Hello world!"
+            ],
+            "class": "Prototypes"
+        },
+        {
+            "file": "../../source/coffee/slikland/utils/Prototypes.coffee",
+            "line": 92,
+            "description": "Setter decorator for a class instance.  \nWith this decorator you're able to assign a setter method to a variable.  \n  \nAlso for a special case, you can assign a scope to the setter so you can create static setter to a class.  \n  \n* Please ignore de backslash on \\\\\\@ as the code formatter doesn't escape atmarks.",
+            "itemtype": "method",
+            "name": "@set",
+            "example": [
+                "\n\n\t// Instance getter / stter\n\tclass A\n\t\t\\@get test:()->\n\t\t\treturn \\@_test\n\t\t\\@set test:(value)->\n\t\t\t\\@_test = value\n\ta = new A()\n\ta.test = 'Hello setter'\n\tconsole.log(a.test) // Hello setter\n\n\t// Static getter / setter\n\tclass A\n\t\t\\@get \\@, TEST:()->\n\t\t\treturn @_TEST\n\t\t\\@set \\@, TEST:(value)->\n\t\t\t\\@_TEST = value\n\tA.TEST = 'Hello setter'\n\tconsole.log(A.TEST) // Hello setter"
+            ],
+            "class": "Prototypes"
+        },
+        {
+            "file": "../../source/coffee/slikland/utils/StringUtils.coffee",
+            "line": 11,
+            "description": "Check in a search in the string and returns whether it contains the sentence.",
+            "itemtype": "method",
+            "name": "hasString",
+            "static": 1,
+            "params": [
+                {
+                    "name": "p_string",
+                    "description": "The variable to validate.",
+                    "type": "String"
+                },
+                {
+                    "name": "p_search",
+                    "description": "The value to search in variable.",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "Boolean"
+            },
+            "class": "StringUtils"
+        },
+        {
+            "file": "../../source/coffee/slikland/utils/StringUtils.coffee",
+            "line": 22,
+            "description": "A basic method of replace a sentence in a String.",
+            "itemtype": "method",
+            "name": "replace",
+            "static": 1,
+            "params": [
+                {
+                    "name": "p_string",
+                    "description": "The variable to replace.",
+                    "type": "String"
+                },
+                {
+                    "name": "p_from",
+                    "description": "- The string to search in variable.",
+                    "type": "String"
+                },
+                {
+                    "name": "p_to",
+                    "description": "- The value to replace.",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "String"
+            },
+            "class": "StringUtils"
+        },
+        {
+            "file": "../../source/coffee/slikland/utils/StringUtils.coffee",
+            "line": 35,
+            "description": "A method to revert a content of a String.",
+            "itemtype": "method",
+            "name": "reverse",
+            "static": 1,
+            "params": [
+                {
+                    "name": "p_string",
+                    "description": "The variable to reverse.",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "String"
+            },
+            "class": "StringUtils"
+        },
+        {
+            "file": "../../source/coffee/slikland/utils/StringUtils.coffee",
+            "line": 47,
+            "description": "A method to convert the string to camel case",
+            "itemtype": "method",
+            "name": "toCamelCase",
+            "static": 1,
+            "params": [
+                {
+                    "name": "p_string",
+                    "description": "- The value to camellcase.",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "String"
+            },
+            "class": "StringUtils"
+        },
+        {
+            "file": "../../source/coffee/slikland/utils/StringUtils.coffee",
+            "line": 60,
+            "description": "A method to remove the white spaces in a String.",
+            "itemtype": "method",
+            "name": "removeWhiteSpace",
+            "static": 1,
+            "params": [
+                {
+                    "name": "p_string",
+                    "description": "- The value to remove the white spaces.",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "String"
+            },
+            "class": "StringUtils"
+        },
+        {
+            "file": "../../source/coffee/slikland/utils/StringUtils.coffee",
+            "line": 71,
+            "description": "A method to remove HTML tags in a String.",
+            "itemtype": "method",
+            "name": "removeHTMLTag",
+            "static": 1,
+            "params": [
+                {
+                    "name": "p_string",
+                    "description": "- The value to remove the HTML tags.",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "String"
+            },
+            "class": "StringUtils"
+        },
+        {
+            "file": "../../source/coffee/slikland/utils/StringUtils.coffee",
+            "line": 82,
+            "description": "A method to remove special characters in a String.",
+            "itemtype": "method",
+            "name": "removeSpecialChars",
+            "static": 1,
+            "params": [
+                {
+                    "name": "p_string",
+                    "description": "The value to remove the special characters.",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "String"
+            },
+            "class": "StringUtils"
+        },
+        {
+            "file": "../../source/coffee/slikland/utils/StringUtils.coffee",
+            "line": 93,
+            "description": "A method to convert a numeric string to brazillian CPF format. (XXX.XXX.XXX-XX)",
+            "itemtype": "method",
+            "name": "convertToCPF",
+            "static": 1,
+            "params": [
+                {
+                    "name": "p_string",
+                    "description": "- The value to format.",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "String"
+            },
+            "class": "StringUtils"
+        },
+        {
+            "file": "../../source/coffee/slikland/utils/StringUtils.coffee",
+            "line": 112,
+            "description": "A method to convert a numeric string to brazillian CEP format. (XXXXX-XXX)",
+            "itemtype": "method",
+            "name": "convertToCEP",
+            "static": 1,
+            "params": [
+                {
+                    "name": "p_string",
+                    "description": "- The value to format.",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "String"
+            },
+            "class": "StringUtils"
+        },
+        {
+            "file": "../../source/coffee/slikland/utils/StringUtils.coffee",
+            "line": 127,
+            "description": "A method to convert a numeric string to date format. (XX/XX/XXXX)",
+            "itemtype": "method",
+            "name": "convertToDate",
+            "static": 1,
+            "params": [
+                {
+                    "name": "p_string",
+                    "description": "- The value to format.",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "String"
+            },
+            "class": "StringUtils"
+        },
+        {
+            "file": "../../source/coffee/slikland/utils/StringUtils.coffee",
+            "line": 144,
+            "description": "A method to check if the String is empty.",
+            "itemtype": "method",
+            "name": "isEmpty",
+            "static": 1,
+            "params": [
+                {
+                    "name": "p_string",
+                    "description": "- The value to remove the white spaces.",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "Bollean"
+            },
+            "class": "StringUtils"
+        },
+        {
+            "file": "../../source/coffee/slikland/utils/StringUtils.coffee",
+            "line": 154,
+            "description": "A method to capitalize case the String",
+            "itemtype": "method",
+            "name": "toCapitalizeCase",
+            "static": 1,
+            "params": [
+                {
+                    "name": "p_string",
+                    "description": "- The value to capitalize case.",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "String"
+            },
+            "class": "StringUtils"
+        },
+        {
+            "file": "../../source/coffee/slikland/utils/StringUtils.coffee",
+            "line": 166,
+            "description": "A method to convert milisecounds (Number) in a String on time format.",
+            "itemtype": "method",
+            "name": "toTimeFormat",
+            "static": 1,
+            "params": [
+                {
+                    "name": "p_miliseconds",
+                    "description": "- The number in milisecounds.",
+                    "type": "Number"
+                },
+                {
+                    "name": "p_decimal",
+                    "description": "- Value if is a decimal format.",
+                    "type": "Bollean"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "String"
+            },
+            "class": "StringUtils"
+        },
+        {
+            "file": "../../source/coffee/slikland/utils/StringUtils.coffee",
+            "line": 179,
+            "description": "A method to add a zero before if the p_value is smaller that 10 and bigger that -1.",
+            "itemtype": "method",
+            "name": "addDecimalZero",
+            "static": 1,
+            "params": [
+                {
+                    "name": "p_value",
+                    "description": "",
+                    "type": "Number"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "String"
+            },
+            "class": "StringUtils"
+        },
+        {
+            "file": "../../source/coffee/slikland/utils/StringUtils.coffee",
+            "line": 191,
+            "description": "A method to abbreviate a String.",
+            "itemtype": "method",
+            "name": "abbreviate",
+            "static": 1,
+            "params": [
+                {
+                    "name": "p_string",
+                    "description": "The text to abbreviate.",
+                    "type": "String"
+                },
+                {
+                    "name": "p_max_length",
+                    "description": "the length to text.",
+                    "type": "Number"
+                },
+                {
+                    "name": "p_indicator",
+                    "description": "- The value of the end String.",
+                    "type": "String"
+                },
+                {
+                    "name": "p_split",
+                    "description": "- The value to before p_indicator and after text.",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "String"
+            },
+            "class": "StringUtils"
+        },
+        {
+            "file": "../../source/coffee/slikland/utils/StringUtils.coffee",
+            "line": 228,
+            "description": "A method to convert a String to Boolean (yes | true | 1 | no | false | 0).",
+            "itemtype": "method",
+            "name": "toBoolean",
+            "static": 1,
+            "params": [
+                {
+                    "name": "p_string",
+                    "description": "The value to converting.",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "Boolean"
+            },
+            "class": "StringUtils"
+        },
+        {
+            "file": "../../source/coffee/slikland/utils/StringUtils.coffee",
+            "line": 245,
+            "description": "A method to returns a random String with the specified length.",
+            "itemtype": "method",
+            "name": "random",
+            "static": 1,
+            "params": [
+                {
+                    "name": "p_length",
+                    "description": "The length of the random.",
+                    "type": "Number"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "String"
+            },
+            "class": "StringUtils"
+        },
+        {
+            "file": "../../source/coffee/slikland/utils/StringUtils.coffee",
+            "line": 258,
+            "description": "Trim",
+            "itemtype": "method",
+            "name": "trim",
+            "static": 1,
+            "params": [
+                {
+                    "name": "p_str",
+                    "description": "",
+                    "type": "String"
+                },
+                {
+                    "name": "p_char",
+                    "description": "",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "String"
+            },
+            "class": "StringUtils"
+        },
+        {
+            "file": "../../source/coffee/slikland/utils/StringUtils.coffee",
+            "line": 270,
+            "description": "Trim Right",
+            "itemtype": "method",
+            "name": "trimRight",
+            "static": 1,
+            "params": [
+                {
+                    "name": "p_str",
+                    "description": "",
+                    "type": "String"
+                },
+                {
+                    "name": "p_char",
+                    "description": "",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "String"
+            },
+            "class": "StringUtils"
+        },
+        {
+            "file": "../../source/coffee/slikland/utils/StringUtils.coffee",
+            "line": 285,
+            "description": "Trim left",
+            "itemtype": "method",
+            "name": "trimLeft",
+            "static": 1,
+            "params": [
+                {
+                    "name": "p_str",
+                    "description": "",
+                    "type": "String"
+                },
+                {
+                    "name": "p_char",
+                    "description": "",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "String"
+            },
+            "class": "StringUtils"
+        },
+        {
+            "file": "../../source/coffee/slikland/utils/StringUtils.coffee",
+            "line": 300,
+            "description": "Replace special characters",
+            "itemtype": "method",
+            "name": "replaceSpecialCharacters",
+            "static": 1,
+            "params": [
+                {
+                    "name": "p_string",
+                    "description": "",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "String"
+            },
+            "class": "StringUtils"
+        },
+        {
+            "file": "../../source/coffee/slikland/utils/StringUtils.coffee",
+            "line": 316,
+            "description": "Set strings uppercase",
+            "itemtype": "method",
+            "name": "_upperCase",
+            "access": "private",
+            "tagname": "",
+            "params": [
+                {
+                    "name": "p_char",
+                    "description": "",
+                    "type": "String"
+                },
+                {
+                    "name": "args",
+                    "description": "",
+                    "type": "Object"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "String"
+            },
+            "class": "StringUtils"
+        },
+        {
+            "file": "../../source/coffee/slikland/utils/StringUtils.coffee",
+            "line": 327,
+            "description": "List of space character",
+            "itemtype": "property",
+            "name": "substitionDict",
+            "type": "{Array}",
+            "access": "private",
+            "tagname": "",
+            "return": {
+                "description": "",
+                "type": "String"
+            },
+            "class": "StringUtils"
+        },
+        {
+            "file": "../../source/coffee/slikland/utils/StringUtils.coffee",
+            "line": 336,
+            "description": "Create list of space character",
+            "itemtype": "property",
+            "name": "_initDict",
+            "access": "private",
+            "tagname": "",
+            "type": "{Array}",
+            "return": {
+                "description": "",
+                "type": "Array"
+            },
+            "class": "StringUtils"
+        }
+    ],
+    "warnings": []
+}

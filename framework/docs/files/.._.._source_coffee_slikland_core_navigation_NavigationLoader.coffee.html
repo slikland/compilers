@@ -1,0 +1,697 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>../../source/coffee/slikland/core/navigation/NavigationLoader.coffee - Slikland Framework</title>
+    <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
+    <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
+    <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
+    <link rel="icon" href="../assets/favicon.ico">
+    <script src="http://yui.yahooapis.com/combo?3.9.1/build/yui/yui-min.js"></script>
+</head>
+<body class="yui3-skin-sam">
+
+<div id="doc">
+    <div id="hd" class="yui3-g header">
+        <div class="yui3-u-3-4">
+                <h1><img src="http://slikland.com/media/images/logo_docs.png" title="Slikland Framework"></h1>
+        </div>
+        <div class="yui3-u-1-4 version">
+            <em>API Docs for: 1.0</em>
+        </div>
+    </div>
+    <div id="bd" class="yui3-g">
+
+        <div class="yui3-u-1-4">
+            <div id="docs-sidebar" class="sidebar apidocs">
+                <div id="api-list">
+                    <h2 class="off-left">APIs</h2>
+                    <div id="api-tabview" class="tabview">
+                        <ul class="tabs">
+                            <li><a href="#api-classes">Classes</a></li>
+                            <li><a href="#api-modules">Modules</a></li>
+                        </ul>
+                
+                        <div id="api-tabview-filter">
+                            <input type="search" id="api-filter" placeholder="Type to filter APIs">
+                        </div>
+                
+                        <div id="api-tabview-panel">
+                            <ul id="api-classes" class="apis classes">
+                                <li><a href="../classes/AnimationTicker.html">AnimationTicker</a></li>
+                                <li><a href="../classes/ArrayUtils.html">ArrayUtils</a></li>
+                                <li><a href="../classes/BaseAnimation.html">BaseAnimation</a></li>
+                                <li><a href="../classes/BaseDOM.html">BaseDOM</a></li>
+                                <li><a href="../classes/BaseNavigationController.html">BaseNavigationController</a></li>
+                                <li><a href="../classes/BaseView.html">BaseView</a></li>
+                                <li><a href="../classes/ColorUtils.html">ColorUtils</a></li>
+                                <li><a href="../classes/ConditionsValidation.html">ConditionsValidation</a></li>
+                                <li><a href="../classes/Debug.html">Debug</a></li>
+                                <li><a href="../classes/Detections.html">Detections</a></li>
+                                <li><a href="../classes/EventDispatcher.html">EventDispatcher</a></li>
+                                <li><a href="../classes/MetaController.html">MetaController</a></li>
+                                <li><a href="../classes/Navigation.html">Navigation</a></li>
+                                <li><a href="../classes/NavigationContainer.html">NavigationContainer</a></li>
+                                <li><a href="../classes/NavigationLoader.html">NavigationLoader</a></li>
+                                <li><a href="../classes/NavigationRouter.html">NavigationRouter</a></li>
+                                <li><a href="../classes/PreloadFiles.html">PreloadFiles</a></li>
+                                <li><a href="../classes/Prototypes.html">Prototypes</a></li>
+                                <li><a href="../classes/SpriteSheetAnimation.html">SpriteSheetAnimation</a></li>
+                                <li><a href="../classes/StringUtils.html">StringUtils</a></li>
+                                <li><a href="../classes/ViewsData.html">ViewsData</a></li>
+                            </ul>
+                
+                
+                            <ul id="api-modules" class="apis modules">
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="yui3-u-3-4">
+                <div id="api-options">
+                    Show:
+                    <label for="api-show-inherited">
+                        <input type="checkbox" id="api-show-inherited" checked>
+                        Inherited
+                    </label>
+            
+                    <label for="api-show-protected">
+                        <input type="checkbox" id="api-show-protected">
+                        Protected
+                    </label>
+            
+                    <label for="api-show-private">
+                        <input type="checkbox" id="api-show-private">
+                        Private
+                    </label>
+                    <label for="api-show-deprecated">
+                        <input type="checkbox" id="api-show-deprecated">
+                        Deprecated
+                    </label>
+            
+                </div>
+            
+            <div class="apidocs">
+                <div id="docs-main">
+                    <div class="content">
+<h1 class="file-heading">File: ../../source/coffee/slikland/core/navigation/NavigationLoader.coffee</h1>
+
+<div class="file">
+    <pre class="code prettyprint linenums">
+#import slikland.core.App
+#import slikland.core.debug.Debug
+#import slikland.utils.Prototypes
+
+#import slikland.utils.ArrayUtils
+#import slikland.utils.ObjectUtils
+#import slikland.utils.StringUtils
+#import slikland.utils.JSONUtils
+#import slikland.utils.Detections
+
+#import slikland.loader.AssetLoader
+#import slikland.core.loader.ConditionsValidation
+#import slikland.navigation.display.BaseView
+
+###*
+Base class to setup the navigation and start loading of dependencies.
+
+@class NavigationLoader
+@extends EventDispatcher
+###
+class NavigationLoader extends EventDispatcher
+
+	head = null
+	wrapper = null
+	
+	_mainView = null
+	_preloaderView = null
+
+	app.root = null
+	app.loader = null
+	app.config = {}
+	app.container = {}
+	app.navigation = {}
+	app.conditions = null
+	app.detections = null
+
+	###*
+	@class NavigationLoader
+	@constructor
+	@param {BaseView} p_preloaderView The view of the first loading, it&#x27;s called by the method {{#crossLink &quot;NavigationLoader/createPreloaderView:method&quot;}}{{/crossLink}} and attached on container when the preloader assets is completely loaded.
+	@param {String} [p_configPath = &quot;data/config.json&quot;] Path of the navigation configuration file.
+	@param {HTMLElement} [p_wrapper = null] Custom container to attach the navigation.
+	###
+	constructor:(p_preloaderView, p_configPath = &quot;data/config.json&quot;, p_wrapper=null)-&gt;
+		wrapper = if !(p_wrapper)? then document.body else p_wrapper
+
+		if !(p_configPath)? then throw new Error(&#x27;The param p_configPath is null&#x27;)
+
+		if !(p_preloaderView instanceof BaseView)
+			throw new Error(&#x27;The param p_preloaderView is null or the instance of param p_preloaderView is not either BaseView class&#x27;)
+		else
+			_preloaderView = p_preloaderView 
+		
+		head = document.querySelector(&quot;head&quot;) || document.getElementsByTagName(&quot;head&quot;)[0]
+		app.root = document.querySelector(&quot;base&quot;)?.href || document.getElementsByTagName(&quot;base&quot;)[0]?.href
+		app.loader = @loader = AssetLoader.getInstance()
+		app.detections = Detections.getInstance()
+
+		@loaded = false
+		@queue = @loader.getGroup(&#x27;config&#x27;)
+		@queue.on(AssetLoader.COMPLETE_FILE, @_prepareConfigFile)
+		@queue.loadFile 
+			id: &#x27;config&#x27;,
+			src: if app.root? then app.root+p_configPath else p_configPath
+		false
+	
+	###*
+	@method _prepareConfigFile
+	@param {Event} evt
+	@private
+	###
+	_prepareConfigFile:(evt)=&gt;
+		@queue.off(AssetLoader.COMPLETE_FILE, @_prepareConfigFile)
+		
+		@_parseConfigFile(evt.result)
+		
+		queue = @loader.getGroup(&#x27;preloadContents&#x27;)
+		queue.on(AssetLoader.COMPLETE_ALL, @_createLoadQueue)
+		
+		if app.config.preloadContents.length &gt; 0
+			queue.loadManifest(app.config.preloadContents)
+		else
+			@_createLoadQueue(null)
+		false 
+
+	###*
+	@method _createLoadQueue
+	@param {Event} evt
+	@private
+	###
+	_createLoadQueue:(evt)=&gt;
+		evt?.currentTarget?.off(AssetLoader.COMPLETE_ALL, @_createLoadQueue)
+		
+		@loaderSteps = [
+			{ratio: 0, id: &#x27;config&#x27;}
+		]
+
+		@loaderStep = 0
+		@loaderRatio = 0
+		@currentStep = @loaderSteps[0]
+		
+		check = ObjectUtils.count(evt?.currentTarget?._loadedResults)
+		if check &gt; 0 then @_parseContentFiles(app.config.views, evt.currentTarget._loadedResults)
+
+		queues = app.config.required
+		total = ObjectUtils.count(queues)
+		firstIndexes = @loaderSteps.length
+
+		for k, v of queues
+			switch k
+				when &#x27;preloader&#x27;, &#x27;core&#x27;, &#x27;main&#x27;
+					@loaderSteps.splice(firstIndexes, 0, {id:k, data:v, ratio:(1/total)})
+					firstIndexes++
+				else
+					@loaderSteps.push {id:k, data:v, ratio:(1/total)}
+
+		@queue = @_createLoader(@currentStep.id)
+		if check&gt;0 then @queue.load()
+		false
+	
+	###*
+	@method _parseContentFiles
+	@param {Array} p_views
+	@param {Object} p_data
+	@private
+	###
+	_parseContentFiles:(p_views, p_data)=&gt;
+		ts = new Date().getTime()
+		for node of app.config.required
+			for k, v of app.config.required[node]
+				if typeof v?.content is &#x27;string&#x27;
+					v.content = p_data[v.content]
+					v.content = @_normalizePaths(v.content, app.config.paths)
+					results = JSONUtils.filterObject(v.content, &#x27;src&#x27;, null, null, true)
+					filtered = []
+					for index, obj of results
+						if obj.loadWithView is true || obj.loadWithView is undefined
+							if !obj.id? || obj.id is undefined then obj.id = obj.src
+							
+							if obj.cache isnt undefined
+								cache = if obj.cache is false then cache = &quot;?noCache=&quot;+ts else &quot;&quot;
+							else if v.cache isnt undefined &amp;&amp; v.cache is false
+								cache = &quot;?noCache=&quot;+ts
+							else
+								cache = &quot;&quot;
+							if typeof(obj.src) != &#x27;object&#x27; &amp;&amp; obj.src != &#x27;{}&#x27;
+								obj.src += cache
+								filtered.push obj
+							else
+								cloneSrc = ObjectUtils.clone(obj.src)
+								for i in [0...cloneSrc.length]
+									if cloneSrc[i].condition?
+										if app.conditions.test(cloneSrc[i].condition)
+											if cloneSrc[i].file?
+												obj.src = cloneSrc[i].file+cache
+												filtered.push obj
+											break
+									else
+										if cloneSrc[i].file?
+											obj.src = cloneSrc[i].file+cache
+											filtered.push obj
+											break
+
+							
+					app.config.required[node] = ArrayUtils.merge(app.config.required[node], filtered)
+
+		for k, v of p_views
+			if p_data[v.content]
+				v.content = p_data[v.content]
+				v.content = @_normalizePaths(v.content, app.config.paths)
+				if typeof v.content is &#x27;object&#x27;
+					results = JSONUtils.filterObject(v.content, &#x27;src&#x27;, null, null, true)
+					filtered = []
+					for index, obj of results
+						if obj.loadWithView is true || obj.loadWithView is undefined
+							if !obj.id? || obj.id is undefined then obj.id = obj.src
+							
+							if obj.cache isnt undefined
+								cache = if obj.cache is false then cache = &quot;?noCache=&quot;+ts else &quot;&quot;
+							else if v.cache isnt undefined &amp;&amp; v.cache is false
+								cache = &quot;?noCache=&quot;+ts
+							else
+								cache = &quot;&quot;
+							if typeof(obj.src) != &#x27;object&#x27; &amp;&amp; obj.src != &#x27;{}&#x27;
+								obj.src += cache
+								filtered.push obj
+							else
+								cloneSrc = ObjectUtils.clone(obj.src)
+								for i in [0...cloneSrc.length]
+									if cloneSrc[i].condition?
+										if app.conditions.test(cloneSrc[i].condition)
+											if cloneSrc[i].file?
+												obj.src = cloneSrc[i].file+cache
+												filtered.push obj
+											break
+									else
+										if cloneSrc[i].file?
+											obj.src = cloneSrc[i].file+cache
+											filtered.push obj
+											break
+
+					if !app.config.required[v.id]
+						app.config.required[v.id] = []
+						app.config.required[v.id] = filtered
+					else
+						app.config.required[node] = ArrayUtils.merge(app.config.required[node], filtered)
+
+			if v.subviews then @_parseContentFiles(v.subviews, p_data)
+		false
+
+	###*
+	@method _parseConfigFile
+	@param {Object} p_data
+	@private
+	@return {Object}
+	###
+	_parseConfigFile:(p_data)-&gt;
+		p_data.paths = @_normalizeConfigPaths(p_data.paths)
+		p_data = @_normalizePaths(p_data, p_data.paths)
+
+		if !p_data.preloadContents then p_data.preloadContents = []
+		ts = new Date().getTime()
+		temp = []
+		
+		p_data.conditions ?= {}
+		app.conditions ||= ConditionsValidation.getInstance(p_data.conditions)
+
+		for k, v of p_data.views
+			v.class = StringUtils.toCamelCase(v.class)
+			temp[v.id] = v
+			if v.loadContent &amp;&amp; v.content
+				cache = if v.cache isnt undefined &amp;&amp; v.cache is false then &quot;?noCache=&quot;+ts else &quot;&quot;
+				if typeof(v.content) != &#x27;object&#x27; &amp;&amp; v.content != &#x27;{}&#x27;
+					p_data.preloadContents.push {&#x27;id&#x27;:v.content, &#x27;src&#x27;:v.content+cache}
+				else
+					for i in [0...v.content.length]
+						if v.content[i].condition?
+							if app.conditions.test(v.content[i].condition)
+								if v.content[i].file?
+									p_data.preloadContents.push {&#x27;id&#x27;:v.content[i].file, &#x27;src&#x27;:v.content[i].file+cache}
+								break
+						else
+							if v.content[i].file?
+								p_data.preloadContents.push {&#x27;id&#x27;:v.content[i].file, &#x27;src&#x27;:v.content[i].file+cache}
+								break
+
+		for k, v of p_data.views
+			if v.parentView == v.id then throw new Error(&#x27;The parent view cannot be herself&#x27;)
+
+			if temp[v.parentView]? &amp;&amp; v.parentView != v.id
+				if !temp[v.parentView].subviews then temp[v.parentView].subviews = {}
+				#
+				#  When don&#x27;t set the loadContent to true or cache to false in config file the view inherits of this parent
+				#  console.log v.id, v.loadContent, v.cache
+				# 
+				v.loadContent = if !v.loadContent? then temp[v.parentView].loadContent else v.loadContent
+				temp[v.parentView].subviews[v.id] = v
+				if v.loadContent &amp;&amp; v.content
+					if v.cache isnt undefined
+						cache = if v.cache is false then cache = &quot;?noCache=&quot;+ts else &quot;&quot;
+					else if temp[v.parentView].cache isnt undefined &amp;&amp; temp[v.parentView].cache is false
+						cache = &quot;?noCache=&quot;+ts
+					else
+						cache = &quot;&quot;
+
+					if typeof(v.content) != &#x27;object&#x27; &amp;&amp; v.content != &#x27;{}&#x27;
+						p_data.preloadContents.push {&#x27;id&#x27;:v.content, &#x27;src&#x27;:v.content+cache}
+					else
+						for i in [0...v.content.length]
+							if v.content[i].condition?
+								if app.conditions.test(v.content[i].condition)
+									if v.content[i].file?
+										p_data.preloadContents.push {&#x27;id&#x27;:v.content[i].file, &#x27;src&#x27;:v.content[i].file+cache}
+									break
+							else
+								if v.content[i].file?
+									p_data.preloadContents.push {&#x27;id&#x27;:v.content[i].file, &#x27;src&#x27;:v.content[i].file+cache}
+									break
+		for id of p_data.required
+			for k, v of p_data.required[id]
+				if v.content
+					cache = if v.cache isnt undefined &amp;&amp; v.cache is false then &quot;?noCache=&quot;+ts else &quot;&quot;
+					if typeof(v.content) != &#x27;object&#x27; &amp;&amp; v.content != &#x27;{}&#x27;
+						p_data.preloadContents.push {&#x27;id&#x27;:v.content, &#x27;src&#x27;:v.content+cache}
+					else
+						for i in [0...v.content.length]
+							if v.content[i].condition?
+								if app.conditions.test(v.content[i].condition)
+									if v.content[i].file?
+										p_data.preloadContents.push {&#x27;id&#x27;:v.content[i].file, &#x27;src&#x27;:v.content[i].file+cache}
+									break
+							else
+								if v.content[i].file?
+									p_data.preloadContents.push {&#x27;id&#x27;:v.content[i].file, &#x27;src&#x27;:v.content[i].file+cache}
+									break
+		p_data.views = temp
+		app.config = p_data
+		return p_data
+
+	###*
+	@method _createLoader
+	@param {String} p_id
+	@private
+	@return {createjs.LoadQueue}
+	###
+	_createLoader:(p_id)-&gt;
+		# console.log &quot;id:&quot;, p_id
+		queue = @loader.getGroup(p_id)
+		queue.on(AssetLoader.COMPLETE_FILE, @_loadFileComplete)
+		queue.on(AssetLoader.PROGRESS_ALL, @_loadProgress)
+		queue.on(AssetLoader.COMPLETE_ALL, @_loadComplete)
+		return queue
+
+	###*
+	@method _removeLoader
+	@param {Object} p_queue
+	@private
+	@return {createjs.LoadQueue}
+	###
+	_removeLoader:(p_queue)-&gt;
+		p_queue.removeAllEventListeners(AssetLoader.COMPLETE_FILE)
+		p_queue.removeAllEventListeners(AssetLoader.PROGRESS_ALL)
+		p_queue.removeAllEventListeners(AssetLoader.COMPLETE_ALL)
+		p_queue.destroy()
+		return p_queue
+
+	###*
+	@method _addFiles
+	@param {Object} p_files
+	@private
+	###
+	_addFiles:(p_files)-&gt;
+		ts = new Date().getTime()
+		jsRE = /.*\.(js|css|svg)$/g
+		for f in p_files
+			if f?.src?
+				if !f.id? || f.id is undefined then f.id = f.src
+				if f.src.indexOf(&#x27;.json&#x27;) != -1
+					f.src = f.src
+				jsRE.lastIndex = 0
+				if typeof f is &#x27;string&#x27;
+					if jsRE.test(f) then f = {src: f, type: &#x27;text&#x27;}
+				else if f.src &amp;&amp; jsRE.test(f.src)
+					f[&#x27;type&#x27;] = &#x27;text&#x27;
+				cache = if f.cache isnt undefined &amp;&amp; f.cache is false &amp;&amp; f.src.indexOf(&#x27;?noCache=&#x27;) is -1 then &quot;?noCache=&quot;+ts else &quot;&quot;
+				f.src += cache
+				@queue.loadFile(f, false)
+		if p_files.length &gt; 0
+			@queue.load()
+		false
+	
+	###*
+	@method _normalizeConfigPaths
+	@param {Object} p_paths
+	@private
+	###
+	_normalizeConfigPaths:(p_paths)-&gt;
+		p_pathsStr = JSON.stringify(p_paths)
+		while (o = /\{([^\&quot;\{\}]+)\}/.exec(p_pathsStr))
+			val = p_paths[o[1]]
+			if !val
+				val = &#x27;&#x27;
+			p_pathsStr = p_pathsStr.replace(new RegExp(&#x27;\{&#x27;+o[1]+&#x27;\}&#x27;, &#x27;ig&#x27;), val)
+			p_paths = JSON.parse(p_pathsStr)
+		return p_paths
+
+	###*
+	@method _normalizePaths
+	@param {Object} p_data
+	@param {Object} p_paths
+	@return {Object}
+	@private
+	###
+	_normalizePaths:(p_data, p_paths)-&gt;
+		for k, v of p_paths
+			p_data = JSON.stringify(p_data)
+			p_data = p_data.replace(new RegExp(&#x27;\{&#x27;+k+&#x27;\}&#x27;, &#x27;ig&#x27;), v)
+			p_data = JSON.parse(p_data)
+		return p_data
+
+	###*
+	@method _loadFileComplete
+	@param {Event} evt
+	@private
+	###
+	_loadFileComplete:(evt)=&gt;
+		switch evt.item.ext
+			when &#x27;json&#x27;
+				data = evt.result
+				data = JSONUtils.removeComments(evt.result)
+				data = @_normalizePaths(data, app.config.paths)
+				if typeof(data) isnt &#x27;string&#x27; then data = JSON.stringify(data)
+
+			when &#x27;js&#x27;
+				data = evt.result
+				data = data.replace(/^\/\/.*?(\n|$)/igm, &#x27;&#x27;)
+				if @currentStep.id == &#x27;main&#x27;
+					result = eval(data)
+					_mainView = result
+					_mainView.id = &#x27;main&#x27;
+				else
+					eval(&#x27;(function (){&#x27; + data + &#x27;}).call(self)&#x27;)
+					
+			when &#x27;css&#x27;
+				data = evt.result
+				style = document.createElement(&#x27;style&#x27;)
+				style.id = evt.item.id
+				style.type = &quot;text/css&quot;
+				head.appendChild(style)
+				si = head.querySelectorAll(&#x27;style&#x27;).length
+				
+				try
+					style.appendChild(document.createTextNode(data))
+				catch e
+					if document.all
+						document.styleSheets[si].cssText = data
+		false
+
+	###*
+	@method _loadProgress
+	@param {Event} evt
+	@private
+	###
+	_loadProgress:(evt)=&gt;
+		_preloaderView?.progress = ((evt.loaded / evt.total) * @currentStep.ratio + @loaderRatio)
+		false
+
+	###*
+	@method _loadComplete
+	@param {Event} evt
+	@private
+	###
+	_loadComplete:(evt)=&gt;
+		@_removeLoader(@queue)
+
+		step = @loaderSteps[@loaderStep]
+		if step
+			switch step.id
+				when &#x27;core&#x27;
+					@coreAssetsLoaded()
+					break
+				when &#x27;main&#x27;
+					view = _mainView
+					view.id = step.id
+					@mainAssetsLoaded()
+					break
+				when &#x27;preloader&#x27;
+					view = _preloaderView
+					view.id = step.id
+					@preloaderAssetsLoaded()
+					@createPreloaderView()
+					break
+			for k, v of app.config.required[step.id]
+				if v?.content?
+					view.content = v.content
+					break
+
+		@loaderRatio += step.ratio
+		@loaderStep++
+		
+		if @loaderStep &gt;= @loaderSteps.length
+			@loaded = true
+			return @hidePreloderView()
+
+		@currentStep = @loaderSteps[@loaderStep]
+		@queue = @_createLoader(@currentStep.id)
+		@_addFiles(@currentStep.data)
+
+		if @queue._loadQueue.length + @queue._currentLoads.length is 0 then @_loadComplete()
+		false
+
+	###*
+	@method createPreloaderView
+	@param {Event} [evt=null]
+	@protected
+	###
+	createPreloaderView:(evt=null)=&gt;
+		wrapper.appendChild(_preloaderView.element)
+		_preloaderView.on(BaseView.CREATE_COMPLETE, @showPreloaderView)
+		_preloaderView.createStart()
+		false
+		
+	###*
+	@method showPreloaderView
+	@param {Event} [evt=null]
+	@protected
+	###
+	showPreloaderView:(evt=null)=&gt;
+		_preloaderView.off(BaseView.CREATE_COMPLETE, @showPreloaderView)
+		_preloaderView.showStart()
+		false
+
+	###*
+	@method hidePreloderView
+	@param {Event} [evt=null]
+	@protected
+	###
+	hidePreloderView:(evt=null)=&gt;
+		_preloaderView.on(BaseView.HIDE_COMPLETE, @destroyPreloderView)
+		_preloaderView.progress = 1
+		_preloaderView.hideStart()
+		false
+
+	###*
+	@method destroyPreloderView
+	@param {Event} [evt=null]
+	@protected
+	###
+	destroyPreloderView:(evt=null)=&gt;
+		hiddenFonts = document.getElementById(&#x27;hiddenFonts&#x27;)
+		hiddenFonts?.parentNode?.removeChild(hiddenFonts)
+
+		_preloaderView.off(BaseView.HIDE_COMPLETE, @destroyPreloderView)
+		_preloaderView.on(BaseView.DESTROY_COMPLETE, @_createMainView)
+		_preloaderView.destroy()
+
+		@_removeLoader(@queue)
+		false
+
+	###*
+	@method _createMainView
+	@private
+	###
+	_createMainView:()=&gt;
+		_preloaderView.off(BaseView.DESTROY_COMPLETE, @_createMainView)
+		wrapper.removeChild(_preloaderView.element)
+		_preloaderView = null
+
+		if !(_mainView instanceof BaseView) then throw new Error(&#x27;The instance of Main class is not either BaseView class&#x27;)
+
+		app.container = _mainView
+		wrapper.appendChild(_mainView.element)
+
+		_mainView.on(BaseView.CREATE_COMPLETE, @_showMainView)
+		if app.config.navigation?.startBefore || app.config.navigation?.startBefore is undefined
+			_mainView.setupNavigation(app.config)
+			_mainView.createStart()
+		else
+			_mainView.createStart()
+			_mainView.setupNavigation(app.config)
+
+		false
+	
+	###*
+	@method _showMainView
+	@param {Event} [evt=null]
+	@private
+	###
+	_showMainView:(evt=null)=&gt;
+		_mainView.off(BaseView.CREATE_COMPLETE, @_showMainView)
+		_mainView.showStart()
+		false
+
+	###*
+	Called only when the core assets is completely loaded.
+	@method coreAssetsLoaded
+	@param {Event} [evt=null]
+	###
+	coreAssetsLoaded:(evt=null)=&gt;
+		false
+
+	###*
+	Called only when the preloader assets is completely loaded.
+	@method preloaderAssetsLoaded
+	@param {Event} [evt=null]
+	###
+	preloaderAssetsLoaded:(evt=null)=&gt;
+		false
+
+	###*
+	Called only when the main assets is completely loaded.
+	@method mainAssetsLoaded
+	@param {Event} [evt=null]
+	###
+	mainAssetsLoaded:(evt=null)=&gt;
+		false
+
+    </pre>
+</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="../assets/vendor/prettify/prettify-min.js"></script>
+<script>prettyPrint();</script>
+<script src="../assets/js/yui-prettify.js"></script>
+<script src="../assets/../api.js"></script>
+<script src="../assets/js/api-filter.js"></script>
+<script src="../assets/js/api-list.js"></script>
+<script src="../assets/js/api-search.js"></script>
+<script src="../assets/js/apidocs.js"></script>
+</body>
+</html>

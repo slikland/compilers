@@ -1,5 +1,5 @@
-#import slikland.loader.PreloadFiles
-#import slikland.plugins.preloaderjs.MediaPlugin
+#import slikland.core.loader.PreloadFiles
+#import slikland.vendors.preloaderjs.MediaPlugin
 
 class AssetLoader extends EventDispatcher
 

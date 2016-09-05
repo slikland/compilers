@@ -6,7 +6,6 @@ class EventDispatcher
 
 	# Collection of {Event}
 	_events:null
-	_stackTriggerer:[]
 
 	###*
 	Add a event listener.
@@ -41,7 +40,8 @@ class EventDispatcher
 
 	@method off
 	@param {String} [event=null] Event name.
-	@param {function} [handler=null] A callback function added in the {{#crossLink "EventDispatcher/on:method"}}{{/crossLink}} call.
+	@param {function} [handler=null]
+	A callback function added in the {{#crossLink "EventDispatcher/on:method"}}{{/crossLink}} call.
 	###
 	off:(p_event=null, p_handler=null)->
 		if !@_events
@@ -79,7 +79,7 @@ class EventDispatcher
 		//`event.target` will be window, and event.currentTarget will be the `ev` instance.
 		ed.trigger('someEvent', {someData: true}, window);
 	###
-	trigger:(evt, data = null, target = null)=>
+	trigger:(evt, data = null, target = null, sourceEvent = null)=>
 		if Array.isArray(evt)
 			for e in evt
 				@trigger(evt, data)
@@ -91,7 +91,12 @@ class EventDispatcher
 			return
 		if !target
 			target = @
-		e = {type: evt, target: target, currentTarget: @}
+		e = {type: evt, target: target, currentTarget: @, originalEvent: sourceEvent}
+		if sourceEvent?
+			e.preventDefault = ()->
+				sourceEvent.preventDefault?()
+			e.stopPropagation = ()->
+				sourceEvent.stopPropagation?()
 		if typeof(data) == 'object'
 			for k, v of data
 				if !e[k]
@@ -153,6 +158,8 @@ class EventDispatcher
 
 	###
 	stackTrigger:(evt, data = null, target = null)->
+		if !@_stackTriggerer
+			@_stackTriggerer = []
 		@_stackTriggerer.push([evt, data, target])
 
 		clearTimeout(@_stackTriggerTimeout)
@@ -165,3 +172,4 @@ class EventDispatcher
 			@trigger.apply(@, @_stackTriggerer[i])
 
 		@_stackTriggerer.length = 0
+	

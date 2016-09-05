@@ -2,7 +2,8 @@
 #import core.Watcher
 #import core.Log
 #import core.Notifier
-# import compilers.*
+#import core.Versioner
+#import compilers.*
 
 String::ltrim=(char = null)->
 	if !char
@@ -29,6 +30,7 @@ yuidocs = require('./vendors/yuidocjs')
 exec = require('child_process').exec
 
 class Main
+	
 	constructor:()->
 		@docs = false
 		@ugly = false
@@ -36,9 +38,9 @@ class Main
 		@_buildFile = 'build.coffee'
 		for o in options
 			switch o
-				when 'uglify', 'deploy'
+				when 'uglify'
 					@ugly = true
-				when '-docs'
+				when 'docs'
 					@docs = true
 			if o.indexOf('.coffee') >= 1
 				@_buildFile = o
@@ -59,9 +61,8 @@ class Main
 		@_watcher.on(Watcher.CHANGED, @_fileChanged)
 		@_watcher.on(Watcher.ADDED, @_fileChanged)
 		@_watcher.on(Watcher.REMOVED, @_fileRemoved)
-
+		
 		@_init()
-
 
 	_fileChanged:(e, files)=>
 		files = [].concat(files)
@@ -96,7 +97,7 @@ class Main
 					@lessCompiler.runTasks(false)
 					@stylusCompiler.runTasks(false)
 					@jsCompiler.runTasks(false)
-				when 'uglify', 'deploy'
+				when 'uglify'
 					@coffeeCompiler.runTasks(true)
 					@lessCompiler.runTasks(true)
 					@stylusCompiler.runTasks(true)
@@ -104,6 +105,14 @@ class Main
 				when 'docs'
 					@docs = true
 					@_buildDocs()
+				when 'deploy', 'minify'
+					Log.setStyle('yellow')
+					Log.println('This command has been deprecated, please use [bugfix || build || release] to compile with correct version.')
+				when 'bugfix', 'build', 'release'
+					@coffeeCompiler.runTasks(true, data)
+					@lessCompiler.runTasks(true)
+					@stylusCompiler.runTasks(true)
+					@jsCompiler.runTasks(true)
 				else
 					Log.setStyle('yellow')
 					Log.print('No command ')
@@ -139,6 +148,8 @@ class Main
 		@buildFile.docs['selleck'] = true
 		@buildFile.docs['syntaxtype'] = 'coffee'
 		@buildFile.docs['extension'] = '.coffee'
+
+		
 		@buildFile.docs['paths'] = @buildFile.docs['source']
 		@buildFile.docs['outdir'] = @buildFile.docs['options']['output']
 
@@ -167,12 +178,14 @@ class Main
 		Log.setStyle('cyan')
 		Log.println('In: ' + p_endtime + 's')
 		Notifier.notify('Compiler', 'Docs compilation completed!')
-
+	
 	_buildFileChanged:()=>
 		Log.setStyle('magenta')
 		Log.println('Preparing... please wait')
 		@_reset()
 		@_parseBuildFile()
+
+		# Log.println(@sourcePaths)
 		@coffeeCompiler.start(@sourcePaths)
 		@lessCompiler.start(@sourcePaths)
 		@stylusCompiler.start(@sourcePaths)
