@@ -71,9 +71,9 @@ class Debug
 			t += '\n'
 			t += 'Project'
 			t += '\n'
-			t += 'Version: '+App.PROJECT_VERSION
+			t += 'Version: '+app.getInfo().version
 			t += '\n'
-			t += 'Last update: '+App.PROJECT_DATE
+			t += 'Last update: '+app.getInfo().lastUpdate
 			t += '\n'
 			t += '===================='
 			c = 'color: #' + Math.floor(Math.random()*16777215).toString(16);

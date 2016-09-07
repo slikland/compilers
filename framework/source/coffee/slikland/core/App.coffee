@@ -1,15 +1,25 @@
 #import slikland.event.EventDispatcher
 
 class App extends EventDispatcher
-	@PROJECT : "SL_PROJECT_VERSION:0.0.0"
-	@DATE : "SL_PROJECT_DATE:0000000000000"
+	@project_version_raw : "SL_PROJECT_VERSION:0.0.0"
+	@project_date_raw : "SL_PROJECT_DATE:0000000000000"
 
 	@FRAMEWORK_VERSION : "2.1.9"
-	@PROJECT_VERSION : App.PROJECT.replace('SL_PROJECT_VERSION:', '')
-	@PROJECT_DATE : new Date(parseFloat(App.DATE.replace('SL_PROJECT_DATE:', '')))
 
 	constructor:()->
 		super
+
+	getInfo:()->
+		info = {}
+
+		info.name = "project_name"
+
+		info.versionRaw = if App.project_version_raw == undefined || App.project_version_raw == 'undefined' then 'SL_PROJECT_VERSION:0.0.0' else App.project_version_raw
+		info.version = info.versionRaw.replace('SL_PROJECT_VERSION:', '')
+
+		info.lastUpdateRaw = if App.project_date_raw == undefined || App.project_date_raw == 'undefined' then 'SL_PROJECT_DATE:0000000000000' else App.project_date_raw
+		info.lastUpdate = new Date(parseFloat(info.lastUpdateRaw.replace('SL_PROJECT_DATE:', '')))
+		return info
 
 		@_checkWindowActivity()
 		#

@@ -227,15 +227,23 @@ EventDispatcher = (function() {
 var App, app, windowLoaded;
 App = (function(_super) {
   __extends(App, _super);
-  App.PROJECT = "SL_PROJECT_VERSION:0.1.0";
-  App.DATE = "SL_PROJECT_DATE:1472798577777";
-  App.FRAMEWORK_VERSION = "2.0.7";
-  App.PROJECT_VERSION = App.PROJECT.replace('SL_PROJECT_VERSION:', '');
-  App.PROJECT_DATE = new Date(parseFloat(App.DATE.replace('SL_PROJECT_DATE:', '')));
+  App.project_version_raw = "SL_PROJECT_VERSION:0.0.0";
+  App.project_date_raw = "SL_PROJECT_DATE:0000000000000,SL_PROJECT_DATE:0000000000000,SL_PROJECT_DATE:0000000000000,SL_PROJECT_DATE:0000000000000,SL_PROJECT_DATE:0000000000000,SL_PROJECT_DATE:0000000000000,SL_PROJECT_DATE:0000000000000,SL_PROJECT_DATE:0000000000000,SL_PROJECT_DATE:0000000000000,SL_PROJECT_DATE:0000000000000,SL_PROJECT_DATE:0000000000000,SL_PROJECT_DATE:0000000000000,SL_PROJECT_DATE:0000000000000,SL_PROJECT_DATE:0000000000000,SL_PROJECT_DATE:0000000000000,SL_PROJECT_DATE:0000000000000,SL_PROJECT_DATE:0000000000000,SL_PROJECT_DATE:0000000000000,SL_PROJECT_DATE:0000000000000,SL_PROJECT_DATE:0000000000000,SL_PROJECT_DATE:0000000000000,SL_PROJECT_DATE:0000000000000,SL_PROJECT_DATE:0000000000000,SL_PROJECT_DATE:0000000000000,SL_PROJECT_DATE:0000000000000,SL_PROJECT_DATE:0000000000000,SL_PROJECT_DATE:0000000000000,SL_PROJECT_DATE:0000000000000,SL_PROJECT_DATE:0000000000000,SL_PROJECT_DATE:0000000000000,SL_PROJECT_DATE:0000000000000,SL_PROJECT_DATE:0000000000000,SL_PROJECT_DATE:0000000000000,SL_PROJECT_DATE:0000000000000,SL_PROJECT_DATE:0000000000000,SL_PROJECT_DATE:0000000000000,SL_PROJECT_DATE:0000000000000,SL_PROJECT_DATE:0000000000000,SL_PROJECT_DATE:0000000000000,SL_PROJECT_DATE:0000000000000,SL_PROJECT_DATE:0000000000000,SL_PROJECT_DATE:0000000000000,SL_PROJECT_DATE:0000000000000,SL_PROJECT_DATE:0000000000000,SL_PROJECT_DATE:0000000000000,SL_PROJECT_DATE:0000000000000,SL_PROJECT_DATE:0000000000000,SL_PROJECT_DATE:0000000000000,SL_PROJECT_DATE:0000000000000,SL_PROJECT_DATE:0000000000000,SL_PROJECT_DATE:0000000000000,SL_PROJECT_DATE:0000000000000,SL_PROJECT_DATE:0000000000000,SL_PROJECT_DATE:0000000000000,SL_PROJECT_DATE:0000000000000,SL_PROJECT_DATE:0000000000000,SL_PROJECT_DATE:0000000000000,SL_PROJECT_DATE:0000000000000,SL_PROJECT_DATE:0000000000000,SL_PROJECT_DATE:0000000000000,SL_PROJECT_DATE:0000000000000,SL_PROJECT_DATE:0000000000000,SL_PROJECT_DATE:0000000000000,SL_PROJECT_DATE:0000000000000,SL_PROJECT_DATE:0000000000000,SL_PROJECT_DATE:0000000000000,SL_PROJECT_DATE:0000000000000,SL_PROJECT_DATE:0000000000000,SL_PROJECT_DATE:0000000000000,SL_PROJECT_DATE:0000000000000,SL_PROJECT_DATE:0000000000000,SL_PROJECT_DATE:0000000000000,SL_PROJECT_DATE:0000000000000,SL_PROJECT_DATE:0000000000000,SL_PROJECT_DATE:0000000000000,SL_PROJECT_DATE:0000000000000,SL_PROJECT_DATE:0000000000000,SL_PROJECT_DATE:0000000000000,SL_PROJECT_DATE:0000000000000,SL_PROJECT_DATE:0000000000000,SL_PROJECT_DATE:0000000000000,SL_PROJECT_DATE:0000000000000,SL_PROJECT_DATE:0000000000000,SL_PROJECT_DATE:0000000000000,SL_PROJECT_DATE:0000000000000,SL_PROJECT_DATE:0000000000000,SL_PROJECT_DATE:0000000000000,SL_PROJECT_DATE:0000000000000,SL_PROJECT_DATE:0000000000000,SL_PROJECT_DATE:0000000000000,SL_PROJECT_DATE:0000000000000,SL_PROJECT_DATE:0000000000000,SL_PROJECT_DATE:0000000000000,SL_PROJECT_DATE:0000000000000,SL_PROJECT_DATE:0000000000000,SL_PROJECT_DATE:0000000000000,SL_PROJECT_DATE:0000000000000,SL_PROJECT_DATE:0000000000000,SL_PROJECT_DATE:0000000000000,SL_PROJECT_DATE:0000000000000,SL_PROJECT_DATE:0000000000000,SL_PROJECT_DATE:0000000000000,SL_PROJECT_DATE:0000000000000,SL_PROJECT_DATE:0000000000000,SL_PROJECT_DATE:0000000000000,SL_PROJECT_DATE:0000000000000,SL_PROJECT_DATE:0000000000000,SL_PROJECT_DATE:0000000000000,SL_PROJECT_DATE:0000000000000,SL_PROJECT_DATE:0000000000000,SL_PROJECT_DATE:0000000000000,SL_PROJECT_DATE:0000000000000,SL_PROJECT_DATE:0000000000000,SL_PROJECT_DATE:0000000000000,SL_PROJECT_DATE:0000000000000,SL_PROJECT_DATE:0000000000000,SL_PROJECT_DATE:0000000000000,SL_PROJECT_DATE:0000000000000,SL_PROJECT_DATE:0000000000000,SL_PROJECT_DATE:0000000000000,SL_PROJECT_DATE:0000000000000,SL_PROJECT_DATE:0000000000000,SL_PROJECT_DATE:0000000000000,SL_PROJECT_DATE:0000000000000,SL_PROJECT_DATE:0000000000000,SL_PROJECT_DATE:0000000000000,SL_PROJECT_DATE:0000000000000,SL_PROJECT_DATE:0000000000000";
+  App.FRAMEWORK_VERSION = "2.1.9";
   function App() {
     App.__super__.constructor.apply(this, arguments);
-    this._checkWindowActivity();
   }
+  App.prototype.getInfo = function() {
+    var info;
+    info = {};
+    info.name = "project_name";
+    info.versionRaw = App.project_version_raw === void 0 || App.project_version_raw === 'undefined' ? 'SL_PROJECT_VERSION:0.0.0' : App.project_version_raw;
+    info.version = info.versionRaw.replace('SL_PROJECT_VERSION:', '');
+    info.lastUpdateRaw = App.project_date_raw === void 0 || App.project_date_raw === 'undefined' ? 'SL_PROJECT_DATE:0000000000000,SL_PROJECT_DATE:0000000000000,SL_PROJECT_DATE:0000000000000,SL_PROJECT_DATE:0000000000000,SL_PROJECT_DATE:0000000000000,SL_PROJECT_DATE:0000000000000,SL_PROJECT_DATE:0000000000000,SL_PROJECT_DATE:0000000000000,SL_PROJECT_DATE:0000000000000,SL_PROJECT_DATE:0000000000000,SL_PROJECT_DATE:0000000000000,SL_PROJECT_DATE:0000000000000,SL_PROJECT_DATE:0000000000000,SL_PROJECT_DATE:0000000000000,SL_PROJECT_DATE:0000000000000,SL_PROJECT_DATE:0000000000000,SL_PROJECT_DATE:0000000000000,SL_PROJECT_DATE:0000000000000,SL_PROJECT_DATE:0000000000000,SL_PROJECT_DATE:0000000000000,SL_PROJECT_DATE:0000000000000,SL_PROJECT_DATE:0000000000000,SL_PROJECT_DATE:0000000000000,SL_PROJECT_DATE:0000000000000,SL_PROJECT_DATE:0000000000000,SL_PROJECT_DATE:0000000000000,SL_PROJECT_DATE:0000000000000,SL_PROJECT_DATE:0000000000000,SL_PROJECT_DATE:0000000000000,SL_PROJECT_DATE:0000000000000,SL_PROJECT_DATE:0000000000000,SL_PROJECT_DATE:0000000000000,SL_PROJECT_DATE:0000000000000,SL_PROJECT_DATE:0000000000000,SL_PROJECT_DATE:0000000000000,SL_PROJECT_DATE:0000000000000,SL_PROJECT_DATE:0000000000000,SL_PROJECT_DATE:0000000000000,SL_PROJECT_DATE:0000000000000,SL_PROJECT_DATE:0000000000000,SL_PROJECT_DATE:0000000000000,SL_PROJECT_DATE:0000000000000,SL_PROJECT_DATE:0000000000000,SL_PROJECT_DATE:0000000000000,SL_PROJECT_DATE:0000000000000,SL_PROJECT_DATE:0000000000000,SL_PROJECT_DATE:0000000000000,SL_PROJECT_DATE:0000000000000,SL_PROJECT_DATE:0000000000000,SL_PROJECT_DATE:0000000000000,SL_PROJECT_DATE:0000000000000,SL_PROJECT_DATE:0000000000000,SL_PROJECT_DATE:0000000000000,SL_PROJECT_DATE:0000000000000,SL_PROJECT_DATE:0000000000000,SL_PROJECT_DATE:0000000000000,SL_PROJECT_DATE:0000000000000,SL_PROJECT_DATE:0000000000000,SL_PROJECT_DATE:0000000000000,SL_PROJECT_DATE:0000000000000,SL_PROJECT_DATE:0000000000000,SL_PROJECT_DATE:0000000000000,SL_PROJECT_DATE:0000000000000,SL_PROJECT_DATE:0000000000000,SL_PROJECT_DATE:0000000000000,SL_PROJECT_DATE:0000000000000,SL_PROJECT_DATE:0000000000000,SL_PROJECT_DATE:0000000000000,SL_PROJECT_DATE:0000000000000,SL_PROJECT_DATE:0000000000000,SL_PROJECT_DATE:0000000000000,SL_PROJECT_DATE:0000000000000,SL_PROJECT_DATE:0000000000000,SL_PROJECT_DATE:0000000000000,SL_PROJECT_DATE:0000000000000,SL_PROJECT_DATE:0000000000000,SL_PROJECT_DATE:0000000000000,SL_PROJECT_DATE:0000000000000,SL_PROJECT_DATE:0000000000000,SL_PROJECT_DATE:0000000000000,SL_PROJECT_DATE:0000000000000,SL_PROJECT_DATE:0000000000000,SL_PROJECT_DATE:0000000000000,SL_PROJECT_DATE:0000000000000,SL_PROJECT_DATE:0000000000000,SL_PROJECT_DATE:0000000000000,SL_PROJECT_DATE:0000000000000,SL_PROJECT_DATE:0000000000000,SL_PROJECT_DATE:0000000000000,SL_PROJECT_DATE:0000000000000,SL_PROJECT_DATE:0000000000000,SL_PROJECT_DATE:0000000000000,SL_PROJECT_DATE:0000000000000,SL_PROJECT_DATE:0000000000000,SL_PROJECT_DATE:0000000000000,SL_PROJECT_DATE:0000000000000,SL_PROJECT_DATE:0000000000000,SL_PROJECT_DATE:0000000000000,SL_PROJECT_DATE:0000000000000,SL_PROJECT_DATE:0000000000000,SL_PROJECT_DATE:0000000000000,SL_PROJECT_DATE:0000000000000,SL_PROJECT_DATE:0000000000000,SL_PROJECT_DATE:0000000000000,SL_PROJECT_DATE:0000000000000,SL_PROJECT_DATE:0000000000000,SL_PROJECT_DATE:0000000000000,SL_PROJECT_DATE:0000000000000,SL_PROJECT_DATE:0000000000000,SL_PROJECT_DATE:0000000000000,SL_PROJECT_DATE:0000000000000,SL_PROJECT_DATE:0000000000000,SL_PROJECT_DATE:0000000000000,SL_PROJECT_DATE:0000000000000,SL_PROJECT_DATE:0000000000000,SL_PROJECT_DATE:0000000000000,SL_PROJECT_DATE:0000000000000,SL_PROJECT_DATE:0000000000000,SL_PROJECT_DATE:0000000000000,SL_PROJECT_DATE:0000000000000,SL_PROJECT_DATE:0000000000000,SL_PROJECT_DATE:0000000000000,SL_PROJECT_DATE:0000000000000,SL_PROJECT_DATE:0000000000000,SL_PROJECT_DATE:0000000000000,SL_PROJECT_DATE:0000000000000,SL_PROJECT_DATE:0000000000000,SL_PROJECT_DATE:0000000000000' : App.project_date_raw;
+    info.lastUpdate = new Date(parseFloat(info.lastUpdateRaw.replace('SL_PROJECT_DATE:', '')));
+    return info;
+    return this._checkWindowActivity();
+  };
   App.prototype._checkWindowActivity = function() {
     var _ref, _ref1, _ref2, _ref3;
     this._hidden = 'hidden';
@@ -387,9 +395,9 @@ Debug = (function() {
       t += '\n';
       t += 'Project';
       t += '\n';
-      t += 'Version: ' + App.PROJECT_VERSION;
+      t += 'Version: ' + app.getInfo().version;
       t += '\n';
-      t += 'Last update: ' + App.PROJECT_DATE;
+      t += 'Last update: ' + app.getInfo().lastUpdate;
       t += '\n';
       t += '====================';
       c = 'color: #' + Math.floor(Math.random() * 16777215).toString(16);
@@ -3779,7 +3787,7 @@ BaseView = (function(_super) {
     if (evt == null) {
       evt = null;
     }
-    this.stackTrigger(BaseView.CREATE_START, this);
+    this.trigger(BaseView.CREATE_START, this);
     this.create();
     return false;
   };
@@ -3793,7 +3801,7 @@ BaseView = (function(_super) {
     if (evt == null) {
       evt = null;
     }
-    this.stackTrigger(BaseView.CREATE, this);
+    this.trigger(BaseView.CREATE, this);
     this.createComplete();
     return false;
   };
@@ -3807,7 +3815,7 @@ BaseView = (function(_super) {
       evt = null;
     }
     this._created = true;
-    this.stackTrigger(BaseView.CREATE_COMPLETE, this);
+    this.trigger(BaseView.CREATE_COMPLETE, this);
     return false;
   };
   /**
@@ -3820,7 +3828,7 @@ BaseView = (function(_super) {
     if (evt == null) {
       evt = null;
     }
-    this.stackTrigger(BaseView.SHOW_START, this);
+    this.trigger(BaseView.SHOW_START, this);
     _meta.change(this.meta);
     this.show();
     return false;
@@ -3835,7 +3843,7 @@ BaseView = (function(_super) {
     if (evt == null) {
       evt = null;
     }
-    this.stackTrigger(BaseView.SHOW, this);
+    this.trigger(BaseView.SHOW, this);
     this.showComplete();
     return false;
   };
@@ -3849,7 +3857,7 @@ BaseView = (function(_super) {
       evt = null;
     }
     this._showed = true;
-    this.stackTrigger(BaseView.SHOW_COMPLETE, this);
+    this.trigger(BaseView.SHOW_COMPLETE, this);
     return false;
   };
   /**
@@ -3862,7 +3870,7 @@ BaseView = (function(_super) {
     if (evt == null) {
       evt = null;
     }
-    this.stackTrigger(BaseView.HIDE_START, this);
+    this.trigger(BaseView.HIDE_START, this);
     this.hide();
     return false;
   };
@@ -3877,7 +3885,7 @@ BaseView = (function(_super) {
       evt = null;
     }
     this._showed = false;
-    this.stackTrigger(BaseView.HIDE, this);
+    this.trigger(BaseView.HIDE, this);
     this.hideComplete();
     return false;
   };
@@ -3890,7 +3898,7 @@ BaseView = (function(_super) {
     if (evt == null) {
       evt = null;
     }
-    this.stackTrigger(BaseView.HIDE_COMPLETE, this);
+    this.trigger(BaseView.HIDE_COMPLETE, this);
     return false;
   };
   /**
@@ -3899,7 +3907,7 @@ BaseView = (function(_super) {
   	@method pause
    */
   BaseView.prototype.pause = function() {
-    this.stackTrigger(BaseView.PAUSE, this);
+    this.trigger(BaseView.PAUSE, this);
     return false;
   };
   /**
@@ -3908,7 +3916,7 @@ BaseView = (function(_super) {
   	@method pause
    */
   BaseView.prototype.resume = function() {
-    this.stackTrigger(BaseView.RESUME, this);
+    this.trigger(BaseView.RESUME, this);
     return false;
   };
   /**
@@ -4017,7 +4025,7 @@ NavigationLoader = (function(_super) {
     this.queue.on(AssetLoader.COMPLETE_FILE, this._prepareConfigFile);
     this.queue.loadFile({
       id: 'config',
-      src: app.root != null ? app.root + p_configPath : p_configPath
+      src: (app.root != null ? app.root + p_configPath : p_configPath) + "?version=" + app.getInfo().version
     });
     false;
   }
@@ -4119,11 +4127,11 @@ NavigationLoader = (function(_super) {
                 obj.id = obj.src;
               }
               if (obj.cache !== void 0) {
-                cache = obj.cache === false ? cache = "?noCache=" + ts : "";
+                cache = obj.cache === false ? "?version=" + app.getInfo().version + "&noCache=" + ts : "?version=" + app.getInfo().version;
               } else if (v.cache !== void 0 && v.cache === false) {
-                cache = "?noCache=" + ts;
+                cache = "?version=" + app.getInfo().version + "&noCache=" + ts;
               } else {
-                cache = "";
+                cache = "?version=" + app.getInfo().version;
               }
               if (typeof obj.src !== 'object' && obj.src !== '{}') {
                 obj.src += cache;
@@ -4169,11 +4177,11 @@ NavigationLoader = (function(_super) {
                 obj.id = obj.src;
               }
               if (obj.cache !== void 0) {
-                cache = obj.cache === false ? cache = "?noCache=" + ts : "";
+                cache = obj.cache === false ? "?version=" + app.getInfo().version + "&noCache=" + ts : "?version=" + app.getInfo().version;
               } else if (v.cache !== void 0 && v.cache === false) {
-                cache = "?noCache=" + ts;
+                cache = "?version=" + app.getInfo().version + "&noCache=" + ts;
               } else {
-                cache = "";
+                cache = "?version=" + app.getInfo().version;
               }
               if (typeof obj.src !== 'object' && obj.src !== '{}') {
                 obj.src += cache;
@@ -4239,7 +4247,7 @@ NavigationLoader = (function(_super) {
       v["class"] = StringUtils.toCamelCase(v["class"]);
       temp[v.id] = v;
       if (v.loadContent && v.content) {
-        cache = v.cache !== void 0 && v.cache === false ? "?noCache=" + ts : "";
+        cache = v.cache !== void 0 && v.cache === false ? "?version=" + app.getInfo().version + "&noCache=" + ts : "?version=" + app.getInfo().version;
         if (typeof v.content !== 'object' && v.content !== '{}') {
           p_data.preloadContents.push({
             'id': v.content,
@@ -4284,11 +4292,11 @@ NavigationLoader = (function(_super) {
         temp[v.parentView].subviews[v.id] = v;
         if (v.loadContent && v.content) {
           if (v.cache !== void 0) {
-            cache = v.cache === false ? cache = "?noCache=" + ts : "";
+            cache = v.cache === false ? "?version=" + app.getInfo().version + "&noCache=" + ts : "?version=" + app.getInfo().version;
           } else if (temp[v.parentView].cache !== void 0 && temp[v.parentView].cache === false) {
-            cache = "?noCache=" + ts;
+            cache = "?version=" + app.getInfo().version + "&noCache=" + ts;
           } else {
-            cache = "";
+            cache = "?version=" + app.getInfo().version;
           }
           if (typeof v.content !== 'object' && v.content !== '{}') {
             p_data.preloadContents.push({
@@ -4326,7 +4334,7 @@ NavigationLoader = (function(_super) {
       for (k in _ref4) {
         v = _ref4[k];
         if (v.content) {
-          cache = v.cache !== void 0 && v.cache === false ? "?noCache=" + ts : "";
+          cache = v.cache !== void 0 && v.cache === false ? "?version=" + app.getInfo().version + "&noCache=" + ts : "?version=" + app.getInfo().version;
           if (typeof v.content !== 'object' && v.content !== '{}') {
             p_data.preloadContents.push({
               'id': v.content,
@@ -4418,7 +4426,15 @@ NavigationLoader = (function(_super) {
         } else if (f.src && jsRE.test(f.src)) {
           f['type'] = 'text';
         }
-        cache = f.cache !== void 0 && f.cache === false && f.src.indexOf('?noCache=') === -1 ? "?noCache=" + ts : "";
+        if (f.cache !== void 0 && f.cache === false && f.src.indexOf('&noCache=') === -1) {
+          cache = "?version=" + app.getInfo().version + "&noCache=" + ts;
+        } else {
+          if (f.src.indexOf('?version=') === -1) {
+            cache = "?version=" + app.getInfo().version;
+          } else {
+            cache = "";
+          }
+        }
         f.src += cache;
         this.queue.loadFile(f, false);
       }

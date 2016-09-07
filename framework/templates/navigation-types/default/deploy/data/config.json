@@ -49,7 +49,7 @@
 			"class":"template-home-view",
 			"route":"/",
 			"content":"{base}data/home.json",
-			"cache":true,
+			"cache":false,
 			"destroyable":true,
 			"loadContent":true
 		},
@@ -57,10 +57,18 @@
 			"id":"sub1",
 			"class":"template-sub-view",
 			"content":"{base}data/sub1.json",
+			"content":[
+				{
+					"condition":"mobile"
+				},
+				{
+					"file":"{base}data/sub1.json"
+				}
+			],
 			"route":"/sub-view-01",
 			"destroyable":true,
 			"loadContent":true,
-			"cache":true
+			"cache":false
 		},
 		{
 			"id":"sub2",
@@ -69,7 +77,7 @@
 			"route":"/sub-view-02",
 			"destroyable":true,
 			"loadContent":true,
-			"cache":true
+			"cache":false
 		},
 		{
 			"id":"sub3",
@@ -78,7 +86,7 @@
 			"route":"/sub-view-03",
 			"destroyable":true,
 			"loadContent":true,
-			"cache":true
+			"cache":false
 		},
 		{
 			"id":"sub4",
@@ -87,7 +95,7 @@
 			"route":"/sub-view-04",
 			"destroyable":true,
 			"loadContent":true,
-			"cache":true
+			"cache":false
 		},
 		{
 			"id":"sub5",
@@ -96,7 +104,7 @@
 			"route":"/sub-view-05",
 			"destroyable":true,
 			"loadContent":true,
-			"cache":true
+			"cache":false
 		}
 	],
 	"required":
@@ -105,28 +113,33 @@
 		[
 			{
 				"id": "preloader-css",
-				"src": "{base}css/preloader.css"
+				"src": "{base}css/preloader.css",
+				"cache":false
 			},
 			{
-				"content":"{base}data/preloader.json"
+				"content":"{base}data/preloader.json",
+				"cache":false
 			}
 		],
 		"core":
 		[
 			{
 				"id":"vendors",
-				"src":"{base}js/vendors.js"
+				"src":"{base}js/vendors.js",
+				"cache":false
 			}
 		],
 		"main":
 		[
 			{
 				"id": "main-css",
-				"src": "{base}css/main.css"
+				"src": "{base}css/main.css",
+				"cache":false
 			},
 			{
 				"id": "main-js",
-				"src": "{base}js/main.js"
+				"src": "{base}js/main.js",
+				"cache":false
 			}
 		]
 	}
