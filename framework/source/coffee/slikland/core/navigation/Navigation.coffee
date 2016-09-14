@@ -200,10 +200,7 @@ class Navigation extends EventDispatcher
 	gotoDefault:(p_trigger=false)=>
 		if app.config.navigation?.defaultView?
 			view = app.config.navigation.defaultView
-			if view.indexOf('/') == 0
-				@gotoRoute(@getRouteByView(view), p_trigger)
-			else
-				@gotoView(view)
+			@gotoRoute(@getRouteByView(view), p_trigger)
 		false
 
 	###*

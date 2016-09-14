@@ -148,7 +148,7 @@ class ConditionsValidation
 	```	
 	###
 	test:(p_args)->
-		parsed = p_args.replace(new RegExp(/\w+/g), "validate('$&')")
+		parsed = p_args.replace(new RegExp(/[a-zA-Z0-9-_]+/g), "validate('$&')")
 		validate = @validate
 		return eval('(function(){return (' + parsed + ');})();')
 

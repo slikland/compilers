@@ -1,4 +1,5 @@
 #import slikland.core.loader.PreloadFiles
+#import slikland.vendors.preloaderjs.CacheControllerPlugin
 #import slikland.vendors.preloaderjs.MediaPlugin
 
 class AssetLoader extends EventDispatcher
@@ -34,6 +35,7 @@ class AssetLoader extends EventDispatcher
 		group = @_groups[p_groupId]
 		if !group
 			group = new createjs.LoadQueue(p_xhr)
+			group.installPlugin(createjs.CacheControllerPlugin)
 			group.installPlugin(createjs.MediaPlugin)
 			group.id = p_groupId
 			@_groups[p_groupId] = group
@@ -51,11 +53,8 @@ class AssetLoader extends EventDispatcher
 		e.currentTarget.off(AssetLoader.COMPLETE_FILE, @_fileLoad)
 		e.currentTarget.off(AssetLoader.ERROR, @_onError)
 		e.currentTarget.off(AssetLoader.FILE_ERROR, @_onError)
-		try
-			console.log e.data
-			throw new Error(e.title)
-		catch err
-			console.log err.stack
+		
+		throw new Error(e.title).stack
 		false
 
 	_fileLoad:(e)=>

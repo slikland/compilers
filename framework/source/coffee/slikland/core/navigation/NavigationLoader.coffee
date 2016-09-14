@@ -61,7 +61,7 @@ class NavigationLoader extends EventDispatcher
 		@queue.on(AssetLoader.COMPLETE_FILE, @_prepareConfigFile)
 		@queue.loadFile 
 			id: 'config',
-			src: (if app.root? then app.root+p_configPath else p_configPath)+"?version="+app.getInfo().version
+			src: (if app.root? then app.root+p_configPath else p_configPath)
 		false
 	
 	###*
@@ -107,6 +107,7 @@ class NavigationLoader extends EventDispatcher
 		firstIndexes = @loaderSteps.length
 
 		for k, v of queues
+			# console.log k, v
 			switch k
 				when 'preloader', 'core', 'main'
 					@loaderSteps.splice(firstIndexes, 0, {id:k, data:v, ratio:(1/total)})
@@ -125,7 +126,6 @@ class NavigationLoader extends EventDispatcher
 	@private
 	###
 	_parseContentFiles:(p_views, p_data)=>
-		ts = new Date().getTime()
 		for node of app.config.required
 			for k, v of app.config.required[node]
 				if typeof v?.content is 'string'
@@ -136,15 +136,7 @@ class NavigationLoader extends EventDispatcher
 					for index, obj of results
 						if obj.loadWithView is true || obj.loadWithView is undefined
 							if !obj.id? || obj.id is undefined then obj.id = obj.src
-							
-							if obj.cache isnt undefined
-								cache = if obj.cache is false then "?version="+app.getInfo().version+"&noCache="+ts else "?version="+app.getInfo().version
-							else if v.cache isnt undefined && v.cache is false
-								cache = "?version="+app.getInfo().version+"&noCache="+ts
-							else
-								cache = "?version="+app.getInfo().version
 							if typeof(obj.src) != 'object' && obj.src != '{}'
-								obj.src += cache
 								filtered.push obj
 							else
 								cloneSrc = ObjectUtils.clone(obj.src)
@@ -152,16 +144,14 @@ class NavigationLoader extends EventDispatcher
 									if cloneSrc[i].condition?
 										if app.conditions.test(cloneSrc[i].condition)
 											if cloneSrc[i].file?
-												obj.src = cloneSrc[i].file+cache
+												obj.src = cloneSrc[i].file
 												filtered.push obj
 											break
 									else
 										if cloneSrc[i].file?
-											obj.src = cloneSrc[i].file+cache
+											obj.src = cloneSrc[i].file
 											filtered.push obj
 											break
-
-							
 					app.config.required[node] = ArrayUtils.merge(app.config.required[node], filtered)
 
 		for k, v of p_views
@@ -174,15 +164,7 @@ class NavigationLoader extends EventDispatcher
 					for index, obj of results
 						if obj.loadWithView is true || obj.loadWithView is undefined
 							if !obj.id? || obj.id is undefined then obj.id = obj.src
-							
-							if obj.cache isnt undefined
-								cache = if obj.cache is false then "?version="+app.getInfo().version+"&noCache="+ts else "?version="+app.getInfo().version
-							else if v.cache isnt undefined && v.cache is false
-								cache = "?version="+app.getInfo().version+"&noCache="+ts
-							else
-								cache = "?version="+app.getInfo().version
 							if typeof(obj.src) != 'object' && obj.src != '{}'
-								obj.src += cache
 								filtered.push obj
 							else
 								cloneSrc = ObjectUtils.clone(obj.src)
@@ -190,12 +172,12 @@ class NavigationLoader extends EventDispatcher
 									if cloneSrc[i].condition?
 										if app.conditions.test(cloneSrc[i].condition)
 											if cloneSrc[i].file?
-												obj.src = cloneSrc[i].file+cache
+												obj.src = cloneSrc[i].file
 												filtered.push obj
 											break
 									else
 										if cloneSrc[i].file?
-											obj.src = cloneSrc[i].file+cache
+											obj.src = cloneSrc[i].file
 											filtered.push obj
 											break
 
@@ -204,7 +186,6 @@ class NavigationLoader extends EventDispatcher
 						app.config.required[v.id] = filtered
 					else
 						app.config.required[node] = ArrayUtils.merge(app.config.required[node], filtered)
-
 			if v.subviews then @_parseContentFiles(v.subviews, p_data)
 		false
 
@@ -215,11 +196,11 @@ class NavigationLoader extends EventDispatcher
 	@return {Object}
 	###
 	_parseConfigFile:(p_data)->
+		console.log p_data
 		p_data.paths = @_normalizeConfigPaths(p_data.paths)
 		p_data = @_normalizePaths(p_data, p_data.paths)
 
 		if !p_data.preloadContents then p_data.preloadContents = []
-		ts = new Date().getTime()
 		temp = []
 		
 		p_data.conditions ?= {}
@@ -229,19 +210,18 @@ class NavigationLoader extends EventDispatcher
 			v.class = StringUtils.toCamelCase(v.class)
 			temp[v.id] = v
 			if v.loadContent && v.content
-				cache = if v.cache isnt undefined && v.cache is false then "?version="+app.getInfo().version+"&noCache="+ts else "?version="+app.getInfo().version
 				if typeof(v.content) != 'object' && v.content != '{}'
-					p_data.preloadContents.push {'id':v.content, 'src':v.content+cache}
+					p_data.preloadContents.push {'id':v.content, 'src':v.content}
 				else
 					for i in [0...v.content.length]
 						if v.content[i].condition?
 							if app.conditions.test(v.content[i].condition)
 								if v.content[i].file?
-									p_data.preloadContents.push {'id':v.content[i].file, 'src':v.content[i].file+cache}
+									p_data.preloadContents.push {'id':v.content[i].file, 'src':v.content[i].file}
 								break
 						else
 							if v.content[i].file?
-								p_data.preloadContents.push {'id':v.content[i].file, 'src':v.content[i].file+cache}
+								p_data.preloadContents.push {'id':v.content[i].file, 'src':v.content[i].file}
 								break
 
 		for k, v of p_data.views
@@ -249,52 +229,43 @@ class NavigationLoader extends EventDispatcher
 
 			if temp[v.parentView]? && v.parentView != v.id
 				if !temp[v.parentView].subviews then temp[v.parentView].subviews = {}
-				#
-				#  When don't set the loadContent to true or cache to false in config file the view inherits of this parent
-				#  console.log v.id, v.loadContent, v.cache
-				# 
+
 				v.loadContent = if !v.loadContent? then temp[v.parentView].loadContent else v.loadContent
 				temp[v.parentView].subviews[v.id] = v
 				if v.loadContent && v.content
-					if v.cache isnt undefined
-						cache = if v.cache is false then "?version="+app.getInfo().version+"&noCache="+ts else "?version="+app.getInfo().version
-					else if temp[v.parentView].cache isnt undefined && temp[v.parentView].cache is false
-						cache = "?version="+app.getInfo().version+"&noCache="+ts
-					else
-						cache = "?version="+app.getInfo().version
-
 					if typeof(v.content) != 'object' && v.content != '{}'
-						p_data.preloadContents.push {'id':v.content, 'src':v.content+cache}
+						p_data.preloadContents.push {'id':v.content, 'src':v.content}
 					else
 						for i in [0...v.content.length]
 							if v.content[i].condition?
 								if app.conditions.test(v.content[i].condition)
 									if v.content[i].file?
-										p_data.preloadContents.push {'id':v.content[i].file, 'src':v.content[i].file+cache}
+										p_data.preloadContents.push {'id':v.content[i].file, 'src':v.content[i].file}
 									break
 							else
 								if v.content[i].file?
-									p_data.preloadContents.push {'id':v.content[i].file, 'src':v.content[i].file+cache}
+									p_data.preloadContents.push {'id':v.content[i].file, 'src':v.content[i].file}
 									break
 		for id of p_data.required
 			for k, v of p_data.required[id]
 				if v.content
-					cache = if v.cache isnt undefined && v.cache is false then "?version="+app.getInfo().version+"&noCache="+ts else "?version="+app.getInfo().version
 					if typeof(v.content) != 'object' && v.content != '{}'
-						p_data.preloadContents.push {'id':v.content, 'src':v.content+cache}
+						if !v.id || v.id is undefined then v.id = v.content
+						p_data.preloadContents.push {'id':v.content, 'src':v.content}
 					else
 						for i in [0...v.content.length]
 							if v.content[i].condition?
 								if app.conditions.test(v.content[i].condition)
 									if v.content[i].file?
-										p_data.preloadContents.push {'id':v.content[i].file, 'src':v.content[i].file+cache}
+										p_data.preloadContents.push {'id':v.content[i].file, 'src':v.content[i].file}
 									break
 							else
 								if v.content[i].file?
-									p_data.preloadContents.push {'id':v.content[i].file, 'src':v.content[i].file+cache}
+									p_data.preloadContents.push {'id':v.content[i].file, 'src':v.content[i].file}
 									break
 		p_data.views = temp
 		app.config = p_data
+		console.log p_data
 		return p_data
 
 	###*
@@ -330,7 +301,6 @@ class NavigationLoader extends EventDispatcher
 	@private
 	###
 	_addFiles:(p_files)->
-		ts = new Date().getTime()
 		jsRE = /.*\.(js|css|svg)$/g
 		for f in p_files
 			if f?.src?
@@ -343,14 +313,6 @@ class NavigationLoader extends EventDispatcher
 				else if f.src && jsRE.test(f.src)
 					f['type'] = 'text'
 				
-				if f.cache isnt undefined && f.cache is false && f.src.indexOf('&noCache=') is -1
-					cache = "?version="+app.getInfo().version+"&noCache="+ts
-				else
-					if f.src.indexOf('?version=') is -1
-						cache = "?version="+app.getInfo().version
-					else
-						cache = ""
-				f.src += cache
 				@queue.loadFile(f, false)
 		if p_files.length > 0
 			@queue.load()

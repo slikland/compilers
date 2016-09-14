@@ -1227,11 +1227,7 @@ Navigation = (function(_super) {
     }
     if (((_ref = app.config.navigation) != null ? _ref.defaultView : void 0) != null) {
       view = app.config.navigation.defaultView;
-      if (view.indexOf('/') === 0) {
-        this.gotoRoute(this.getRouteByView(view), p_trigger);
-      } else {
-        this.gotoView(view);
-      }
+      this.gotoRoute(this.getRouteByView(view), p_trigger);
     }
     return false;
   };
