@@ -1,4 +1,5 @@
 class Versioner extends EventDispatcher
+	running = false
 	path = null
 	resultVersion = null
 	resultDate = null
@@ -17,9 +18,10 @@ class Versioner extends EventDispatcher
 		Log.println()
 
 	readFile:(p_path)=>
-		return if !@hasFile()
+		return if !@hasFile() || @running
 
 		try
+			@running = true
 			data = fs.readFileSync(p_path, 'utf8')
 		catch err
 			@notify(err, 'magenta')
@@ -27,38 +29,44 @@ class Versioner extends EventDispatcher
 		if @versionRegex.test(data)
 			resultVersion = String(data.match(@versionRegex))
 			resultDate = String(data.match(@dateRegex))
+		@running = false
 
 	nextVersion:(p_type)=>
-		if !resultVersion
+		if !resultVersion || @running
 			return null
-
+		
+		@running = true
 		version = resultVersion.replace('SL_PROJECT_VERSION:', '')
-		date = resultDate.replace('SL_PROJECT_DATE:', '')
+		now = resultDate.replace('SL_PROJECT_DATE:', '')
 		values = version.split('.')
+
 		release = parseInt(values[0])
 		build = parseInt(values[1])
 		bugfix = parseInt(values[2])
-		
+
 		switch p_type
 			when 'release'
 				release += 1
-				date = Date.now()
+				now = Date.now()
 			when 'build'
 				build += 1
-				date = Date.now()
+				now = Date.now()
 			when 'bugfix'
 				bugfix += 1
-				date = Date.now()
+				now = Date.now()
 
-		resultDate = 'SL_PROJECT_DATE:' + date
+		resultDate = 'SL_PROJECT_DATE:' + now
 		resultVersion = 'SL_PROJECT_VERSION:' + release + '.' + build + '.' + bugfix
 		@notify('Current project version: '+release + '.' + build + '.' + bugfix, 'yellow')
+		@running = false
 		return [resultVersion, resultDate]
 
 	hasFile:()->
 		try
+			@running = true
 			result = fs.statSync(path)
 			if result? && result.isFile()
+				@running = false
 				return true
 		catch err
 			# @notify(err, 'magenta')
