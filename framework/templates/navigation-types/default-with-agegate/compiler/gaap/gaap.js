@@ -308,8 +308,9 @@ Notifier = (function() {
 })();
 var Versioner;
 Versioner = (function(_super) {
-  var path, resultDate, resultVersion;
+  var path, resultDate, resultVersion, running;
   __extends(Versioner, _super);
+  running = false;
   path = null;
   resultVersion = null;
   resultDate = null;
@@ -336,10 +337,11 @@ Versioner = (function(_super) {
   };
   Versioner.prototype.readFile = function(p_path) {
     var data, err;
-    if (!this.hasFile()) {
+    if (!this.hasFile() || this.running) {
       return;
     }
     try {
+      this.running = true;
       data = fs.readFileSync(p_path, 'utf8');
     } catch (_error) {
       err = _error;
@@ -347,16 +349,18 @@ Versioner = (function(_super) {
     }
     if (this.versionRegex.test(data)) {
       resultVersion = String(data.match(this.versionRegex));
-      return resultDate = String(data.match(this.dateRegex));
+      resultDate = String(data.match(this.dateRegex));
     }
+    return this.running = false;
   };
   Versioner.prototype.nextVersion = function(p_type) {
-    var bugfix, build, date, release, values, version;
-    if (!resultVersion) {
+    var bugfix, build, now, release, values, version;
+    if (!resultVersion || this.running) {
       return null;
     }
+    this.running = true;
     version = resultVersion.replace('SL_PROJECT_VERSION:', '');
-    date = resultDate.replace('SL_PROJECT_DATE:', '');
+    now = resultDate.replace('SL_PROJECT_DATE:', '');
     values = version.split('.');
     release = parseInt(values[0]);
     build = parseInt(values[1]);
@@ -364,26 +368,29 @@ Versioner = (function(_super) {
     switch (p_type) {
       case 'release':
         release += 1;
-        date = Date.now();
+        now = Date.now();
         break;
       case 'build':
         build += 1;
-        date = Date.now();
+        now = Date.now();
         break;
       case 'bugfix':
         bugfix += 1;
-        date = Date.now();
+        now = Date.now();
     }
-    resultDate = 'SL_PROJECT_DATE:' + date;
+    resultDate = 'SL_PROJECT_DATE:' + now;
     resultVersion = 'SL_PROJECT_VERSION:' + release + '.' + build + '.' + bugfix;
     this.notify('Current project version: ' + release + '.' + build + '.' + bugfix, 'yellow');
+    this.running = false;
     return [resultVersion, resultDate];
   };
   Versioner.prototype.hasFile = function() {
     var err, result;
     try {
+      this.running = true;
       result = fs.statSync(path);
       if ((result != null) && result.isFile()) {
+        this.running = false;
         return true;
       }
     } catch (_error) {

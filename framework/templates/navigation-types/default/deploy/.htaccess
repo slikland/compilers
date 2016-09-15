@@ -12,6 +12,8 @@
 
 
 <IfModule mod_headers.c>
+	Header set Service-Worker-Allowed /
+ 
 	<FilesMatch "\.(cur|gif|ico|jpe?g|png|svgz?|webp)$">
 		SetEnvIf Origin ":" IS_CORS
 		Header set Access-Control-Allow-Origin "*" env=IS_CORS

@@ -19,16 +19,16 @@ do ->
 		ts = new Date().getTime()
 
 		if p_loadItem.cache?
-			#  set by item
+			#  sets by item
 			if p_loadItem.cache == false
 				cv = true
 		else if view?.cache?
-			#  set by view
+			#  sets by view
 			if view?.cache == false
 				cv = true
 		else if parentView?.cache?
+			#  sets by parent
 			#  When don't sets the cache value in config file the view and all your assets inherits of his parent
-			#  set by parent
 			if parentView?.cache == false
 				cv = true
 

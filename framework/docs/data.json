@@ -388,7 +388,7 @@
             "plugin_for": [],
             "extension_for": [],
             "file": "../../source/coffee/slikland/core/navigation/NavigationLoader.coffee",
-            "line": 37,
+            "line": 40,
             "description": "Base class to setup the navigation and start loading of dependencies.",
             "extends": "EventDispatcher",
             "is_constructor": 1,
@@ -1516,7 +1516,7 @@
         },
         {
             "file": "../../source/coffee/slikland/core/navigation/Navigation.coffee",
-            "line": 209,
+            "line": 206,
             "itemtype": "method",
             "name": "gotoView",
             "params": [
@@ -1530,7 +1530,7 @@
         },
         {
             "file": "../../source/coffee/slikland/core/navigation/Navigation.coffee",
-            "line": 220,
+            "line": 217,
             "itemtype": "method",
             "name": "getViewByRoute",
             "params": [
@@ -1549,7 +1549,7 @@
         },
         {
             "file": "../../source/coffee/slikland/core/navigation/Navigation.coffee",
-            "line": 232,
+            "line": 229,
             "itemtype": "method",
             "name": "getRouteByView",
             "params": [
@@ -1568,7 +1568,7 @@
         },
         {
             "file": "../../source/coffee/slikland/core/navigation/Navigation.coffee",
-            "line": 244,
+            "line": 241,
             "itemtype": "method",
             "name": "_change",
             "params": [
@@ -1620,7 +1620,7 @@
         },
         {
             "file": "../../source/coffee/slikland/core/navigation/NavigationLoader.coffee",
-            "line": 67,
+            "line": 71,
             "itemtype": "method",
             "name": "_prepareConfigFile",
             "params": [
@@ -1636,9 +1636,9 @@
         },
         {
             "file": "../../source/coffee/slikland/core/navigation/NavigationLoader.coffee",
-            "line": 86,
+            "line": 90,
             "itemtype": "method",
-            "name": "_createLoadQueue",
+            "name": "_contentsLoaded",
             "params": [
                 {
                     "name": "evt",
@@ -1652,7 +1652,16 @@
         },
         {
             "file": "../../source/coffee/slikland/core/navigation/NavigationLoader.coffee",
-            "line": 121,
+            "line": 107,
+            "itemtype": "method",
+            "name": "_createLoadQueue",
+            "access": "private",
+            "tagname": "",
+            "class": "NavigationLoader"
+        },
+        {
+            "file": "../../source/coffee/slikland/core/navigation/NavigationLoader.coffee",
+            "line": 139,
             "itemtype": "method",
             "name": "_parseContentFiles",
             "params": [
@@ -1673,7 +1682,7 @@
         },
         {
             "file": "../../source/coffee/slikland/core/navigation/NavigationLoader.coffee",
-            "line": 211,
+            "line": 209,
             "itemtype": "method",
             "name": "_parseConfigFile",
             "params": [
@@ -1693,7 +1702,7 @@
         },
         {
             "file": "../../source/coffee/slikland/core/navigation/NavigationLoader.coffee",
-            "line": 300,
+            "line": 271,
             "itemtype": "method",
             "name": "_createLoader",
             "params": [
@@ -1713,7 +1722,7 @@
         },
         {
             "file": "../../source/coffee/slikland/core/navigation/NavigationLoader.coffee",
-            "line": 314,
+            "line": 285,
             "itemtype": "method",
             "name": "_removeLoader",
             "params": [
@@ -1733,7 +1742,7 @@
         },
         {
             "file": "../../source/coffee/slikland/core/navigation/NavigationLoader.coffee",
-            "line": 327,
+            "line": 298,
             "itemtype": "method",
             "name": "_addFiles",
             "params": [
@@ -1749,7 +1758,7 @@
         },
         {
             "file": "../../source/coffee/slikland/core/navigation/NavigationLoader.coffee",
-            "line": 352,
+            "line": 321,
             "itemtype": "method",
             "name": "_normalizeConfigPaths",
             "params": [
@@ -1765,7 +1774,7 @@
         },
         {
             "file": "../../source/coffee/slikland/core/navigation/NavigationLoader.coffee",
-            "line": 367,
+            "line": 336,
             "itemtype": "method",
             "name": "_normalizePaths",
             "params": [
@@ -1790,7 +1799,7 @@
         },
         {
             "file": "../../source/coffee/slikland/core/navigation/NavigationLoader.coffee",
-            "line": 381,
+            "line": 350,
             "itemtype": "method",
             "name": "_loadFileComplete",
             "params": [
@@ -1806,7 +1815,7 @@
         },
         {
             "file": "../../source/coffee/slikland/core/navigation/NavigationLoader.coffee",
-            "line": 419,
+            "line": 388,
             "itemtype": "method",
             "name": "_loadProgress",
             "params": [
@@ -1822,7 +1831,7 @@
         },
         {
             "file": "../../source/coffee/slikland/core/navigation/NavigationLoader.coffee",
-            "line": 428,
+            "line": 397,
             "itemtype": "method",
             "name": "_loadComplete",
             "params": [
@@ -1838,7 +1847,7 @@
         },
         {
             "file": "../../source/coffee/slikland/core/navigation/NavigationLoader.coffee",
-            "line": 472,
+            "line": 441,
             "itemtype": "method",
             "name": "createPreloaderView",
             "params": [
@@ -1856,7 +1865,7 @@
         },
         {
             "file": "../../source/coffee/slikland/core/navigation/NavigationLoader.coffee",
-            "line": 483,
+            "line": 452,
             "itemtype": "method",
             "name": "showPreloaderView",
             "params": [
@@ -1874,7 +1883,7 @@
         },
         {
             "file": "../../source/coffee/slikland/core/navigation/NavigationLoader.coffee",
-            "line": 493,
+            "line": 462,
             "itemtype": "method",
             "name": "hidePreloderView",
             "params": [
@@ -1892,7 +1901,7 @@
         },
         {
             "file": "../../source/coffee/slikland/core/navigation/NavigationLoader.coffee",
-            "line": 504,
+            "line": 473,
             "itemtype": "method",
             "name": "destroyPreloderView",
             "params": [
@@ -1910,7 +1919,7 @@
         },
         {
             "file": "../../source/coffee/slikland/core/navigation/NavigationLoader.coffee",
-            "line": 520,
+            "line": 489,
             "itemtype": "method",
             "name": "_createMainView",
             "access": "private",
@@ -1919,7 +1928,7 @@
         },
         {
             "file": "../../source/coffee/slikland/core/navigation/NavigationLoader.coffee",
-            "line": 544,
+            "line": 513,
             "itemtype": "method",
             "name": "_showMainView",
             "params": [
@@ -1937,7 +1946,7 @@
         },
         {
             "file": "../../source/coffee/slikland/core/navigation/NavigationLoader.coffee",
-            "line": 554,
+            "line": 523,
             "description": "Called only when the core assets is completely loaded.",
             "itemtype": "method",
             "name": "coreAssetsLoaded",
@@ -1954,7 +1963,7 @@
         },
         {
             "file": "../../source/coffee/slikland/core/navigation/NavigationLoader.coffee",
-            "line": 562,
+            "line": 531,
             "description": "Called only when the preloader assets is completely loaded.",
             "itemtype": "method",
             "name": "preloaderAssetsLoaded",
@@ -1971,7 +1980,7 @@
         },
         {
             "file": "../../source/coffee/slikland/core/navigation/NavigationLoader.coffee",
-            "line": 570,
+            "line": 539,
             "description": "Called only when the main assets is completely loaded.",
             "itemtype": "method",
             "name": "mainAssetsLoaded",
@@ -3489,7 +3498,7 @@
         },
         {
             "file": "../../source/coffee/slikland/utils/StringUtils.coffee",
-            "line": 245,
+            "line": 242,
             "description": "A method to returns a random String with the specified length.",
             "itemtype": "method",
             "name": "random",
@@ -3509,7 +3518,7 @@
         },
         {
             "file": "../../source/coffee/slikland/utils/StringUtils.coffee",
-            "line": 258,
+            "line": 255,
             "description": "Trim",
             "itemtype": "method",
             "name": "trim",
@@ -3534,7 +3543,7 @@
         },
         {
             "file": "../../source/coffee/slikland/utils/StringUtils.coffee",
-            "line": 270,
+            "line": 267,
             "description": "Trim Right",
             "itemtype": "method",
             "name": "trimRight",
@@ -3559,7 +3568,7 @@
         },
         {
             "file": "../../source/coffee/slikland/utils/StringUtils.coffee",
-            "line": 285,
+            "line": 282,
             "description": "Trim left",
             "itemtype": "method",
             "name": "trimLeft",
@@ -3584,7 +3593,7 @@
         },
         {
             "file": "../../source/coffee/slikland/utils/StringUtils.coffee",
-            "line": 300,
+            "line": 297,
             "description": "Replace special characters",
             "itemtype": "method",
             "name": "replaceSpecialCharacters",
@@ -3604,7 +3613,7 @@
         },
         {
             "file": "../../source/coffee/slikland/utils/StringUtils.coffee",
-            "line": 316,
+            "line": 313,
             "description": "Set strings uppercase",
             "itemtype": "method",
             "name": "_upperCase",
@@ -3630,7 +3639,7 @@
         },
         {
             "file": "../../source/coffee/slikland/utils/StringUtils.coffee",
-            "line": 327,
+            "line": 324,
             "description": "List of space character",
             "itemtype": "property",
             "name": "substitionDict",
@@ -3645,7 +3654,7 @@
         },
         {
             "file": "../../source/coffee/slikland/utils/StringUtils.coffee",
-            "line": 336,
+            "line": 333,
             "description": "Create list of space character",
             "itemtype": "property",
             "name": "_initDict",

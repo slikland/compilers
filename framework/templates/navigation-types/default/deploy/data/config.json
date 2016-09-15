@@ -138,6 +138,11 @@
 				"id": "main-js",
 				"src": "{base}js/main.js",
 				"cache":false
+			},
+			{
+				"id":"main-contents",
+				"content":"{base}data/main.json",
+				"cache":false
 			}
 		]
 	}

@@ -229,7 +229,7 @@ App = (function(_super) {
   __extends(App, _super);
   App.project_version_raw = "SL_PROJECT_VERSION:0.2.0";
   App.project_date_raw = "SL_PROJECT_DATE:1473705571973";
-  App.FRAMEWORK_VERSION = "2.1.9";
+  App.FRAMEWORK_VERSION = "2.2.11";
   function App() {
     App.__super__.constructor.apply(this, arguments);
   }
@@ -2176,6 +2176,7 @@ AssetLoader = (function(_super) {
   AssetLoader.prototype._groups = null;
   function AssetLoader() {
     this._fileLoad = __bind(this._fileLoad, this);
+    this._onFileError = __bind(this._onFileError, this);
     this._onError = __bind(this._onError, this);
     this._groups = {};
   }
@@ -2202,7 +2203,7 @@ AssetLoader = (function(_super) {
       this._groups[p_groupId] = group;
       group.on(AssetLoader.COMPLETE_FILE, this._fileLoad);
       group.on(AssetLoader.ERROR, this._onError);
-      group.on(AssetLoader.FILE_ERROR, this._onError);
+      group.on(AssetLoader.FILE_ERROR, this._onFileError);
     }
     group.setMaxConnections(p_concurrent);
     return group;
@@ -2216,16 +2217,23 @@ AssetLoader = (function(_super) {
     return group;
   };
   AssetLoader.prototype._onError = function(e) {
-    e.currentTarget.off(AssetLoader.COMPLETE_FILE, this._fileLoad);
     e.currentTarget.off(AssetLoader.ERROR, this._onError);
-    e.currentTarget.off(AssetLoader.FILE_ERROR, this._onError);
+    e.currentTarget.off(AssetLoader.COMPLETE_FILE, this._fileLoad);
+    console.log(e);
+    throw new Error(e.title).stack;
+    return false;
+  };
+  AssetLoader.prototype._onFileError = function(e) {
+    e.currentTarget.off(AssetLoader.FILE_ERROR, this._onFileError);
+    e.currentTarget.off(AssetLoader.COMPLETE_FILE, this._fileLoad);
+    console.log(e);
     throw new Error(e.title).stack;
     return false;
   };
   AssetLoader.prototype._fileLoad = function(e) {
     e.currentTarget.off(AssetLoader.COMPLETE_FILE, this._fileLoad);
     e.currentTarget.off(AssetLoader.ERROR, this._onError);
-    e.currentTarget.off(AssetLoader.FILE_ERROR, this._onError);
+    e.currentTarget.off(AssetLoader.FILE_ERROR, this._onFileError);
     e.item.tag = e.result;
     return false;
   };
@@ -3990,12 +3998,14 @@ Base class to setup the navigation and start loading of dependencies.
  */
 var NavigationLoader;
 NavigationLoader = (function(_super) {
-  var head, wrapper, _mainView, _preloaderView;
+  var head, wrapper, _contentLoaded, _contentLoaders, _mainView, _preloaderView;
   __extends(NavigationLoader, _super);
   head = null;
   wrapper = null;
   _mainView = null;
   _preloaderView = null;
+  _contentLoaders = null;
+  _contentLoaded = null;
   app.root = null;
   app.loader = null;
   app.config = {};
@@ -4032,6 +4042,7 @@ NavigationLoader = (function(_super) {
     this._loadFileComplete = __bind(this._loadFileComplete, this);
     this._parseContentFiles = __bind(this._parseContentFiles, this);
     this._createLoadQueue = __bind(this._createLoadQueue, this);
+    this._contentsLoaded = __bind(this._contentsLoaded, this);
     this._prepareConfigFile = __bind(this._prepareConfigFile, this);
     wrapper = p_wrapper == null ? document.body : p_wrapper;
     if (p_configPath == null) {
@@ -4051,6 +4062,7 @@ NavigationLoader = (function(_super) {
     this.queue.on(AssetLoader.COMPLETE_FILE, this._prepareConfigFile);
     this.queue.loadFile({
       id: 'config',
+      cache: false,
       src: (app.root != null ? app.root + p_configPath : p_configPath)
     });
     false;
@@ -4061,30 +4073,52 @@ NavigationLoader = (function(_super) {
   	@private
    */
   NavigationLoader.prototype._prepareConfigFile = function(evt) {
-    var queue;
+    var k, queue, v;
     this.queue.off(AssetLoader.COMPLETE_FILE, this._prepareConfigFile);
-    this._parseConfigFile(evt.result);
-    queue = this.loader.getGroup('preloadContents');
-    queue.on(AssetLoader.COMPLETE_ALL, this._createLoadQueue);
-    if (app.config.preloadContents.length > 0) {
-      queue.loadManifest(app.config.preloadContents);
+    _contentLoaders = this._parseConfigFile(evt.result);
+    if (_contentLoaders.length > 0) {
+      for (k in _contentLoaders) {
+        v = _contentLoaders[k];
+        queue = this.loader.getGroup(v.queue);
+        queue.on(AssetLoader.COMPLETE_FILE, this._contentsLoaded);
+        queue.loadFile(v, false);
+        queue.load();
+      }
     } else {
-      this._createLoadQueue(null);
+      this._createLoadQueue();
     }
     return false;
   };
   /**
-  	@method _createLoadQueue
+  	@method _contentsLoaded
   	@param {Event} evt
   	@private
    */
-  NavigationLoader.prototype._createLoadQueue = function(evt) {
-    var check, firstIndexes, k, queues, total, v, _ref, _ref1;
+  NavigationLoader.prototype._contentsLoaded = function(evt) {
+    var _ref, _ref1;
     if (evt != null) {
       if ((_ref = evt.currentTarget) != null) {
-        _ref.off(AssetLoader.COMPLETE_ALL, this._createLoadQueue);
+        _ref.off(AssetLoader.COMPLETE_FILE, this._contentsLoaded);
       }
     }
+    if (_contentLoaded == null) {
+      _contentLoaded = {};
+    }
+    if (this._totalContentsLoaded == null) {
+      this._totalContentsLoaded = 0;
+    }
+    _contentLoaded[Object.getOwnPropertyNames(evt != null ? (_ref1 = evt.currentTarget) != null ? _ref1._loadedResults : void 0 : void 0)[0]] = evt.result;
+    this._totalContentsLoaded++;
+    if (this._totalContentsLoaded === _contentLoaders.length) {
+      return this._createLoadQueue();
+    }
+  };
+  /**
+  	@method _createLoadQueue
+  	@private
+   */
+  NavigationLoader.prototype._createLoadQueue = function() {
+    var firstIndexes, k, queues, total, v;
     this.loaderSteps = [
       {
         ratio: 0,
@@ -4094,9 +4128,8 @@ NavigationLoader = (function(_super) {
     this.loaderStep = 0;
     this.loaderRatio = 0;
     this.currentStep = this.loaderSteps[0];
-    check = ObjectUtils.count(evt != null ? (_ref1 = evt.currentTarget) != null ? _ref1._loadedResults : void 0 : void 0);
-    if (check > 0) {
-      this._parseContentFiles(app.config.views, evt.currentTarget._loadedResults);
+    if (this._totalContentsLoaded > 0) {
+      this._parseContentFiles(app.config.views, _contentLoaded);
     }
     queues = app.config.required;
     total = ObjectUtils.count(queues);
@@ -4123,7 +4156,7 @@ NavigationLoader = (function(_super) {
       }
     }
     this.queue = this._createLoader(this.currentStep.id);
-    if (check > 0) {
+    if (this._totalContentsLoaded > 0) {
       this.queue.load();
     }
     return false;
@@ -4238,13 +4271,10 @@ NavigationLoader = (function(_super) {
   	@return {Object}
    */
   NavigationLoader.prototype._parseConfigFile = function(p_data) {
-    var i, id, k, temp, v, _i, _j, _k, _ref, _ref1, _ref2, _ref3, _ref4, _ref5;
-    console.log(p_data);
+    var data, i, id, k, temp, v, _i, _j, _ref, _ref1, _ref2, _ref3, _ref4;
     p_data.paths = this._normalizeConfigPaths(p_data.paths);
     p_data = this._normalizePaths(p_data, p_data.paths);
-    if (!p_data.preloadContents) {
-      p_data.preloadContents = [];
-    }
+    data = [];
     temp = [];
     if (p_data.conditions == null) {
       p_data.conditions = {};
@@ -4257,27 +4287,33 @@ NavigationLoader = (function(_super) {
       temp[v.id] = v;
       if (v.loadContent && v.content) {
         if (typeof v.content !== 'object' && v.content !== '{}') {
-          p_data.preloadContents.push({
+          data.push({
             'id': v.content,
-            'src': v.content
+            'src': v.content,
+            'queue': v.id,
+            'cache': v.cache
           });
         } else {
           for (i = _i = 0, _ref1 = v.content.length; 0 <= _ref1 ? _i < _ref1 : _i > _ref1; i = 0 <= _ref1 ? ++_i : --_i) {
             if (v.content[i].condition != null) {
               if (app.conditions.test(v.content[i].condition)) {
                 if (v.content[i].file != null) {
-                  p_data.preloadContents.push({
+                  data.push({
                     'id': v.content[i].file,
-                    'src': v.content[i].file
+                    'src': v.content[i].file,
+                    'queue': v.id,
+                    'cache': v.cache
                   });
                 }
                 break;
               }
             } else {
               if (v.content[i].file != null) {
-                p_data.preloadContents.push({
+                data.push({
                   'id': v.content[i].file,
-                  'src': v.content[i].file
+                  'src': v.content[i].file,
+                  'queue': v.id,
+                  'cache': v.cache
                 });
                 break;
               }
@@ -4298,68 +4334,44 @@ NavigationLoader = (function(_super) {
         }
         v.loadContent = v.loadContent == null ? temp[v.parentView].loadContent : v.loadContent;
         temp[v.parentView].subviews[v.id] = v;
-        if (v.loadContent && v.content) {
-          if (typeof v.content !== 'object' && v.content !== '{}') {
-            p_data.preloadContents.push({
-              'id': v.content,
-              'src': v.content
-            });
-          } else {
-            for (i = _j = 0, _ref3 = v.content.length; 0 <= _ref3 ? _j < _ref3 : _j > _ref3; i = 0 <= _ref3 ? ++_j : --_j) {
-              if (v.content[i].condition != null) {
-                if (app.conditions.test(v.content[i].condition)) {
-                  if (v.content[i].file != null) {
-                    p_data.preloadContents.push({
-                      'id': v.content[i].file,
-                      'src': v.content[i].file
-                    });
-                  }
-                  break;
-                }
-              } else {
-                if (v.content[i].file != null) {
-                  p_data.preloadContents.push({
-                    'id': v.content[i].file,
-                    'src': v.content[i].file
-                  });
-                  break;
-                }
-              }
-            }
-          }
-        }
       }
     }
     for (id in p_data.required) {
-      _ref4 = p_data.required[id];
-      for (k in _ref4) {
-        v = _ref4[k];
+      _ref3 = p_data.required[id];
+      for (k in _ref3) {
+        v = _ref3[k];
         if (v.content) {
           if (typeof v.content !== 'object' && v.content !== '{}') {
             if (!v.id || v.id === void 0) {
               v.id = v.content;
             }
-            p_data.preloadContents.push({
+            data.push({
               'id': v.content,
-              'src': v.content
+              'src': v.content,
+              'queue': id,
+              'cache': v.cache
             });
           } else {
-            for (i = _k = 0, _ref5 = v.content.length; 0 <= _ref5 ? _k < _ref5 : _k > _ref5; i = 0 <= _ref5 ? ++_k : --_k) {
+            for (i = _j = 0, _ref4 = v.content.length; 0 <= _ref4 ? _j < _ref4 : _j > _ref4; i = 0 <= _ref4 ? ++_j : --_j) {
               if (v.content[i].condition != null) {
                 if (app.conditions.test(v.content[i].condition)) {
                   if (v.content[i].file != null) {
-                    p_data.preloadContents.push({
+                    data.push({
                       'id': v.content[i].file,
-                      'src': v.content[i].file
+                      'src': v.content[i].file,
+                      'queue': id,
+                      'cache': v.cache
                     });
                   }
                   break;
                 }
               } else {
                 if (v.content[i].file != null) {
-                  p_data.preloadContents.push({
+                  data.push({
                     'id': v.content[i].file,
-                    'src': v.content[i].file
+                    'src': v.content[i].file,
+                    'queue': id,
+                    'cache': v.cache
                   });
                   break;
                 }
@@ -4371,8 +4383,7 @@ NavigationLoader = (function(_super) {
     }
     p_data.views = temp;
     app.config = p_data;
-    console.log(p_data);
-    return p_data;
+    return data;
   };
   /**
   	@method _createLoader

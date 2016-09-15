@@ -140,7 +140,7 @@ class Detections
 		@orientation = if window?.innerWidth &gt; window?.innerHeight then &#x27;landscape&#x27; else &#x27;portrait&#x27;
 		@touch = (&#x27;ontouchstart&#x27; in window) || (navigator.maxTouchPoints &gt; 0) || (navigator.msMaxTouchPoints &gt; 0)
 		@tablet = /(ipad.*|tablet.*|(android.*?chrome((?!mobi).)*))$/i.test(@ua)
-		@mobile = !@tablet &amp;&amp; (getFirstMatch(/(ipod|iphone|ipad)/i, @ua) || /[^-]mobi/i.test(@ua))
+		@mobile = !@tablet &amp;&amp; Boolean(getFirstMatch(/(ipod|iphone|ipad)/i, @ua) || /[^-]mobi/i.test(@ua))
 		@desktop = !@mobile &amp;&amp; !@tablet
 
 		@canvas = testCanvas()

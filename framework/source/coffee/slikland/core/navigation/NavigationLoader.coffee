@@ -25,6 +25,9 @@ class NavigationLoader extends EventDispatcher
 	
 	_mainView = null
 	_preloaderView = null
+	
+	_contentLoaders = null
+	_contentLoaded = null
 
 	app.root = null
 	app.loader = null
@@ -61,6 +64,7 @@ class NavigationLoader extends EventDispatcher
 		@queue.on(AssetLoader.COMPLETE_FILE, @_prepareConfigFile)
 		@queue.loadFile 
 			id: 'config',
+			cache: false,
 			src: (if app.root? then app.root+p_configPath else p_configPath)
 		false
 	
@@ -72,25 +76,39 @@ class NavigationLoader extends EventDispatcher
 	_prepareConfigFile:(evt)=>
 		@queue.off(AssetLoader.COMPLETE_FILE, @_prepareConfigFile)
 		
-		@_parseConfigFile(evt.result)
-		
-		queue = @loader.getGroup('preloadContents')
-		queue.on(AssetLoader.COMPLETE_ALL, @_createLoadQueue)
-		
-		if app.config.preloadContents.length > 0
-			queue.loadManifest(app.config.preloadContents)
+		_contentLoaders = @_parseConfigFile(evt.result)
+		if _contentLoaders.length > 0
+			for k, v of _contentLoaders
+				queue = @loader.getGroup(v.queue)
+				queue.on(AssetLoader.COMPLETE_FILE, @_contentsLoaded)
+				queue.loadFile(v, false)
+				queue.load()
 		else
-			@_createLoadQueue(null)
+			@_createLoadQueue()
 		false 
 
 	###*
-	@method _createLoadQueue
+	@method _contentsLoaded
 	@param {Event} evt
 	@private
 	###
-	_createLoadQueue:(evt)=>
-		evt?.currentTarget?.off(AssetLoader.COMPLETE_ALL, @_createLoadQueue)
+	_contentsLoaded:(evt)=>
+		evt?.currentTarget?.off(AssetLoader.COMPLETE_FILE, @_contentsLoaded)
 		
+		_contentLoaded ?= {}
+		@_totalContentsLoaded ?= 0
+
+		_contentLoaded[Object.getOwnPropertyNames(evt?.currentTarget?._loadedResults)[0]] = evt.result
+		@_totalContentsLoaded++
+
+		if @_totalContentsLoaded == _contentLoaders.length
+			@_createLoadQueue()
+
+	###*
+	@method _createLoadQueue
+	@private
+	###
+	_createLoadQueue:()=>
 		@loaderSteps = [
 			{ratio: 0, id: 'config'}
 		]
@@ -99,8 +117,7 @@ class NavigationLoader extends EventDispatcher
 		@loaderRatio = 0
 		@currentStep = @loaderSteps[0]
 		
-		check = ObjectUtils.count(evt?.currentTarget?._loadedResults)
-		if check > 0 then @_parseContentFiles(app.config.views, evt.currentTarget._loadedResults)
+		if @_totalContentsLoaded > 0 then @_parseContentFiles(app.config.views, _contentLoaded)
 
 		queues = app.config.required
 		total = ObjectUtils.count(queues)
@@ -116,7 +133,7 @@ class NavigationLoader extends EventDispatcher
 					@loaderSteps.push {id:k, data:v, ratio:(1/total)}
 
 		@queue = @_createLoader(@currentStep.id)
-		if check>0 then @queue.load()
+		if @_totalContentsLoaded>0 then @queue.load()
 		false
 	
 	###*
@@ -196,11 +213,10 @@ class NavigationLoader extends EventDispatcher
 	@return {Object}
 	###
 	_parseConfigFile:(p_data)->
-		console.log p_data
 		p_data.paths = @_normalizeConfigPaths(p_data.paths)
 		p_data = @_normalizePaths(p_data, p_data.paths)
 
-		if !p_data.preloadContents then p_data.preloadContents = []
+		data = []
 		temp = []
 		
 		p_data.conditions ?= {}
@@ -211,62 +227,46 @@ class NavigationLoader extends EventDispatcher
 			temp[v.id] = v
 			if v.loadContent && v.content
 				if typeof(v.content) != 'object' && v.content != '{}'
-					p_data.preloadContents.push {'id':v.content, 'src':v.content}
+					data.push {'id':v.content, 'src':v.content, 'queue':v.id, 'cache':v.cache}
 				else
 					for i in [0...v.content.length]
 						if v.content[i].condition?
 							if app.conditions.test(v.content[i].condition)
 								if v.content[i].file?
-									p_data.preloadContents.push {'id':v.content[i].file, 'src':v.content[i].file}
+									data.push {'id':v.content[i].file, 'src':v.content[i].file, 'queue':v.id, 'cache':v.cache}
 								break
 						else
 							if v.content[i].file?
-								p_data.preloadContents.push {'id':v.content[i].file, 'src':v.content[i].file}
+								data.push {'id':v.content[i].file, 'src':v.content[i].file, 'queue':v.id, 'cache':v.cache}
 								break
 
 		for k, v of p_data.views
 			if v.parentView == v.id then throw new Error('The parent view cannot be herself')
-
 			if temp[v.parentView]? && v.parentView != v.id
 				if !temp[v.parentView].subviews then temp[v.parentView].subviews = {}
-
 				v.loadContent = if !v.loadContent? then temp[v.parentView].loadContent else v.loadContent
 				temp[v.parentView].subviews[v.id] = v
-				if v.loadContent && v.content
-					if typeof(v.content) != 'object' && v.content != '{}'
-						p_data.preloadContents.push {'id':v.content, 'src':v.content}
-					else
-						for i in [0...v.content.length]
-							if v.content[i].condition?
-								if app.conditions.test(v.content[i].condition)
-									if v.content[i].file?
-										p_data.preloadContents.push {'id':v.content[i].file, 'src':v.content[i].file}
-									break
-							else
-								if v.content[i].file?
-									p_data.preloadContents.push {'id':v.content[i].file, 'src':v.content[i].file}
-									break
+
 		for id of p_data.required
 			for k, v of p_data.required[id]
 				if v.content
 					if typeof(v.content) != 'object' && v.content != '{}'
 						if !v.id || v.id is undefined then v.id = v.content
-						p_data.preloadContents.push {'id':v.content, 'src':v.content}
+						data.push {'id':v.content, 'src':v.content, 'queue':id, 'cache':v.cache}
 					else
 						for i in [0...v.content.length]
 							if v.content[i].condition?
 								if app.conditions.test(v.content[i].condition)
 									if v.content[i].file?
-										p_data.preloadContents.push {'id':v.content[i].file, 'src':v.content[i].file}
+										data.push {'id':v.content[i].file, 'src':v.content[i].file, 'queue':id, 'cache':v.cache}
 									break
 							else
 								if v.content[i].file?
-									p_data.preloadContents.push {'id':v.content[i].file, 'src':v.content[i].file}
+									data.push {'id':v.content[i].file, 'src':v.content[i].file, 'queue':id, 'cache':v.cache}
 									break
 		p_data.views = temp
 		app.config = p_data
-		console.log p_data
-		return p_data
+		return data
 
 	###*
 	@method _createLoader
