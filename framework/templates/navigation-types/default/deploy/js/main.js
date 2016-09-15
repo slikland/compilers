@@ -1580,7 +1580,6 @@ TemplateHomeView = (function(_super) {
       'height': '100%',
       'background-color': '#' + Math.floor(Math.random() * 16777215).toString(16)
     });
-    console.log(this.loader.getItem('image'));
     this.image = new BaseDOM({
       element: this.loader.getResult('image')
     });

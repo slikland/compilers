@@ -1,4 +1,5 @@
 #import slikland.core.loader.PreloadFiles
+#import slikland.vendors.preloaderjs.CacheControllerPlugin
 #import slikland.vendors.preloaderjs.MediaPlugin
 
 class AssetLoader extends EventDispatcher
@@ -34,6 +35,7 @@ class AssetLoader extends EventDispatcher
 		group = @_groups[p_groupId]
 		if !group
 			group = new createjs.LoadQueue(p_xhr)
+			group.installPlugin(createjs.CacheControllerPlugin)
 			group.installPlugin(createjs.MediaPlugin)
 			group.id = p_groupId
 			@_groups[p_groupId] = group
