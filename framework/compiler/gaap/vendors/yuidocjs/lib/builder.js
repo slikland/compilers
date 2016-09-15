@@ -1745,53 +1745,45 @@ YUI.add('doc-builder', function (Y) {
         compile: function (cb) {
             var self = this;
             var starttime = (new Date()).getTime();
-            // Y.log('Compiling Templates', 'info', 'builder');
-
+            Y.log('Start compiling Docs', 'info', 'builder');
             this.mixExternal(function () {
                 self.makeDirs(function () {
-                    // Y.log('Copying Assets', 'info', 'builder');
                     if (!Y.Files.isDirectory(path.join(self.options.outdir, 'assets'))) {
                         fs.mkdirSync(path.join(self.options.outdir, 'assets'), '0777');
                     }
                     Y.Files.copyAssets([
-                            path.join(DEFAULT_THEME, 'assets'),
-                            path.join(themeDir, 'assets')
-                        ],
-                        path.join(self.options.outdir, 'assets'),
-                        false,
-                        function () {
-                            var cstack = new Y.Parallel();
+                        path.join(DEFAULT_THEME, 'assets'),
+                        path.join(themeDir, 'assets')
+                    ],
+                    path.join(self.options.outdir, 'assets'),
+                    false,
+                    function () {
+                        var cstack = new Y.Parallel();
 
-                            self.writeModules(cstack.add(function () {
-                                self.writeComponents('classes', cstack.add(function () {
-                                    if (!self.options.nocode) {
-                                        self.writeFiles(cstack.add(noop));
-                                    }
-                                }));
-                                self.writeComponents('elements', cstack.add(function () {
-                                    if (!self.options.nocode) {
-                                        self.writeFiles(cstack.add(noop));
-                                    }
-                                }));
-                            }));
-                            /*
-                        self.writeModules(cstack.add(noop));
-                        self.writeClasses(cstack.add(noop));
-                        if (!self.options.nocode) {
-                            self.writeFiles(cstack.add(noop));
-                        }
-                        */
-                            self.writeIndex(cstack.add(noop));
-                            self.writeAPIMeta(cstack.add(noop));
-
-                            cstack.done(function () {
-                                var timer = ((new Date().getTime() - starttime) * 0.001).toFixed(3);
-                                if (cb) {
-                                    // Y.log('Finished writing templates', 'info', 'builder');
-                                    cb(timer);
+                        self.writeModules(cstack.add(function () {
+                            self.writeComponents('classes', cstack.add(function () {
+                                if (!self.options.nocode) {
+                                    self.writeFiles(cstack.add(noop));
                                 }
-                            });
+                            }));
+                            self.writeComponents('elements', cstack.add(function () {
+                                if (!self.options.nocode) {
+                                    self.writeFiles(cstack.add(noop));
+                                }
+                            }));
+                        }));
+                        
+                        self.writeIndex(cstack.add(noop));
+                        self.writeAPIMeta(cstack.add(noop));
+
+                        cstack.done(function () {
+                            var timer = ((new Date().getTime() - starttime) * 0.001).toFixed(3);
+                            if (cb) {
+                                Y.log('Finished writing Docs', 'info', 'builder');
+                                cb(timer);
+                            }
                         });
+                    });
                 });
             });
         }

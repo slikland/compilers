@@ -18,9 +18,12 @@
             	"mobile": true
             }
         },
-        "mobile_size": {
+        "mobile-size": {
+            "browser":{
+            	"mobile": true
+            },
             "size": {
-                "max-width": 767
+                "max-width": "767<"
             }
         },
         "ds":{
@@ -57,18 +60,12 @@
 			"id":"sub1",
 			"class":"template-sub-view",
 			"content":"{base}data/sub1.json",
-			"content":[
-				{
-					"condition":"mobile"
-				},
-				{
-					"file":"{base}data/sub1.json"
-				}
-			],
 			"route":"/sub-view-01",
+			"parentView":"home",
 			"destroyable":true,
 			"loadContent":true,
-			"cache":false
+			"cache":true
+			
 		},
 		{
 			"id":"sub2",
@@ -117,6 +114,7 @@
 				"cache":false
 			},
 			{
+				"id":"preloader-contents",
 				"content":"{base}data/preloader.json",
 				"cache":false
 			}
@@ -139,6 +137,11 @@
 			{
 				"id": "main-js",
 				"src": "{base}js/main.js",
+				"cache":false
+			},
+			{
+				"id":"main-contents",
+				"content":"{base}data/main.json",
 				"cache":false
 			}
 		]

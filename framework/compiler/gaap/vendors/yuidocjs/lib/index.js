@@ -60,16 +60,16 @@ process.on('uncaughtException', function (msg) {
         useColor: useColor
     });
 
-    inst.log('--------------------------------------------------------------------------', 'error');
-    inst.log('An uncaught YUIDoc error has occurred, stack trace given below', 'error');
-    inst.log('--------------------------------------------------------------------------', 'error');
+    // inst.log('--------------------------------------------------------------------------', 'error');
+    // inst.log('An uncaught YUIDoc error has occurred, stack trace given below', 'error');
+    // inst.log('--------------------------------------------------------------------------', 'error');
     inst.log(msg.stack || msg.message || msg, 'error');
-    inst.log('--------------------------------------------------------------------------', 'error');
-    inst.log('Node.js version: ' + process.version, 'error');
-    inst.log('YUI version: ' + YUI.version, 'error');
-    inst.log('YUIDoc version: ' + meta.version, 'error');
-    inst.log('Please file all tickets here: ' + meta.bugs.url, 'error');
-    inst.log('--------------------------------------------------------------------------', 'error');
+    // inst.log('--------------------------------------------------------------------------', 'error');
+    // inst.log('Node.js version: ' + process.version, 'error');
+    // inst.log('YUI version: ' + YUI.version, 'error');
+    // inst.log('YUIDoc version: ' + meta.version, 'error');
+    // inst.log('Please file all tickets here: ' + meta.bugs.url, 'error');
+    // inst.log('--------------------------------------------------------------------------', 'error');
 
     process.exit(1);
 });

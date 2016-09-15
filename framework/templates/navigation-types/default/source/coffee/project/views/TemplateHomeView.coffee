@@ -14,8 +14,14 @@ class TemplateHomeView extends BaseView
 		})
 		@image = new BaseDOM({element:@loader.getResult('image')})
 		@background.appendChild(@image)
+
+		@background.element.on 'click', @click
+
 		super
 	
+	click:(evt=null)=>
+		@loader.loadFile(@content.imageTest, true)
+
 	create:(evt=null)=>
 		super
 

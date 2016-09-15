@@ -250,7 +250,7 @@ class ConditionsValidation
 	&#x60;&#x60;&#x60;	
 	###
 	test:(p_args)-&gt;
-		parsed = p_args.replace(new RegExp(/\w+/g), &quot;validate(&#x27;$&amp;&#x27;)&quot;)
+		parsed = p_args.replace(new RegExp(/[a-zA-Z0-9-_]+/g), &quot;validate(&#x27;$&amp;&#x27;)&quot;)
 		validate = @validate
 		return eval(&#x27;(function(){return (&#x27; + parsed + &#x27;);})();&#x27;)
 

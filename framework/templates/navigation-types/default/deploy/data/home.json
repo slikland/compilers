@@ -1,6 +1,13 @@
 {
 	"image":{
 		"id": "image",
-		"src":"{images}666x666&text=home+dummy+image.png"
+		"src":"{images}666x666&text=home+dummy+image.png",
+		"cache": true
+	},
+	"imageTest":{
+		"id": "image666",
+		"src":"666.png",
+		"loadWithView": false,
+		"cache": false
 	}
 }

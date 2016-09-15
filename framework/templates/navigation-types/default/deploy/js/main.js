@@ -1227,11 +1227,7 @@ Navigation = (function(_super) {
     }
     if (((_ref = app.config.navigation) != null ? _ref.defaultView : void 0) != null) {
       view = app.config.navigation.defaultView;
-      if (view.indexOf('/') === 0) {
-        this.gotoRoute(this.getRouteByView(view), p_trigger);
-      } else {
-        this.gotoView(view);
-      }
+      this.gotoRoute(this.getRouteByView(view), p_trigger);
     }
     return false;
   };
@@ -1568,6 +1564,7 @@ TemplateHomeView = (function(_super) {
     this.showStart = __bind(this.showStart, this);
     this.createComplete = __bind(this.createComplete, this);
     this.create = __bind(this.create, this);
+    this.click = __bind(this.click, this);
     this.createStart = __bind(this.createStart, this);
     TemplateHomeView.__super__.constructor.call(this, p_data, 'views');
   }
@@ -1587,7 +1584,14 @@ TemplateHomeView = (function(_super) {
       element: this.loader.getResult('image')
     });
     this.background.appendChild(this.image);
+    this.background.element.on('click', this.click);
     return TemplateHomeView.__super__.createStart.apply(this, arguments);
+  };
+  TemplateHomeView.prototype.click = function(evt) {
+    if (evt == null) {
+      evt = null;
+    }
+    return this.loader.loadFile(this.content.imageTest, true);
   };
   TemplateHomeView.prototype.create = function(evt) {
     if (evt == null) {

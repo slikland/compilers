@@ -12,6 +12,7 @@
 class Main extends NavigationContainer
 	_controller = new DefaultNavigationController()
 	re = Resizer.getInstance()
+
 	create:(evt=null)=>
 		menu = new BaseDOM()
 		menu.className = 'menu'
@@ -28,7 +29,6 @@ class Main extends NavigationContainer
 			@button.element.on 'click', @click
 		re.on(Resizer.BREAKPOINT_CHANGE, @change)
 		super
-
 	change:(evt)->
 		console.log evt
 
