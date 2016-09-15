@@ -225,7 +225,7 @@ class NavigationLoader extends EventDispatcher
 		for k, v of p_data.views
 			v.class = StringUtils.toCamelCase(v.class)
 			temp[v.id] = v
-			if v.loadContent && v.content
+			if (v.loadContent || v.loadContent == undefined) && v.content
 				if typeof(v.content) != 'object' && v.content != '{}'
 					data.push {'id':v.content, 'src':v.content, 'queue':v.id, 'cache':v.cache}
 				else
@@ -244,7 +244,13 @@ class NavigationLoader extends EventDispatcher
 			if v.parentView == v.id then throw new Error('The parent view cannot be herself')
 			if temp[v.parentView]? && v.parentView != v.id
 				if !temp[v.parentView].subviews then temp[v.parentView].subviews = {}
-				v.loadContent = if !v.loadContent? then temp[v.parentView].loadContent else v.loadContent
+				if v.loadContent == undefined
+					if temp[v.parentView].loadContent?
+						v.loadContent = temp[v.parentView].loadContent
+					else
+						v.loadContent = true
+				else
+					v.loadContent = v.loadContent
 				temp[v.parentView].subviews[v.id] = v
 
 		for id of p_data.required
@@ -275,7 +281,6 @@ class NavigationLoader extends EventDispatcher
 	@return {createjs.LoadQueue}
 	###
 	_createLoader:(p_id)->
-		# console.log "id:", p_id
 		queue = @loader.getGroup(p_id)
 		queue.on(AssetLoader.COMPLETE_FILE, @_loadFileComplete)
 		queue.on(AssetLoader.PROGRESS_ALL, @_loadProgress)

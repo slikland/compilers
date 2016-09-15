@@ -229,7 +229,7 @@ App = (function(_super) {
   __extends(App, _super);
   App.project_version_raw = "SL_PROJECT_VERSION:0.2.0";
   App.project_date_raw = "SL_PROJECT_DATE:1473705571973";
-  App.FRAMEWORK_VERSION = "2.2.11";
+  App.FRAMEWORK_VERSION = "2.2.12";
   function App() {
     App.__super__.constructor.apply(this, arguments);
   }
@@ -2402,17 +2402,26 @@ ConditionsValidation = (function() {
   	...
   	"conditions": {
   		"small": {
+  			"browser":{
+  				"mobile": true
+  			},
   			"size": {
   				"min-width":300
   			}
   		},
   		"medium": {
+  			"browser":{
+  				"tablet": true
+  			},
   			"orientation":"landscape",
   			"size": {
   				"min-width":992
   			}
   		},
   		"large": {
+  			"browser":{
+  				"desktop": true
+  			},
   			"size": {
   				"min-width":1200
   			}
@@ -4285,7 +4294,7 @@ NavigationLoader = (function(_super) {
       v = _ref[k];
       v["class"] = StringUtils.toCamelCase(v["class"]);
       temp[v.id] = v;
-      if (v.loadContent && v.content) {
+      if ((v.loadContent || v.loadContent === void 0) && v.content) {
         if (typeof v.content !== 'object' && v.content !== '{}') {
           data.push({
             'id': v.content,
@@ -4332,7 +4341,15 @@ NavigationLoader = (function(_super) {
         if (!temp[v.parentView].subviews) {
           temp[v.parentView].subviews = {};
         }
-        v.loadContent = v.loadContent == null ? temp[v.parentView].loadContent : v.loadContent;
+        if (v.loadContent === void 0) {
+          if (temp[v.parentView].loadContent != null) {
+            v.loadContent = temp[v.parentView].loadContent;
+          } else {
+            v.loadContent = true;
+          }
+        } else {
+          v.loadContent = v.loadContent;
+        }
         temp[v.parentView].subviews[v.id] = v;
       }
     }
