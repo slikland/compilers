@@ -47,9 +47,12 @@ class Versioner extends EventDispatcher
 		switch p_type
 			when 'release'
 				release += 1
+				build = 0
+				bugfix = 0
 				now = Date.now()
 			when 'build'
 				build += 1
+				bugfix = 0
 				now = Date.now()
 			when 'bugfix'
 				bugfix += 1

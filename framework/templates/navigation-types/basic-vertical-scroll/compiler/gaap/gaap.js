@@ -368,10 +368,13 @@ Versioner = (function(_super) {
     switch (p_type) {
       case 'release':
         release += 1;
+        build = 0;
+        bugfix = 0;
         now = Date.now();
         break;
       case 'build':
         build += 1;
+        bugfix = 0;
         now = Date.now();
         break;
       case 'bugfix':
