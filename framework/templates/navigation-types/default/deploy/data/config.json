@@ -114,9 +114,7 @@
 				"cache":false
 			},
 			{
-				"id":"preloader-contents",
-				"content":"{base}data/preloader.json",
-				"cache":false
+				"content":"{base}data/preloader.json"
 			}
 		],
 		"core":
@@ -140,9 +138,7 @@
 				"cache":false
 			},
 			{
-				"id":"main-contents",
-				"content":"{base}data/main.json",
-				"cache":false
+				"content":"{base}data/main.json"
 			}
 		]
 	}

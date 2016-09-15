@@ -4,7 +4,7 @@ class App extends EventDispatcher
 	@project_version_raw : "SL_PROJECT_VERSION:0.0.0"
 	@project_date_raw : "SL_PROJECT_DATE:0000000000000"
 
-	@FRAMEWORK_VERSION : "2.2.11"
+	@FRAMEWORK_VERSION : "2.2.13"
 
 	constructor:()->
 		super

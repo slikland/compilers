@@ -87,17 +87,26 @@ class ConditionsValidation
 	...
 	"conditions": {
 		"small": {
+			"browser":{
+				"mobile": true
+			},
 			"size": {
 				"min-width":300
 			}
 		},
 		"medium": {
+			"browser":{
+				"tablet": true
+			},
 			"orientation":"landscape",
 			"size": {
 				"min-width":992
 			}
 		},
 		"large": {
+			"browser":{
+				"desktop": true
+			},
 			"size": {
 				"min-width":1200
 			}
