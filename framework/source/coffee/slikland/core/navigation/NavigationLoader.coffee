@@ -61,7 +61,7 @@ class NavigationLoader extends EventDispatcher
 		@queue.on(AssetLoader.COMPLETE_FILE, @_prepareConfigFile)
 		@queue.loadFile 
 			id: 'config',
-			src: if app.root? then app.root+p_configPath else p_configPath
+			src: (if app.root? then app.root+p_configPath else p_configPath)+"?version="+app.getInfo().version
 		false
 	
 	###*
@@ -138,11 +138,11 @@ class NavigationLoader extends EventDispatcher
 							if !obj.id? || obj.id is undefined then obj.id = obj.src
 							
 							if obj.cache isnt undefined
-								cache = if obj.cache is false then cache = "?noCache="+ts else ""
+								cache = if obj.cache is false then "?version="+app.getInfo().version+"&noCache="+ts else "?version="+app.getInfo().version
 							else if v.cache isnt undefined && v.cache is false
-								cache = "?noCache="+ts
+								cache = "?version="+app.getInfo().version+"&noCache="+ts
 							else
-								cache = ""
+								cache = "?version="+app.getInfo().version
 							if typeof(obj.src) != 'object' && obj.src != '{}'
 								obj.src += cache
 								filtered.push obj
@@ -176,11 +176,11 @@ class NavigationLoader extends EventDispatcher
 							if !obj.id? || obj.id is undefined then obj.id = obj.src
 							
 							if obj.cache isnt undefined
-								cache = if obj.cache is false then cache = "?noCache="+ts else ""
+								cache = if obj.cache is false then "?version="+app.getInfo().version+"&noCache="+ts else "?version="+app.getInfo().version
 							else if v.cache isnt undefined && v.cache is false
-								cache = "?noCache="+ts
+								cache = "?version="+app.getInfo().version+"&noCache="+ts
 							else
-								cache = ""
+								cache = "?version="+app.getInfo().version
 							if typeof(obj.src) != 'object' && obj.src != '{}'
 								obj.src += cache
 								filtered.push obj
@@ -229,7 +229,7 @@ class NavigationLoader extends EventDispatcher
 			v.class = StringUtils.toCamelCase(v.class)
 			temp[v.id] = v
 			if v.loadContent && v.content
-				cache = if v.cache isnt undefined && v.cache is false then "?noCache="+ts else ""
+				cache = if v.cache isnt undefined && v.cache is false then "?version="+app.getInfo().version+"&noCache="+ts else "?version="+app.getInfo().version
 				if typeof(v.content) != 'object' && v.content != '{}'
 					p_data.preloadContents.push {'id':v.content, 'src':v.content+cache}
 				else
@@ -257,11 +257,11 @@ class NavigationLoader extends EventDispatcher
 				temp[v.parentView].subviews[v.id] = v
 				if v.loadContent && v.content
 					if v.cache isnt undefined
-						cache = if v.cache is false then cache = "?noCache="+ts else ""
+						cache = if v.cache is false then "?version="+app.getInfo().version+"&noCache="+ts else "?version="+app.getInfo().version
 					else if temp[v.parentView].cache isnt undefined && temp[v.parentView].cache is false
-						cache = "?noCache="+ts
+						cache = "?version="+app.getInfo().version+"&noCache="+ts
 					else
-						cache = ""
+						cache = "?version="+app.getInfo().version
 
 					if typeof(v.content) != 'object' && v.content != '{}'
 						p_data.preloadContents.push {'id':v.content, 'src':v.content+cache}
@@ -279,7 +279,7 @@ class NavigationLoader extends EventDispatcher
 		for id of p_data.required
 			for k, v of p_data.required[id]
 				if v.content
-					cache = if v.cache isnt undefined && v.cache is false then "?noCache="+ts else ""
+					cache = if v.cache isnt undefined && v.cache is false then "?version="+app.getInfo().version+"&noCache="+ts else "?version="+app.getInfo().version
 					if typeof(v.content) != 'object' && v.content != '{}'
 						p_data.preloadContents.push {'id':v.content, 'src':v.content+cache}
 					else
@@ -342,7 +342,14 @@ class NavigationLoader extends EventDispatcher
 					if jsRE.test(f) then f = {src: f, type: 'text'}
 				else if f.src && jsRE.test(f.src)
 					f['type'] = 'text'
-				cache = if f.cache isnt undefined && f.cache is false && f.src.indexOf('?noCache=') is -1 then "?noCache="+ts else ""
+				
+				if f.cache isnt undefined && f.cache is false && f.src.indexOf('&noCache=') is -1
+					cache = "?version="+app.getInfo().version+"&noCache="+ts
+				else
+					if f.src.indexOf('?version=') is -1
+						cache = "?version="+app.getInfo().version
+					else
+						cache = ""
 				f.src += cache
 				@queue.loadFile(f, false)
 		if p_files.length > 0
@@ -441,10 +448,12 @@ class NavigationLoader extends EventDispatcher
 					break
 				when 'main'
 					view = _mainView
+					view.id = step.id
 					@mainAssetsLoaded()
 					break
 				when 'preloader'
 					view = _preloaderView
+					view.id = step.id
 					@preloaderAssetsLoaded()
 					@createPreloaderView()
 					break

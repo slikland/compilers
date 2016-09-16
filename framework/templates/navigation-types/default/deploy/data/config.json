@@ -12,13 +12,47 @@
 		"instantiateViews":true,
 		"defaultView":"home"
 	},
+	"conditions": {
+        "mobile":{
+            "browser":{
+            	"mobile": true
+            }
+        },
+        "mobile-size": {
+            "browser":{
+            	"mobile": true
+            },
+            "size": {
+                "max-width": "767<"
+            }
+        },
+        "ds":{
+        	"size": {
+        		"max-width": 768
+        }
+        },
+        "dm":{
+        	"size": {
+        		"max-width": 960
+        }
+        },
+        "dl":{
+        	"size": {
+        		"max-width": 1040
+        }
+        },
+        "full":{
+        	"size": {
+        		"max-width": 1600
+        }}
+    },	
 	"views":[
 		{
 			"id":"home",
 			"class":"template-home-view",
 			"route":"/",
 			"content":"{base}data/home.json",
-			"cache":true,
+			"cache":false,
 			"destroyable":true,
 			"loadContent":true
 		},
@@ -27,9 +61,11 @@
 			"class":"template-sub-view",
 			"content":"{base}data/sub1.json",
 			"route":"/sub-view-01",
+			"parentView":"home",
 			"destroyable":true,
 			"loadContent":true,
 			"cache":true
+			
 		},
 		{
 			"id":"sub2",
@@ -38,7 +74,7 @@
 			"route":"/sub-view-02",
 			"destroyable":true,
 			"loadContent":true,
-			"cache":true
+			"cache":false
 		},
 		{
 			"id":"sub3",
@@ -47,7 +83,7 @@
 			"route":"/sub-view-03",
 			"destroyable":true,
 			"loadContent":true,
-			"cache":true
+			"cache":false
 		},
 		{
 			"id":"sub4",
@@ -56,7 +92,7 @@
 			"route":"/sub-view-04",
 			"destroyable":true,
 			"loadContent":true,
-			"cache":true
+			"cache":false
 		},
 		{
 			"id":"sub5",
@@ -65,7 +101,7 @@
 			"route":"/sub-view-05",
 			"destroyable":true,
 			"loadContent":true,
-			"cache":true
+			"cache":false
 		}
 	],
 	"required":
@@ -74,7 +110,8 @@
 		[
 			{
 				"id": "preloader-css",
-				"src": "{base}css/preloader.css"
+				"src": "{base}css/preloader.css",
+				"cache":false
 			},
 			{
 				"content":"{base}data/preloader.json"
@@ -84,18 +121,24 @@
 		[
 			{
 				"id":"vendors",
-				"src":"{base}js/vendors.js"
+				"src":"{base}js/vendors.js",
+				"cache":false
 			}
 		],
 		"main":
 		[
 			{
 				"id": "main-css",
-				"src": "{base}css/main.css"
+				"src": "{base}css/main.css",
+				"cache":false
 			},
 			{
 				"id": "main-js",
-				"src": "{base}js/main.js"
+				"src": "{base}js/main.js",
+				"cache":false
+			},
+			{
+				"content":"{base}data/main.json"
 			}
 		]
 	}

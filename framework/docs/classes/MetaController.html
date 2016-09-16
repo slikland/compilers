@@ -112,7 +112,9 @@
 
 
 <div class="box intro">
-    
+    <p>Runtime controls some meta tags of current view.<br>
+For add/edit these tags or values, put the meta object in content file, like explained below:</p>
+
 </div>
 
     <div class="constructor">
@@ -147,6 +149,91 @@
 
 
 
+        <div class="example">
+            <h4>Example:</h4>
+
+            <div class="example-content">
+                <pre class="code prettyprint"><code>&quot;meta&quot;:
+{
+    &quot;title&quot;: &quot;Default Template - title&quot;,
+    &quot;description&quot;:&quot;description&quot;,
+    &quot;webAppCapable&quot;:&quot;true&quot;,
+    &quot;color&quot;:&quot;#ff00ff&quot;,
+    &quot;manifest&quot;:&quot;{base}data/manifest.json&quot;,
+    &quot;favicon&quot;:&quot;{images}icons/favicon-default.ico&quot;,
+    &quot;icons&quot;:[
+        {
+            &quot;rel&quot;:&quot;apple-touch-icon&quot;, 
+            &quot;sizes&quot;:&quot;57x57&quot;,
+            &quot;href&quot;:&quot;{images}icons/apple-touch-icon-57x57.png&quot;
+        },
+        {
+            &quot;rel&quot;:&quot;apple-touch-icon&quot;, 
+            &quot;sizes&quot;:&quot;60x60&quot;,
+            &quot;href&quot;:&quot;{images}icons/apple-touch-icon-60x60.png&quot;
+        },
+        {
+            &quot;rel&quot;:&quot;apple-touch-icon&quot;, 
+            &quot;sizes&quot;:&quot;72x72&quot;,
+            &quot;href&quot;:&quot;{images}icons/apple-touch-icon-72x72.png&quot;
+        },
+        {
+            &quot;rel&quot;:&quot;apple-touch-icon&quot;, 
+            &quot;sizes&quot;:&quot;76x76&quot;,
+            &quot;href&quot;:&quot;{images}icons/apple-touch-icon-76x76.png&quot;
+        },
+        {
+            &quot;rel&quot;:&quot;apple-touch-icon&quot;, 
+            &quot;sizes&quot;:&quot;114x114&quot;,
+            &quot;href&quot;:&quot;{images}icons/apple-touch-icon-114x114.png&quot;
+        },
+        {
+            &quot;rel&quot;:&quot;apple-touch-icon&quot;, 
+            &quot;sizes&quot;:&quot;120x120&quot;,
+            &quot;href&quot;:&quot;{images}icons/apple-touch-icon-120x120.png&quot;
+        },
+        {
+            &quot;rel&quot;:&quot;apple-touch-icon&quot;, 
+            &quot;sizes&quot;:&quot;144x144&quot;,
+            &quot;href&quot;:&quot;{images}icons/apple-touch-icon-144x144.png&quot;
+        },
+        {
+            &quot;rel&quot;:&quot;apple-touch-icon&quot;, 
+            &quot;sizes&quot;:&quot;152x152&quot;,
+            &quot;href&quot;:&quot;{images}icons/apple-touch-icon-152x152.png&quot;
+        },
+        {
+            &quot;rel&quot;:&quot;apple-touch-icon&quot;, 
+            &quot;sizes&quot;:&quot;180x180&quot;,
+            &quot;href&quot;:&quot;{images}icons/apple-touch-icon-180x180.png&quot;
+        },
+
+        {
+            &quot;rel&quot;:&quot;icon&quot;,
+            &quot;href&quot;:&quot;{images}icons/favicon-16x16.png&quot;, 
+            &quot;sizes&quot;:&quot;16x16&quot;
+        },
+        {
+            &quot;rel&quot;:&quot;icon&quot;,
+            &quot;href&quot;:&quot;{images}icons/favicon-32x32.png&quot;, 
+            &quot;sizes&quot;:&quot;32x32&quot;
+        },
+        {
+            &quot;rel&quot;:&quot;icon&quot;,
+            &quot;href&quot;:&quot;{images}icons/favicon-96x96.png&quot;, 
+            &quot;sizes&quot;:&quot;96x96&quot;
+        },
+        {
+            &quot;rel&quot;:&quot;icon&quot;,
+            &quot;href&quot;:&quot;{images}icons/android-chrome-192x192.png&quot;, 
+            &quot;sizes&quot;:&quot;192x192&quot;
+        }
+    ]
+}
+</code></pre>
+
+            </div>
+        </div>
 </div>
     </div>
 
@@ -166,7 +253,11 @@
                     <h3>Methods</h3>
 
                     <ul class="index-list methods extends">
-                            <li class="index-item method">
+                            <li class="index-item method protected">
+                                <a href="#method_applyLink">applyLink</a>
+
+                            </li>
+                            <li class="index-item method protected">
                                 <a href="#method_applyMeta">applyMeta</a>
 
                             </li>
@@ -215,10 +306,22 @@
                                 <a href="#attr_head">head</a>
                             </li>
                             <li class="index-item attr">
+                                <a href="#attr_icons">icons</a>
+                            </li>
+                            <li class="index-item attr">
+                                <a href="#attr_manifest">manifest</a>
+                            </li>
+                            <li class="index-item attr">
+                                <a href="#attr_splash">splash</a>
+                            </li>
+                            <li class="index-item attr">
                                 <a href="#attr_title">title</a>
                             </li>
                             <li class="index-item attr">
                                 <a href="#attr_viewport">viewport</a>
+                            </li>
+                            <li class="index-item attr">
+                                <a href="#attr_webAppCapable">webAppCapable</a>
                             </li>
                     </ul>
                 </div>
@@ -228,7 +331,73 @@
             <div id="methods" class="api-class-tabpanel">
                 <h2 class="off-left">Methods</h2>
 
-<div id="method_applyMeta" class="method item">
+<div id="method_applyLink" class="method item protected">
+    <h3 class="name"><code>applyLink</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>p_rel</code>
+                </li>
+                <li class="arg">
+                        <code>p_value</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+
+
+        <span class="flag protected">protected</span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._.._source_coffee_slikland_core_navigation_MetaController.coffee.html#l130"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;core&#x2F;navigation&#x2F;MetaController.coffee:130</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">p_rel</code>
+                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>
+
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">p_value</code>
+                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>
+
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+
+
+</div>
+<div id="method_applyMeta" class="method item protected">
     <h3 class="name"><code>applyMeta</code></h3>
 
         <div class="args">
@@ -244,6 +413,7 @@
 
 
 
+        <span class="flag protected">protected</span>
 
 
 
@@ -252,7 +422,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._.._source_coffee_slikland_core_navigation_MetaController.coffee.html#l27"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;core&#x2F;navigation&#x2F;MetaController.coffee:27</code></a>
+        <a href="../files/.._.._source_coffee_slikland_core_navigation_MetaController.coffee.html#l113"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;core&#x2F;navigation&#x2F;MetaController.coffee:113</code></a>
         </p>
 
 
@@ -314,7 +484,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._.._source_coffee_slikland_core_navigation_MetaController.coffee.html#l15"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;core&#x2F;navigation&#x2F;MetaController.coffee:15</code></a>
+        <a href="../files/.._.._source_coffee_slikland_core_navigation_MetaController.coffee.html#l100"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;core&#x2F;navigation&#x2F;MetaController.coffee:100</code></a>
         </p>
 
 
@@ -372,7 +542,7 @@
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/EventDispatcher.html#method_hasEvent">EventDispatcher</a>:
-        <a href="../files/.._.._source_coffee_slikland_event_EventDispatcher.coffee.html#l103"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;event&#x2F;EventDispatcher.coffee:103</code></a>
+        <a href="../files/.._.._source_coffee_slikland_event_EventDispatcher.coffee.html#l108"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;event&#x2F;EventDispatcher.coffee:108</code></a>
         </p>
 
 
@@ -602,7 +772,7 @@ ed.on('someEvent', someEventHandler);</code></pre>
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/EventDispatcher.html#method_stackTrigger">EventDispatcher</a>:
-        <a href="../files/.._.._source_coffee_slikland_event_EventDispatcher.coffee.html#l121"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;event&#x2F;EventDispatcher.coffee:121</code></a>
+        <a href="../files/.._.._source_coffee_slikland_event_EventDispatcher.coffee.html#l126"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;event&#x2F;EventDispatcher.coffee:126</code></a>
         </p>
 
 
@@ -807,7 +977,7 @@ ed.trigger('someEvent', {someData: true}, window);</code></pre>
                         <div class="meta">
                                     <p>
                                     Defined in
-                            <a href="../files/.._.._source_coffee_slikland_core_navigation_MetaController.coffee.html#l90"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;core&#x2F;navigation&#x2F;MetaController.coffee:90</code></a>
+                            <a href="../files/.._.._source_coffee_slikland_core_navigation_MetaController.coffee.html#l220"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;core&#x2F;navigation&#x2F;MetaController.coffee:220</code></a>
                             </p>
                     
                     
@@ -835,7 +1005,7 @@ ed.trigger('someEvent', {someData: true}, window);</code></pre>
                         <div class="meta">
                                     <p>
                                     Defined in
-                            <a href="../files/.._.._source_coffee_slikland_core_navigation_MetaController.coffee.html#l66"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;core&#x2F;navigation&#x2F;MetaController.coffee:66</code></a>
+                            <a href="../files/.._.._source_coffee_slikland_core_navigation_MetaController.coffee.html#l172"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;core&#x2F;navigation&#x2F;MetaController.coffee:172</code></a>
                             </p>
                     
                     
@@ -863,7 +1033,7 @@ ed.trigger('someEvent', {someData: true}, window);</code></pre>
                         <div class="meta">
                                     <p>
                                     Defined in
-                            <a href="../files/.._.._source_coffee_slikland_core_navigation_MetaController.coffee.html#l73"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;core&#x2F;navigation&#x2F;MetaController.coffee:73</code></a>
+                            <a href="../files/.._.._source_coffee_slikland_core_navigation_MetaController.coffee.html#l179"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;core&#x2F;navigation&#x2F;MetaController.coffee:179</code></a>
                             </p>
                     
                     
@@ -892,7 +1062,7 @@ ed.trigger('someEvent', {someData: true}, window);</code></pre>
                         <div class="meta">
                                     <p>
                                     Defined in
-                            <a href="../files/.._.._source_coffee_slikland_core_navigation_MetaController.coffee.html#l43"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;core&#x2F;navigation&#x2F;MetaController.coffee:43</code></a>
+                            <a href="../files/.._.._source_coffee_slikland_core_navigation_MetaController.coffee.html#l146"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;core&#x2F;navigation&#x2F;MetaController.coffee:146</code></a>
                             </p>
                     
                     
@@ -900,6 +1070,150 @@ ed.trigger('someEvent', {someData: true}, window);</code></pre>
                     
                         <div class="description">
                             
+                        </div>
+                    
+                    
+                    
+                    </div>
+                    <div id="attr_icons" class="attr item">
+                        <a name="config_icons"></a> 
+                        <h3 class="name"><code>icons</code></h3>
+                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                        <div class="meta">
+                                    <p>
+                                    Defined in
+                            <a href="../files/.._.._source_coffee_slikland_core_navigation_MetaController.coffee.html#l189"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;core&#x2F;navigation&#x2F;MetaController.coffee:189</code></a>
+                            </p>
+                    
+                    
+                        </div>
+                    
+                        <div class="description">
+                            
+                        </div>
+                    
+                    
+                    
+                    </div>
+                    <div id="attr_manifest" class="attr item">
+                        <a name="config_manifest"></a> 
+                        <h3 class="name"><code>manifest</code></h3>
+                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                        <div class="meta">
+                                    <p>
+                                    Defined in
+                            <a href="../files/.._.._source_coffee_slikland_core_navigation_MetaController.coffee.html#l238"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;core&#x2F;navigation&#x2F;MetaController.coffee:238</code></a>
+                            </p>
+                    
+                    
+                        </div>
+                    
+                        <div class="description">
+                            <p>Only for Android</p>
+                    
+                        </div>
+                    
+                    
+                    
+                            <div class="example">
+                                <h4>Example:</h4>
+                    
+                                <div class="example-content">
+                                    <pre class="code prettyprint"><code><code>&#x60;</code>
+                    {
+                      &quot;lang&quot;: &quot;en&quot;,
+                      &quot;scope&quot;: &quot;/scope/&quot;,     
+                      &quot;name&quot;: &quot;Web Application Manifest Sample&quot;,
+                      &quot;short_name&quot;: &quot;Application&quot;,
+                      &quot;display&quot;: &quot;standalone&quot;,
+                      &quot;orientation&quot;: &quot;landscape&quot;,
+                      &quot;start_url&quot;: &quot;index.html&quot;,
+                      &quot;theme_color&quot;: &quot;aliceblue&quot;,
+                      &quot;background_color&quot;: &quot;blue&quot;,
+                      &quot;icons&quot;: [
+                        {
+                          &quot;src&quot;: &quot;launcher-icon-0-75x.png&quot;,
+                          &quot;sizes&quot;: &quot;36x36&quot;,
+                          &quot;type&quot;: &quot;image/png&quot;,
+                          &quot;density&quot;: 0.75
+                        },
+                        {
+                          &quot;src&quot;: &quot;launcher-icon-1x.png&quot;,
+                          &quot;sizes&quot;: &quot;48x48&quot;,
+                          &quot;type&quot;: &quot;image/png&quot;,
+                          &quot;density&quot;: 1.0
+                        },
+                        {
+                          &quot;src&quot;: &quot;launcher-icon-1-5x.png&quot;,
+                          &quot;sizes&quot;: &quot;72x72&quot;,
+                          &quot;type&quot;: &quot;image/png&quot;,
+                          &quot;density&quot;: 1.5
+                        },
+                        {
+                          &quot;src&quot;: &quot;launcher-icon-2x.png&quot;,
+                          &quot;sizes&quot;: &quot;96x96&quot;,
+                          &quot;type&quot;: &quot;image/png&quot;,
+                          &quot;density&quot;: 2.0
+                        },
+                        {
+                          &quot;src&quot;: &quot;launcher-icon-3x.png&quot;,
+                          &quot;sizes&quot;: &quot;144x144&quot;,
+                          &quot;type&quot;: &quot;image/png&quot;,
+                          &quot;density&quot;: 3.0
+                        },
+                        {
+                          &quot;src&quot;: &quot;launcher-icon-4x.png&quot;,
+                          &quot;sizes&quot;: &quot;192x192&quot;,
+                          &quot;type&quot;: &quot;image/png&quot;,
+                          &quot;density&quot;: 4.0
+                        }
+                      ]
+                    }   
+                    <code>&#x60;</code></code></pre>
+                    
+                                </div>
+                            </div>
+                    </div>
+                    <div id="attr_splash" class="attr item">
+                        <a name="config_splash"></a> 
+                        <h3 class="name"><code>splash</code></h3>
+                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                        <div class="meta">
+                                    <p>
+                                    Defined in
+                            <a href="../files/.._.._source_coffee_slikland_core_navigation_MetaController.coffee.html#l198"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;core&#x2F;navigation&#x2F;MetaController.coffee:198</code></a>
+                            </p>
+                    
+                    
+                        </div>
+                    
+                        <div class="description">
+                            <p>Only for iOS</p>
+                    
                         </div>
                     
                     
@@ -920,7 +1234,7 @@ ed.trigger('someEvent', {someData: true}, window);</code></pre>
                         <div class="meta">
                                     <p>
                                     Defined in
-                            <a href="../files/.._.._source_coffee_slikland_core_navigation_MetaController.coffee.html#l58"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;core&#x2F;navigation&#x2F;MetaController.coffee:58</code></a>
+                            <a href="../files/.._.._source_coffee_slikland_core_navigation_MetaController.coffee.html#l161"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;core&#x2F;navigation&#x2F;MetaController.coffee:161</code></a>
                             </p>
                     
                     
@@ -948,7 +1262,35 @@ ed.trigger('someEvent', {someData: true}, window);</code></pre>
                         <div class="meta">
                                     <p>
                                     Defined in
-                            <a href="../files/.._.._source_coffee_slikland_core_navigation_MetaController.coffee.html#l51"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;core&#x2F;navigation&#x2F;MetaController.coffee:51</code></a>
+                            <a href="../files/.._.._source_coffee_slikland_core_navigation_MetaController.coffee.html#l154"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;core&#x2F;navigation&#x2F;MetaController.coffee:154</code></a>
+                            </p>
+                    
+                    
+                        </div>
+                    
+                        <div class="description">
+                            
+                        </div>
+                    
+                    
+                    
+                    </div>
+                    <div id="attr_webAppCapable" class="attr item">
+                        <a name="config_webAppCapable"></a> 
+                        <h3 class="name"><code>webAppCapable</code></h3>
+                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                        <div class="meta">
+                                    <p>
+                                    Defined in
+                            <a href="../files/.._.._source_coffee_slikland_core_navigation_MetaController.coffee.html#l207"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;core&#x2F;navigation&#x2F;MetaController.coffee:207</code></a>
                             </p>
                     
                     

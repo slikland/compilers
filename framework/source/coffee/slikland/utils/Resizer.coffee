@@ -61,8 +61,16 @@ class Resizer extends EventDispatcher
 						if !@hasClass(k) then @addClass(k)
 					else
 						if @hasClass(k) then @removeClass(k)
-					_data['breakpoint'] = {key:k, values:v}
-					@trigger Resizer.BREAKPOINT_CHANGE, _data
+			
+			for k, v of app.conditions.list
+				if v['size']? || v['orientation']?
+					if app.conditions.test(k)
+						_data['breakpoint'] = {key:k, values:v}
+						if @latestKey != k
+							@latestKey = k
+							@trigger Resizer.BREAKPOINT_CHANGE, _data
+						break
+
 				
 	addClass:(className)->
 		if typeof(className) is 'string'

@@ -1,0 +1,13 @@
+{
+	"meta":
+	{
+		"title": "Default Template - title main",
+		"description":"description main"
+	},
+	"label":"Carregado",
+	"image":{
+		"id": "image",
+		"src":"{images}666x666&text=home+dummy+image.png",
+		"cache": true
+	}
+}

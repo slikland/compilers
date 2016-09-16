@@ -39,7 +39,7 @@ class AssetLoader extends EventDispatcher
 			@_groups[p_groupId] = group
 			group.on(AssetLoader.COMPLETE_FILE, @_fileLoad)
 			group.on(AssetLoader.ERROR, @_onError)
-			group.on(AssetLoader.FILE_ERROR, @_onError)
+			group.on(AssetLoader.FILE_ERROR, @_onFileError)
 		group.setMaxConnections(p_concurrent)
 		return group
 
@@ -48,20 +48,23 @@ class AssetLoader extends EventDispatcher
 		return group
 
 	_onError:(e)=>
-		e.currentTarget.off(AssetLoader.COMPLETE_FILE, @_fileLoad)
 		e.currentTarget.off(AssetLoader.ERROR, @_onError)
-		e.currentTarget.off(AssetLoader.FILE_ERROR, @_onError)
-		try
-			console.log e.data
-			throw new Error(e.title)
-		catch err
-			console.log err.stack
+		e.currentTarget.off(AssetLoader.COMPLETE_FILE, @_fileLoad)
+		console.log e
+		throw new Error(e.title).stack
+		false
+
+	_onFileError:(e)=>
+		e.currentTarget.off(AssetLoader.FILE_ERROR, @_onFileError)
+		e.currentTarget.off(AssetLoader.COMPLETE_FILE, @_fileLoad)
+		console.log e
+		throw new Error(e.title).stack
 		false
 
 	_fileLoad:(e)=>
 		e.currentTarget.off(AssetLoader.COMPLETE_FILE, @_fileLoad)
 		e.currentTarget.off(AssetLoader.ERROR, @_onError)
-		e.currentTarget.off(AssetLoader.FILE_ERROR, @_onError)
+		e.currentTarget.off(AssetLoader.FILE_ERROR, @_onFileError)
 		e.item.tag = e.result
 		false
 

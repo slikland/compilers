@@ -103,7 +103,6 @@
             <ul class="inline commas">
                     <li><a href="NavigationRouter.html">NavigationRouter</a></li>
                     <li><a href="BaseNavigationController.html">BaseNavigationController</a></li>
-                    <li><a href="MetaController.html">MetaController</a></li>
             </ul>
         </div>
 
@@ -112,7 +111,7 @@
         </div>
 
         <div class="foundat">
-            Defined in: <a href="../files/.._.._source_coffee_slikland_core_navigation_Navigation.coffee.html#l36"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;core&#x2F;navigation&#x2F;Navigation.coffee:36</code></a>
+            Defined in: <a href="../files/.._.._source_coffee_slikland_core_navigation_Navigation.coffee.html#l33"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;core&#x2F;navigation&#x2F;Navigation.coffee:33</code></a>
         </div>
 
 
@@ -149,7 +148,7 @@ The instance of this class can be accessed by <code>app.navigation</code> wrappe
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._.._source_coffee_slikland_core_navigation_Navigation.coffee.html#l36"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;core&#x2F;navigation&#x2F;Navigation.coffee:36</code></a>
+        <a href="../files/.._.._source_coffee_slikland_core_navigation_Navigation.coffee.html#l33"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;core&#x2F;navigation&#x2F;Navigation.coffee:33</code></a>
         </p>
 
 
@@ -241,14 +240,6 @@ The instance of this class can be accessed by <code>app.navigation</code> wrappe
                             </li>
                             <li class="index-item method inherited">
                                 <a href="#method_addRoute">addRoute</a>
-
-                            </li>
-                            <li class="index-item method inherited">
-                                <a href="#method_applyMeta">applyMeta</a>
-
-                            </li>
-                            <li class="index-item method inherited">
-                                <a href="#method_change">change</a>
 
                             </li>
                             <li class="index-item method protected inherited">
@@ -353,22 +344,13 @@ The instance of this class can be accessed by <code>app.navigation</code> wrappe
 
                     <ul class="index-list attrs extends">
                             <li class="index-item attr inherited">
-                                <a href="#attr_color">color</a>
-                            </li>
-                            <li class="index-item attr inherited">
                                 <a href="#attr_currentView">currentView</a>
                             </li>
                             <li class="index-item attr inherited">
                                 <a href="#attr_data">data</a>
                             </li>
-                            <li class="index-item attr inherited">
-                                <a href="#attr_description">description</a>
-                            </li>
-                            <li class="index-item attr inherited">
-                                <a href="#attr_favicon">favicon</a>
-                            </li>
-                            <li class="index-item attr inherited">
-                                <a href="#attr_head">head</a>
+                            <li class="index-item attr">
+                                <a href="#attr_navigation">navigation</a>
                             </li>
                             <li class="index-item attr inherited">
                                 <a href="#attr_previousView">previousView</a>
@@ -376,14 +358,11 @@ The instance of this class can be accessed by <code>app.navigation</code> wrappe
                             <li class="index-item attr">
                                 <a href="#attr_routeData">routeData</a>
                             </li>
-                            <li class="index-item attr inherited">
-                                <a href="#attr_title">title</a>
+                            <li class="index-item attr">
+                                <a href="#attr_router">router</a>
                             </li>
                             <li class="index-item attr inherited">
                                 <a href="#attr_type">type</a>
-                            </li>
-                            <li class="index-item attr inherited">
-                                <a href="#attr_viewport">viewport</a>
                             </li>
                             <li class="index-item attr inherited">
                                 <a href="#attr_visibleViews">visibleViews</a>
@@ -492,7 +471,7 @@ The instance of this class can be accessed by <code>app.navigation</code> wrappe
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._.._source_coffee_slikland_core_navigation_Navigation.coffee.html#l230"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;core&#x2F;navigation&#x2F;Navigation.coffee:230</code></a>
+        <a href="../files/.._.._source_coffee_slikland_core_navigation_Navigation.coffee.html#l241"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;core&#x2F;navigation&#x2F;Navigation.coffee:241</code></a>
         </p>
 
 
@@ -889,7 +868,7 @@ The instance of this class can be accessed by <code>app.navigation</code> wrappe
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/NavigationRouter.html#method__sortRoutes">NavigationRouter</a>:
-        <a href="../files/.._.._source_coffee_slikland_core_navigation_NavigationRouter.coffee.html#l310"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;core&#x2F;navigation&#x2F;NavigationRouter.coffee:310</code></a>
+        <a href="../files/.._.._source_coffee_slikland_core_navigation_NavigationRouter.coffee.html#l311"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;core&#x2F;navigation&#x2F;NavigationRouter.coffee:311</code></a>
         </p>
 
 
@@ -1043,123 +1022,6 @@ The instance of this class can be accessed by <code>app.navigation</code> wrappe
                         <code class="param-name optional">[p_data = null]</code>
                         <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>
                         <span class="flag optional" title="This parameter is optional.">optional</span>
-
-
-                    <div class="param-description">
-                         
-                    </div>
-
-                </li>
-            </ul>
-        </div>
-
-
-
-</div>
-<div id="method_applyMeta" class="method item inherited">
-    <h3 class="name"><code>applyMeta</code></h3>
-
-        <div class="args">
-            <span class="paren">(</span><ul class="args-list inline commas">
-                <li class="arg">
-                        <code>p_name</code>
-                </li>
-                <li class="arg">
-                        <code>p_value</code>
-                </li>
-            </ul><span class="paren">)</span>
-        </div>
-
-
-
-
-
-
-
-
-    <div class="meta">
-                <p>Inherited from
-                <a href="../classes/MetaController.html#method_applyMeta">MetaController</a>:
-        <a href="../files/.._.._source_coffee_slikland_core_navigation_MetaController.coffee.html#l27"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;core&#x2F;navigation&#x2F;MetaController.coffee:27</code></a>
-        </p>
-
-
-
-    </div>
-
-    <div class="description">
-        
-    </div>
-
-        <div class="params">
-            <h4>Parameters:</h4>
-
-            <ul class="params-list">
-                <li class="param">
-                        <code class="param-name">p_name</code>
-                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>
-
-
-                    <div class="param-description">
-                         
-                    </div>
-
-                </li>
-                <li class="param">
-                        <code class="param-name">p_value</code>
-                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>
-
-
-                    <div class="param-description">
-                         
-                    </div>
-
-                </li>
-            </ul>
-        </div>
-
-
-
-</div>
-<div id="method_change" class="method item inherited">
-    <h3 class="name"><code>change</code></h3>
-
-        <div class="args">
-            <span class="paren">(</span><ul class="args-list inline commas">
-                <li class="arg">
-                        <code>p_data</code>
-                </li>
-            </ul><span class="paren">)</span>
-        </div>
-
-
-
-
-
-
-
-
-    <div class="meta">
-                <p>Inherited from
-                <a href="../classes/MetaController.html#method_change">MetaController</a>:
-        <a href="../files/.._.._source_coffee_slikland_core_navigation_MetaController.coffee.html#l15"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;core&#x2F;navigation&#x2F;MetaController.coffee:15</code></a>
-        </p>
-
-
-
-    </div>
-
-    <div class="description">
-        
-    </div>
-
-        <div class="params">
-            <h4>Parameters:</h4>
-
-            <ul class="params-list">
-                <li class="param">
-                        <code class="param-name">p_data</code>
-                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>
 
 
                     <div class="param-description">
@@ -1332,7 +1194,7 @@ This method trigger the event <a href="../classes/BaseNavigationController.html#
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._.._source_coffee_slikland_core_navigation_Navigation.coffee.html#l218"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;core&#x2F;navigation&#x2F;Navigation.coffee:218</code></a>
+        <a href="../files/.._.._source_coffee_slikland_core_navigation_Navigation.coffee.html#l229"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;core&#x2F;navigation&#x2F;Navigation.coffee:229</code></a>
         </p>
 
 
@@ -1394,7 +1256,7 @@ This method trigger the event <a href="../classes/BaseNavigationController.html#
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._.._source_coffee_slikland_core_navigation_Navigation.coffee.html#l206"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;core&#x2F;navigation&#x2F;Navigation.coffee:206</code></a>
+        <a href="../files/.._.._source_coffee_slikland_core_navigation_Navigation.coffee.html#l217"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;core&#x2F;navigation&#x2F;Navigation.coffee:217</code></a>
         </p>
 
 
@@ -1457,7 +1319,7 @@ This method trigger the event <a href="../classes/BaseNavigationController.html#
                 NavigationRouter
             </a>
             but overwritten in
-        <a href="../files/.._.._source_coffee_slikland_core_navigation_Navigation.coffee.html#l135"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;core&#x2F;navigation&#x2F;Navigation.coffee:135</code></a>
+        <a href="../files/.._.._source_coffee_slikland_core_navigation_Navigation.coffee.html#l149"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;core&#x2F;navigation&#x2F;Navigation.coffee:149</code></a>
         </p>
 
 
@@ -1504,7 +1366,7 @@ This method trigger the event <a href="../classes/BaseNavigationController.html#
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._.._source_coffee_slikland_core_navigation_Navigation.coffee.html#l183"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;core&#x2F;navigation&#x2F;Navigation.coffee:183</code></a>
+        <a href="../files/.._.._source_coffee_slikland_core_navigation_Navigation.coffee.html#l197"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;core&#x2F;navigation&#x2F;Navigation.coffee:197</code></a>
         </p>
 
 
@@ -1543,7 +1405,7 @@ This method trigger the event <a href="../classes/BaseNavigationController.html#
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._.._source_coffee_slikland_core_navigation_Navigation.coffee.html#l157"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;core&#x2F;navigation&#x2F;Navigation.coffee:157</code></a>
+        <a href="../files/.._.._source_coffee_slikland_core_navigation_Navigation.coffee.html#l171"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;core&#x2F;navigation&#x2F;Navigation.coffee:171</code></a>
         </p>
 
 
@@ -1606,7 +1468,7 @@ This method trigger the event <a href="../classes/BaseNavigationController.html#
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._.._source_coffee_slikland_core_navigation_Navigation.coffee.html#l195"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;core&#x2F;navigation&#x2F;Navigation.coffee:195</code></a>
+        <a href="../files/.._.._source_coffee_slikland_core_navigation_Navigation.coffee.html#l206"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;core&#x2F;navigation&#x2F;Navigation.coffee:206</code></a>
         </p>
 
 
@@ -1664,7 +1526,7 @@ This method trigger the event <a href="../classes/BaseNavigationController.html#
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/EventDispatcher.html#method_hasEvent">EventDispatcher</a>:
-        <a href="../files/.._.._source_coffee_slikland_event_EventDispatcher.coffee.html#l103"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;event&#x2F;EventDispatcher.coffee:103</code></a>
+        <a href="../files/.._.._source_coffee_slikland_event_EventDispatcher.coffee.html#l108"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;event&#x2F;EventDispatcher.coffee:108</code></a>
         </p>
 
 
@@ -2039,7 +1901,7 @@ ed.on('someEvent', someEventHandler);</code></pre>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._.._source_coffee_slikland_core_navigation_Navigation.coffee.html#l170"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;core&#x2F;navigation&#x2F;Navigation.coffee:170</code></a>
+        <a href="../files/.._.._source_coffee_slikland_core_navigation_Navigation.coffee.html#l184"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;core&#x2F;navigation&#x2F;Navigation.coffee:184</code></a>
         </p>
 
 
@@ -2105,7 +1967,7 @@ ed.on('someEvent', someEventHandler);</code></pre>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._.._source_coffee_slikland_core_navigation_Navigation.coffee.html#l148"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;core&#x2F;navigation&#x2F;Navigation.coffee:148</code></a>
+        <a href="../files/.._.._source_coffee_slikland_core_navigation_Navigation.coffee.html#l162"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;core&#x2F;navigation&#x2F;Navigation.coffee:162</code></a>
         </p>
 
 
@@ -2171,7 +2033,7 @@ ed.on('someEvent', someEventHandler);</code></pre>
                 NavigationRouter
             </a>
             but overwritten in
-        <a href="../files/.._.._source_coffee_slikland_core_navigation_Navigation.coffee.html#l52"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;core&#x2F;navigation&#x2F;Navigation.coffee:52</code></a>
+        <a href="../files/.._.._source_coffee_slikland_core_navigation_Navigation.coffee.html#l48"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;core&#x2F;navigation&#x2F;Navigation.coffee:48</code></a>
         </p>
 
 
@@ -2229,7 +2091,7 @@ ed.on('someEvent', someEventHandler);</code></pre>
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/EventDispatcher.html#method_stackTrigger">EventDispatcher</a>:
-        <a href="../files/.._.._source_coffee_slikland_event_EventDispatcher.coffee.html#l121"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;event&#x2F;EventDispatcher.coffee:121</code></a>
+        <a href="../files/.._.._source_coffee_slikland_event_EventDispatcher.coffee.html#l126"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;event&#x2F;EventDispatcher.coffee:126</code></a>
         </p>
 
 
@@ -2338,7 +2200,7 @@ function test()
                 BaseNavigationController
             </a>
             but overwritten in
-        <a href="../files/.._.._source_coffee_slikland_core_navigation_Navigation.coffee.html#l72"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;core&#x2F;navigation&#x2F;Navigation.coffee:72</code></a>
+        <a href="../files/.._.._source_coffee_slikland_core_navigation_Navigation.coffee.html#l68"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;core&#x2F;navigation&#x2F;Navigation.coffee:68</code></a>
         </p>
 
 
@@ -2579,34 +2441,6 @@ ed.trigger('someEvent', {someData: true}, window);</code></pre>
             <div id="attrs" class="api-class-tabpanel">
                 <h2 class="off-left">Attributes</h2>
 
-                    <div id="attr_color" class="attr item inherited">
-                        <a name="config_color"></a> 
-                        <h3 class="name"><code>color</code></h3>
-                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                        <div class="meta">
-                                    <p>Inherited from
-                                    <a href="../classes/MetaController.html#attr_color">MetaController</a>:
-                            <a href="../files/.._.._source_coffee_slikland_core_navigation_MetaController.coffee.html#l90"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;core&#x2F;navigation&#x2F;MetaController.coffee:90</code></a>
-                            </p>
-                    
-                    
-                        </div>
-                    
-                        <div class="description">
-                            
-                        </div>
-                    
-                    
-                    
-                    </div>
                     <div id="attr_currentView" class="attr item">
                         <a name="config_currentView"></a> 
                         <h3 class="name"><code>currentView</code></h3>
@@ -2626,7 +2460,7 @@ ed.trigger('someEvent', {someData: true}, window);</code></pre>
                                     BaseNavigationController
                                 </a>
                                 but overwritten in
-                            <a href="../files/.._.._source_coffee_slikland_core_navigation_Navigation.coffee.html#l97"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;core&#x2F;navigation&#x2F;Navigation.coffee:97</code></a>
+                            <a href="../files/.._.._source_coffee_slikland_core_navigation_Navigation.coffee.html#l93"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;core&#x2F;navigation&#x2F;Navigation.coffee:93</code></a>
                             </p>
                     
                     
@@ -2671,66 +2505,10 @@ ed.trigger('someEvent', {someData: true}, window);</code></pre>
                     
                     
                     </div>
-                    <div id="attr_description" class="attr item inherited">
-                        <a name="config_description"></a> 
-                        <h3 class="name"><code>description</code></h3>
-                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                        <div class="meta">
-                                    <p>Inherited from
-                                    <a href="../classes/MetaController.html#attr_description">MetaController</a>:
-                            <a href="../files/.._.._source_coffee_slikland_core_navigation_MetaController.coffee.html#l66"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;core&#x2F;navigation&#x2F;MetaController.coffee:66</code></a>
-                            </p>
-                    
-                    
-                        </div>
-                    
-                        <div class="description">
-                            
-                        </div>
-                    
-                    
-                    
-                    </div>
-                    <div id="attr_favicon" class="attr item inherited">
-                        <a name="config_favicon"></a> 
-                        <h3 class="name"><code>favicon</code></h3>
-                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                        <div class="meta">
-                                    <p>Inherited from
-                                    <a href="../classes/MetaController.html#attr_favicon">MetaController</a>:
-                            <a href="../files/.._.._source_coffee_slikland_core_navigation_MetaController.coffee.html#l73"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;core&#x2F;navigation&#x2F;MetaController.coffee:73</code></a>
-                            </p>
-                    
-                    
-                        </div>
-                    
-                        <div class="description">
-                            
-                        </div>
-                    
-                    
-                    
-                    </div>
-                    <div id="attr_head" class="attr item inherited">
-                        <a name="config_head"></a> 
-                        <h3 class="name"><code>head</code></h3>
-                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement" class="crosslink external" target="_blank">HTMLElement</a></span>
+                    <div id="attr_navigation" class="attr item">
+                        <a name="config_navigation"></a> 
+                        <h3 class="name"><code>navigation</code></h3>
+                        <span class="type"><a href="../classes/BaseNavigationController.html" class="crosslink">BaseNavigationController</a></span>
                     
                     
                     
@@ -2741,16 +2519,17 @@ ed.trigger('someEvent', {someData: true}, window);</code></pre>
                             <span class="flag readonly">readonly</span>
                     
                         <div class="meta">
-                                    <p>Inherited from
-                                    <a href="../classes/MetaController.html#attr_head">MetaController</a>:
-                            <a href="../files/.._.._source_coffee_slikland_core_navigation_MetaController.coffee.html#l43"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;core&#x2F;navigation&#x2F;MetaController.coffee:43</code></a>
+                                    <p>
+                                    Defined in
+                            <a href="../files/.._.._source_coffee_slikland_core_navigation_Navigation.coffee.html#l140"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;core&#x2F;navigation&#x2F;Navigation.coffee:140</code></a>
                             </p>
                     
                     
                         </div>
                     
                         <div class="description">
-                            
+                            <p>Returns the instance of navigation controller</p>
+                    
                         </div>
                     
                     
@@ -2775,7 +2554,7 @@ ed.trigger('someEvent', {someData: true}, window);</code></pre>
                                     BaseNavigationController
                                 </a>
                                 but overwritten in
-                            <a href="../files/.._.._source_coffee_slikland_core_navigation_Navigation.coffee.html#l108"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;core&#x2F;navigation&#x2F;Navigation.coffee:108</code></a>
+                            <a href="../files/.._.._source_coffee_slikland_core_navigation_Navigation.coffee.html#l104"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;core&#x2F;navigation&#x2F;Navigation.coffee:104</code></a>
                             </p>
                     
                     
@@ -2805,7 +2584,7 @@ ed.trigger('someEvent', {someData: true}, window);</code></pre>
                         <div class="meta">
                                     <p>
                                     Defined in
-                            <a href="../files/.._.._source_coffee_slikland_core_navigation_Navigation.coffee.html#l117"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;core&#x2F;navigation&#x2F;Navigation.coffee:117</code></a>
+                            <a href="../files/.._.._source_coffee_slikland_core_navigation_Navigation.coffee.html#l113"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;core&#x2F;navigation&#x2F;Navigation.coffee:113</code></a>
                             </p>
                     
                     
@@ -2819,10 +2598,10 @@ ed.trigger('someEvent', {someData: true}, window);</code></pre>
                     
                     
                     </div>
-                    <div id="attr_title" class="attr item inherited">
-                        <a name="config_title"></a> 
-                        <h3 class="name"><code>title</code></h3>
-                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>
+                    <div id="attr_router" class="attr item">
+                        <a name="config_router"></a> 
+                        <h3 class="name"><code>router</code></h3>
+                        <span class="type"><a href="../classes/NavigationRouter.html" class="crosslink">NavigationRouter</a></span>
                     
                     
                     
@@ -2830,18 +2609,20 @@ ed.trigger('someEvent', {someData: true}, window);</code></pre>
                     
                     
                     
+                            <span class="flag readonly">readonly</span>
                     
                         <div class="meta">
-                                    <p>Inherited from
-                                    <a href="../classes/MetaController.html#attr_title">MetaController</a>:
-                            <a href="../files/.._.._source_coffee_slikland_core_navigation_MetaController.coffee.html#l58"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;core&#x2F;navigation&#x2F;MetaController.coffee:58</code></a>
+                                    <p>
+                                    Defined in
+                            <a href="../files/.._.._source_coffee_slikland_core_navigation_Navigation.coffee.html#l131"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;core&#x2F;navigation&#x2F;Navigation.coffee:131</code></a>
                             </p>
                     
                     
                         </div>
                     
                         <div class="description">
-                            
+                            <p>Returns the instance of router controller</p>
+                    
                         </div>
                     
                     
@@ -2878,34 +2659,6 @@ ed.trigger('someEvent', {someData: true}, window);</code></pre>
                     
                     
                     </div>
-                    <div id="attr_viewport" class="attr item inherited">
-                        <a name="config_viewport"></a> 
-                        <h3 class="name"><code>viewport</code></h3>
-                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                        <div class="meta">
-                                    <p>Inherited from
-                                    <a href="../classes/MetaController.html#attr_viewport">MetaController</a>:
-                            <a href="../files/.._.._source_coffee_slikland_core_navigation_MetaController.coffee.html#l51"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;core&#x2F;navigation&#x2F;MetaController.coffee:51</code></a>
-                            </p>
-                    
-                    
-                        </div>
-                    
-                        <div class="description">
-                            
-                        </div>
-                    
-                    
-                    
-                    </div>
                     <div id="attr_visibleViews" class="attr item">
                         <a name="config_visibleViews"></a> 
                         <h3 class="name"><code>visibleViews</code></h3>
@@ -2925,7 +2678,7 @@ ed.trigger('someEvent', {someData: true}, window);</code></pre>
                                     BaseNavigationController
                                 </a>
                                 but overwritten in
-                            <a href="../files/.._.._source_coffee_slikland_core_navigation_Navigation.coffee.html#l88"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;core&#x2F;navigation&#x2F;Navigation.coffee:88</code></a>
+                            <a href="../files/.._.._source_coffee_slikland_core_navigation_Navigation.coffee.html#l84"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;core&#x2F;navigation&#x2F;Navigation.coffee:84</code></a>
                             </p>
                     
                     
@@ -2956,7 +2709,7 @@ ed.trigger('someEvent', {someData: true}, window);</code></pre>
                         <div class="meta">
                                     <p>
                                     Defined in
-                            <a href="../files/.._.._source_coffee_slikland_core_navigation_Navigation.coffee.html#l26"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;core&#x2F;navigation&#x2F;Navigation.coffee:26</code></a>
+                            <a href="../files/.._.._source_coffee_slikland_core_navigation_Navigation.coffee.html#l24"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;core&#x2F;navigation&#x2F;Navigation.coffee:24</code></a>
                             </p>
                     
                     
@@ -2981,7 +2734,7 @@ ed.trigger('someEvent', {someData: true}, window);</code></pre>
                         <div class="meta">
                                     <p>
                                     Defined in
-                            <a href="../files/.._.._source_coffee_slikland_core_navigation_Navigation.coffee.html#l16"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;core&#x2F;navigation&#x2F;Navigation.coffee:16</code></a>
+                            <a href="../files/.._.._source_coffee_slikland_core_navigation_Navigation.coffee.html#l14"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;core&#x2F;navigation&#x2F;Navigation.coffee:14</code></a>
                             </p>
                     
                     
@@ -3006,7 +2759,7 @@ ed.trigger('someEvent', {someData: true}, window);</code></pre>
                         <div class="meta">
                                     <p>
                                     Defined in
-                            <a href="../files/.._.._source_coffee_slikland_core_navigation_Navigation.coffee.html#l21"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;core&#x2F;navigation&#x2F;Navigation.coffee:21</code></a>
+                            <a href="../files/.._.._source_coffee_slikland_core_navigation_Navigation.coffee.html#l19"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;core&#x2F;navigation&#x2F;Navigation.coffee:19</code></a>
                             </p>
                     
                     

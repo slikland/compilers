@@ -297,6 +297,7 @@ class NavigationRouter extends EventDispatcher
 			re = route.routeRE
 			re.lastIndex = 0
 
+			# if !(o = re.exec(p_path) and route.route isnt '/' or p_path is route.route)
 			if !(o = re.exec(p_path))
 				continue
 			data = {}

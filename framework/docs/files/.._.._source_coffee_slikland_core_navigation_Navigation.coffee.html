@@ -101,7 +101,6 @@
 <div class="file">
     <pre class="code prettyprint linenums">
 #import slikland.core.navigation.NavigationRouter
-#import slikland.core.navigation.MetaController
 
 ###*
 Navigation Class
@@ -110,7 +109,6 @@ The instance of this class can be accessed by &#x60;app.navigation&#x60; wrapper
 @extends EventDispatcher
 @uses NavigationRouter
 @uses BaseNavigationController
-@uses MetaController
 @final
 ###
 class Navigation extends EventDispatcher
@@ -133,7 +131,6 @@ class Navigation extends EventDispatcher
 
 	_controller = null
 	_router = null
-	_meta = null
 
 	###*
 	@class Navigation
@@ -146,7 +143,6 @@ class Navigation extends EventDispatcher
 		_controller = p_controller
 
 		_router = new NavigationRouter()
-		_meta = new MetaController()
 		
 		app.navigation = @
 		super
@@ -233,6 +229,24 @@ class Navigation extends EventDispatcher
 			results.route = routeData[0]?[0]?.route
 			results.parsed = routeData[1]
 		return results
+
+	###*
+	Returns the instance of router controller
+	@attribute router
+	@type {NavigationRouter}
+	@readOnly
+	###
+	@get router:()-&gt;
+		return _router
+	
+	###*
+	Returns the instance of navigation controller
+	@attribute navigation
+	@type {BaseNavigationController}
+	@readOnly
+	###
+	@get controller:()-&gt;
+		return _controller
 	
 	###*
 	@method goto
@@ -240,11 +254,11 @@ class Navigation extends EventDispatcher
 	@deprecated Uses the {{#crossLink &quot;Navigation/gotoRoute:method&quot;}}{{/crossLink}} or {{#crossLink &quot;Navigation/gotoView:method&quot;}}{{/crossLink}}
 	###
 	goto:(p_value)=&gt;
-		# console.log &quot;This method is already deprecated.&quot;
-		if p_value.indexOf(&#x27;/&#x27;) == 0
-			@gotoRoute(p_value)
-		else
-			@gotoView(p_value)
+		throw new Error(&#x27;This method is already deprecated.&#x27;)
+		# if p_value.indexOf(&#x27;/&#x27;) == 0
+		# 	@gotoRoute(p_value)
+		# else
+		# 	@gotoView(p_value)
 		false
 
 	###*
@@ -285,13 +299,10 @@ class Navigation extends EventDispatcher
 	###*
 	@method gotoDefault
 	###
-	gotoDefault:()=&gt;
+	gotoDefault:(p_trigger=false)=&gt;
 		if app.config.navigation?.defaultView?
 			view = app.config.navigation.defaultView
-			if view.indexOf(&#x27;/&#x27;) == 0
-				@gotoRoute(view)
-			else
-				@gotoView(view)
+			@gotoRoute(@getRouteByView(view), p_trigger)
 		false
 
 	###*
@@ -300,7 +311,7 @@ class Navigation extends EventDispatcher
 	###
 	gotoView:(p_value)=&gt;
 		if p_value.indexOf(&#x27;/&#x27;) == 0
-			throw new Error(&#x27;The value &quot;&#x27;+p_value+&#x27;&quot; is not a valid format to viewID (&quot;exampleID&quot;)&#x27;)
+			throw new Error(&#x27;The value &quot;&#x27;+p_value+&#x27;&quot; is not a valid format to viewID (&quot;areaID&quot;)&#x27;)
 		else
 			_controller.goto(p_value)
 		false
@@ -343,8 +354,6 @@ class Navigation extends EventDispatcher
 				@_visibleViews = evt.data.visibleViews
 				
 				@trigger(Navigation.CHANGE_VIEW, {data:evt.data})
-				
-				_meta.change(@currentView.meta)
 			when BaseNavigationController.CHANGE
 				@trigger(Navigation.CHANGE_INTERNAL_VIEW, {view:evt.view, transition:evt.transition})
 			

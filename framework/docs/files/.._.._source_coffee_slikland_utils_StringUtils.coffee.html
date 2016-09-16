@@ -335,13 +335,10 @@ class StringUtils
 	@return {Boolean}
 	###	
 	@toBoolean:(p_string)-&gt;
-		t  = [&#x27;yes&#x27;, &#x27;true&#x27;, &#x27; 1&#x27;, 1, true]
-		f = [&#x27;no&#x27;,  &#x27;false&#x27;, &#x27;0&#x27;, 0, false]
-		if ArrayUtils.hasItem(p_string, t)
+		t  = [&#x27;yes&#x27;, &#x27;true&#x27;, &#x27;1&#x27;, 1, true]
+		if p_string &amp;&amp; ArrayUtils.hasItem(p_string, t)
 			return true
-		else if ArrayUtils.hasItem(p_string, f)
-			return false
-		else throw new Error(&quot;StringUtils::toBoolean &#x27;#{p_string}&#x27; is a wrong format&quot;)
+		return false
 
 
 	###*

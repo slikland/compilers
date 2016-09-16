@@ -1,0 +1,40 @@
+global-reset()
+
+.nav-container
+	font-family: Helvetica
+	position: relative
+	height: 100%
+	margin: 0
+	padding: 0
+	text-align: center
+
+.menu
+	position: relative
+	background-color: #999999
+	width: 100%
+	z-index: 1
+	
+	.menu-button
+		padding: 10px
+		display:inline-block
+		cursor:pointer
+		&:hover
+			background-color: #ffffff
+
+.views
+	display: block
+	width: 100%
+	height: 95%
+	.background
+		display: table-cell
+		vertical-align: middle
+
+.sub-views
+	position: relative
+	display: table
+	width: 100%
+	.background
+		display: table-cell
+		vertical-align: middle
+
+add-font(Helvetica, Helvetica, normal, 300)

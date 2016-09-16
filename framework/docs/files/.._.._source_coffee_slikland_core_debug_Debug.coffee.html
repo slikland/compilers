@@ -159,10 +159,28 @@ class Debug
 				trace: -&gt;
 				warn: -&gt;
 		else
-			frameworkVersion = &quot;v&quot; + app.version
-			# projectVersion = &quot;v1.0&quot;
-			# console.log &quot;%c===============\n DEBUG MODE ON \n---------------\n Framework     \n version: &quot;+frameworkVersion+&quot; \n---------------\n Project       \n version: &quot;+projectVersion+&quot; \n===============&quot;, &#x27;background: #272822; color: #f8f8f2&#x27;
-			console.log &quot;%c===============\n DEBUG MODE ON \n---------------\n Framework     \n version: &quot;+frameworkVersion+&quot; \n===============&quot;, &#x27;background: #272822; color: #f8f8f2&#x27;
+			t = &#x27;====================&#x27;
+			t += &#x27;\n&#x27;
+			t += &#x27;   DEBUG MODE ON&#x27;
+			t += &#x27;\n&#x27;
+			t += &#x27;--------------------&#x27;
+			t += &#x27;\n&#x27;
+			t += &#x27;Framework&#x27;
+			t += &#x27;\n&#x27;
+			t += &#x27;Version: &#x27;+App.FRAMEWORK_VERSION
+			t += &#x27;\n&#x27;
+			t += &#x27;--------------------&#x27;
+			t += &#x27;\n&#x27;
+			t += &#x27;Project&#x27;
+			t += &#x27;\n&#x27;
+			t += &#x27;Version: &#x27;+app.getInfo().version
+			t += &#x27;\n&#x27;
+			t += &#x27;Last update: &#x27;+app.getInfo().lastUpdate
+			t += &#x27;\n&#x27;
+			t += &#x27;====================&#x27;
+			c = &#x27;color: #&#x27; + Math.floor(Math.random()*16777215).toString(16);
+			console.log &#x27;%c&#x27;+ t, c
+
 		false	
 
 	###*

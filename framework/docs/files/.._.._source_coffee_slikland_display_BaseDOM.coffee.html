@@ -262,16 +262,13 @@ class BaseDOM extends EventDispatcher
 	##--------------------------------------
 
 	@get isAttached:()-&gt;
-		return document.contains(@element) || document.body.contains(@element)
+		return document.contains?(@element) || document.body.contains(@element)
 
 	@get attributes:()-&gt;
 		return @element.attributes
 
 	appendChild:(child)-&gt;
-		el = child
-		if child instanceof BaseDOM
-			el = child.element
-		@appendChildAt(el)
+		@appendChildAt(child)
 
 	appendChildAt:(child, index = -1)-&gt;
 		el = child
