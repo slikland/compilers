@@ -83,9 +83,9 @@ class ObjectUtils
 			ret[i - 1] = o
 		return ret
 
-	@merge:(a, b)->
+	@merge:(a, b, withDiff=true)->
 		if typeof(a) == 'object' && typeof(b) == 'object'
 			for k of b
-				if !a.hasOwnProperty(k)
+				if !a.hasOwnProperty(k) or (!!withDiff and a isnt b)
 					a[k] = b[k]
 		return a
