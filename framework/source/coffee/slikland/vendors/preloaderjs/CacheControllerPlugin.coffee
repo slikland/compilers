@@ -33,7 +33,10 @@ do ->
 				cv = true
 
 		cache = if cv then "?v="+app.getInfo().version+"&noCache="+ts else "?v="+app.getInfo().version
-		p_loadItem.src += cache 
+		
+		if p_loadItem.src.indexOf("?v=") == -1
+			p_loadItem.src += cache 
+		
 		return true
 
 	createjs.CacheControllerPlugin = CacheControllerPlugin
