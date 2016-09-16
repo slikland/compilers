@@ -35,7 +35,7 @@ class FunctionUtils
       return
 
   @setImmediate:(fn)->
-    window.setImmediate:(fn)
+    window.setImmediate(fn)
 
   @clearImmediate:(fn)->
-    window.clearImmediate:(fn)
+    window.clearImmediate(fn)
