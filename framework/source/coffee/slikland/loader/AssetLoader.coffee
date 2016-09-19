@@ -79,12 +79,14 @@ class AssetLoader extends EventDispatcher
 				return i
 
 	getResult:(p_id, p_groupId=null)->
+		result = null
 		if p_groupId
-			return @_groups[p_groupId]?.getResult(p_id)
+			result = @_groups[p_groupId]?.getResult(p_id)
 		
 		for k, v of @_groups
 			if i = v.getResult(p_id)
-				return i
+				result = i
+		return result
 
 	@addFiles:(p_files, p_queue)->
 		jsRE = /.*\.(js|css|svg)$/g

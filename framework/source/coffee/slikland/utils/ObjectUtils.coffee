@@ -24,10 +24,15 @@ class ObjectUtils
 		result.push(p_source[k]) for k,v of p_source
 		return result
 
+	@merge:(a, b)->
+		if typeof(a) == 'object' && typeof(b) == 'object'
+			for k of b
+				if !a.hasOwnProperty(k)
+					a[k] = b[k]
+		return a
+
 	@clone:(p_target)->
 		try
-			return JSON.parse(JSON.stringify(p_target))
-		catch err
 			if !p_target or typeof p_target isnt 'object'
 				return p_target
 
@@ -40,6 +45,7 @@ class ObjectUtils
 					copy[i] = @clone(p_target[i])
 					i++
 				return copy
+
 			if p_target instanceof Object
 				copy = {}
 				for k, v of p_target
@@ -48,7 +54,9 @@ class ObjectUtils
 					else
 						copy[k] = @clone(v)
 				return copy
-			throw new Error('Unable to copy')
+
+		catch err
+			return JSON.parse(JSON.stringify(p_target))
 
 
 	@hasSameKey:(p_a, p_b)->
@@ -82,10 +90,3 @@ class ObjectUtils
 				o[names[j]] = item[j]
 			ret[i - 1] = o
 		return ret
-
-	@merge:(a, b, withDiff=true)->
-		if typeof(a) == 'object' && typeof(b) == 'object'
-			for k of b
-				if !a.hasOwnProperty(k) or (!!withDiff and a isnt b)
-					a[k] = b[k]
-		return a
