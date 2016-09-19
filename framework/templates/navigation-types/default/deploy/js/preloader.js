@@ -1100,12 +1100,20 @@ ObjectUtils = (function() {
     }
     return result;
   };
+  ObjectUtils.merge = function(a, b) {
+    var k;
+    if (typeof a === 'object' && typeof b === 'object') {
+      for (k in b) {
+        if (!a.hasOwnProperty(k)) {
+          a[k] = b[k];
+        }
+      }
+    }
+    return a;
+  };
   ObjectUtils.clone = function(p_target) {
     var copy, err, i, k, len, v;
     try {
-      return JSON.parse(JSON.stringify(p_target));
-    } catch (_error) {
-      err = _error;
       if (!p_target || typeof p_target !== 'object') {
         return p_target;
       }
@@ -1132,7 +1140,9 @@ ObjectUtils = (function() {
         }
         return copy;
       }
-      throw new Error('Unable to copy');
+    } catch (_error) {
+      err = _error;
+      return JSON.parse(JSON.stringify(p_target));
     }
   };
   ObjectUtils.hasSameKey = function(p_a, p_b) {
@@ -1164,17 +1174,6 @@ ObjectUtils = (function() {
       ret[i - 1] = o;
     }
     return ret;
-  };
-  ObjectUtils.merge = function(a, b) {
-    var k;
-    if (typeof a === 'object' && typeof b === 'object') {
-      for (k in b) {
-        if (!a.hasOwnProperty(k)) {
-          a[k] = b[k];
-        }
-      }
-    }
-    return a;
   };
   return ObjectUtils;
 })();
@@ -2256,20 +2255,22 @@ AssetLoader = (function(_super) {
     }
   };
   AssetLoader.prototype.getResult = function(p_id, p_groupId) {
-    var i, k, v, _ref, _ref1;
+    var i, k, result, v, _ref, _ref1;
     if (p_groupId == null) {
       p_groupId = null;
     }
+    result = null;
     if (p_groupId) {
-      return (_ref = this._groups[p_groupId]) != null ? _ref.getResult(p_id) : void 0;
+      result = (_ref = this._groups[p_groupId]) != null ? _ref.getResult(p_id) : void 0;
     }
     _ref1 = this._groups;
     for (k in _ref1) {
       v = _ref1[k];
       if (i = v.getResult(p_id)) {
-        return i;
+        result = i;
       }
     }
+    return result;
   };
   AssetLoader.addFiles = function(p_files, p_queue) {
     var f, jsRE, mp4RE, obj, _i, _len;

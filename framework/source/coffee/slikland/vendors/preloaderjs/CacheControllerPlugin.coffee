@@ -38,6 +38,6 @@ do ->
 			p_loadItem.src += cache 
 		
 		return true
-
+	
 	createjs.CacheControllerPlugin = CacheControllerPlugin
 	return
