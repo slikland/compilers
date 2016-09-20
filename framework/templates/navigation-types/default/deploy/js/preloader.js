@@ -229,7 +229,7 @@ App = (function(_super) {
   __extends(App, _super);
   App.project_version_raw = "SL_PROJECT_VERSION:1.0.0";
   App.project_date_raw = "SL_PROJECT_DATE:1473979619231";
-  App.FRAMEWORK_VERSION = "2.2.13";
+  App.FRAMEWORK_VERSION = "2.2.15";
   function App() {
     App.__super__.constructor.apply(this, arguments);
   }
@@ -1896,7 +1896,6 @@ See more info on <a href="http://www.createjs.com/docs/preloadjs/" target="_blan
     view = views != null ? views[p_queue.id] : void 0;
     parentView = views != null ? views[view != null ? view.parentView : void 0] : void 0;
     cv = false;
-    ts = new Date().getTime();
     if (p_loadItem.cache != null) {
       if (p_loadItem.cache === false) {
         cv = true;
@@ -1910,8 +1909,9 @@ See more info on <a href="http://www.createjs.com/docs/preloadjs/" target="_blan
         cv = true;
       }
     }
-    cache = cv ? "?v=" + app.getInfo().version + "&noCache=" + ts : "?v=" + app.getInfo().version;
     if (p_loadItem.src.indexOf("?v=") === -1) {
+      ts = new Date().getTime();
+      cache = cv ? "?v=" + app.getInfo().version + "&noCache=" + ts : "?v=" + app.getInfo().version;
       p_loadItem.src += cache;
     }
     return true;
