@@ -16,7 +16,6 @@ do ->
 		parentView = views?[view?.parentView]
 		
 		cv = false
-		ts = new Date().getTime()
 
 		if p_loadItem.cache?
 			#  sets by item
@@ -31,10 +30,13 @@ do ->
 			#  When don't sets the cache value in config file the view and all your assets inherits of his parent
 			if parentView?.cache == false
 				cv = true
-
-		cache = if cv then "?v="+app.getInfo().version+"&noCache="+ts else "?v="+app.getInfo().version
-		p_loadItem.src += cache 
+		
+		if p_loadItem.src.indexOf("?v=") == -1
+			ts = new Date().getTime()
+			cache = if cv then "?v="+app.getInfo().version+"&noCache="+ts else "?v="+app.getInfo().version
+			p_loadItem.src += cache
+		
 		return true
-
+	
 	createjs.CacheControllerPlugin = CacheControllerPlugin
 	return

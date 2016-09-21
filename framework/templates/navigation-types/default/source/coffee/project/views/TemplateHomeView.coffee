@@ -12,8 +12,8 @@ class TemplateHomeView extends BaseView
 			'height': '100%'
 			'background-color': '#'+Math.floor(Math.random()*16777215).toString(16)
 		})
-		console.log @loader.getItem('image')
-		@image = new BaseDOM({element:@loader.getResult('image')})
+		
+		@image = new BaseDOM({element:@content.image.tag})
 		@background.appendChild(@image)
 
 		@background.element.on 'click', @click

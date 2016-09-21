@@ -21,26 +21,26 @@ sourcePaths: [
 
 tasks:
 	preloaderJS:
-		src: '{project.coffee}project/Preloader.coffee'
+		src: 'project/Preloader.coffee'
 		output: '{project.deploy}js/preloader.js'
 	
 	mainJS:
-		src: '{project.coffee}project/Main.coffee'
+		src: 'project/Main.coffee'
 		output: '{project.deploy}js/main.js'
 		depends: 'preloaderJS'
 		
 	vendors:
-		src: '{project.vendors}imports.js'
+		src: 'imports.js'
 		output: '{project.deploy}js/vendors.js'
 		
 	preloaderCSS:
-		src: '{project.stylus}preloader.styl'
+		src: 'preloader.styl'
 		output: '{project.deploy}css/preloader.css'
 	
 	mainCSS:
-		src: '{project.stylus}main.styl'
+		src: 'main.styl'
 		output: '{project.deploy}css/main.css'
 	
 	fontsCSS:
-		src: '{project.stylus}fonts.styl'
+		src: 'fonts.styl'
 		output: '{project.deploy}css/fonts.css'
