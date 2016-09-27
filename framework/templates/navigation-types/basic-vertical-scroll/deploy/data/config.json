@@ -38,6 +38,7 @@
 			"route":"/sub-view-01",
 			"destroyable":true,
 			"loadContent":true,
+			"parentView":"home",
 			"cache":true
 		},
 		{
@@ -47,6 +48,7 @@
 			"route":"/sub-view-02",
 			"destroyable":true,
 			"loadContent":true,
+			"parentView":"home",
 			"cache":true
 		},
 		{
