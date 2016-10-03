@@ -54,6 +54,32 @@ Function::const = (p_prop) ->
 	null
 
 ###*
+EXPERIMENTAL
+This method is a decorator to protect a property of a class instance removing the property name from enumerable list.  
+  
+* Please ignore de backslash on \\\@ as the code formatter doesn't escape atmarks.
+
+@method @protectProperty
+@example
+	class A
+		\@protectProperties ["_a", "_b"]
+		constructor:()->
+			@_a = 1
+	console.log(new A()) // Will not list _a either _b as enumerable
+###
+Function::protectProperty = (p_props) ->
+	__scope = if __scopeIE8 then __scopeIE8 else @::
+	for name in p_prop
+		o = {}
+		o.enumerable = false
+		o.writable = true
+		o.value = value
+		Object.defineProperty __scope, name, o
+	null
+
+
+
+###*
 Getter decorator for a class instance.  
 With this decorator you're able to assign a getter method to a variable.  
   
