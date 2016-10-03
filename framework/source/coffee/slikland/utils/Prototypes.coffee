@@ -74,7 +74,6 @@ Function::protectProperties = (p_props) ->
 		o = {}
 		o.enumerable = false
 		o.writable = true
-		o.value = value
 		Object.defineProperty __scope, name, o
 	null
 
