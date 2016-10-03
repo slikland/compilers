@@ -70,7 +70,7 @@ This method is a decorator to protect a property of a class instance removing th
 Function::protectProperties = (p_props) ->
 	console.warn('@protectProperties is an experimental feature. Use with caution.')
 	__scope = if __scopeIE8 then __scopeIE8 else @::
-	for name in p_prop
+	for name in p_props
 		o = {}
 		o.enumerable = false
 		o.writable = true
