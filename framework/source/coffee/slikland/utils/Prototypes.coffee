@@ -59,7 +59,7 @@ This method is a decorator to protect a property of a class instance removing th
   
 * Please ignore de backslash on \\\@ as the code formatter doesn't escape atmarks.
 
-@method @protectProperty
+@method @protectProperties
 @example
 	class A
 		\@protectProperties ["_a", "_b"]
@@ -67,7 +67,8 @@ This method is a decorator to protect a property of a class instance removing th
 			@_a = 1
 	console.log(new A()) // Will not list _a either _b as enumerable
 ###
-Function::protectProperty = (p_props) ->
+Function::protectProperties = (p_props) ->
+	console.warn('@protectProperties is an experimental feature. Use with caution.')
 	__scope = if __scopeIE8 then __scopeIE8 else @::
 	for name in p_prop
 		o = {}
