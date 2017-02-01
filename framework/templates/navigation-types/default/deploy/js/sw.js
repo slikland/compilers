@@ -18,16 +18,24 @@ ServiceWorker = (function() {
     this.self.addEventListener('activate', this._activate);
   }
   ServiceWorker.prototype._install = function(event) {
-    return console.log("ServiceWorker install");
+    console.log("ServiceWorker install");
+    return event.waitUntil(caches.open(ServiceWorker.CACHE_VERSION).then((function(_this) {
+      return function(cache) {
+        return cache.addAll(_this._staticAssets);
+      };
+    })(this)));
   };
   ServiceWorker.prototype._fetch = function(event) {
     if (event.request.method !== 'GET' || event.request.url.indexOf('sw.js') > -1) {
+      console.log('WORKER: fetch event ignored.', event.request.method, event.request.url);
       return;
     }
     return event.respondWith(caches.match(event.request).then((function(_this) {
       return function(response) {
         var fetchRequest;
+        console.log(event.request.headers.getAll());
         if (response) {
+          console.log("fetch response: ", response);
           return response;
         }
         fetchRequest = event.request.clone();

@@ -7,6 +7,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="pt-BR" lang="pt-BR" xmlns:og="http://ogp.me/ns#" xmlns:fb="http://www.facebook.com/2008/fbml">
     <head>
         <base href="<?php echo $url;?>">
+
+        <link rel="manifest" href="data/manifest.json">
         <link rel="stylesheet" type="text/css" href="css/fonts.css">
         <script type="text/javascript" src="js/preloader.js"></script>
     </head>

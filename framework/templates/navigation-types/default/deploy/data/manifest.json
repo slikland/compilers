@@ -4,8 +4,9 @@
 	"display": "standalone",
 	"orientation": "landscape",
 	"start_url": "index.php",
-	"theme_color": "aliceblue",
-	"background_color": "blue",
+	"theme_color": "#ff00ff",
+	"background_color": "#000000",
+	"lang":"en-US",
 	"icons": [
 		{
 			"src": "{images}icons/launcher-icon-0-75x.png",

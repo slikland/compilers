@@ -151,6 +151,7 @@ class NavigationLoader extends EventDispatcher
 					else
 						assets[id] = []
 						assets[id].push v
+
 		total = ObjectUtils.count(assets)
 		firstIndexes = loaderSteps.length
 		for k, v of assets

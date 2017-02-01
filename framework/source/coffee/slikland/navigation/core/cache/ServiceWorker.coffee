@@ -21,18 +21,18 @@ class ServiceWorker
 
 	_install:(event)=>
 		console.log "ServiceWorker install"
-		# event.waitUntil(
-		# 	caches.open(ServiceWorker.CACHE_VERSION)
-		# 	.then((cache)=>
-		# 		return cache.addAll(@_staticAssets)
-		# 	)
-		# )
+		event.waitUntil(
+			caches.open(ServiceWorker.CACHE_VERSION)
+			.then((cache)=>
+				return cache.addAll(@_staticAssets)
+			)
+		)
 
 	_fetch:(event)=>
 		if event.request.method isnt 'GET' or event.request.url.indexOf('sw.js') > -1
 			# If we don't block the event as shown below, then the request will go to
 			# the network as usual.
-			# #console.log('WORKER: fetch event ignored.', event.request.method, event.request.url);
+			console.log('WORKER: fetch event ignored.', event.request.method, event.request.url);
 			return
 
 		
@@ -40,10 +40,10 @@ class ServiceWorker
 		event.respondWith(
 			caches.match(event.request)
 			.then((response)=>
-				# #console.log event.request.headers.getAll()
+				console.log event.request.headers.getAll()
 				# Cache hit - return response
 				if (response)
-					# #console.log "fetch response: ", response
+					console.log "fetch response: ", response
 					# response.setHeader(	"Access-Control-Allow-Headers", "x-requested-with, accept, authorization");
 					return response
 
