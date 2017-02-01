@@ -108,7 +108,6 @@ class NavigationLoader extends EventDispatcher
 			if config.views[evt.item.id]
 				config.views[evt.item.id].content = paths.translate(evt.item.result)
 			else if config.required[evt.item.group][evt.item.id]
-				# console.log "required contents id:", evt.item.id
 				config.required[evt.item.group].content = paths.translate(evt.item.result)
 				delete config.required[evt.item.group][evt.item.id]
 		totalContentsLoaded++
@@ -254,7 +253,7 @@ class NavigationLoader extends EventDispatcher
 				result = evt.item
 		
 		contents = config.views[currentStep.id]?.content || config.required[currentStep.id]?.content
-		if contents? && evt.item.internal != false
+		if contents? && evt.item.internal!=false
 			# @TODO 
 			# Sets the result of the content file to BaseView classes
 			# Praying for a good soul look and fix this shit... =}

@@ -44,6 +44,7 @@
                                 <li><a href="../classes/BaseDOM.html">BaseDOM</a></li>
                                 <li><a href="../classes/BaseNavigationController.html">BaseNavigationController</a></li>
                                 <li><a href="../classes/BaseView.html">BaseView</a></li>
+                                <li><a href="../classes/Caim.html">Caim</a></li>
                                 <li><a href="../classes/ColorUtils.html">ColorUtils</a></li>
                                 <li><a href="../classes/ConditionsValidation.html">ConditionsValidation</a></li>
                                 <li><a href="../classes/Debug.html">Debug</a></li>
@@ -100,8 +101,8 @@
 
 <div class="file">
     <pre class="code prettyprint linenums">
-#import slikland.core.navigation.MetaController
 #import slikland.display.BaseDOM
+#import slikland.navigation.core.meta.MetaController
 
 ###*
 Base View
@@ -116,83 +117,83 @@ class BaseView extends BaseDOM
 	@event CREATE_START
 	@static
 	###
-	@CREATE_START: &#x27;create_start&#x27;
+	@const CREATE_START: &#x27;create_start&#x27;
 	###*
 	Triggered when the create routine view starts. Triggered when {{#crossLink &quot;BaseView/create:method&quot;}}{{/crossLink}} is called.
 	@event CREATE
 	@static
 	###
-	@CREATE: &#x27;create&#x27;
+	@const CREATE: &#x27;create&#x27;
 	###*
 	Triggered when the create routine view is finished. Triggered when {{#crossLink &quot;BaseView/createComplete:method&quot;}}{{/crossLink}} is called.
 	@event CREATE_COMPLETE
 	@static
 	###
-	@CREATE_COMPLETE: &#x27;create_complete&#x27;
+	@const CREATE_COMPLETE: &#x27;create_complete&#x27;
 
 	###*
 	Triggered before the showing routine view starts. Triggered when {{#crossLink &quot;BaseView/showStart:method&quot;}}{{/crossLink}} is called.
 	@event SHOW_START
 	@static
 	###
-	@SHOW_START: &#x27;show_start&#x27;
+	@const SHOW_START: &#x27;show_start&#x27;
 	###*
 	Triggered when the showing routine view starts. Triggered when {{#crossLink &quot;BaseView/show:method&quot;}}{{/crossLink}} is called.
 	@event SHOW
 	@static
 	###
-	@SHOW: &#x27;show&#x27;
+	@const SHOW: &#x27;show&#x27;
 	###*
 	Triggered when the showing routine view is finished. Triggered when {{#crossLink &quot;BaseView/showComplete:method&quot;}}{{/crossLink}} is called.
 	@event SHOW_COMPLETE
 	@static
 	###
-	@SHOW_COMPLETE: &#x27;show_complete&#x27;
+	@const SHOW_COMPLETE: &#x27;show_complete&#x27;
 
 	###*
 	Triggered before the hiding routine view starts. Triggered when {{#crossLink &quot;BaseView/hideStart:method&quot;}}{{/crossLink}} is called.
 	@event HIDE_START
 	@static
 	###
-	@HIDE_START: &#x27;hide_start&#x27;
+	@const HIDE_START: &#x27;hide_start&#x27;
 	###*
 	Triggered when the hiding routine view starts. Triggered when {{#crossLink &quot;BaseView/hide:method&quot;}}{{/crossLink}} is called.
 	@event HIDE
 	@static
 	###
-	@HIDE: &#x27;hide&#x27;
+	@const HIDE: &#x27;hide&#x27;
 	###*
 	Triggered when the hiding routine view is finished. Triggered when {{#crossLink &quot;BaseView/hideComplete:method&quot;}}{{/crossLink}} is called.
 	@event HIDE_COMPLETE
 	@static
 	###
-	@HIDE_COMPLETE: &#x27;hide_complete&#x27;
+	@const HIDE_COMPLETE: &#x27;hide_complete&#x27;
 
 	###*
 	Triggered when the destroy routine view starts. Triggered when {{#crossLink &quot;BaseView/destroy:method&quot;}}{{/crossLink}} is called.
 	@event DESTROY
 	@static
 	###
-	@DESTROY: &#x27;destroy&#x27;
+	@const DESTROY: &#x27;destroy&#x27;
 	###*
 	Triggered when the destroy routine view is finished. Triggered when {{#crossLink &quot;BaseView/destroyComplete:method&quot;}}{{/crossLink}} is called.
 	@event DESTROY_COMPLETE
 	@static
 	###
-	@DESTROY_COMPLETE: &#x27;destroy_complete&#x27;
+	@const DESTROY_COMPLETE: &#x27;destroy_complete&#x27;
 
 	###*
 	Triggered when the view pauses. Usually when {{#crossLink &quot;BaseView/pause:method&quot;}}{{/crossLink}} is called.
 	@event PAUSE
 	@static
 	###
-	@PAUSE: &#x27;pause&#x27;
+	@const PAUSE: &#x27;pause&#x27;
 	###*
 	Triggered when the view resumes. Usually when {{#crossLink &quot;BaseView/resume:method&quot;}}{{/crossLink}} is called.
 	@event RESUME
 	@static
 	###
-	@RESUME: &#x27;resume&#x27;
+	@const RESUME: &#x27;resume&#x27;
 
 	###*
 	@class BaseView
@@ -289,7 +290,8 @@ class BaseView extends BaseDOM
 	@get data:-&gt;
 		return @_data
 	@set data:(p_value)-&gt;
-		@_data = ObjectUtils.clone(p_value)
+		@_data = p_value
+		# @_data = ObjectUtils.clone(p_value)
 
 	###*
 	Sets/gets the unique ID of view.
@@ -303,7 +305,7 @@ class BaseView extends BaseDOM
 		@_id = p_value
 
 	###*
-	Sets/gets the unique ID of view.
+	Sets/gets the content of view.
 	@attribute content
 	@type {String|Object|JSON}
 	@default null

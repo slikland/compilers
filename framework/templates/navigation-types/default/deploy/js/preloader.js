@@ -555,7 +555,7 @@ App = (function(_super) {
   __extends(App, _super);
   App.project_version_raw = "SL_PROJECT_VERSION:1.0.0";
   App.project_date_raw = "SL_PROJECT_DATE:1473979619231";
-  App.FRAMEWORK_VERSION = "3.1.3";
+  App.FRAMEWORK_VERSION = "3.0.1";
   _root = null;
   _loader = null;
   _config = null;
@@ -4438,8 +4438,12 @@ ParseContent = (function(_super) {
    */
   ParseContent.prototype._getContents = function() {
     var assets, k, paths, v;
-    this._primary = [];
-    this._standBy = [];
+    if (this._primary == null) {
+      this._primary = [];
+    }
+    if (this._standBy == null) {
+      this._standBy = [];
+    }
     paths = PathsData.getInstance();
     assets = JSONUtils.filterObject(paths.translate(this.data), 'src', null, null, true);
     for (k in assets) {

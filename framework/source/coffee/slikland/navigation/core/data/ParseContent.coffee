@@ -13,6 +13,8 @@ class ParseContent extends ParseData
 	@get initialAssets:()->
 		return @_primary
 		
+	# @TODO
+	# Implements background loading in navigation
 	@get standByAssets:()->
 		return @_standBy
 		
@@ -22,8 +24,8 @@ class ParseContent extends ParseData
 	@private
 	###
 	_getContents:()->
-		@_primary = []
-		@_standBy = []
+		@_primary ?= []
+		@_standBy ?= []
 		
 		paths = PathsData.getInstance()
 		assets = JSONUtils.filterObject(paths.translate(@data), 'src', null, null, true)
