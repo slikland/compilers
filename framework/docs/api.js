@@ -7,6 +7,7 @@ YUI.add("yuidoc-meta", function(Y) {
         "BaseDOM",
         "BaseNavigationController",
         "BaseView",
+        "Caim",
         "ColorUtils",
         "ConditionsValidation",
         "Debug",

@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>../../source/coffee/slikland/core/navigation/Navigation.coffee - Slikland Framework</title>
+    <title>../../source/coffee/slikland/navigation/core/Navigation.coffee - Slikland Framework</title>
     <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
     <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
     <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
@@ -44,6 +44,7 @@
                                 <li><a href="../classes/BaseDOM.html">BaseDOM</a></li>
                                 <li><a href="../classes/BaseNavigationController.html">BaseNavigationController</a></li>
                                 <li><a href="../classes/BaseView.html">BaseView</a></li>
+                                <li><a href="../classes/Caim.html">Caim</a></li>
                                 <li><a href="../classes/ColorUtils.html">ColorUtils</a></li>
                                 <li><a href="../classes/ConditionsValidation.html">ConditionsValidation</a></li>
                                 <li><a href="../classes/Debug.html">Debug</a></li>
@@ -96,11 +97,12 @@
             <div class="apidocs">
                 <div id="docs-main">
                     <div class="content">
-<h1 class="file-heading">File: ../../source/coffee/slikland/core/navigation/Navigation.coffee</h1>
+<h1 class="file-heading">File: ../../source/coffee/slikland/navigation/core/Navigation.coffee</h1>
 
 <div class="file">
     <pre class="code prettyprint linenums">
-#import slikland.core.navigation.NavigationRouter
+#import slikland.event.EventDispatcher
+#import slikland.navigation.core.NavigationRouter
 
 ###*
 Navigation Class

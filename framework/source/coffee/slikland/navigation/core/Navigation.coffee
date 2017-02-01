@@ -1,4 +1,5 @@
-#import slikland.core.navigation.NavigationRouter
+#import slikland.event.EventDispatcher
+#import slikland.navigation.core.NavigationRouter
 
 ###*
 Navigation Class

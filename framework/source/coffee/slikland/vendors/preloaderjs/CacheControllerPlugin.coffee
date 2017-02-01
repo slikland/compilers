@@ -18,22 +18,22 @@ do ->
 		cv = false
 
 		if p_loadItem.cache?
-			#  sets by item
+			#  sets cache by item
 			if p_loadItem.cache == false
 				cv = true
 		else if view?.cache?
-			#  sets by view
+			#  sets cache by view
 			if view?.cache == false
 				cv = true
 		else if parentView?.cache?
-			#  sets by parent
+			#  sets cache by parent
 			#  When don't sets the cache value in config file the view and all your assets inherits of his parent
 			if parentView?.cache == false
 				cv = true
 		
 		if p_loadItem.src.indexOf("?v=") == -1
 			ts = new Date().getTime()
-			cache = if cv then "?v="+app.getInfo().version+"&noCache="+ts else "?v="+app.getInfo().version
+			cache = if cv then "?v="+app.info.version+"&noCache="+ts else "?v="+app.info.version
 			p_loadItem.src += cache
 		
 		return true

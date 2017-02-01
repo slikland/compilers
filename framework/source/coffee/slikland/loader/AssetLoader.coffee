@@ -1,4 +1,4 @@
-#import slikland.core.loader.PreloadFiles
+#import slikland.loader.PreloadFiles
 #import slikland.vendors.preloaderjs.CacheControllerPlugin
 #import slikland.vendors.preloaderjs.MediaPlugin
 
@@ -18,10 +18,10 @@ class AssetLoader extends EventDispatcher
 	@ERROR: "error"
 	@FILE_ERROR: "fileerror"
 
+	_groups:null
+	
 	@getInstance:()=>
 		@_instance ?= new @(arguments...)
-
-	_groups:null
 
 	constructor:()->
 		@_groups = {}
@@ -31,17 +31,24 @@ class AssetLoader extends EventDispatcher
 		group.loadManifest(p_files)
 		return group
 
+	getAllGroups:()->
+		return @_groups
+
 	getGroup:(p_groupId, p_concurrent=3, p_xhr=true)->
 		group = @_groups[p_groupId]
 		if !group
 			group = new createjs.LoadQueue(p_xhr)
+			
 			group.installPlugin(createjs.CacheControllerPlugin)
 			group.installPlugin(createjs.MediaPlugin)
+			
 			group.id = p_groupId
+			
 			@_groups[p_groupId] = group
-			group.on(AssetLoader.COMPLETE_FILE, @_fileLoad)
+			
 			group.on(AssetLoader.ERROR, @_onError)
 			group.on(AssetLoader.FILE_ERROR, @_onFileError)
+			group.on(AssetLoader.COMPLETE_FILE, @_fileLoad)
 		group.setMaxConnections(p_concurrent)
 		return group
 
@@ -52,8 +59,11 @@ class AssetLoader extends EventDispatcher
 	_onError:(e)=>
 		e.currentTarget.off(AssetLoader.ERROR, @_onError)
 		e.currentTarget.off(AssetLoader.COMPLETE_FILE, @_fileLoad)
-		console.log e
-		throw new Error(e.title).stack
+		msg = e.title
+		if e?.data?.src?
+			e.fileName = e.data.src
+			msg += " "+e.data.src
+		throw new Error(msg).stack
 		false
 
 	_onFileError:(e)=>
@@ -64,10 +74,9 @@ class AssetLoader extends EventDispatcher
 		false
 
 	_fileLoad:(e)=>
-		e.currentTarget.off(AssetLoader.COMPLETE_FILE, @_fileLoad)
 		e.currentTarget.off(AssetLoader.ERROR, @_onError)
 		e.currentTarget.off(AssetLoader.FILE_ERROR, @_onFileError)
-		e.item.tag = e.result
+		e.item.result = e.item.tag = e.result
 		false
 
 	getItem:(p_id, p_groupId=null)->
@@ -87,33 +96,3 @@ class AssetLoader extends EventDispatcher
 			if i = v.getResult(p_id)
 				result = i
 		return result
-
-	@addFiles:(p_files, p_queue)->
-		jsRE = /.*\.(js|css|svg)$/g
-		mp4RE = /.*\.(mp4)$/g
-		for f in p_files
-			obj = {
-				id:''
-				src:''
-			}
-			
-			jsRE.lastIndex = 0
-			obj.id = f.id || 'item'
-			obj.src = f.src
-			
-			# 
-			# When it's a video please set 'false' on the xhr param to get progress and load file
-			#
-			
-			if mp4RE.test(obj.src)
-				obj['type'] = 'video'
-
-			if f.src && jsRE.test(f.src)
-				obj['type'] = 'text'
-
-			if obj.src
-				p_queue.loadFile(obj, false)
-
-		if p_files.length > 0
-			p_queue.load()
-		false

@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>../../source/coffee/slikland/core/debug/Debug.coffee - Slikland Framework</title>
+    <title>../../source/coffee/slikland/utils/ObjectUtils.coffee - Slikland Framework</title>
     <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
     <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
     <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
@@ -44,6 +44,7 @@
                                 <li><a href="../classes/BaseDOM.html">BaseDOM</a></li>
                                 <li><a href="../classes/BaseNavigationController.html">BaseNavigationController</a></li>
                                 <li><a href="../classes/BaseView.html">BaseView</a></li>
+                                <li><a href="../classes/Caim.html">Caim</a></li>
                                 <li><a href="../classes/ColorUtils.html">ColorUtils</a></li>
                                 <li><a href="../classes/ConditionsValidation.html">ConditionsValidation</a></li>
                                 <li><a href="../classes/Debug.html">Debug</a></li>
@@ -96,213 +97,116 @@
             <div class="apidocs">
                 <div id="docs-main">
                     <div class="content">
-<h1 class="file-heading">File: ../../source/coffee/slikland/core/debug/Debug.coffee</h1>
+<h1 class="file-heading">File: ../../source/coffee/slikland/utils/ObjectUtils.coffee</h1>
 
 <div class="file">
     <pre class="code prettyprint linenums">
-###*
-Debug Class
-@class Debug
-@static
-@final
-###
-class Debug
-	@debug: false
-	@light = 0x48b224
-	@dark = 0x2c035d
-	
-	###*
-	@method init
-	@static
-	###
-	@init:()=&gt;
-		@_console = window.console
+class ObjectUtils
 
+	###*
+	Return the length of a item.
+	@method count
+	@static
+	@param {Object} p_item object to count.
+	@return {Number}
+	###	
+	@count:(p_item)-&gt;
+		result = 0
 		try
-			@_log = Function.prototype.bind.call(@_console?.log, @_console)
+			result = Object.keys(p_item).length
 		catch err
+			for key of p_item
+				result++
+		return result
+
+	# Public: Return a {Array} of a {Object} item.
+	#
+	# source -  The {Object} object.
+	#
+	# Returns
+	#   The resulting {Array}.
+	@toArray:(p_source)-&gt;
+		result = []
+		result.push(p_source[k]) for k,v of p_source
+		return result
+
+	@merge:(a, b)-&gt;
+		if typeof(a) == &#x27;object&#x27; &amp;&amp; typeof(b) == &#x27;object&#x27;
+			for k of b
+				if !a.hasOwnProperty(k)
+					a[k] = b[k]
+		return a
+
+	@clone:(p_target)-&gt;
+		try
+			if !p_target or typeof p_target isnt &#x27;object&#x27;
+				return p_target
+
+			copy = null
+			if p_target instanceof Array
+				copy = []
+				i = 0
+				len = p_target.length
+				while i &lt; len
+					copy[i] = @clone(p_target[i])
+					i++
+				return copy
+
+			if p_target instanceof Object
+				copy = {}
+				for k, v of p_target
+					if v isnt &#x27;object&#x27;
+						copy[k] = v
+					else
+						copy[k] = @clone(v)
+				return copy
+
+		catch err
+			return JSON.parse(JSON.stringify(p_target))
+
+	@replaceValue:(p_obj, p_value, p_newvalue, p_clone=true)-&gt;
+		resp = []
+		# p_obj = if p_clone then ObjectUtils.clone(p_obj) else p_obj
+		for k, v of p_obj
+			if v == p_value
+				p_obj[k] = p_newvalue
+				resp.push p_obj
+			if typeof(v) == &#x27;object&#x27;
+				resp = [].concat resp, ObjectUtils.replaceValue(v, p_value, p_newvalue, p_clone)
+		return resp
 		
-		window.Debug ?= Debug
-		
-		if !@check()
-			eval(&#x27;window[Math.random()]()&#x27;)
+	@hasSameKey:(p_a, p_b)-&gt;
+		return if Object.getOwnPropertyNames(p_a)[0] == Object.getOwnPropertyNames(p_b)[0] then true else false
 
-		re = new RegExp(/debug=(1|true)/i)
-		@debug = re.test(window.location.search)
-		re = new RegExp(/debug=(0|false)/i)
-		
-		if !@debug &amp;&amp; !re.test(window.location.search)
-			re = new RegExp(/([\.|\/]local\.|localhost|127\.0\.0\.1|192\.\d+\.\d+\.\d+|dev\.s\d+\.slikland\.)/i)
-			@debug = re.test(window.location.href)
-		
-		if !@debug || !window.console
-			window.console = 
-				assert: -&gt;
-				clear: -&gt;
-				count: -&gt;
-				debug: -&gt;
-				dir: -&gt;
-				dirxml: -&gt;
-				error: -&gt;
-				exception: -&gt;
-				group: -&gt;
-				groupCollapsed: -&gt;
-				groupEnd: -&gt;
-				info: -&gt;
-				log: -&gt;
-				profile: -&gt;
-				profileEnd: -&gt;
-				table: -&gt;
-				time: -&gt;
-				timeEnd: -&gt;
-				timeStamp: -&gt;
-				trace: -&gt;
-				warn: -&gt;
-		else
-			t = &#x27;====================&#x27;
-			t += &#x27;\n&#x27;
-			t += &#x27;   DEBUG MODE ON&#x27;
-			t += &#x27;\n&#x27;
-			t += &#x27;--------------------&#x27;
-			t += &#x27;\n&#x27;
-			t += &#x27;Framework&#x27;
-			t += &#x27;\n&#x27;
-			t += &#x27;Version: &#x27;+App.FRAMEWORK_VERSION
-			t += &#x27;\n&#x27;
-			t += &#x27;--------------------&#x27;
-			t += &#x27;\n&#x27;
-			t += &#x27;Project&#x27;
-			t += &#x27;\n&#x27;
-			t += &#x27;Version: &#x27;+app.getInfo().version
-			t += &#x27;\n&#x27;
-			t += &#x27;Last update: &#x27;+app.getInfo().lastUpdate
-			t += &#x27;\n&#x27;
-			t += &#x27;====================&#x27;
-			c = &#x27;color: #&#x27; + Math.floor(Math.random()*16777215).toString(16);
-			console.log &#x27;%c&#x27;+ t, c
+	@isEqual:(p_a, p_b)-&gt;
+		return JSON.stringify(p_a) == JSON.stringify(p_b)
 
-		false	
-
-	###*
-	@method check
-	@param {String} [value = null]
-	@return {String}
-	@static
-	###
-	@check:(value = null)-&gt;
-		o = &#x27;&#x27;
-		c = &#x27;&#x27;
-		col = @light
-		while col &gt; 0
-			c = String.fromCharCode(col &amp; 0xFF) + c
-			col &gt;&gt;= 8
-		o += btoa(c)
-		c = &#x27;&#x27;
-		col = @dark
-		while col &gt; 0
-			c = String.fromCharCode(col &amp; 0xFF) + c
-			col &gt;&gt;= 8
-		o += btoa(c)
-		sign = o.toLowerCase()
-		if value
-			return sign == value.toLowerCase()
-		else
-			return (sign.charAt(0) == &#x27;s&#x27; &amp;&amp; sign.charAt(1) == &#x27;l&#x27;)
-
-	###*
-	@method log
-	@static
-	###
-	@log:()=&gt;
-		if @_log?
-			@_log?(arguments...)
-		else
-			try
-				console.log(arguments...)
-	
-	###*
-	@method logTime
-	@param {Array} args...
-	@static
-	###
-	@logTime:(args...)-&gt;
-		t = new Date().getTime()
-		if !@itm
-			@itm = @ctm = t
-		st = t - @ctm
-		v = st.toString()
-		while v.length &lt; 6
-			v = &#x27; &#x27; + v
-		s = v + &#x27;|&#x27;
-		v = (@ctm - @itm).toString()
-		while v.length &lt; 6
-			v = &#x27; &#x27; + v
-		s = s + v
-		s = [&#x27;%c&#x27; + s + &#x27;:&#x27;]
-		style = &#x27;font-weight: bold;&#x27;
-		if st &gt; 100
-			style += &#x27;color: red;&#x27;
-		else if st &gt; 50
-			style += &#x27;color: orange;&#x27;
-		s.push(style)
-		Debug.log.apply(@, [].concat(s, args))
-		@ctm = t
-
-if !window.atob
-	window.atob = (value)-&gt;
-		cs = &#x27;ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/&#x27;
-		l = value.length
-		i = 0
-		ret = &#x27;&#x27;
-		while i &lt; l
-			c0 = value.charAt(i)
-			c1 = value.charAt(i + 1)
-			c2 = value.charAt(i + 2)
-			c3 = value.charAt(i + 3)
-			c0 = cs.indexOf(c0)
-			c1 = cs.indexOf(c1)
-			c2 = cs.indexOf(c2)
-			c3 = cs.indexOf(c3)
-			if c2 &lt; 0
-				c2 = 0
-			if c3 &lt; 0
-				c3 = 0
-
-			b0 = (c0 &lt;&lt; 2 &amp; 0xFF) | c1 &gt;&gt; 4
-			b1 = (c1 &lt;&lt; 4 &amp; 0xFF) | c2 &gt;&gt; 2
-			b2 = (c2 &lt;&lt; 6 &amp; 0xFF) | c3 &amp; 0x3F
-			ret += String.fromCharCode(b0)
-			ret += String.fromCharCode(b1)
-			ret += String.fromCharCode(b2)
-			i += 4
+	# Public: Return a mapped {Array} of a {Array} item.
+	#
+	# source -  The {Array} object.
+	#
+	# Returns
+	#   The resulting {Array}.
+	#
+	# Example
+	#	ObjectUtils.parseLinkedArray([[&#x27;id&#x27;, &#x27;name&#x27;], [0, &#x27;name1&#x27;], [1, &#x27;name2&#x27;]])
+	#	// [{id: 0, &#x27;name&#x27;: &#x27;name1&#x27;}, {id: 1, &#x27;name&#x27;: &#x27;name2&#x27;}]
+	@parseLinkedArray:(p_source)-&gt;
+		if !p_source or (p_source and p_source.length &lt; 1)
+			return []
+		i = p_source.length
+		names = p_source[0]
+		numNames = names.length
+		ret = []
+		while i-- &gt; 1
+			o = {}
+			j = numNames
+			item = p_source[i]
+			while j-- &gt; 0
+				o[names[j]] = item[j]
+			ret[i - 1] = o
 		return ret
 
-	window.btoa = (value)-&gt;
-		cs = &#x27;ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/&#x27;
-		l = value.length
-		i = 0
-		ret = &#x27;&#x27;
-		while i &lt; l
-			b0 = value.charCodeAt(i + 0) &amp; 0xFF
-			b1 = value.charCodeAt(i + 1) &amp; 0xFF
-			b2 = value.charCodeAt(i + 2) &amp; 0xFF
-			c0 = b0 &gt;&gt; 2 &amp; 0x3F
-			c1 = (b0 &lt;&lt; 4 | b1 &gt;&gt; 4) &amp; 0x3F
-			c2 = (b1 &lt;&lt; 2 | b2 &gt;&gt; 6) &amp; 0x3F
-			c3 = b2 &amp; 0x3F
-			ret += cs.charAt(c0) + cs.charAt(c1) + cs.charAt(c2) + cs.charAt(c3)
-			i += 3
-		i = l % 3
-		l = ret.length
-		if i == 1
-			ret = ret.substr(0, l - 2) + &quot;==&quot;
-		else if i == 2
-			ret = ret.substr(0, l - 1) + &quot;=&quot;
-		return ret
-
-
-window.Debug = Debug
-Debug.init()
 
     </pre>
 </div>

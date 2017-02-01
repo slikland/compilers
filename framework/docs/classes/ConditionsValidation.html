@@ -44,6 +44,7 @@
                                 <li><a href="../classes/BaseDOM.html">BaseDOM</a></li>
                                 <li><a href="../classes/BaseNavigationController.html">BaseNavigationController</a></li>
                                 <li><a href="../classes/BaseView.html">BaseView</a></li>
+                                <li><a href="../classes/Caim.html">Caim</a></li>
                                 <li><a href="../classes/ColorUtils.html">ColorUtils</a></li>
                                 <li><a href="../classes/ConditionsValidation.html">ConditionsValidation</a></li>
                                 <li><a href="../classes/Debug.html">Debug</a></li>
@@ -101,7 +102,7 @@
 
 
         <div class="foundat">
-            Defined in: <a href="../files/.._.._source_coffee_slikland_core_loader_ConditionsValidation.coffee.html#l16"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;core&#x2F;loader&#x2F;ConditionsValidation.coffee:16</code></a>
+            Defined in: <a href="../files/.._.._source_coffee_slikland_navigation_core_data_ConditionsValidation.coffee.html#l16"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;navigation&#x2F;core&#x2F;data&#x2F;ConditionsValidation.coffee:16</code></a>
         </div>
 
 
@@ -136,7 +137,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._.._source_coffee_slikland_core_loader_ConditionsValidation.coffee.html#l16"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;core&#x2F;loader&#x2F;ConditionsValidation.coffee:16</code></a>
+        <a href="../files/.._.._source_coffee_slikland_navigation_core_data_ConditionsValidation.coffee.html#l16"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;navigation&#x2F;core&#x2F;data&#x2F;ConditionsValidation.coffee:16</code></a>
         </p>
 
 
@@ -248,7 +249,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._.._source_coffee_slikland_core_loader_ConditionsValidation.coffee.html#l25"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;core&#x2F;loader&#x2F;ConditionsValidation.coffee:25</code></a>
+        <a href="../files/.._.._source_coffee_slikland_navigation_core_data_ConditionsValidation.coffee.html#l25"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;navigation&#x2F;core&#x2F;data&#x2F;ConditionsValidation.coffee:25</code></a>
         </p>
 
 
@@ -311,7 +312,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._.._source_coffee_slikland_core_loader_ConditionsValidation.coffee.html#l47"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;core&#x2F;loader&#x2F;ConditionsValidation.coffee:47</code></a>
+        <a href="../files/.._.._source_coffee_slikland_navigation_core_data_ConditionsValidation.coffee.html#l47"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;navigation&#x2F;core&#x2F;data&#x2F;ConditionsValidation.coffee:47</code></a>
         </p>
 
 
@@ -374,7 +375,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._.._source_coffee_slikland_core_loader_ConditionsValidation.coffee.html#l56"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;core&#x2F;loader&#x2F;ConditionsValidation.coffee:56</code></a>
+        <a href="../files/.._.._source_coffee_slikland_navigation_core_data_ConditionsValidation.coffee.html#l56"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;navigation&#x2F;core&#x2F;data&#x2F;ConditionsValidation.coffee:56</code></a>
         </p>
 
 
@@ -437,7 +438,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._.._source_coffee_slikland_core_loader_ConditionsValidation.coffee.html#l65"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;core&#x2F;loader&#x2F;ConditionsValidation.coffee:65</code></a>
+        <a href="../files/.._.._source_coffee_slikland_navigation_core_data_ConditionsValidation.coffee.html#l65"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;navigation&#x2F;core&#x2F;data&#x2F;ConditionsValidation.coffee:65</code></a>
         </p>
 
 
@@ -500,7 +501,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._.._source_coffee_slikland_core_loader_ConditionsValidation.coffee.html#l79"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;core&#x2F;loader&#x2F;ConditionsValidation.coffee:79</code></a>
+        <a href="../files/.._.._source_coffee_slikland_navigation_core_data_ConditionsValidation.coffee.html#l79"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;navigation&#x2F;core&#x2F;data&#x2F;ConditionsValidation.coffee:79</code></a>
         </p>
 
 
@@ -547,17 +548,26 @@
 ...
 &quot;conditions&quot;: {
     &quot;small&quot;: {
+        &quot;browser&quot;:{
+            &quot;mobile&quot;: true
+        },
         &quot;size&quot;: {
             &quot;min-width&quot;:300
         }
     },
     &quot;medium&quot;: {
+        &quot;browser&quot;:{
+            &quot;tablet&quot;: true
+        },
         &quot;orientation&quot;:&quot;landscape&quot;,
         &quot;size&quot;: {
             &quot;min-width&quot;:992
         }
     },
     &quot;large&quot;: {
+        &quot;browser&quot;:{
+            &quot;desktop&quot;: true
+        },
         &quot;size&quot;: {
             &quot;min-width&quot;:1200
         }
@@ -632,7 +642,7 @@
                         <div class="meta">
                                     <p>
                                     Defined in
-                            <a href="../files/.._.._source_coffee_slikland_core_loader_ConditionsValidation.coffee.html#l38"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;core&#x2F;loader&#x2F;ConditionsValidation.coffee:38</code></a>
+                            <a href="../files/.._.._source_coffee_slikland_navigation_core_data_ConditionsValidation.coffee.html#l38"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;navigation&#x2F;core&#x2F;data&#x2F;ConditionsValidation.coffee:38</code></a>
                             </p>
                     
                     

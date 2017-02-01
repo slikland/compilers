@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>../../source/coffee/slikland/core/navigation/ViewsData.coffee - Slikland Framework</title>
+    <title>../../source/coffee/slikland/navigation/core/BaseNavigationController.coffee - Slikland Framework</title>
     <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
     <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
     <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
@@ -44,6 +44,7 @@
                                 <li><a href="../classes/BaseDOM.html">BaseDOM</a></li>
                                 <li><a href="../classes/BaseNavigationController.html">BaseNavigationController</a></li>
                                 <li><a href="../classes/BaseView.html">BaseView</a></li>
+                                <li><a href="../classes/Caim.html">Caim</a></li>
                                 <li><a href="../classes/ColorUtils.html">ColorUtils</a></li>
                                 <li><a href="../classes/ConditionsValidation.html">ConditionsValidation</a></li>
                                 <li><a href="../classes/Debug.html">Debug</a></li>
@@ -96,129 +97,178 @@
             <div class="apidocs">
                 <div id="docs-main">
                     <div class="content">
-<h1 class="file-heading">File: ../../source/coffee/slikland/core/navigation/ViewsData.coffee</h1>
+<h1 class="file-heading">File: ../../source/coffee/slikland/navigation/core/BaseNavigationController.coffee</h1>
 
 <div class="file">
     <pre class="code prettyprint linenums">
+#import slikland.navigation.core.data.ViewsData
+
 ###*
-ViewsData Class
-@class ViewsData
+BaseNavigationController is a base class for any type of navigation controller.&lt;br&gt;
+Please do not instantiate this class. Use the extended classes.
+
+@class BaseNavigationController
 @extends EventDispatcher
-@final
 ###
-class ViewsData extends EventDispatcher
+class BaseNavigationController extends EventDispatcher
 	###*
-	Triggered after parsing data of view. 
-	@event VIEW_CREATED
+	@event CHANGE
 	@static
 	###
-	@VIEW_CREATED: &#x27;view_created&#x27;
+	@CHANGE : &#x27;base_navigation_controller_change&#x27;
 	###*
-	Triggered after parsing data of all views of config file. 
-	@event ALL_VIEWS_CREATED
+	@event CHANGE_VIEW
 	@static
 	###
-	@ALL_VIEWS_CREATED: &#x27;all_views_created&#x27;
+	@CHANGE_VIEW : &#x27;base_navigation_controller_change_view&#x27;
+	###*
+	@event CHANGE_SUBVIEW
+	@static
+	###
+	@CHANGE_SUBVIEW : &#x27;base_navigation_controller_change_subview&#x27;
 
 	###*
-	@class ViewsData
+	@class BaseNavigationController
 	@constructor
-	@param {Object} p_data
 	###
-	constructor: (p_data) -&gt;
-		if !p_data? then throw new Error(&#x27;The param p_data is null&#x27;)
-		@_data = []
-		@_views = p_data.views
+	constructor: () -&gt;
 		super
+
+	###*
+	@method setup
+	@param {Object} p_data
+	@protected
+	###
+	setup: (p_data) -&gt;
+		@_views = new ViewsData(p_data)
+		if app.navigation?.instantiateViews || app.navigation?.instantiateViews is undefined
+			@_views.createAll()
+		false
+
+	###*
+	@method start
+	@param {String} [p_id=null]
+	###
+	start:(p_id=null)-&gt;
+		if @_started then throw new Error(&#x27;The instance of BaseNavigationController already started&#x27;)
+		@_started = true
+
+		if !app.config.navigation?.defaultView? then throw new Error(&#x27;The property &quot;defaultView&quot; in config file is null or undefined.&#x27;)
+		if !p_id
+			view = app.config.navigation.defaultView
+		else
+			view = p_id
+
+		@goto(view)
+		false
+		
+	###*
+	@method goto
+	@param {String} p_id
+	###
+	goto:(p_id)-&gt;
+		if !@_started then throw new Error(&#x27;The instance of BaseNavigationController is not started&#x27;)
+		@change(p_id)
+		false
+
+	###*
+	__This getter must be overridden with a type of navigation controller it will be a extended.__&lt;br&gt;
+	Returns the type of navigation controller.
+	@attribute type
+	@type {String}
+	@readOnly
+	###
+	@get type:-&gt;
+		throw new Error(&#x27;Override the visibleViews getter in &#x27;+@constructor.type+&#x27; class&#x27;)
+
+	###*
+	__This getter must be overridden with a current visible views of navigation controller it will be a extended.__&lt;br&gt;
+	Returns the current visible views in DOM.
+	@attribute visibleViews
+	@type {Array}
+	@readOnly
+	###
+	@get visibleViews:-&gt;
+		throw new Error(&#x27;Override the visibleViews getter in &#x27;+@constructor.name+&#x27; class&#x27;)
+
+	###*
+	__This getter must be overridden with a current view of navigation controller it will be a extended.__&lt;br&gt;
+	Returns the current view.
+	@attribute currentView
+	@type {BaseView}
+	@readOnly
+	###
+	@get currentView:-&gt;
+		throw new Error(&#x27;Override the currentView getter in &#x27;+@constructor.name+&#x27; class&#x27;)
+
+	###*
+	__This getter must be overridden with a previous view of navigation controller it will be a extended.__&lt;br&gt;
+	Returns the previous view.
+	@attribute previousView
+	@type {BaseView}
+	@readOnly
+	###
+	@get previousView:-&gt;
+		throw new Error(&#x27;Override the previousView getter in &#x27;+@constructor.name+&#x27; class&#x27;)
+
+	###*
+	__This getter must be overridden with a data object of navigation controller it will be a extended.__&lt;br&gt;
+	Returns the data.
+	@attribute data
+	@type {Object}
+	@readOnly
+	###
+	@get data:-&gt;
+		throw new Error(&#x27;Override the data getter in &#x27;+@constructor.name+&#x27; class&#x27;)
+
+	###*
+	__This getter must be overridden with a change method of navigation controller it will be a extended.__&lt;br&gt;
+	This method trigger the event {{#crossLink &quot;BaseNavigationController/CHANGE_VIEW:event&quot;}}{{/crossLink}} after complete.
+	@method data
+	@param {String} p_id
+	@protected
+	###
+	change:(p_id)=&gt;
+		@trigger(BaseNavigationController.CHANGE_VIEW, {data:@data})
+		false
 	
 	###*
-	@method getData
-	@param {String} p_id
-	@return {Object}
+	@method _appendToWrapper
+	@param {BaseView} p_view
+	@private
 	###
-	getData:(p_id)-&gt;
-		if !@_views[p_id]? then throw new Error(&#x27;The view with id &quot;&#x27;+p_id+&#x27;&quot; does not exists in config file&#x27;)
-		return @_views[p_id]
+	_appendToWrapper:(p_view)=&gt;
+		# attach subview to parent
+		wrapper = p_view.parentView
 
-	###*
-	@method get
-	@param {String} p_id
-	@return {Object}
-	###
-	get:(p_id)-&gt;
-		return if @_data[p_id]? then @_data[p_id] else null
-
-	###*
-	@method set
-	@param {String} p_view
-	###
-	set:(p_view)-&gt;
-		if !@get(p_view.id)
-			@_data[p_view.id] = p_view
-		false
-
-	###*
-	@method createAll
-	###
-	createAll:()-&gt;
-		for id of @_views
-			@create(id)
-		@trigger(ViewsData.ALL_VIEWS_CREATED, {views:@_data})
-		false
-
-	###*
-	@method create
-	@param {String} p_id
-	@return {Object}
-	###
-	create:(p_id)-&gt;
-		if @get(p_id)?
-			view = @get(p_id)
-		else
-			data = @getData(p_id)
-			klass = eval(data.class)
-			view = new klass(data, data.id+&#x27;-view&#x27;)
-
-		if !view.parentView?
-			view.type = &#x27;view&#x27;
-			view.parentView = app.container
-			app.container.subviews ?= {}
-			app.container.subviews[view.id] = view
-		else
-			if typeof view.parentView is &#x27;string&#x27; then view.parentView = @get(view.parentView)
+		if p_view.parentView.subviewsWrapper?
+			if !p_view.attachToParentWrapper?
+				# attach subview to default subviews wrapper
+				wrapper = p_view.parentView.subviewsWrapper
+			else
+				# attach subview to particular subviews wrapper
+				wrapper = p_view.parentView.find(p_view.attachToParentWrapper)
 		
-		if view.subviews?
-			for k, v of view.subviews
-				subview = @create(v.id)
-				subview.type = &#x27;subview&#x27;
-				subview.parentView = view
-				view.subviews[v.id] = subview
-
-		# TODO: Try fix array content type
-		# Ugly workaround to get the subviews more easily the first idea is better =(
-		# if !@_data[view.id]? &amp;&amp; view.type == &#x27;view&#x27;
-		@set(view)
-		
-		@trigger(ViewsData.VIEW_CREATED, {view:view})
-		return view
-
-	###*
-	@method remove
-	@param {String} p_id
-	###
-	remove:(p_id)-&gt;
-		@_data[p_id] = null
-		delete @_data[p_id]
+		if !wrapper?
+			throw new Error(&#x27;The instance of wrapper is not attached on the parent view&#x27;)
+		else
+			wrapper.appendChild(p_view)
 		false
-
+	
 	###*
-	@method normalize
-	@param {String} p_id
-	@return {String}
+	@method _removeFromWrapper
+	@param {BaseView} p_view
+	@private
 	###
-	normalize:(p_id)-&gt;
-		view = @_views[p_id]
-		return if view?.parentView? then @normalize(view.parentView) else view?.id
+	_removeFromWrapper:(p_view)=&gt;
+		# remove subview from parent
+		wrapper = p_view?.parent || p_view?.parentView
+
+		try
+			wrapper?.removeChild(p_view)
+		catch err
+			console.log err.stack
+		false
 
     </pre>
 </div>

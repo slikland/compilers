@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>../../source/coffee/slikland/core/navigation/BaseNavigationController.coffee - Slikland Framework</title>
+    <title>../../source/coffee/slikland/navigation/core/data/ParseContent.coffee - Slikland Framework</title>
     <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
     <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
     <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
@@ -44,6 +44,7 @@
                                 <li><a href="../classes/BaseDOM.html">BaseDOM</a></li>
                                 <li><a href="../classes/BaseNavigationController.html">BaseNavigationController</a></li>
                                 <li><a href="../classes/BaseView.html">BaseView</a></li>
+                                <li><a href="../classes/Caim.html">Caim</a></li>
                                 <li><a href="../classes/ColorUtils.html">ColorUtils</a></li>
                                 <li><a href="../classes/ConditionsValidation.html">ConditionsValidation</a></li>
                                 <li><a href="../classes/Debug.html">Debug</a></li>
@@ -96,178 +97,59 @@
             <div class="apidocs">
                 <div id="docs-main">
                     <div class="content">
-<h1 class="file-heading">File: ../../source/coffee/slikland/core/navigation/BaseNavigationController.coffee</h1>
+<h1 class="file-heading">File: ../../source/coffee/slikland/navigation/core/data/ParseContent.coffee</h1>
 
 <div class="file">
     <pre class="code prettyprint linenums">
-#import slikland.core.navigation.ViewsData
+#import slikland.navigation.core.data.PathsData
+#import slikland.navigation.core.data.ParseData
 
-###*
-BaseNavigationController is a base class for any type of navigation controller.&lt;br&gt;
-Please do not instantiate this class. Use the extended classes.
+#import slikland.utils.JSONUtils
 
-@class BaseNavigationController
-@extends EventDispatcher
-###
-class BaseNavigationController extends EventDispatcher
+class ParseContent extends ParseData
+	
+	constructor:(p_data)-&gt;
+		super(p_data)
+		@_validatePaths(@data)
+		@_getContents()
+	
+	@get initialAssets:()-&gt;
+		return @_primary
+		
+	# @TODO
+	# Implements background loading in navigation
+	@get standByAssets:()-&gt;
+		return @_standBy
+		
 	###*
-	@event CHANGE
-	@static
+	@method _getContents
+	@return {Object}
+	@private
 	###
-	@CHANGE : &#x27;base_navigation_controller_change&#x27;
-	###*
-	@event CHANGE_VIEW
-	@static
-	###
-	@CHANGE_VIEW : &#x27;base_navigation_controller_change_view&#x27;
-	###*
-	@event CHANGE_SUBVIEW
-	@static
-	###
-	@CHANGE_SUBVIEW : &#x27;base_navigation_controller_change_subview&#x27;
+	_getContents:()-&gt;
+		@_primary = []
+		@_standBy = []
+		
+		paths = PathsData.getInstance()
+		assets = JSONUtils.filterObject(paths.translate(@data), &#x27;src&#x27;, null, null, true)
+		for k, v of assets
+			if v.loadWithView || v.loadWithView == undefined
+				@_primary.push v
+			else if v.loadWithView == false
+				@_standBy.push v
+		false
 
 	###*
-	@class BaseNavigationController
-	@constructor
-	###
-	constructor: () -&gt;
-		super
-
-	###*
-	@method setup
+	@method _validatePaths
 	@param {Object} p_data
 	@protected
 	###
-	setup: (p_data) -&gt;
-		@_views = new ViewsData(p_data)
-		if app.navigation?.instantiateViews || app.navigation?.instantiateViews is undefined
-			@_views.createAll()
-		false
-
-	###*
-	@method start
-	@param {String} [p_id=null]
-	###
-	start:(p_id=null)-&gt;
-		if @_started then throw new Error(&#x27;The instance of BaseNavigationController already started&#x27;)
-		@_started = true
-
-		if !app.config.navigation?.defaultView? then throw new Error(&#x27;The property &quot;defaultView&quot; in config file is null or undefined.&#x27;)
-		if !p_id
-			view = app.config.navigation.defaultView
-		else
-			view = p_id
-
-		@goto(view)
-		false
-		
-	###*
-	@method goto
-	@param {String} p_id
-	###
-	goto:(p_id)-&gt;
-		if !@_started then throw new Error(&#x27;The instance of BaseNavigationController is not started&#x27;)
-		@change(p_id)
-		false
-
-	###*
-	__This getter must be overridden with a type of navigation controller it will be a extended.__&lt;br&gt;
-	Returns the type of navigation controller.
-	@attribute type
-	@type {String}
-	@readOnly
-	###
-	@get type:-&gt;
-		throw new Error(&#x27;Override the visibleViews getter in &#x27;+@constructor.type+&#x27; class&#x27;)
-
-	###*
-	__This getter must be overridden with a current visible views of navigation controller it will be a extended.__&lt;br&gt;
-	Returns the current visible views in DOM.
-	@attribute visibleViews
-	@type {Array}
-	@readOnly
-	###
-	@get visibleViews:-&gt;
-		throw new Error(&#x27;Override the visibleViews getter in &#x27;+@constructor.name+&#x27; class&#x27;)
-
-	###*
-	__This getter must be overridden with a current view of navigation controller it will be a extended.__&lt;br&gt;
-	Returns the current view.
-	@attribute currentView
-	@type {BaseView}
-	@readOnly
-	###
-	@get currentView:-&gt;
-		throw new Error(&#x27;Override the currentView getter in &#x27;+@constructor.name+&#x27; class&#x27;)
-
-	###*
-	__This getter must be overridden with a previous view of navigation controller it will be a extended.__&lt;br&gt;
-	Returns the previous view.
-	@attribute previousView
-	@type {BaseView}
-	@readOnly
-	###
-	@get previousView:-&gt;
-		throw new Error(&#x27;Override the previousView getter in &#x27;+@constructor.name+&#x27; class&#x27;)
-
-	###*
-	__This getter must be overridden with a data object of navigation controller it will be a extended.__&lt;br&gt;
-	Returns the data.
-	@attribute data
-	@type {Object}
-	@readOnly
-	###
-	@get data:-&gt;
-		throw new Error(&#x27;Override the data getter in &#x27;+@constructor.name+&#x27; class&#x27;)
-
-	###*
-	__This getter must be overridden with a change method of navigation controller it will be a extended.__&lt;br&gt;
-	This method trigger the event {{#crossLink &quot;BaseNavigationController/CHANGE_VIEW:event&quot;}}{{/crossLink}} after complete.
-	@method data
-	@param {String} p_id
-	@protected
-	###
-	change:(p_id)=&gt;
-		@trigger(BaseNavigationController.CHANGE_VIEW, {data:@data})
-		false
-	
-	###*
-	@method _appendToWrapper
-	@param {BaseView} p_view
-	@private
-	###
-	_appendToWrapper:(p_view)=&gt;
-		# attach subview to parent
-		wrapper = p_view.parentView
-
-		if p_view.parentView.subviewsWrapper?
-			if !p_view.attachToParentWrapper?
-				# attach subview to default subviews wrapper
-				wrapper = p_view.parentView.subviewsWrapper
-			else
-				# attach subview to particular subviews wrapper
-				wrapper = p_view.parentView.find(p_view.attachToParentWrapper)
-		
-		if !wrapper?
-			throw new Error(&#x27;The instance of wrapper is not attached on the parent view&#x27;)
-		else
-			wrapper.appendChild(p_view)
-		false
-	
-	###*
-	@method _removeFromWrapper
-	@param {BaseView} p_view
-	@private
-	###
-	_removeFromWrapper:(p_view)=&gt;
-		# remove subview from parent
-		wrapper = p_view?.parent || p_view?.parentView
-
-		try
-			wrapper?.removeChild(p_view)
-		catch err
-			console.log err.stack
-		false
+	_validatePaths:(p_data)-&gt;
+		for k, v of p_data
+			if k == &#x27;src&#x27;
+				p_data[k] = @getPath(p_data[k])
+			if typeof(p_data[k]) == &#x27;object&#x27; || typeof(p_data[k]) == &#x27;array&#x27;
+				@_validatePaths(p_data[k])
 
     </pre>
 </div>

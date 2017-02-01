@@ -8,7 +8,7 @@ class TemplateSubView extends BaseView
 		@appendChild(@background)
 		@background.className = 'background'
 		@background.css({
-			'opacity': 0
+			# 'opacity': 0
 			'height': '100%'
 			'background-color': '#'+Math.floor(Math.random()*16777215).toString(16)
 		})
@@ -26,12 +26,13 @@ class TemplateSubView extends BaseView
 		super
 
 	show:(evt=null)=>
-		TweenMax.to(@background.element, 1, {
-			css:
-				opacity: 1, 
-			onComplete: =>
-				super
-		})
+		# TweenMax.to(@background.element, .3, {
+		# 	css:
+		# 		opacity: 1, 
+		# 	onComplete: =>
+		# 		super
+		# })
+		super
 
 	showComplete:(evt=null)=>
 		super
@@ -40,11 +41,12 @@ class TemplateSubView extends BaseView
 		super
 
 	hide:(evt=null)=>
-		TweenMax.to(@background.element, .5, {
-			opacity: 0, 
-			onComplete: =>
-				super
-		})
+		# TweenMax.to(@background.element, .3, {
+		# 	opacity: 0, 
+		# 	onComplete: =>
+		# 		super
+		# })
+		super
 
 	hideComplete:(evt=null)=>
 		super
@@ -54,7 +56,7 @@ class TemplateSubView extends BaseView
 		@background.removeChild(@image)
 		@image = null
 
-		TweenMax.killTweensOf(@background.element)
+		# TweenMax.killTweensOf(@background.element)
 		@background.destroy()
 		@removeChild(@background)
 		@background = null

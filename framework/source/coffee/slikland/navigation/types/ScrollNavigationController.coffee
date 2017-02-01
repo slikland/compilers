@@ -1,4 +1,4 @@
-#import slikland.core.navigation.BaseNavigationController
+#import slikland.navigation.core.BaseNavigationController
 #import slikland.utils.ArrayUtils
 
 class ScrollNavigationController extends BaseNavigationController

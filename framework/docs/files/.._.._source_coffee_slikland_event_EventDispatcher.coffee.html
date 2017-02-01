@@ -44,6 +44,7 @@
                                 <li><a href="../classes/BaseDOM.html">BaseDOM</a></li>
                                 <li><a href="../classes/BaseNavigationController.html">BaseNavigationController</a></li>
                                 <li><a href="../classes/BaseView.html">BaseView</a></li>
+                                <li><a href="../classes/Caim.html">Caim</a></li>
                                 <li><a href="../classes/ColorUtils.html">ColorUtils</a></li>
                                 <li><a href="../classes/ConditionsValidation.html">ConditionsValidation</a></li>
                                 <li><a href="../classes/Debug.html">Debug</a></li>
@@ -181,7 +182,7 @@ class EventDispatcher
 		//&#x60;event.target&#x60; will be window, and event.currentTarget will be the &#x60;ev&#x60; instance.
 		ed.trigger(&#x27;someEvent&#x27;, {someData: true}, window);
 	###
-	trigger:(evt, data = null, target = null, sourceEvent = null)=&gt;
+	trigger:(evt, data = null, target = null)=&gt;
 		if Array.isArray(evt)
 			for e in evt
 				@trigger(evt, data)
@@ -193,12 +194,8 @@ class EventDispatcher
 			return
 		if !target
 			target = @
-		e = {type: evt, target: target, currentTarget: @, originalEvent: sourceEvent}
-		if sourceEvent?
-			e.preventDefault = ()-&gt;
-				sourceEvent.preventDefault?()
-			e.stopPropagation = ()-&gt;
-				sourceEvent.stopPropagation?()
+		e = {type: evt, target: target, currentTarget: @}
+
 		if typeof(data) == &#x27;object&#x27;
 			for k, v of data
 				if !e[k]

@@ -35,12 +35,14 @@ class JSONUtils
 		else
 			return JSON.parse(json)
 
-	@filterObject:(data, name, type = null, ignore = null, getParent = false)->
+	@filterObject:(data, name, type = null, ignore = null, getParent = false, p_currentPath = [])->
 		resp = []
 		name = [].concat(name)
+
 		if ignore
 			ignore = [].concat(ignore)
 		for k, v of data
+			objectPath = [].concat(p_currentPath, k)
 			if ignore
 				if ignore.indexOf(k) >= 0
 					continue
@@ -52,9 +54,11 @@ class JSONUtils
 				if add
 					if getParent
 						if resp.indexOf(data) < 0
+							data.___path = objectPath.splice(0, objectPath.length - 1)
 							resp.push(data)
 					else
+						v.___path = objectPath
 						resp.push(v)
 			if typeof(v) == 'array' || typeof(v) == 'object'
-				resp = [].concat(resp, @filterObject(v, name, type, ignore, getParent))
+				resp = [].concat(resp, @filterObject(v, name, type, ignore, getParent, objectPath))
 		return resp

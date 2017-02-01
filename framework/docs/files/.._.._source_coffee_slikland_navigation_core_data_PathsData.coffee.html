@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>../../source/coffee/slikland/core/navigation/NavigationContainer.coffee - Slikland Framework</title>
+    <title>../../source/coffee/slikland/navigation/core/data/PathsData.coffee - Slikland Framework</title>
     <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
     <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
     <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
@@ -44,6 +44,7 @@
                                 <li><a href="../classes/BaseDOM.html">BaseDOM</a></li>
                                 <li><a href="../classes/BaseNavigationController.html">BaseNavigationController</a></li>
                                 <li><a href="../classes/BaseView.html">BaseView</a></li>
+                                <li><a href="../classes/Caim.html">Caim</a></li>
                                 <li><a href="../classes/ColorUtils.html">ColorUtils</a></li>
                                 <li><a href="../classes/ConditionsValidation.html">ConditionsValidation</a></li>
                                 <li><a href="../classes/Debug.html">Debug</a></li>
@@ -96,54 +97,76 @@
             <div class="apidocs">
                 <div id="docs-main">
                     <div class="content">
-<h1 class="file-heading">File: ../../source/coffee/slikland/core/navigation/NavigationContainer.coffee</h1>
+<h1 class="file-heading">File: ../../source/coffee/slikland/navigation/core/data/PathsData.coffee</h1>
 
 <div class="file">
     <pre class="code prettyprint linenums">
-#import slikland.core.navigation.Navigation
-#import slikland.navigation.display.BaseView
+#import slikland.event.EventDispatcher
 
-###*
-NavigationContainer Class
-@class NavigationContainer
-@extends BaseView
-###
-class NavigationContainer extends BaseView
+class PathsData extends EventDispatcher
+	
+	_data = null
+
+	@getInstance:(p_value)=&gt;
+		@_instance ?= new @(p_value)
+	
+	constructor:(p_value)-&gt;
+		@data ?= p_value
+		super
+
+	@get data:()-&gt;
+		return _data
+
+	@set data:(p_value)-&gt;
+		_data = @_parseData(p_value)
 
 	###*
-	@class NavigationContainer
-	@constructor
+	@method translate
+	@param {Object} p_source
+	@return {String}
 	###
-	constructor: () -&gt;
-		super null, &#x27;nav-container&#x27;
+	translate:(p_source)=&gt;
+		return @_parseVars(p_source)
+	
+	###*
+	@static
+	@method translate
+	@param {Object} p_value
+	@param {Object} p_collection
+	@return {String}
+	###
+	@translate:(p_value, p_collection)=&gt;
+		return @_parseVars(p_value, @_parseData(p_collection))
+	
+	###*
+	@method _parseData
+	@param {Object} p_vars
+	@return {Object}
+	@private
+	###
+	_parseData:(p_vars)=&gt;
+		p_varsStr = JSON.stringify(p_vars)
+		while (o = /\{([^\&quot;\{\}]+)\}/.exec(p_varsStr))
+			val = p_vars[o[1]]
+			if !val then val = &#x27;&#x27;
+			p_varsStr = p_varsStr.replace(new RegExp(&#x27;\{&#x27;+o[1]+&#x27;\}&#x27;, &#x27;ig&#x27;), val)
+			p_vars = JSON.parse(p_varsStr)
+		return p_vars
 
 	###*
-	@method setupNavigation
+	@method _parseVars
 	@param {Object} p_data
+	@param {Object} p_vars
+	@return {String}
+	@private
 	###
-	setupNavigation:(p_data)=&gt;
-		@_navigation = new Navigation(@controller)
-		@_navigation.setup(p_data)
-		false
-
-	###*
-	Returns the current instance of {{#crossLink &quot;Navigation&quot;}}{{/crossLink}}
-	@attribute navigation
-	@type {Navigation}
-	@readOnly
-	###
-	@get navigation:()-&gt;
-		return @_navigation
-
-	###*
-	__This getter must be overridden with a instance of {{#crossLink &quot;BaseNavigationController&quot;}}{{/crossLink}}.__&lt;br&gt;
-	Returns the current navigation controller instance.
-	@attribute controller
-	@type {BaseNavigationController}
-	@readOnly
-	###
-	@get controller:=&gt;
-		throw new Error(&#x27;Override this method with a instance of BaseNavigationController.&#x27;)
+	_parseVars:(p_vars)=&gt;
+		for k, v of _data
+			p_vars = JSON.stringify(p_vars)
+			p_vars = p_vars.replace(new RegExp(&#x27;\{&#x27;+k+&#x27;\}&#x27;, &#x27;ig&#x27;), v)
+			p_vars = JSON.parse(p_vars)
+		return p_vars
+	
 
     </pre>
 </div>

@@ -19,7 +19,7 @@ class ConditionsValidation
 	@param {Object} p_data
 	###
 	constructor:(p_data)->
-		_detections = app.detections
+		_detections = Detections.getInstance()
 		_list = ObjectUtils.clone(p_data)
 
 	###*

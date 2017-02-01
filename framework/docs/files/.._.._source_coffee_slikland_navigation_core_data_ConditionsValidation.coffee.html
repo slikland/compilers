@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>../../source/coffee/slikland/core/loader/ConditionsValidation.coffee - Slikland Framework</title>
+    <title>../../source/coffee/slikland/navigation/core/data/ConditionsValidation.coffee - Slikland Framework</title>
     <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
     <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
     <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
@@ -44,6 +44,7 @@
                                 <li><a href="../classes/BaseDOM.html">BaseDOM</a></li>
                                 <li><a href="../classes/BaseNavigationController.html">BaseNavigationController</a></li>
                                 <li><a href="../classes/BaseView.html">BaseView</a></li>
+                                <li><a href="../classes/Caim.html">Caim</a></li>
                                 <li><a href="../classes/ColorUtils.html">ColorUtils</a></li>
                                 <li><a href="../classes/ConditionsValidation.html">ConditionsValidation</a></li>
                                 <li><a href="../classes/Debug.html">Debug</a></li>
@@ -96,7 +97,7 @@
             <div class="apidocs">
                 <div id="docs-main">
                     <div class="content">
-<h1 class="file-heading">File: ../../source/coffee/slikland/core/loader/ConditionsValidation.coffee</h1>
+<h1 class="file-heading">File: ../../source/coffee/slikland/navigation/core/data/ConditionsValidation.coffee</h1>
 
 <div class="file">
     <pre class="code prettyprint linenums">
@@ -121,7 +122,7 @@ class ConditionsValidation
 	@param {Object} p_data
 	###
 	constructor:(p_data)-&gt;
-		_detections = app.detections
+		_detections = Detections.getInstance()
 		_list = ObjectUtils.clone(p_data)
 
 	###*
@@ -189,17 +190,26 @@ class ConditionsValidation
 	...
 	&quot;conditions&quot;: {
 		&quot;small&quot;: {
+			&quot;browser&quot;:{
+				&quot;mobile&quot;: true
+			},
 			&quot;size&quot;: {
 				&quot;min-width&quot;:300
 			}
 		},
 		&quot;medium&quot;: {
+			&quot;browser&quot;:{
+				&quot;tablet&quot;: true
+			},
 			&quot;orientation&quot;:&quot;landscape&quot;,
 			&quot;size&quot;: {
 				&quot;min-width&quot;:992
 			}
 		},
 		&quot;large&quot;: {
+			&quot;browser&quot;:{
+				&quot;desktop&quot;: true
+			},
 			&quot;size&quot;: {
 				&quot;min-width&quot;:1200
 			}

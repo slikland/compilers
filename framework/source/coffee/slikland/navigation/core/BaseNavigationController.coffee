@@ -1,4 +1,4 @@
-#import slikland.core.navigation.ViewsData
+#import slikland.navigation.core.data.ViewsData
 
 ###*
 BaseNavigationController is a base class for any type of navigation controller.<br>

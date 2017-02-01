@@ -1,16 +1,19 @@
 class ObjectUtils
 
-	# Public: Return the length of a {Object} item.
-	#
-	# item - The {Object} object to count.
-	#
-	# Returns
-	#     The resulting {Number} object.
+	###*
+	Return the length of a item.
+	@method count
+	@static
+	@param {Object} p_item object to count.
+	@return {Number}
+	###	
 	@count:(p_item)->
 		result = 0
-		for key of p_item
-			result++
-			# key = null
+		try
+			result = Object.keys(p_item).length
+		catch err
+			for key of p_item
+				result++
 		return result
 
 	# Public: Return a {Array} of a {Object} item.
@@ -58,7 +61,17 @@ class ObjectUtils
 		catch err
 			return JSON.parse(JSON.stringify(p_target))
 
-
+	@replaceValue:(p_obj, p_value, p_newvalue, p_clone=true)->
+		resp = []
+		# p_obj = if p_clone then ObjectUtils.clone(p_obj) else p_obj
+		for k, v of p_obj
+			if v == p_value
+				p_obj[k] = p_newvalue
+				resp.push p_obj
+			if typeof(v) == 'object'
+				resp = [].concat resp, ObjectUtils.replaceValue(v, p_value, p_newvalue, p_clone)
+		return resp
+		
 	@hasSameKey:(p_a, p_b)->
 		return if Object.getOwnPropertyNames(p_a)[0] == Object.getOwnPropertyNames(p_b)[0] then true else false
 

@@ -1,5 +1,5 @@
 #import slikland.navigation.types.DefaultNavigationController
-#import slikland.core.navigation.NavigationContainer
+#import slikland.navigation.core.NavigationContainer
 
 #############################
 # IMPORT VIEWS BELLOW 	#

@@ -44,6 +44,7 @@
                                 <li><a href="../classes/BaseDOM.html">BaseDOM</a></li>
                                 <li><a href="../classes/BaseNavigationController.html">BaseNavigationController</a></li>
                                 <li><a href="../classes/BaseView.html">BaseView</a></li>
+                                <li><a href="../classes/Caim.html">Caim</a></li>
                                 <li><a href="../classes/ColorUtils.html">ColorUtils</a></li>
                                 <li><a href="../classes/ConditionsValidation.html">ConditionsValidation</a></li>
                                 <li><a href="../classes/Debug.html">Debug</a></li>
@@ -104,7 +105,7 @@
         </div>
 
         <div class="foundat">
-            Defined in: <a href="../files/.._.._source_coffee_slikland_core_navigation_NavigationLoader.coffee.html#l40"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;core&#x2F;navigation&#x2F;NavigationLoader.coffee:40</code></a>
+            Defined in: <a href="../files/.._.._source_coffee_slikland_navigation_core_NavigationLoader.coffee.html#l37"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;navigation&#x2F;core&#x2F;NavigationLoader.coffee:37</code></a>
         </div>
 
 
@@ -112,7 +113,7 @@
 
 
 <div class="box intro">
-    <p>Base class to setup the navigation and start loading of dependencies.</p>
+    <p>Base class to setup the configuration file and start loading of dependencies.</p>
 
 </div>
 
@@ -124,13 +125,7 @@
         <div class="args">
             <span class="paren">(</span><ul class="args-list inline commas">
                 <li class="arg">
-                        <code>p_preloaderView</code>
-                </li>
-                <li class="arg">
-                        <code class="optional">[p_configPath = &quot;data/config.json&quot;]</code>
-                </li>
-                <li class="arg">
-                        <code class="optional">[p_wrapper = null]</code>
+                        <code>p_configPath</code>
                 </li>
             </ul><span class="paren">)</span>
         </div>
@@ -145,7 +140,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._.._source_coffee_slikland_core_navigation_NavigationLoader.coffee.html#l40"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;core&#x2F;navigation&#x2F;NavigationLoader.coffee:40</code></a>
+        <a href="../files/.._.._source_coffee_slikland_navigation_core_NavigationLoader.coffee.html#l37"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;navigation&#x2F;core&#x2F;NavigationLoader.coffee:37</code></a>
         </p>
 
 
@@ -161,36 +156,12 @@
 
             <ul class="params-list">
                 <li class="param">
-                        <code class="param-name">p_preloaderView</code>
-                        <span class="type"><a href="../classes/BaseView.html" class="crosslink">BaseView</a></span>
-
-
-                    <div class="param-description">
-                        <p>The view of the first loading, it's called by the method <a href="../classes/NavigationLoader.html#method_createPreloaderView" class="crosslink">createPreloaderView</a> and attached on container when the preloader assets is completely loaded.</p>
-
-                    </div>
-
-                </li>
-                <li class="param">
-                        <code class="param-name optional">[p_configPath = &quot;data/config.json&quot;]</code>
+                        <code class="param-name">p_configPath</code>
                         <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>
-                        <span class="flag optional" title="This parameter is optional.">optional</span>
 
 
                     <div class="param-description">
                         <p>Path of the navigation configuration file.</p>
-
-                    </div>
-
-                </li>
-                <li class="param">
-                        <code class="param-name optional">[p_wrapper = null]</code>
-                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement" class="crosslink external" target="_blank">HTMLElement</a></span>
-                        <span class="flag optional" title="This parameter is optional.">optional</span>
-
-
-                    <div class="param-description">
-                        <p>Custom container to attach the navigation.</p>
 
                     </div>
 
@@ -219,87 +190,51 @@
 
                     <ul class="index-list methods extends">
                             <li class="index-item method private">
-                                <a href="#method__addFiles">_addFiles</a>
+                                <a href="#method_addFiles">addFiles</a>
 
                             </li>
                             <li class="index-item method private">
-                                <a href="#method__contentsLoaded">_contentsLoaded</a>
+                                <a href="#method_addLoader">addLoader</a>
 
                             </li>
                             <li class="index-item method private">
-                                <a href="#method__createLoader">_createLoader</a>
+                                <a href="#method_assetsLoaded">assetsLoaded</a>
 
                             </li>
                             <li class="index-item method private">
-                                <a href="#method__createLoadQueue">_createLoadQueue</a>
+                                <a href="#method_configLoaded">configLoaded</a>
 
                             </li>
                             <li class="index-item method private">
-                                <a href="#method__createMainView">_createMainView</a>
-
-                            </li>
-                            <li class="index-item method private">
-                                <a href="#method__loadComplete">_loadComplete</a>
-
-                            </li>
-                            <li class="index-item method private">
-                                <a href="#method__loadFileComplete">_loadFileComplete</a>
-
-                            </li>
-                            <li class="index-item method private">
-                                <a href="#method__loadProgress">_loadProgress</a>
-
-                            </li>
-                            <li class="index-item method private">
-                                <a href="#method__normalizeConfigPaths">_normalizeConfigPaths</a>
-
-                            </li>
-                            <li class="index-item method private">
-                                <a href="#method__normalizePaths">_normalizePaths</a>
-
-                            </li>
-                            <li class="index-item method private">
-                                <a href="#method__parseConfigFile">_parseConfigFile</a>
-
-                            </li>
-                            <li class="index-item method private">
-                                <a href="#method__parseContentFiles">_parseContentFiles</a>
-
-                            </li>
-                            <li class="index-item method private">
-                                <a href="#method__prepareConfigFile">_prepareConfigFile</a>
-
-                            </li>
-                            <li class="index-item method private">
-                                <a href="#method__removeLoader">_removeLoader</a>
-
-                            </li>
-                            <li class="index-item method private">
-                                <a href="#method__showMainView">_showMainView</a>
-
-                            </li>
-                            <li class="index-item method">
-                                <a href="#method_coreAssetsLoaded">coreAssetsLoaded</a>
-
-                            </li>
-                            <li class="index-item method protected">
-                                <a href="#method_createPreloaderView">createPreloaderView</a>
-
-                            </li>
-                            <li class="index-item method protected">
-                                <a href="#method_destroyPreloderView">destroyPreloderView</a>
+                                <a href="#method_contentLoaded">contentLoaded</a>
 
                             </li>
                             <li class="index-item method inherited">
                                 <a href="#method_hasEvent">hasEvent</a>
 
                             </li>
-                            <li class="index-item method protected">
-                                <a href="#method_hidePreloderView">hidePreloderView</a>
+                            <li class="index-item method private">
+                                <a href="#method_initialQueue">initialQueue</a>
 
                             </li>
-                            <li class="index-item method">
-                                <a href="#method_mainAssetsLoaded">mainAssetsLoaded</a>
+                            <li class="index-item method private">
+                                <a href="#method_loadComplete">loadComplete</a>
+
+                            </li>
+                            <li class="index-item method private">
+                                <a href="#method_loadContents">loadContents</a>
+
+                            </li>
+                            <li class="index-item method protected">
+                                <a href="#method_loader">loader</a>
+
+                            </li>
+                            <li class="index-item method private">
+                                <a href="#method_loadFileComplete">loadFileComplete</a>
+
+                            </li>
+                            <li class="index-item method private">
+                                <a href="#method_loadProgress">loadProgress</a>
 
                             </li>
                             <li class="index-item method inherited">
@@ -310,12 +245,12 @@
                                 <a href="#method_on">on</a>
 
                             </li>
-                            <li class="index-item method">
-                                <a href="#method_preloaderAssetsLoaded">preloaderAssetsLoaded</a>
+                            <li class="index-item method private">
+                                <a href="#method_removeLoader">removeLoader</a>
 
                             </li>
-                            <li class="index-item method protected">
-                                <a href="#method_showPreloaderView">showPreloaderView</a>
+                            <li class="index-item method private">
+                                <a href="#method_removeParam">removeParam</a>
 
                             </li>
                             <li class="index-item method inherited">
@@ -336,11 +271,14 @@
             <div id="methods" class="api-class-tabpanel">
                 <h2 class="off-left">Methods</h2>
 
-<div id="method__addFiles" class="method item private">
-    <h3 class="name"><code>_addFiles</code></h3>
+<div id="method_addFiles" class="method item private">
+    <h3 class="name"><code>addFiles</code></h3>
 
         <div class="args">
             <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>p_queue</code>
+                </li>
                 <li class="arg">
                         <code>p_files</code>
                 </li>
@@ -358,7 +296,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._.._source_coffee_slikland_core_navigation_NavigationLoader.coffee.html#l298"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;core&#x2F;navigation&#x2F;NavigationLoader.coffee:298</code></a>
+        <a href="../files/.._.._source_coffee_slikland_navigation_core_NavigationLoader.coffee.html#l197"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;navigation&#x2F;core&#x2F;NavigationLoader.coffee:197</code></a>
         </p>
 
 
@@ -373,6 +311,16 @@
             <h4>Parameters:</h4>
 
             <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">p_queue</code>
+                        <span class="type">createjs.LoadQueue</span>
+
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                </li>
                 <li class="param">
                         <code class="param-name">p_files</code>
                         <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>
@@ -389,61 +337,8 @@
 
 
 </div>
-<div id="method__contentsLoaded" class="method item private">
-    <h3 class="name"><code>_contentsLoaded</code></h3>
-
-        <div class="args">
-            <span class="paren">(</span><ul class="args-list inline commas">
-                <li class="arg">
-                        <code>evt</code>
-                </li>
-            </ul><span class="paren">)</span>
-        </div>
-
-
-
-        <span class="flag private">private</span>
-
-
-
-
-
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/.._.._source_coffee_slikland_core_navigation_NavigationLoader.coffee.html#l90"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;core&#x2F;navigation&#x2F;NavigationLoader.coffee:90</code></a>
-        </p>
-
-
-
-    </div>
-
-    <div class="description">
-        
-    </div>
-
-        <div class="params">
-            <h4>Parameters:</h4>
-
-            <ul class="params-list">
-                <li class="param">
-                        <code class="param-name">evt</code>
-                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/API/Event" class="crosslink external" target="_blank">Event</a></span>
-
-
-                    <div class="param-description">
-                         
-                    </div>
-
-                </li>
-            </ul>
-        </div>
-
-
-
-</div>
-<div id="method__createLoader" class="method item private">
-    <h3 class="name"><code>_createLoader</code></h3>
+<div id="method_addLoader" class="method item private">
+    <h3 class="name"><code>addLoader</code></h3>
 
         <div class="args">
             <span class="paren">(</span><ul class="args-list inline commas">
@@ -467,7 +362,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._.._source_coffee_slikland_core_navigation_NavigationLoader.coffee.html#l271"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;core&#x2F;navigation&#x2F;NavigationLoader.coffee:271</code></a>
+        <a href="../files/.._.._source_coffee_slikland_navigation_core_NavigationLoader.coffee.html#l171"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;navigation&#x2F;core&#x2F;NavigationLoader.coffee:171</code></a>
         </p>
 
 
@@ -505,41 +400,16 @@
 
 
 </div>
-<div id="method__createLoadQueue" class="method item private">
-    <h3 class="name"><code>_createLoadQueue</code></h3>
+<div id="method_assetsLoaded" class="method item private">
+    <h3 class="name"><code>assetsLoaded</code></h3>
 
-        <span class="paren">()</span>
-
-
-
-        <span class="flag private">private</span>
-
-
-
-
-
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/.._.._source_coffee_slikland_core_navigation_NavigationLoader.coffee.html#l107"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;core&#x2F;navigation&#x2F;NavigationLoader.coffee:107</code></a>
-        </p>
-
-
-
-    </div>
-
-    <div class="description">
-        
-    </div>
-
-
-
-
-</div>
-<div id="method__createMainView" class="method item private">
-    <h3 class="name"><code>_createMainView</code></h3>
-
-        <span class="paren">()</span>
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>p_id</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
 
 
 
@@ -552,7 +422,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._.._source_coffee_slikland_core_navigation_NavigationLoader.coffee.html#l489"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;core&#x2F;navigation&#x2F;NavigationLoader.coffee:489</code></a>
+        <a href="../files/.._.._source_coffee_slikland_navigation_core_NavigationLoader.coffee.html#l325"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;navigation&#x2F;core&#x2F;NavigationLoader.coffee:325</code></a>
         </p>
 
 
@@ -560,15 +430,32 @@
     </div>
 
     <div class="description">
-        
+        <p>Called when the others groups is completely loaded.</p>
+
     </div>
 
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">p_id</code>
+                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>
+
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                </li>
+            </ul>
+        </div>
 
 
 
 </div>
-<div id="method__loadComplete" class="method item private">
-    <h3 class="name"><code>_loadComplete</code></h3>
+<div id="method_configLoaded" class="method item private">
+    <h3 class="name"><code>configLoaded</code></h3>
 
         <div class="args">
             <span class="paren">(</span><ul class="args-list inline commas">
@@ -589,7 +476,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._.._source_coffee_slikland_core_navigation_NavigationLoader.coffee.html#l397"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;core&#x2F;navigation&#x2F;NavigationLoader.coffee:397</code></a>
+        <a href="../files/.._.._source_coffee_slikland_navigation_core_NavigationLoader.coffee.html#l61"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;navigation&#x2F;core&#x2F;NavigationLoader.coffee:61</code></a>
         </p>
 
 
@@ -620,8 +507,8 @@
 
 
 </div>
-<div id="method__loadFileComplete" class="method item private">
-    <h3 class="name"><code>_loadFileComplete</code></h3>
+<div id="method_contentLoaded" class="method item private">
+    <h3 class="name"><code>contentLoaded</code></h3>
 
         <div class="args">
             <span class="paren">(</span><ul class="args-list inline commas">
@@ -642,7 +529,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._.._source_coffee_slikland_core_navigation_NavigationLoader.coffee.html#l350"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;core&#x2F;navigation&#x2F;NavigationLoader.coffee:350</code></a>
+        <a href="../files/.._.._source_coffee_slikland_navigation_core_NavigationLoader.coffee.html#l100"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;navigation&#x2F;core&#x2F;NavigationLoader.coffee:100</code></a>
         </p>
 
 
@@ -660,649 +547,6 @@
                 <li class="param">
                         <code class="param-name">evt</code>
                         <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/API/Event" class="crosslink external" target="_blank">Event</a></span>
-
-
-                    <div class="param-description">
-                         
-                    </div>
-
-                </li>
-            </ul>
-        </div>
-
-
-
-</div>
-<div id="method__loadProgress" class="method item private">
-    <h3 class="name"><code>_loadProgress</code></h3>
-
-        <div class="args">
-            <span class="paren">(</span><ul class="args-list inline commas">
-                <li class="arg">
-                        <code>evt</code>
-                </li>
-            </ul><span class="paren">)</span>
-        </div>
-
-
-
-        <span class="flag private">private</span>
-
-
-
-
-
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/.._.._source_coffee_slikland_core_navigation_NavigationLoader.coffee.html#l388"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;core&#x2F;navigation&#x2F;NavigationLoader.coffee:388</code></a>
-        </p>
-
-
-
-    </div>
-
-    <div class="description">
-        
-    </div>
-
-        <div class="params">
-            <h4>Parameters:</h4>
-
-            <ul class="params-list">
-                <li class="param">
-                        <code class="param-name">evt</code>
-                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/API/Event" class="crosslink external" target="_blank">Event</a></span>
-
-
-                    <div class="param-description">
-                         
-                    </div>
-
-                </li>
-            </ul>
-        </div>
-
-
-
-</div>
-<div id="method__normalizeConfigPaths" class="method item private">
-    <h3 class="name"><code>_normalizeConfigPaths</code></h3>
-
-        <div class="args">
-            <span class="paren">(</span><ul class="args-list inline commas">
-                <li class="arg">
-                        <code>p_paths</code>
-                </li>
-            </ul><span class="paren">)</span>
-        </div>
-
-
-
-        <span class="flag private">private</span>
-
-
-
-
-
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/.._.._source_coffee_slikland_core_navigation_NavigationLoader.coffee.html#l321"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;core&#x2F;navigation&#x2F;NavigationLoader.coffee:321</code></a>
-        </p>
-
-
-
-    </div>
-
-    <div class="description">
-        
-    </div>
-
-        <div class="params">
-            <h4>Parameters:</h4>
-
-            <ul class="params-list">
-                <li class="param">
-                        <code class="param-name">p_paths</code>
-                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>
-
-
-                    <div class="param-description">
-                         
-                    </div>
-
-                </li>
-            </ul>
-        </div>
-
-
-
-</div>
-<div id="method__normalizePaths" class="method item private">
-    <h3 class="name"><code>_normalizePaths</code></h3>
-
-        <div class="args">
-            <span class="paren">(</span><ul class="args-list inline commas">
-                <li class="arg">
-                        <code>p_data</code>
-                </li>
-                <li class="arg">
-                        <code>p_paths</code>
-                </li>
-            </ul><span class="paren">)</span>
-        </div>
-
-        <span class="returns-inline">
-            <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>
-        </span>
-
-
-        <span class="flag private">private</span>
-
-
-
-
-
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/.._.._source_coffee_slikland_core_navigation_NavigationLoader.coffee.html#l336"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;core&#x2F;navigation&#x2F;NavigationLoader.coffee:336</code></a>
-        </p>
-
-
-
-    </div>
-
-    <div class="description">
-        
-    </div>
-
-        <div class="params">
-            <h4>Parameters:</h4>
-
-            <ul class="params-list">
-                <li class="param">
-                        <code class="param-name">p_data</code>
-                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>
-
-
-                    <div class="param-description">
-                         
-                    </div>
-
-                </li>
-                <li class="param">
-                        <code class="param-name">p_paths</code>
-                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>
-
-
-                    <div class="param-description">
-                         
-                    </div>
-
-                </li>
-            </ul>
-        </div>
-
-        <div class="returns">
-            <h4>Returns:</h4>
-
-            <div class="returns-description">
-                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>:
-            </div>
-        </div>
-
-
-</div>
-<div id="method__parseConfigFile" class="method item private">
-    <h3 class="name"><code>_parseConfigFile</code></h3>
-
-        <div class="args">
-            <span class="paren">(</span><ul class="args-list inline commas">
-                <li class="arg">
-                        <code>p_data</code>
-                </li>
-            </ul><span class="paren">)</span>
-        </div>
-
-        <span class="returns-inline">
-            <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>
-        </span>
-
-
-        <span class="flag private">private</span>
-
-
-
-
-
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/.._.._source_coffee_slikland_core_navigation_NavigationLoader.coffee.html#l209"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;core&#x2F;navigation&#x2F;NavigationLoader.coffee:209</code></a>
-        </p>
-
-
-
-    </div>
-
-    <div class="description">
-        
-    </div>
-
-        <div class="params">
-            <h4>Parameters:</h4>
-
-            <ul class="params-list">
-                <li class="param">
-                        <code class="param-name">p_data</code>
-                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>
-
-
-                    <div class="param-description">
-                         
-                    </div>
-
-                </li>
-            </ul>
-        </div>
-
-        <div class="returns">
-            <h4>Returns:</h4>
-
-            <div class="returns-description">
-                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>:
-            </div>
-        </div>
-
-
-</div>
-<div id="method__parseContentFiles" class="method item private">
-    <h3 class="name"><code>_parseContentFiles</code></h3>
-
-        <div class="args">
-            <span class="paren">(</span><ul class="args-list inline commas">
-                <li class="arg">
-                        <code>p_views</code>
-                </li>
-                <li class="arg">
-                        <code>p_data</code>
-                </li>
-            </ul><span class="paren">)</span>
-        </div>
-
-
-
-        <span class="flag private">private</span>
-
-
-
-
-
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/.._.._source_coffee_slikland_core_navigation_NavigationLoader.coffee.html#l139"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;core&#x2F;navigation&#x2F;NavigationLoader.coffee:139</code></a>
-        </p>
-
-
-
-    </div>
-
-    <div class="description">
-        
-    </div>
-
-        <div class="params">
-            <h4>Parameters:</h4>
-
-            <ul class="params-list">
-                <li class="param">
-                        <code class="param-name">p_views</code>
-                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array" class="crosslink external" target="_blank">Array</a></span>
-
-
-                    <div class="param-description">
-                         
-                    </div>
-
-                </li>
-                <li class="param">
-                        <code class="param-name">p_data</code>
-                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>
-
-
-                    <div class="param-description">
-                         
-                    </div>
-
-                </li>
-            </ul>
-        </div>
-
-
-
-</div>
-<div id="method__prepareConfigFile" class="method item private">
-    <h3 class="name"><code>_prepareConfigFile</code></h3>
-
-        <div class="args">
-            <span class="paren">(</span><ul class="args-list inline commas">
-                <li class="arg">
-                        <code>evt</code>
-                </li>
-            </ul><span class="paren">)</span>
-        </div>
-
-
-
-        <span class="flag private">private</span>
-
-
-
-
-
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/.._.._source_coffee_slikland_core_navigation_NavigationLoader.coffee.html#l71"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;core&#x2F;navigation&#x2F;NavigationLoader.coffee:71</code></a>
-        </p>
-
-
-
-    </div>
-
-    <div class="description">
-        
-    </div>
-
-        <div class="params">
-            <h4>Parameters:</h4>
-
-            <ul class="params-list">
-                <li class="param">
-                        <code class="param-name">evt</code>
-                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/API/Event" class="crosslink external" target="_blank">Event</a></span>
-
-
-                    <div class="param-description">
-                         
-                    </div>
-
-                </li>
-            </ul>
-        </div>
-
-
-
-</div>
-<div id="method__removeLoader" class="method item private">
-    <h3 class="name"><code>_removeLoader</code></h3>
-
-        <div class="args">
-            <span class="paren">(</span><ul class="args-list inline commas">
-                <li class="arg">
-                        <code>p_queue</code>
-                </li>
-            </ul><span class="paren">)</span>
-        </div>
-
-        <span class="returns-inline">
-            <span class="type">createjs.LoadQueue</span>
-        </span>
-
-
-        <span class="flag private">private</span>
-
-
-
-
-
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/.._.._source_coffee_slikland_core_navigation_NavigationLoader.coffee.html#l285"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;core&#x2F;navigation&#x2F;NavigationLoader.coffee:285</code></a>
-        </p>
-
-
-
-    </div>
-
-    <div class="description">
-        
-    </div>
-
-        <div class="params">
-            <h4>Parameters:</h4>
-
-            <ul class="params-list">
-                <li class="param">
-                        <code class="param-name">p_queue</code>
-                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>
-
-
-                    <div class="param-description">
-                         
-                    </div>
-
-                </li>
-            </ul>
-        </div>
-
-        <div class="returns">
-            <h4>Returns:</h4>
-
-            <div class="returns-description">
-                        <span class="type">createjs.LoadQueue</span>:
-            </div>
-        </div>
-
-
-</div>
-<div id="method__showMainView" class="method item private">
-    <h3 class="name"><code>_showMainView</code></h3>
-
-        <div class="args">
-            <span class="paren">(</span><ul class="args-list inline commas">
-                <li class="arg">
-                        <code class="optional">[evt=null]</code>
-                </li>
-            </ul><span class="paren">)</span>
-        </div>
-
-
-
-        <span class="flag private">private</span>
-
-
-
-
-
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/.._.._source_coffee_slikland_core_navigation_NavigationLoader.coffee.html#l513"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;core&#x2F;navigation&#x2F;NavigationLoader.coffee:513</code></a>
-        </p>
-
-
-
-    </div>
-
-    <div class="description">
-        
-    </div>
-
-        <div class="params">
-            <h4>Parameters:</h4>
-
-            <ul class="params-list">
-                <li class="param">
-                        <code class="param-name optional">[evt=null]</code>
-                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/API/Event" class="crosslink external" target="_blank">Event</a></span>
-                        <span class="flag optional" title="This parameter is optional.">optional</span>
-
-
-                    <div class="param-description">
-                         
-                    </div>
-
-                </li>
-            </ul>
-        </div>
-
-
-
-</div>
-<div id="method_coreAssetsLoaded" class="method item">
-    <h3 class="name"><code>coreAssetsLoaded</code></h3>
-
-        <div class="args">
-            <span class="paren">(</span><ul class="args-list inline commas">
-                <li class="arg">
-                        <code class="optional">[evt=null]</code>
-                </li>
-            </ul><span class="paren">)</span>
-        </div>
-
-
-
-
-
-
-
-
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/.._.._source_coffee_slikland_core_navigation_NavigationLoader.coffee.html#l523"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;core&#x2F;navigation&#x2F;NavigationLoader.coffee:523</code></a>
-        </p>
-
-
-
-    </div>
-
-    <div class="description">
-        <p>Called only when the core assets is completely loaded.</p>
-
-    </div>
-
-        <div class="params">
-            <h4>Parameters:</h4>
-
-            <ul class="params-list">
-                <li class="param">
-                        <code class="param-name optional">[evt=null]</code>
-                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/API/Event" class="crosslink external" target="_blank">Event</a></span>
-                        <span class="flag optional" title="This parameter is optional.">optional</span>
-
-
-                    <div class="param-description">
-                         
-                    </div>
-
-                </li>
-            </ul>
-        </div>
-
-
-
-</div>
-<div id="method_createPreloaderView" class="method item protected">
-    <h3 class="name"><code>createPreloaderView</code></h3>
-
-        <div class="args">
-            <span class="paren">(</span><ul class="args-list inline commas">
-                <li class="arg">
-                        <code class="optional">[evt=null]</code>
-                </li>
-            </ul><span class="paren">)</span>
-        </div>
-
-
-
-        <span class="flag protected">protected</span>
-
-
-
-
-
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/.._.._source_coffee_slikland_core_navigation_NavigationLoader.coffee.html#l441"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;core&#x2F;navigation&#x2F;NavigationLoader.coffee:441</code></a>
-        </p>
-
-
-
-    </div>
-
-    <div class="description">
-        
-    </div>
-
-        <div class="params">
-            <h4>Parameters:</h4>
-
-            <ul class="params-list">
-                <li class="param">
-                        <code class="param-name optional">[evt=null]</code>
-                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/API/Event" class="crosslink external" target="_blank">Event</a></span>
-                        <span class="flag optional" title="This parameter is optional.">optional</span>
-
-
-                    <div class="param-description">
-                         
-                    </div>
-
-                </li>
-            </ul>
-        </div>
-
-
-
-</div>
-<div id="method_destroyPreloderView" class="method item protected">
-    <h3 class="name"><code>destroyPreloderView</code></h3>
-
-        <div class="args">
-            <span class="paren">(</span><ul class="args-list inline commas">
-                <li class="arg">
-                        <code class="optional">[evt=null]</code>
-                </li>
-            </ul><span class="paren">)</span>
-        </div>
-
-
-
-        <span class="flag protected">protected</span>
-
-
-
-
-
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/.._.._source_coffee_slikland_core_navigation_NavigationLoader.coffee.html#l473"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;core&#x2F;navigation&#x2F;NavigationLoader.coffee:473</code></a>
-        </p>
-
-
-
-    </div>
-
-    <div class="description">
-        
-    </div>
-
-        <div class="params">
-            <h4>Parameters:</h4>
-
-            <ul class="params-list">
-                <li class="param">
-                        <code class="param-name optional">[evt=null]</code>
-                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/API/Event" class="crosslink external" target="_blank">Event</a></span>
-                        <span class="flag optional" title="This parameter is optional.">optional</span>
 
 
                     <div class="param-description">
@@ -1343,7 +587,7 @@
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/EventDispatcher.html#method_hasEvent">EventDispatcher</a>:
-        <a href="../files/.._.._source_coffee_slikland_event_EventDispatcher.coffee.html#l108"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;event&#x2F;EventDispatcher.coffee:108</code></a>
+        <a href="../files/.._.._source_coffee_slikland_event_EventDispatcher.coffee.html#l104"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;event&#x2F;EventDispatcher.coffee:104</code></a>
         </p>
 
 
@@ -1351,7 +595,8 @@
     </div>
 
     <div class="description">
-        Check if a event handler is already set.
+        <p>Check if a event handler is already set.</p>
+
     </div>
 
         <div class="params">
@@ -1364,7 +609,8 @@
 
 
                     <div class="param-description">
-                        Event name.
+                        <p>Event name.</p>
+
                     </div>
 
                 </li>
@@ -1375,7 +621,8 @@
 
 
                     <div class="param-description">
-                        A callback function added in the {{#crossLink "EventDispatcher/on:method"}}{{/crossLink}} call.
+                        <p>A callback function added in the <a href="../classes/EventDispatcher.html#method_on" class="crosslink">on</a> call.</p>
+
                     </div>
 
                 </li>
@@ -1392,20 +639,14 @@
 
 
 </div>
-<div id="method_hidePreloderView" class="method item protected">
-    <h3 class="name"><code>hidePreloderView</code></h3>
+<div id="method_initialQueue" class="method item private">
+    <h3 class="name"><code>initialQueue</code></h3>
 
-        <div class="args">
-            <span class="paren">(</span><ul class="args-list inline commas">
-                <li class="arg">
-                        <code class="optional">[evt=null]</code>
-                </li>
-            </ul><span class="paren">)</span>
-        </div>
+        <span class="paren">()</span>
 
 
 
-        <span class="flag protected">protected</span>
+        <span class="flag private">private</span>
 
 
 
@@ -1414,7 +655,44 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._.._source_coffee_slikland_core_navigation_NavigationLoader.coffee.html#l462"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;core&#x2F;navigation&#x2F;NavigationLoader.coffee:462</code></a>
+        <a href="../files/.._.._source_coffee_slikland_navigation_core_NavigationLoader.coffee.html#l117"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;navigation&#x2F;core&#x2F;NavigationLoader.coffee:117</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        
+    </div>
+
+
+
+
+</div>
+<div id="method_loadComplete" class="method item private">
+    <h3 class="name"><code>loadComplete</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>evt</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+
+
+        <span class="flag private">private</span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._.._source_coffee_slikland_navigation_core_NavigationLoader.coffee.html#l301"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;navigation&#x2F;core&#x2F;NavigationLoader.coffee:301</code></a>
         </p>
 
 
@@ -1430,9 +708,8 @@
 
             <ul class="params-list">
                 <li class="param">
-                        <code class="param-name optional">[evt=null]</code>
+                        <code class="param-name">evt</code>
                         <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/API/Event" class="crosslink external" target="_blank">Event</a></span>
-                        <span class="flag optional" title="This parameter is optional.">optional</span>
 
 
                     <div class="param-description">
@@ -1446,19 +723,14 @@
 
 
 </div>
-<div id="method_mainAssetsLoaded" class="method item">
-    <h3 class="name"><code>mainAssetsLoaded</code></h3>
+<div id="method_loadContents" class="method item private">
+    <h3 class="name"><code>loadContents</code></h3>
 
-        <div class="args">
-            <span class="paren">(</span><ul class="args-list inline commas">
-                <li class="arg">
-                        <code class="optional">[evt=null]</code>
-                </li>
-            </ul><span class="paren">)</span>
-        </div>
+        <span class="paren">()</span>
 
 
 
+        <span class="flag private">private</span>
 
 
 
@@ -1467,7 +739,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._.._source_coffee_slikland_core_navigation_NavigationLoader.coffee.html#l539"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;core&#x2F;navigation&#x2F;NavigationLoader.coffee:539</code></a>
+        <a href="../files/.._.._source_coffee_slikland_navigation_core_NavigationLoader.coffee.html#l78"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;navigation&#x2F;core&#x2F;NavigationLoader.coffee:78</code></a>
         </p>
 
 
@@ -1475,8 +747,85 @@
     </div>
 
     <div class="description">
-        <p>Called only when the main assets is completely loaded.</p>
+        
+    </div>
 
+
+
+
+</div>
+<div id="method_loader" class="method item protected">
+    <h3 class="name"><code>loader</code></h3>
+
+        <span class="paren">()</span>
+
+        <span class="returns-inline">
+            <span class="type">AssetLoader</span>
+        </span>
+
+
+        <span class="flag protected">protected</span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._.._source_coffee_slikland_navigation_core_NavigationLoader.coffee.html#l53"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;navigation&#x2F;core&#x2F;NavigationLoader.coffee:53</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        
+    </div>
+
+
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                        <span class="type">AssetLoader</span>:
+            </div>
+        </div>
+
+
+</div>
+<div id="method_loadFileComplete" class="method item private">
+    <h3 class="name"><code>loadFileComplete</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>evt</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+
+
+        <span class="flag private">private</span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._.._source_coffee_slikland_navigation_core_NavigationLoader.coffee.html#l219"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;navigation&#x2F;core&#x2F;NavigationLoader.coffee:219</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        
     </div>
 
         <div class="params">
@@ -1484,9 +833,61 @@
 
             <ul class="params-list">
                 <li class="param">
-                        <code class="param-name optional">[evt=null]</code>
+                        <code class="param-name">evt</code>
                         <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/API/Event" class="crosslink external" target="_blank">Event</a></span>
-                        <span class="flag optional" title="This parameter is optional.">optional</span>
+
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+
+
+</div>
+<div id="method_loadProgress" class="method item private">
+    <h3 class="name"><code>loadProgress</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>evt</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+
+
+        <span class="flag private">private</span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._.._source_coffee_slikland_navigation_core_NavigationLoader.coffee.html#l292"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;navigation&#x2F;core&#x2F;NavigationLoader.coffee:292</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">evt</code>
+                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/API/Event" class="crosslink external" target="_blank">Event</a></span>
 
 
                     <div class="param-description">
@@ -1532,13 +933,15 @@
     </div>
 
     <div class="description">
-        Remove an event listener.
+        <p>Remove an event listener.</p>
+<p><strong>BEWARE</strong></p>
+<blockquote>
+<p>Calling this method without a handler will remove all listeners attached to this event.</p>
+</blockquote>
+<blockquote>
+<p>If calling without the event name, will remove all listeners attached to this instance.</p>
+</blockquote>
 
-**BEWARE**
-
-> Calling this method without a handler will remove all listeners attached to this event.
-
-> If calling without the event name, will remove all listeners attached to this instance.
     </div>
 
         <div class="params">
@@ -1552,7 +955,8 @@
 
 
                     <div class="param-description">
-                        Event name.
+                        <p>Event name.</p>
+
                     </div>
 
                 </li>
@@ -1563,8 +967,8 @@
 
 
                     <div class="param-description">
-                        
-A callback function added in the {{#crossLink "EventDispatcher/on:method"}}{{/crossLink}} call.
+                        <p>A callback function added in the <a href="../classes/EventDispatcher.html#method_on" class="crosslink">on</a> call.</p>
+
                     </div>
 
                 </li>
@@ -1606,7 +1010,8 @@ A callback function added in the {{#crossLink "EventDispatcher/on:method"}}{{/cr
     </div>
 
     <div class="description">
-        Add a event listener.
+        <p>Add a event listener.</p>
+
     </div>
 
         <div class="params">
@@ -1619,7 +1024,8 @@ A callback function added in the {{#crossLink "EventDispatcher/on:method"}}{{/cr
 
 
                     <div class="param-description">
-                        Event name.
+                        <p>Event name.</p>
+
                     </div>
 
                 </li>
@@ -1629,8 +1035,9 @@ A callback function added in the {{#crossLink "EventDispatcher/on:method"}}{{/cr
 
 
                     <div class="param-description">
-                        A callback function to handle the event.<br>
-The callback function can receive 1 or 2 parameters. The first parameter is the event data itself and the second parameter is the custom data of the triggering event.
+                        <p>A callback function to handle the event.<br>
+The callback function can receive 1 or 2 parameters. The first parameter is the event data itself and the second parameter is the custom data of the triggering event.</p>
+
                     </div>
 
                 </li>
@@ -1654,19 +1061,23 @@ ed.on('someEvent', someEventHandler);</code></pre>
             </div>
         </div>
 </div>
-<div id="method_preloaderAssetsLoaded" class="method item">
-    <h3 class="name"><code>preloaderAssetsLoaded</code></h3>
+<div id="method_removeLoader" class="method item private">
+    <h3 class="name"><code>removeLoader</code></h3>
 
         <div class="args">
             <span class="paren">(</span><ul class="args-list inline commas">
                 <li class="arg">
-                        <code class="optional">[evt=null]</code>
+                        <code>p_queue</code>
                 </li>
             </ul><span class="paren">)</span>
         </div>
 
+        <span class="returns-inline">
+            <span class="type">createjs.LoadQueue</span>
+        </span>
 
 
+        <span class="flag private">private</span>
 
 
 
@@ -1675,62 +1086,7 @@ ed.on('someEvent', someEventHandler);</code></pre>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._.._source_coffee_slikland_core_navigation_NavigationLoader.coffee.html#l531"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;core&#x2F;navigation&#x2F;NavigationLoader.coffee:531</code></a>
-        </p>
-
-
-
-    </div>
-
-    <div class="description">
-        <p>Called only when the preloader assets is completely loaded.</p>
-
-    </div>
-
-        <div class="params">
-            <h4>Parameters:</h4>
-
-            <ul class="params-list">
-                <li class="param">
-                        <code class="param-name optional">[evt=null]</code>
-                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/API/Event" class="crosslink external" target="_blank">Event</a></span>
-                        <span class="flag optional" title="This parameter is optional.">optional</span>
-
-
-                    <div class="param-description">
-                         
-                    </div>
-
-                </li>
-            </ul>
-        </div>
-
-
-
-</div>
-<div id="method_showPreloaderView" class="method item protected">
-    <h3 class="name"><code>showPreloaderView</code></h3>
-
-        <div class="args">
-            <span class="paren">(</span><ul class="args-list inline commas">
-                <li class="arg">
-                        <code class="optional">[evt=null]</code>
-                </li>
-            </ul><span class="paren">)</span>
-        </div>
-
-
-
-        <span class="flag protected">protected</span>
-
-
-
-
-
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/.._.._source_coffee_slikland_core_navigation_NavigationLoader.coffee.html#l452"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;core&#x2F;navigation&#x2F;NavigationLoader.coffee:452</code></a>
+        <a href="../files/.._.._source_coffee_slikland_navigation_core_NavigationLoader.coffee.html#l184"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;navigation&#x2F;core&#x2F;NavigationLoader.coffee:184</code></a>
         </p>
 
 
@@ -1746,9 +1102,81 @@ ed.on('someEvent', someEventHandler);</code></pre>
 
             <ul class="params-list">
                 <li class="param">
-                        <code class="param-name optional">[evt=null]</code>
-                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/API/Event" class="crosslink external" target="_blank">Event</a></span>
-                        <span class="flag optional" title="This parameter is optional.">optional</span>
+                        <code class="param-name">p_queue</code>
+                        <span class="type">createjs.LoadQueue</span>
+
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                        <span class="type">createjs.LoadQueue</span>:
+            </div>
+        </div>
+
+
+</div>
+<div id="method_removeParam" class="method item private">
+    <h3 class="name"><code>removeParam</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>p_param</code>
+                </li>
+                <li class="arg">
+                        <code>p_url</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+
+
+        <span class="flag private">private</span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._.._source_coffee_slikland_navigation_core_NavigationLoader.coffee.html#l269"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;navigation&#x2F;core&#x2F;NavigationLoader.coffee:269</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">p_param</code>
+                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>
+
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">p_url</code>
+                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>
 
 
                     <div class="param-description">
@@ -1789,7 +1217,7 @@ ed.on('someEvent', someEventHandler);</code></pre>
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/EventDispatcher.html#method_stackTrigger">EventDispatcher</a>:
-        <a href="../files/.._.._source_coffee_slikland_event_EventDispatcher.coffee.html#l126"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;event&#x2F;EventDispatcher.coffee:126</code></a>
+        <a href="../files/.._.._source_coffee_slikland_event_EventDispatcher.coffee.html#l122"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;event&#x2F;EventDispatcher.coffee:122</code></a>
         </p>
 
 
@@ -1797,9 +1225,9 @@ ed.on('someEvent', someEventHandler);</code></pre>
     </div>
 
     <div class="description">
-        Triggers an event after the current code block has finished processing.
+        <p>Triggers an event after the current code block has finished processing.</p>
+<p>This is useful for stacking up events that needs to be triggered at the end of the function but it's validating beforehand.</p>
 
-This is useful for stacking up events that needs to be triggered at the end of the function but it's validating beforehand.
     </div>
 
         <div class="params">
@@ -1812,7 +1240,8 @@ This is useful for stacking up events that needs to be triggered at the end of t
 
 
                     <div class="param-description">
-                        Event name.
+                        <p>Event name.</p>
+
                     </div>
 
                 </li>
@@ -1823,7 +1252,8 @@ This is useful for stacking up events that needs to be triggered at the end of t
 
 
                     <div class="param-description">
-                        Custom event data.
+                        <p>Custom event data.</p>
+
                     </div>
 
                 </li>
@@ -1834,7 +1264,8 @@ This is useful for stacking up events that needs to be triggered at the end of t
 
 
                     <div class="param-description">
-                        Target that will be specified in the <code>event.target</code>. The <code>event.currentTarget</code> will always be this instance.
+                        <p>Target that will be specified in the <code>event.target</code>. The <code>event.currentTarget</code> will always be this instance.</p>
+
                     </div>
 
                 </li>
@@ -1909,7 +1340,8 @@ function test()
     </div>
 
     <div class="description">
-        Triggers an event.
+        <p>Triggers an event.</p>
+
     </div>
 
         <div class="params">
@@ -1922,7 +1354,8 @@ function test()
 
 
                     <div class="param-description">
-                        Event name.
+                        <p>Event name.</p>
+
                     </div>
 
                 </li>
@@ -1933,7 +1366,8 @@ function test()
 
 
                     <div class="param-description">
-                        Custom event data.
+                        <p>Custom event data.</p>
+
                     </div>
 
                 </li>
@@ -1944,7 +1378,8 @@ function test()
 
 
                     <div class="param-description">
-                        Target that will be specified in the <code>event.target</code>. The <code>event.currentTarget</code> will always be this instance.
+                        <p>Target that will be specified in the <code>event.target</code>. The <code>event.currentTarget</code> will always be this instance.</p>
+
                     </div>
 
                 </li>
