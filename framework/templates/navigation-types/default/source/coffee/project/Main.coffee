@@ -1,5 +1,5 @@
 #import slikland.navigation.types.DefaultNavigationController
-#import slikland.core.navigation.NavigationContainer
+#import slikland.navigation.core.NavigationContainer
 #import slikland.utils.Resizer
 
 #############################
@@ -19,7 +19,7 @@ class Main extends NavigationContainer
 		@appendChildAt(menu, 0)
 		
 		# app.navigation.on(Navigation.CHANGE_ROUTE, @change)
-
+		
 		for k, v of app.config.views
 			@button = new BaseDOM()
 			menu.appendChild(@button)
@@ -28,13 +28,18 @@ class Main extends NavigationContainer
 			@button.text = v.id
 			@button.element.on 'click', @click
 		re.on(Resizer.BREAKPOINT_CHANGE, @change)
+
+		# console.log "main content:", @content.image
+
 		super
+
 	change:(evt)->
 		console.log evt
 
 	click:(evt)->
 		route = app.config.views[evt.srcElement.id].route
 		app.navigation.gotoRoute(route, true)
+		# console.log route
 
 	@get controller:=>
 		return _controller

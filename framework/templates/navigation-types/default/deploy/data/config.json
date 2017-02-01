@@ -1,9 +1,9 @@
 {
-	"paths":
-	{
+	"paths":{
 		"cdn":"",
 		"base":"",
-		"images":"{base}media/images/"
+		"images":"{base}media/images/",
+		"videos":"{base}media/videos/"
 	},	
 	"navigation":{
 		"forceHashBang":false,
@@ -16,6 +16,11 @@
         "mobile":{
             "browser":{
             	"mobile": true
+            }
+        },
+        "desktop":{
+            "browser":{
+            	"desktop": true
             }
         },
         "mobile-size": {
@@ -53,9 +58,9 @@
 			"class":"template-home-view",
 			"route":"/",
 			"content":"{base}data/home.json",
-			"cache":false,
 			"destroyable":true,
-			"loadContent":true
+			"loadContent":true,
+			"cache":false
 		},
 		{
 			"id":"sub1",
@@ -73,6 +78,7 @@
 			"class":"template-sub-view",
 			"content":"{base}data/sub2.json",
 			"route":"/sub-view-02",
+			"parentView":"sub1",
 			"destroyable":true,
 			"loadContent":true,
 			"cache":false
@@ -115,7 +121,7 @@
 				"cache":false
 			},
 			{
-				"id":"preloader-contents",
+				"id":"preloader-content",
 				"content":"{base}data/preloader.json",
 				"cache":false
 			}
@@ -125,6 +131,11 @@
 			{
 				"id":"vendors",
 				"src":"{base}js/vendors.js",
+				"cache":false
+			},
+			{
+				"id":"tests-1",
+				"src":"{base}data/manifest.json",
 				"cache":false
 			}
 		],
@@ -137,12 +148,21 @@
 			},
 			{
 				"id": "main-js",
-				"src": "{base}js/main.js",
+				"src": [
+					{
+						"condition":"desktop",
+						"file":"{base}js/main.js"
+					}
+				],
 				"cache":false
 			},
 			{
-				"id":"main-contents",
-				"content":"{base}data/main.json",
+				"content":[
+					{
+						"condition":"desktop",
+						"file":"{base}data/main.json"
+					}
+				],
 				"cache":false
 			}
 		]

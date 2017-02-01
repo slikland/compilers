@@ -33,8 +33,8 @@ do ->
 		else
 			tag = document.createElement 'audio'
 			tag.type = "audio/mpeg"
-			tag.preload = 'none'
-			#LM: Firefox fails when this the preload="none" for other tags, but it needs to be "none" to ensure PreloadJS works.
+			tag.preload = 'auto'
+			# tag.preload = 'none'
 			tag.src = src
 
 		if @___item.id?

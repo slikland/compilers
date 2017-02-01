@@ -1,9 +1,10 @@
-#import slikland.core.navigation.NavigationLoader
+#import slikland.navigation.core.Caim
 #import project.views.TemplatePreloaderView
 
-class Preloader extends NavigationLoader
+class Preloader extends Caim
 	constructor:()->
 		super(new TemplatePreloaderView())
+
 app.on 'windowLoad', =>
 	new Preloader()
 	

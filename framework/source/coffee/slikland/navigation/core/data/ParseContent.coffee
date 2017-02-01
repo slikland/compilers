@@ -1,0 +1,47 @@
+#import slikland.navigation.core.data.PathsData
+#import slikland.navigation.core.data.ParseData
+
+#import slikland.utils.JSONUtils
+
+class ParseContent extends ParseData
+	
+	constructor:(p_data)->
+		super(p_data)
+		@_validatePaths(@data)
+		@_getContents()
+	
+	@get initialAssets:()->
+		return @_primary
+		
+	@get standByAssets:()->
+		return @_standBy
+		
+	###*
+	@method _getContents
+	@return {Object}
+	@private
+	###
+	_getContents:()->
+		@_primary = []
+		@_standBy = []
+		
+		paths = PathsData.getInstance()
+		assets = JSONUtils.filterObject(paths.translate(@data), 'src', null, null, true)
+		for k, v of assets
+			if v.loadWithView || v.loadWithView == undefined
+				@_primary.push v
+			else if v.loadWithView == false
+				@_standBy.push v
+		false
+
+	###*
+	@method _validatePaths
+	@param {Object} p_data
+	@protected
+	###
+	_validatePaths:(p_data)->
+		for k, v of p_data
+			if k == 'src'
+				p_data[k] = @getPath(p_data[k])
+			if typeof(p_data[k]) == 'object' || typeof(p_data[k]) == 'array'
+				@_validatePaths(p_data[k])

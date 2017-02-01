@@ -1,3 +1,5 @@
+#import slikland.event.EventDispatcher
+
 ###*
 ViewsData Class
 @class ViewsData

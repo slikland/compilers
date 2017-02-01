@@ -1325,6 +1325,7 @@ NavigationContainer = (function(_super) {
   function NavigationContainer() {
     this.setupNavigation = __bind(this.setupNavigation, this);
     NavigationContainer.__super__.constructor.call(this, null, 'nav-container');
+    this._id = 'main';
   }
   /**
   	@method setupNavigation
@@ -1576,7 +1577,6 @@ TemplateHomeView = (function(_super) {
     this.appendChild(this.background);
     this.background.className = 'background';
     this.background.css({
-      'opacity': 0,
       'height': '100%',
       'background-color': '#' + Math.floor(Math.random() * 16777215).toString(16)
     });
@@ -1615,16 +1615,7 @@ TemplateHomeView = (function(_super) {
     if (evt == null) {
       evt = null;
     }
-    return TweenMax.to(this.background.element, 1, {
-      css: {
-        opacity: 1
-      },
-      onComplete: (function(_this) {
-        return function() {
-          return TemplateHomeView.__super__.show.apply(_this, arguments);
-        };
-      })(this)
-    });
+    return TemplateHomeView.__super__.show.apply(this, arguments);
   };
   TemplateHomeView.prototype.showComplete = function(evt) {
     if (evt == null) {
@@ -1642,14 +1633,7 @@ TemplateHomeView = (function(_super) {
     if (evt == null) {
       evt = null;
     }
-    return TweenMax.to(this.background.element, .5, {
-      opacity: 0,
-      onComplete: (function(_this) {
-        return function() {
-          return TemplateHomeView.__super__.hide.apply(_this, arguments);
-        };
-      })(this)
-    });
+    return TemplateHomeView.__super__.hide.apply(this, arguments);
   };
   TemplateHomeView.prototype.hideComplete = function(evt) {
     if (evt == null) {
@@ -1664,7 +1648,6 @@ TemplateHomeView = (function(_super) {
     this.image.destroy();
     this.background.removeChild(this.image);
     this.image = null;
-    TweenMax.killTweensOf(this.background.element);
     this.background.destroy();
     this.removeChild(this.background);
     this.background = null;
@@ -1702,7 +1685,6 @@ TemplateSubView = (function(_super) {
     this.appendChild(this.background);
     this.background.className = 'background';
     this.background.css({
-      'opacity': 0,
       'height': '100%',
       'background-color': '#' + Math.floor(Math.random() * 16777215).toString(16)
     });
@@ -1734,16 +1716,7 @@ TemplateSubView = (function(_super) {
     if (evt == null) {
       evt = null;
     }
-    return TweenMax.to(this.background.element, 1, {
-      css: {
-        opacity: 1
-      },
-      onComplete: (function(_this) {
-        return function() {
-          return TemplateSubView.__super__.show.apply(_this, arguments);
-        };
-      })(this)
-    });
+    return TemplateSubView.__super__.show.apply(this, arguments);
   };
   TemplateSubView.prototype.showComplete = function(evt) {
     if (evt == null) {
@@ -1761,14 +1734,7 @@ TemplateSubView = (function(_super) {
     if (evt == null) {
       evt = null;
     }
-    return TweenMax.to(this.background.element, .5, {
-      opacity: 0,
-      onComplete: (function(_this) {
-        return function() {
-          return TemplateSubView.__super__.hide.apply(_this, arguments);
-        };
-      })(this)
-    });
+    return TemplateSubView.__super__.hide.apply(this, arguments);
   };
   TemplateSubView.prototype.hideComplete = function(evt) {
     if (evt == null) {
@@ -1783,7 +1749,6 @@ TemplateSubView = (function(_super) {
     this.image.destroy();
     this.background.removeChild(this.image);
     this.image = null;
-    TweenMax.killTweensOf(this.background.element);
     this.background.destroy();
     this.removeChild(this.background);
     this.background = null;

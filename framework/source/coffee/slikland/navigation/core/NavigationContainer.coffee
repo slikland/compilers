@@ -1,4 +1,4 @@
-#import slikland.core.navigation.Navigation
+#import slikland.navigation.core.Navigation
 #import slikland.navigation.display.BaseView
 
 ###*
@@ -14,6 +14,7 @@ class NavigationContainer extends BaseView
 	###
 	constructor: () ->
 		super null, 'nav-container'
+		@_id = 'main'
 
 	###*
 	@method setupNavigation

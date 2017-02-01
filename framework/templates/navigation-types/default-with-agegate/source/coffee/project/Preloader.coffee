@@ -1,4 +1,4 @@
-#import slikland.core.navigation.NavigationLoader
+#import slikland.navigation.core.NavigationLoader
 #import project.views.TemplatePreloaderView
 
 class Preloader extends NavigationLoader

@@ -1,15 +1,25 @@
+#import slikland.utils.Prototypes
 #import slikland.event.EventDispatcher
 
 class App extends EventDispatcher
 	@project_version_raw : "SL_PROJECT_VERSION:0.0.0"
 	@project_date_raw : "SL_PROJECT_DATE:0000000000000"
 
-	@FRAMEWORK_VERSION : "2.2.15"
+	@FRAMEWORK_VERSION : "3.1.3"
 
+	_root = null
+	_loader = null
+	_config = null
+	_container = null
+	_navigation = null
+	_conditions = null
+	_detections = null
+	
 	constructor:()->
 		super
+		@_checkWindowActivity()
 
-	getInfo:()->
+	@get info:()->
 		info = {}
 
 		info.versionRaw = if App.project_version_raw == undefined || App.project_version_raw == 'undefined' then 'SL_PROJECT_VERSION:'+'Not versioned' else App.project_version_raw
@@ -19,10 +29,41 @@ class App extends EventDispatcher
 		info.lastUpdate = new Date(parseFloat(info.lastUpdateRaw.replace('SL_PROJECT_DATE:', '')))
 		return info
 
-		@_checkWindowActivity()
-		#
-		# TODO: FIX IE8
-		#
+	@set root:(p_value)->
+		_root = p_value
+	@get root:()->
+		return _root
+
+	@set loader:(p_value)->
+		_loader = p_value
+	@get loader:()->
+		return _loader
+
+	@set config:(p_value)->
+		_config = p_value
+	@get config:()->
+		return _config
+		
+	@set container:(p_value)->
+		_container = p_value
+	@get container:()->
+		return _container
+		
+	@set navigation:(p_value)->
+		_navigation = p_value
+	@get navigation:()->
+		return _navigation
+
+	@set conditions:(p_value)->
+		_conditions = p_value
+	@get conditions:()->
+		return _conditions
+	
+	@set detections:(p_value)->
+		_detections = p_value
+	@get detections:()->
+		return _detections
+
 	_checkWindowActivity:()->
 		@_hidden = 'hidden'
 		if @_hidden in document

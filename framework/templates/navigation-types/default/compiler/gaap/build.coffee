@@ -28,6 +28,10 @@ tasks:
 		output: '{project.deploy}js/main.js'
 		depends: 'preloaderJS'
 		
+	serviceWorkerJS:
+		src: '{framework.coffee}slikland/navigation/core/cache/ServiceWorker.coffee'
+		output: '{project.deploy}js/sw.js'
+
 	vendors:
 		src: 'imports.js'
 		output: '{project.deploy}js/vendors.js'

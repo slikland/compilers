@@ -1,5 +1,5 @@
-#import slikland.core.navigation.MetaController
 #import slikland.display.BaseDOM
+#import slikland.navigation.core.meta.MetaController
 
 ###*
 Base View
@@ -14,83 +14,83 @@ class BaseView extends BaseDOM
 	@event CREATE_START
 	@static
 	###
-	@CREATE_START: 'create_start'
+	@const CREATE_START: 'create_start'
 	###*
 	Triggered when the create routine view starts. Triggered when {{#crossLink "BaseView/create:method"}}{{/crossLink}} is called.
 	@event CREATE
 	@static
 	###
-	@CREATE: 'create'
+	@const CREATE: 'create'
 	###*
 	Triggered when the create routine view is finished. Triggered when {{#crossLink "BaseView/createComplete:method"}}{{/crossLink}} is called.
 	@event CREATE_COMPLETE
 	@static
 	###
-	@CREATE_COMPLETE: 'create_complete'
+	@const CREATE_COMPLETE: 'create_complete'
 
 	###*
 	Triggered before the showing routine view starts. Triggered when {{#crossLink "BaseView/showStart:method"}}{{/crossLink}} is called.
 	@event SHOW_START
 	@static
 	###
-	@SHOW_START: 'show_start'
+	@const SHOW_START: 'show_start'
 	###*
 	Triggered when the showing routine view starts. Triggered when {{#crossLink "BaseView/show:method"}}{{/crossLink}} is called.
 	@event SHOW
 	@static
 	###
-	@SHOW: 'show'
+	@const SHOW: 'show'
 	###*
 	Triggered when the showing routine view is finished. Triggered when {{#crossLink "BaseView/showComplete:method"}}{{/crossLink}} is called.
 	@event SHOW_COMPLETE
 	@static
 	###
-	@SHOW_COMPLETE: 'show_complete'
+	@const SHOW_COMPLETE: 'show_complete'
 
 	###*
 	Triggered before the hiding routine view starts. Triggered when {{#crossLink "BaseView/hideStart:method"}}{{/crossLink}} is called.
 	@event HIDE_START
 	@static
 	###
-	@HIDE_START: 'hide_start'
+	@const HIDE_START: 'hide_start'
 	###*
 	Triggered when the hiding routine view starts. Triggered when {{#crossLink "BaseView/hide:method"}}{{/crossLink}} is called.
 	@event HIDE
 	@static
 	###
-	@HIDE: 'hide'
+	@const HIDE: 'hide'
 	###*
 	Triggered when the hiding routine view is finished. Triggered when {{#crossLink "BaseView/hideComplete:method"}}{{/crossLink}} is called.
 	@event HIDE_COMPLETE
 	@static
 	###
-	@HIDE_COMPLETE: 'hide_complete'
+	@const HIDE_COMPLETE: 'hide_complete'
 
 	###*
 	Triggered when the destroy routine view starts. Triggered when {{#crossLink "BaseView/destroy:method"}}{{/crossLink}} is called.
 	@event DESTROY
 	@static
 	###
-	@DESTROY: 'destroy'
+	@const DESTROY: 'destroy'
 	###*
 	Triggered when the destroy routine view is finished. Triggered when {{#crossLink "BaseView/destroyComplete:method"}}{{/crossLink}} is called.
 	@event DESTROY_COMPLETE
 	@static
 	###
-	@DESTROY_COMPLETE: 'destroy_complete'
+	@const DESTROY_COMPLETE: 'destroy_complete'
 
 	###*
 	Triggered when the view pauses. Usually when {{#crossLink "BaseView/pause:method"}}{{/crossLink}} is called.
 	@event PAUSE
 	@static
 	###
-	@PAUSE: 'pause'
+	@const PAUSE: 'pause'
 	###*
 	Triggered when the view resumes. Usually when {{#crossLink "BaseView/resume:method"}}{{/crossLink}} is called.
 	@event RESUME
 	@static
 	###
-	@RESUME: 'resume'
+	@const RESUME: 'resume'
 
 	###*
 	@class BaseView
@@ -187,7 +187,8 @@ class BaseView extends BaseDOM
 	@get data:->
 		return @_data
 	@set data:(p_value)->
-		@_data = ObjectUtils.clone(p_value)
+		@_data = p_value
+		# @_data = ObjectUtils.clone(p_value)
 
 	###*
 	Sets/gets the unique ID of view.
@@ -201,7 +202,7 @@ class BaseView extends BaseDOM
 		@_id = p_value
 
 	###*
-	Sets/gets the unique ID of view.
+	Sets/gets the content of view.
 	@attribute content
 	@type {String|Object|JSON}
 	@default null
