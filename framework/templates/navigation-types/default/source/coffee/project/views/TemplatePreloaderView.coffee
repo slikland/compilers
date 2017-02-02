@@ -20,14 +20,13 @@ class TemplatePreloaderView extends BaseView
 		super
 
 	hide:(evt=null)=>
-		# TweenMax.to(@element, 1, {
-		# 	delay: .5, 
-		# 	opacity: 0, 
-		# 	onComplete: =>
-		# 		super
-		# })
-		super
+		TweenMax.to(@element, 1, {
+			delay: .5, 
+			opacity: 0, 
+			onComplete: =>
+				super
+		})
 		
 	destroy:(evt=null)=>
-		# TweenMax.killTweensOf(@element)
+		TweenMax.killTweensOf(@element)
 		super

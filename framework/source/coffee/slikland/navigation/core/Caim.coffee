@@ -4,10 +4,6 @@
 #import slikland.debug.Debug
 #import slikland.utils.Prototypes
 
-#import slikland.utils.ArrayUtils
-#import slikland.utils.ObjectUtils
-#import slikland.utils.StringUtils
-#import slikland.utils.JSONUtils
 #import slikland.utils.Detections
 
 #import slikland.loader.AssetLoader
@@ -58,8 +54,7 @@ class Caim extends EventDispatcher
 		loader.on(NavigationLoader.GROUP_ASSETS_LOADED, @groupLoaded)
 
 		# @TODO
-		# if window.location.href.indexOf('preview') is -1 and !Debug.debug
-		# 	app.sw = ServiceWorkerController.getInstance().init()
+		# ServiceWorkerController.getInstance().init()
 		
 		false
 	

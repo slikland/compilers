@@ -9,7 +9,7 @@ class ServiceWorkerController extends EventDispatcher
 		console.log 'init'
 		if ('serviceWorker' of navigator)
 			navigator.serviceWorker
-			.register(app.root + 'js/'+window.sw+'.js', {scope:'./'})
+			.register(app.root + 'js/sw.js', {scope:'./'})
 			.then(@_swRegistered)
 			.catch(@_swRegisterError)
 

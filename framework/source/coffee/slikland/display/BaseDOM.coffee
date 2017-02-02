@@ -186,13 +186,13 @@ class BaseDOM extends EventDispatcher
 	removeChild:(child)->
 		el = child
 		if child instanceof BaseDOM
-			el = child.element
+			el = child?.element
 		try
-			return @element.removeChild(el)
+			return @element?.removeChild?(el)
 
 	removeChildAt:(index = -1)->
 		if index < @childNodes.length
-			return @removeChild(@childNodes[i])
+			return @removeChild?(@childNodes[i])
 
 	removeAll:()->
 		childs = @childNodes
