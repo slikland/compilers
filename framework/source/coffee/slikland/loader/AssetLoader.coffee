@@ -76,6 +76,8 @@ class AssetLoader extends EventDispatcher
 	_fileLoad:(e)=>
 		e.currentTarget.off(AssetLoader.ERROR, @_onError)
 		e.currentTarget.off(AssetLoader.FILE_ERROR, @_onFileError)
+		# console.log e.item
+		e.result.src = e.item.src
 		e.item.result = e.item.tag = e.result
 		false
 

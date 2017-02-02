@@ -205,7 +205,11 @@ class NavigationLoader extends EventDispatcher
 		for f in p_files
 			f.loaded = false
 			if f?.src?
-				if !f.id? || f.id is undefined then f.id = f.src
+				if !f.id? || f.id is undefined
+					f.src = removeParam('noCache', f.src)
+					f.src = removeParam('v', f.src)
+					f.id = f.src
+
 				if f.src.indexOf('.json') != -1
 					f.src = f.src
 				jsRE.lastIndex = 0

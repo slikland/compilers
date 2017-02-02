@@ -1,6 +1,5 @@
 {
 	"image":{
-		"id": "image",
 		"src":"{images}666x666&text=home+dummy+image.png",
 		"cache": true,
 		"loadWithView": true

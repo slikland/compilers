@@ -2181,6 +2181,7 @@ AssetLoader = (function(_super) {
   AssetLoader.prototype._fileLoad = function(e) {
     e.currentTarget.off(AssetLoader.ERROR, this._onError);
     e.currentTarget.off(AssetLoader.FILE_ERROR, this._onFileError);
+    e.result.src = e.item.src;
     e.item.result = e.item.tag = e.result;
     return false;
   };
@@ -4772,6 +4773,8 @@ NavigationLoader = (function(_super) {
       f.loaded = false;
       if ((f != null ? f.src : void 0) != null) {
         if ((f.id == null) || f.id === void 0) {
+          f.src = removeParam('noCache', f.src);
+          f.src = removeParam('v', f.src);
           f.id = f.src;
         }
         if (f.src.indexOf('.json') !== -1) {
