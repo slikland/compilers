@@ -264,8 +264,8 @@ class NavigationLoader extends EventDispatcher
 			# Praying for a good soul look and fix this shit... =}
 			eval('contents["' + evt.item.___path?.join('"]["') + '"] = result')
 			#
-			evt.item.src = removeParam('noCache', evt.item.src)
-			evt.item.src = removeParam('v', evt.item.src)
+			# evt.item.src = removeParam('noCache', evt.item.src)
+			# evt.item.src = removeParam('v', evt.item.src)
 		if main then main.content = contents
 		@trigger(NavigationLoader.LOAD_FILE_COMPLETE, {id:evt.item.id, group:currentStep.id, data:evt.item, result:result})
 		false
@@ -323,7 +323,7 @@ class NavigationLoader extends EventDispatcher
 			queue = @addLoader(currentStep.id)
 			@addFiles(currentStep.data, queue)
 			queue.load()
-			# if queue._loadQueue.length + queue._currentLoads.length is 0 then @loadComplete()
+			if queue._loadQueue.length + queue._currentLoads.length is 0 then @trigger(NavigationLoader.LOAD_COMPLETE)
 		false
 
 	###*

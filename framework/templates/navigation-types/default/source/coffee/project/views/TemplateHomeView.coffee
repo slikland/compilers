@@ -15,7 +15,7 @@ class TemplateHomeView extends BaseView
 		
 		# console.log @content, @content.image
 		
-		console.log @content.image, @loader.getResult(@content.image.src)
+		# console.log @content.image, @loader.getResult(@content.image.src)
 		@image = new BaseDOM({element:@content.image.tag})
 		@background.appendChild(@image)
 

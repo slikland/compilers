@@ -4845,8 +4845,6 @@ NavigationLoader = (function(_super) {
     contents = ((_ref = config.views[currentStep.id]) != null ? _ref.content : void 0) || ((_ref1 = config.required[currentStep.id]) != null ? _ref1.content : void 0);
     if ((contents != null) && evt.item.internal !== false) {
       eval('contents["' + ((_ref2 = evt.item.___path) != null ? _ref2.join('"]["') : void 0) + '"] = result');
-      evt.item.src = removeParam('noCache', evt.item.src);
-      evt.item.src = removeParam('v', evt.item.src);
     }
     if (main) {
       main.content = contents;
@@ -4917,6 +4915,9 @@ NavigationLoader = (function(_super) {
       queue = this.addLoader(currentStep.id);
       this.addFiles(currentStep.data, queue);
       queue.load();
+      if (queue._loadQueue.length + queue._currentLoads.length === 0) {
+        this.trigger(NavigationLoader.LOAD_COMPLETE);
+      }
     }
     return false;
   };

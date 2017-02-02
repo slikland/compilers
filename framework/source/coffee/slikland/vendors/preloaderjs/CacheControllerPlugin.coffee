@@ -35,8 +35,7 @@ do ->
 			ts = new Date().getTime()
 			cache = if cv then "?v="+app.info.version+"&noCache="+ts else "?v="+app.info.version
 			p_loadItem.src += cache
-		
+		 
 		return true
-	
 	createjs.CacheControllerPlugin = CacheControllerPlugin
 	return

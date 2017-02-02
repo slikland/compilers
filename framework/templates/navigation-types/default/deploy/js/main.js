@@ -1580,7 +1580,6 @@ TemplateHomeView = (function(_super) {
       'height': '100%',
       'background-color': '#' + Math.floor(Math.random() * 16777215).toString(16)
     });
-    console.log(this.content.image, this.loader.getResult(this.content.image.src));
     this.image = new BaseDOM({
       element: this.content.image.tag
     });
@@ -1689,8 +1688,9 @@ TemplateSubView = (function(_super) {
       'height': '100%',
       'background-color': '#' + Math.floor(Math.random() * 16777215).toString(16)
     });
+    console.log(this.content.image.src, this.content.image, this.loader.getResult(this.content.image.src), this.loader.getResult('image'));
     this.image = new BaseDOM({
-      element: this.loader.getResult('image')
+      element: this.loader.getResult(this.content.image.src)
     });
     this.background.appendChild(this.image);
     return TemplateSubView.__super__.createStart.apply(this, arguments);
