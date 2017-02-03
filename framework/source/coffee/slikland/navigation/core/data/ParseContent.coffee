@@ -31,7 +31,8 @@ class ParseContent extends ParseData
 		assets = JSONUtils.filterObject(paths.translate(@data), 'src', null, null, true)
 		for k, v of assets
 			if v.loadWithView || v.loadWithView == undefined
-				@_primary.push v
+				if @data.src != v.src
+					@_primary.push v
 			else if v.loadWithView == false
 				@_standBy.push v
 		false

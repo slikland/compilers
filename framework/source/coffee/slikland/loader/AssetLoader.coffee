@@ -77,7 +77,7 @@ class AssetLoader extends EventDispatcher
 		e.currentTarget.off(AssetLoader.ERROR, @_onError)
 		e.currentTarget.off(AssetLoader.FILE_ERROR, @_onFileError)
 		# console.log e.item.src
-		e.result.src = e.item.src
+		# e.result.src = e.item.src
 		e.item.result = e.item.tag = e.result
 		false
 

@@ -45,13 +45,13 @@ class Caim extends EventDispatcher
 		app.detections = Detections.getInstance()
 
 		loader = new NavigationLoader(if app.root? then app.root+p_configPath else p_configPath)
+
 		loader.on(NavigationLoader.CONFIG_LOADED, @configLoaded)
+		loader.on(NavigationLoader.GROUP_ASSETS_LOADED, @groupLoaded)
+
 		loader.on(NavigationLoader.LOAD_START, @createPreloaderView)
 		loader.on(NavigationLoader.LOAD_PROGRESS, @progress)
 		loader.on(NavigationLoader.LOAD_COMPLETE, @hidePreloderView)
-		loader.on(NavigationLoader.LOAD_FILE_COMPLETE, @loadFileComplete)
-
-		loader.on(NavigationLoader.GROUP_ASSETS_LOADED, @groupLoaded)
 
 		# @TODO
 		# ServiceWorkerController.getInstance().init()
@@ -68,17 +68,6 @@ class Caim extends EventDispatcher
 		app.config = evt.data
 		app.conditions = if app.config.conditions? then ConditionsValidation.getInstance(app.config.conditions) else null
 		false 
-
-	###*
-	@method loadFileComplete
-	@param {Event} evt
-	@private
-	###
-	loadFileComplete:(evt)=>
-		data = evt.result
-		if data instanceof BaseView && data.id == 'main'
-			_mainView = data
-		false
 
 	###*
 	@method progress
@@ -100,6 +89,8 @@ class Caim extends EventDispatcher
 				@coreAssetsLoaded()
 				break
 			when 'main'
+				for k, v of app.config.required.main
+					if v.ext is 'js' && v.id.search(/main/i) != -1 then _mainView = app.config.required.main[v.id].result
 				@mainAssetsLoaded()
 				break
 			when 'preloader'

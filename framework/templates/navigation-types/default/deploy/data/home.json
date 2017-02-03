@@ -4,17 +4,7 @@
 		"cache": true,
 		"loadWithView": true
 	},
-	"videoTest":{
-		"id": "video",
-		"test1": false,
-		"test2": 666,
-		"src":[
-			{
-				"condition":"desktop",
-				"file":"{videos}SampleVideo_1280x720_1mb.mp4"
-			}
-		]
-	},
+
 	"test666":{
 		"id": "666",
 		"deep":{

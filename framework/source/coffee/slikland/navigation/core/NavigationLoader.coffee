@@ -17,7 +17,7 @@ Base class to setup the configuration file and start loading of dependencies.
 class NavigationLoader extends EventDispatcher
 
 	@const GROUP_ASSETS_LOADED : "group_assets_loaded"
-
+	
 	@const CONFIG_LOADED : "config_loaded"
 
 	@const LOAD_START : "load_start"
@@ -103,7 +103,8 @@ class NavigationLoader extends EventDispatcher
 	@private
 	###
 	contentLoaded:(evt)=>
-		evt?.currentTarget?.off?(AssetLoader.COMPLETE_FILE, @contentLoaded)
+		evt?.currentTarget?.off(AssetLoader.COMPLETE_FILE, @contentLoaded)
+
 		if evt?.item
 			if config.views[evt.item.id]
 				config.views[evt.item.id].content = paths.translate(evt.item.result)
@@ -122,8 +123,6 @@ class NavigationLoader extends EventDispatcher
 		# console.log 'views:', config.views
 		# console.log 'required:', config.required
 		# console.log 'contents:', config.contents
-
-		@trigger(NavigationLoader.LOAD_START)
 
 		assets = []
 		loaderSteps = []
@@ -146,11 +145,12 @@ class NavigationLoader extends EventDispatcher
 			for k, v of config.required[id]
 				if v.src
 					v.internal = false
-					if assets[id]
-						assets[id].push v
-					else
-						assets[id] = []
-						assets[id].push v
+					if v.src != config.required[id].content?.src
+						if assets[id]
+							assets[id].push v
+						else
+							assets[id] = []
+							assets[id].push v
 
 		total = ObjectUtils.count(assets)
 		firstIndexes = loaderSteps.length
@@ -161,7 +161,9 @@ class NavigationLoader extends EventDispatcher
 					firstIndexes++
 				else
 					loaderSteps.push {id:k, data:v, ratio:(1/total)}
-				
+		
+		@trigger(NavigationLoader.LOAD_START)
+
 		currentStep = loaderSteps[0]
 		queue = @addLoader(currentStep.id)
 		@addFiles(currentStep.data, queue)
@@ -206,9 +208,9 @@ class NavigationLoader extends EventDispatcher
 			f.loaded = false
 			if f?.src?
 				if !f.id? || f.id is undefined
-					f.src = removeParam('noCache', f.src)
-					f.src = removeParam('v', f.src)
-					f.id = f.src
+					src = removeParam('noCache', f.src)
+					src = removeParam('v', f.src)
+					f.id = src
 
 				if f.src.indexOf('.json') != -1
 					f.src = f.src
@@ -238,7 +240,7 @@ class NavigationLoader extends EventDispatcher
 				data = evt.result
 				data = data.replace(/^\/\/.*?(\n|$)/igm, '')
 				if currentStep.id == 'main'
-					main = result = eval(data)
+					main = result = evt.item.result = eval(data)
 				else
 					result = eval('(function (){' + data + '}).call(self)')
 			when 'css'
@@ -266,7 +268,7 @@ class NavigationLoader extends EventDispatcher
 			#
 			# evt.item.src = removeParam('noCache', evt.item.src)
 			# evt.item.src = removeParam('v', evt.item.src)
-		if main then main.content = contents
+		if main? then main.content = contents
 		@trigger(NavigationLoader.LOAD_FILE_COMPLETE, {id:evt.item.id, group:currentStep.id, data:evt.item, result:result})
 		false
 
@@ -323,7 +325,7 @@ class NavigationLoader extends EventDispatcher
 			queue = @addLoader(currentStep.id)
 			@addFiles(currentStep.data, queue)
 			queue.load()
-			if queue._loadQueue.length + queue._currentLoads.length is 0 then @trigger(NavigationLoader.LOAD_COMPLETE)
+			if queue._loadQueue.length + queue._currentLoads.length is 0 then @loadComplete()
 		false
 
 	###*
@@ -335,4 +337,5 @@ class NavigationLoader extends EventDispatcher
 	assetsLoaded:(p_id)=>
 		return if !p_id?
 		@trigger(NavigationLoader.GROUP_ASSETS_LOADED, {id:p_id, data:@loader.getGroup(p_id)})
+
 		false

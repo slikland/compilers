@@ -64,10 +64,36 @@ class ParseConfig extends ParseData
 				if v.content
 					v.content = @getPath(v.content)
 					_contents.push @_contentGroup(v)
-				v.id = if v.id then v.id else v.src || v.content
+				if !v.id? || v.id is undefined
+					src = v.src || v.content
+					v.id = removeParam('noCache', src)
+					v.id = removeParam('v', src)
 				group[v.id] = v
 			results[id] = group
 		@data.required = results
+		return results
+
+	###*
+	@method removeParam
+	@param {String} p_param
+	@param {String} p_url
+	@private
+	###
+	removeParam=(p_param, p_url)->
+		param = null
+		params = []
+		results = p_url.split('?')[0]
+		query = if p_url.indexOf('?') != -1 then p_url.split('?')[1] else ''
+		if query != ''
+			params = query.split('&')
+			i = params.length - 1
+			while i >= 0
+				param = params[i].split('=')[0]
+				if param == p_param
+					params.splice i, 1
+				i -= 1
+			if params.length > 0
+				results = results + '?' + params.join('&')
 		return results
 
 	###*
