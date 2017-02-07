@@ -589,7 +589,7 @@ App = (function(_super) {
   __extends(App, _super);
   App.project_version_raw = "SL_PROJECT_VERSION:1.0.0";
   App.project_date_raw = "SL_PROJECT_DATE:1473979619231";
-  App.FRAMEWORK_VERSION = "3.1.2";
+  App.FRAMEWORK_VERSION = "3.1.3";
   _root = null;
   _loader = null;
   _config = null;

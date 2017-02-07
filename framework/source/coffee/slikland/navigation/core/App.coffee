@@ -5,7 +5,7 @@ class App extends EventDispatcher
 	@project_version_raw : "SL_PROJECT_VERSION:0.0.0"
 	@project_date_raw : "SL_PROJECT_DATE:0000000000000"
 
-	@FRAMEWORK_VERSION : "3.1.2"
+	@FRAMEWORK_VERSION : "3.1.3"
 
 	_root = null
 	_loader = null
