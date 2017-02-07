@@ -16,9 +16,8 @@ Base class to setup the configuration file and start loading of dependencies.
 ###
 class NavigationLoader extends EventDispatcher
 
-	@const GROUP_ASSETS_LOADED : "group_assets_loaded"
-	
 	@const CONFIG_LOADED : "config_loaded"
+	@const GROUP_ASSETS_LOADED : "group_assets_loaded"
 
 	@const LOAD_START : "load_start"
 	@const LOAD_PROGRESS : "load_progress"

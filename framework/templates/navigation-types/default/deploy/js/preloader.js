@@ -4313,6 +4313,41 @@ ParseData = (function(_super) {
     return p_obj;
   };
   /**
+  	@method getProperties
+  	@param {Object} p_obj
+  	@return {String}
+  	@static
+   */
+  ParseData.getProperties = function(p_obj) {
+    var clone, i, prop, result, value, _i, _ref, _ref1;
+    if (p_obj == null) {
+      throw new Error('The param p_obj cannot be null');
+    }
+    result = {};
+    if (typeof p_obj === 'object') {
+      clone = ObjectUtils.clone(p_obj);
+      for (i = _i = 0, _ref = clone.length; 0 <= _ref ? _i < _ref : _i > _ref; i = 0 <= _ref ? ++_i : --_i) {
+        _ref1 = clone[i];
+        for (prop in _ref1) {
+          value = _ref1[prop];
+          if (prop !== 'condition' && prop !== 'file') {
+            result[prop] = value;
+          }
+        }
+      }
+    }
+    return result;
+  };
+  /**
+  	@method getProperties
+  	@param {Object} p_obj
+  	@return {String}
+  	@protected
+   */
+  ParseData.prototype.getProperties = function(p_obj) {
+    return ParseData.getProperties(p_obj);
+  };
+  /**
   	@method getPath
   	@param {Object} p_obj
   	@return {String}
@@ -4363,14 +4398,21 @@ ParseConfig = (function(_super) {
   	@private
    */
   ParseConfig.prototype._setViews = function() {
-    var k, results, v, _ref, _ref1;
+    var k, p, props, pv, results, v, _ref, _ref1;
     results = [];
     _ref = this.data.views;
     for (k in _ref) {
       v = _ref[k];
       v["class"] = StringUtils.toCamelCase(v["class"]);
       if (v.content) {
+        props = this.getProperties(v.content);
         v.content = this.getPath(v.content);
+        if (props != null) {
+          for (p in props) {
+            pv = props[p];
+            v[p] = pv;
+          }
+        }
         _contents.push(this._contentGroup(v));
       }
       results[v.id] = v;
@@ -4402,7 +4444,7 @@ ParseConfig = (function(_super) {
   	@private
    */
   ParseConfig.prototype._setRequired = function() {
-    var group, id, k, results, src, v, _ref;
+    var group, id, k, p, props, pv, results, src, v, _ref;
     results = [];
     for (id in this.data.required) {
       group = [];
@@ -4411,10 +4453,24 @@ ParseConfig = (function(_super) {
         v = _ref[k];
         v.group = id;
         if (v.src) {
+          props = this.getProperties(v.src);
           v.src = this.getPath(v.src);
+          if (props != null) {
+            for (p in props) {
+              pv = props[p];
+              v[p] = pv;
+            }
+          }
         }
         if (v.content) {
+          props = this.getProperties(v.content);
           v.content = this.getPath(v.content);
+          if (props != null) {
+            for (p in props) {
+              pv = props[p];
+              v[p] = pv;
+            }
+          }
           _contents.push(this._contentGroup(v));
         }
         if ((v.id == null) || v.id === void 0) {
@@ -4530,12 +4586,19 @@ ParseContent = (function(_super) {
   	@protected
    */
   ParseContent.prototype._validatePaths = function(p_data) {
-    var k, v, _results;
+    var k, p, props, pv, v, _results;
     _results = [];
     for (k in p_data) {
       v = p_data[k];
       if (k === 'src') {
+        props = this.getProperties(p_data[k]);
         p_data[k] = this.getPath(p_data[k]);
+        if (props != null) {
+          for (p in props) {
+            pv = props[p];
+            p_data[p] = pv;
+          }
+        }
       }
       if (typeof p_data[k] === 'object' || typeof p_data[k] === 'array') {
         _results.push(this._validatePaths(p_data[k]));
@@ -4557,10 +4620,10 @@ NavigationLoader = (function(_super) {
   var config, currentStep, loaderRatio, loaderStep, loaderSteps, paths, removeParam, totalContentsLoaded;
   __extends(NavigationLoader, _super);
   NavigationLoader["const"]({
-    GROUP_ASSETS_LOADED: "group_assets_loaded"
+    CONFIG_LOADED: "config_loaded"
   });
   NavigationLoader["const"]({
-    CONFIG_LOADED: "config_loaded"
+    GROUP_ASSETS_LOADED: "group_assets_loaded"
   });
   NavigationLoader["const"]({
     LOAD_START: "load_start"

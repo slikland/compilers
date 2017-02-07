@@ -8,7 +8,7 @@
     <head>
         <base href="<?php echo $url;?>">
 
-        <link rel="manifest" href="data/manifest.json">
+        <!-- <link rel="manifest" href="data/manifest.json"> -->
         <link rel="stylesheet" type="text/css" href="css/fonts.css">
         <script type="text/javascript" src="js/preloader.js"></script>
     </head>

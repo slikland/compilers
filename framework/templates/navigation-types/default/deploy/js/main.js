@@ -1688,7 +1688,6 @@ TemplateSubView = (function(_super) {
       'height': '100%',
       'background-color': '#' + Math.floor(Math.random() * 16777215).toString(16)
     });
-    console.log(this.content.image.src, this.content.image, this.loader.getResult(this.content.image.src), this.loader.getResult('image'));
     this.image = new BaseDOM({
       element: this.loader.getResult(this.content.image.src)
     });

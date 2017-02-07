@@ -33,7 +33,11 @@ class ParseConfig extends ParseData
 		for k, v of @data.views
 			v.class = StringUtils.toCamelCase(v.class)
 			if v.content
+				props = @getProperties(v.content)
 				v.content = @getPath(v.content)
+				if props?
+					for p, pv of props
+						v[p] = pv
 				_contents.push @_contentGroup(v)
 			results[v.id] = v
 
@@ -60,9 +64,18 @@ class ParseConfig extends ParseData
 			group = []
 			for k, v of @data.required[id]
 				v.group = id
-				if v.src then v.src = @getPath(v.src)
+				if v.src
+					props = @getProperties(v.src)
+					v.src = @getPath(v.src)
+					if props?
+						for p, pv of props
+							v[p] = pv
 				if v.content
+					props = @getProperties(v.content)
 					v.content = @getPath(v.content)
+					if props?
+						for p, pv of props
+							v[p] = pv
 					_contents.push @_contentGroup(v)
 				if !v.id? || v.id is undefined
 					src = v.src || v.content

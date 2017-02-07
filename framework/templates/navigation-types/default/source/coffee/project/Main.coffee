@@ -29,7 +29,7 @@ class Main extends NavigationContainer
 			@button.element.on 'click', @click
 		re.on(Resizer.BREAKPOINT_CHANGE, @change)
 
-		# console.log "main content:", @content.image
+		# console.log "main content:", @content
 		super
 
 	change:(evt)->

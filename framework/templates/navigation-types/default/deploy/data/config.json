@@ -57,7 +57,15 @@
 			"id":"home",
 			"class":"template-home-view",
 			"route":"/",
-			"content":"{base}data/home.json",
+			"content":[
+				{
+					"condition":"desktop",
+					"file":"{base}data/home.json",
+					"cache":true,
+					"testestes":"teste"
+
+				}
+			],
 			"destroyable":true,
 			"loadContent":true,
 			"cache":false
@@ -160,7 +168,8 @@
 				"content":[
 					{
 						"condition":"desktop",
-						"file":"{base}data/main.json"
+						"file":"{base}data/main.json",
+						"cache":true
 					}
 				],
 				"cache":false

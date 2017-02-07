@@ -12,9 +12,12 @@
 				"deep2":{
 					"deep3":{
 						"deep4":{
-							"cache": false,
+							"loadWithView":true,
+							"cache":true,
 							"src":[
 								{
+									"cache":false,
+									"loadWithView":false,
 									"condition":"desktop",
 									"file":"{images}icons/apple-touch-icon-180x180.png"
 								}

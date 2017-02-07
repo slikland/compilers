@@ -13,8 +13,7 @@ class TemplateHomeView extends BaseView
 			'background-color': '#'+Math.floor(Math.random()*16777215).toString(16)
 		})
 		
-		# console.log @content, @content.image
-		
+		# console.log @content.test666.deep.deep1.deep2.deep3.deep4
 		# console.log @content.image, @loader.getResult(@content.image.src)
 		@image = new BaseDOM({element:@content.image.tag})
 		@background.appendChild(@image)

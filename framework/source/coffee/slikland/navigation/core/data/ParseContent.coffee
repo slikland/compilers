@@ -45,6 +45,10 @@ class ParseContent extends ParseData
 	_validatePaths:(p_data)->
 		for k, v of p_data
 			if k == 'src'
+				props = @getProperties(p_data[k])
 				p_data[k] = @getPath(p_data[k])
+				if props?
+					for p, pv of props
+						p_data[p] = pv
 			if typeof(p_data[k]) == 'object' || typeof(p_data[k]) == 'array'
 				@_validatePaths(p_data[k])

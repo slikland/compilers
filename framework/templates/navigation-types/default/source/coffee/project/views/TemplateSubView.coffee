@@ -13,7 +13,7 @@ class TemplateSubView extends BaseView
 			'background-color': '#'+Math.floor(Math.random()*16777215).toString(16)
 		})
 
-		console.log @content.image.src, @content.image, @loader.getResult(@content.image.src), @loader.getResult('image')
+		# console.log @content.image.src, @content.image, @loader.getResult(@content.image.src), @loader.getResult('image')
 
 		@image = new BaseDOM({element:@loader.getResult(@content.image.src)})
 		@background.appendChild(@image)
