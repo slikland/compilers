@@ -11,6 +11,7 @@
 #import slikland.navigation.display.BaseView
 
 #import slikland.navigation.core.NavigationLoader
+#import slikland.navigation.core.cache.ServiceWorkerController
 
 ###*
 Base class to setup the navigation and start loading of dependencies.
@@ -54,7 +55,7 @@ class Caim extends EventDispatcher
 		loader.on(NavigationLoader.LOAD_COMPLETE, @hidePreloderView)
 
 		# @TODO
-		# ServiceWorkerController.getInstance().init()
+		ServiceWorkerController.getInstance().init()
 		
 		false
 	

@@ -1,6 +1,6 @@
 #import slikland.utils.Prototypes
 #import slikland.event.EventDispatcher
-
+#
 class App extends EventDispatcher
 	@project_version_raw : "SL_PROJECT_VERSION:0.0.0"
 	@project_date_raw : "SL_PROJECT_DATE:0000000000000"

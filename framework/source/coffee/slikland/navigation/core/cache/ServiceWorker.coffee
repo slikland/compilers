@@ -1,8 +1,8 @@
 class ServiceWorker
-	@CACHE_VERSION: "0.0.54670456789741"
+	@CACHE_VERSION: app.info.version
 
 	constructor:(@self)->
-		# #console.log "ServiceWorker constructor", @self
+		console.log "ServiceWorker constructor", @self
 
 		@_staticAssets = [
 			"../../js/preloader.js",

@@ -5035,6 +5035,36 @@ NavigationLoader = (function(_super) {
   };
   return NavigationLoader;
 })(EventDispatcher);
+var ServiceWorkerController;
+ServiceWorkerController = (function(_super) {
+  __extends(ServiceWorkerController, _super);
+  ServiceWorkerController.getInstance = function() {
+    return ServiceWorkerController._instance != null ? ServiceWorkerController._instance : ServiceWorkerController._instance = (function(func, args, ctor) {
+      ctor.prototype = func.prototype;
+      var child = new ctor, result = func.apply(child, args);
+      return Object(result) === result ? result : child;
+    })(ServiceWorkerController, arguments, function(){});
+  };
+  function ServiceWorkerController() {
+    ServiceWorkerController.__super__.constructor.apply(this, arguments);
+  }
+  ServiceWorkerController.prototype.init = function() {
+    console.log('init');
+    if ('serviceWorker' in navigator) {
+      return navigator.serviceWorker.register(app.root + 'js/sw.js', {
+        scope: './'
+      }).then(this._swRegistered)["catch"](this._swRegisterError);
+    }
+  };
+  ServiceWorkerController.prototype._swRegistered = function(evt) {
+    console.log("Service Worker Registered", evt.scope);
+    return console.log("Service Worker Registered", evt);
+  };
+  ServiceWorkerController.prototype._swRegisterError = function(err) {
+    return console.log("ServiceWorker registration failed: ", err);
+  };
+  return ServiceWorkerController;
+})(EventDispatcher);
 /**
 Base class to setup the navigation and start loading of dependencies.
 @class Caim
@@ -5089,6 +5119,7 @@ Caim = (function(_super) {
     loader.on(NavigationLoader.LOAD_START, this.createPreloaderView);
     loader.on(NavigationLoader.LOAD_PROGRESS, this.progress);
     loader.on(NavigationLoader.LOAD_COMPLETE, this.hidePreloderView);
+    ServiceWorkerController.getInstance().init();
     false;
   }
   /**
