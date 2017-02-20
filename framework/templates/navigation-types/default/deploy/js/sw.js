@@ -5,40 +5,49 @@ __indexOf=[].indexOf || function(item) { for (var i = 0, l = this.length; i < l;
 __extends=function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) Object.defineProperty(child, key, Object.getOwnPropertyDescriptor(parent, key)); } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 var ServiceWorker;
 ServiceWorker = (function() {
-  ServiceWorker.CACHE_VERSION = "0.0.54670456789741";
+  ServiceWorker.CACHE_VERSION = "5.4.6";
   function ServiceWorker(self) {
     this.self = self;
-    this._activate = __bind(this._activate, this);
-    this._fetch = __bind(this._fetch, this);
-    this._install = __bind(this._install, this);
-    this._staticAssets = ["../../js/preloader.js", "../../js/vendors.js", "../../js/main.js", "../../css/preloader.css", "../../css/main.css", "../../css/fonts.css"];
-    console.log(ServiceWorker.CACHE_VERSION);
-    this.self.addEventListener('install', this._install);
-    this.self.addEventListener('fetch', this._fetch);
-    this.self.addEventListener('activate', this._activate);
+    this.activate = __bind(this.activate, this);
+    this.fetch = __bind(this.fetch, this);
+    this.cacheFiles = __bind(this.cacheFiles, this);
+    this.install = __bind(this.install, this);
+    this.error = __bind(this.error, this);
+    this.messages = __bind(this.messages, this);
+    this.self.addEventListener('message', this.messages);
+    this.self.addEventListener('fetch', this.fetch);
+    this.self.addEventListener('activate', this.activate);
+    this.self.skipWaiting();
   }
-  ServiceWorker.prototype._install = function(event) {
-    console.log("ServiceWorker install");
-    return event.waitUntil(caches.open(ServiceWorker.CACHE_VERSION).then((function(_this) {
-      return function(cache) {
-        return cache.addAll(_this._staticAssets);
-      };
-    })(this)));
+  ServiceWorker.prototype.messages = function(evt) {
+    return console.log("from controller:", evt.data);
   };
-  ServiceWorker.prototype._fetch = function(event) {
-    if (event.request.method !== 'GET' || event.request.url.indexOf('sw.js') > -1) {
-      console.log('WORKER: fetch event ignored.', event.request.method, event.request.url);
+  ServiceWorker.prototype.error = function(err) {
+    return console.log(err);
+  };
+  ServiceWorker.prototype.install = function(evt) {
+    return evt.waitUntil(caches.open(ServiceWorker.CACHE_VERSION).then(this.cacheFiles)["catch"](this.error));
+  };
+  ServiceWorker.prototype.cacheFiles = function(evt) {
+    return evt.addAll(this._staticAssets).then((function(_this) {
+      return function() {
+        return _this.self.skipWaiting();
+      };
+    })(this));
+  };
+  ServiceWorker.prototype.fetch = function(evt) {
+    if (evt.request.method !== 'GET') {
+      console.log('fetch evt ignored.', evt.request.method, evt.request.url);
       return;
     }
-    return event.respondWith(caches.match(event.request).then((function(_this) {
+    return evt.respondWith(caches.match(evt.request).then((function(_this) {
       return function(response) {
-        var fetchRequest;
-        console.log(event.request.headers.getAll());
+        var cacheRequest, fetchRequest;
         if (response) {
-          console.log("fetch response: ", response);
           return response;
         }
-        fetchRequest = event.request.clone();
+        fetchRequest = evt.request.clone();
+        cacheRequest = evt.request.clone();
         return fetch(fetchRequest).then(function(response) {
           var responseToCache;
           if (!response || response.status !== 200 || response.type !== "basic") {
@@ -46,28 +55,32 @@ ServiceWorker = (function() {
           }
           responseToCache = response.clone();
           caches.open(ServiceWorker.CACHE_VERSION).then(function(cache) {
-            return cache.put(event.request, responseToCache);
+            var cacheSaveRequest;
+            cacheSaveRequest = evt.request.clone();
+            return cache.put(cacheSaveRequest, responseToCache);
           });
           return response;
+        })["catch"](function(err) {
+          return caches.match(cacheRequest);
         });
       };
-    })(this)));
+    })(this))["catch"](this.error));
   };
-  ServiceWorker.prototype._activate = function(event) {
-    return event.waitUntil(caches.keys().then((function(_this) {
+  ServiceWorker.prototype.activate = function(evt) {
+    return evt.waitUntil(caches.keys().then((function(_this) {
       return function(cacheNames) {
         return Promise.all(cacheNames.filter(function(cacheName) {
           if (cacheName !== ServiceWorker.CACHE_VERSION) {
-            console.log('delete', cacheName);
             return true;
           }
         }).map(function(cacheName) {
+          console.log('delete files of version:', cacheName);
           return caches["delete"](cacheName);
         }));
       };
-    })(this)));
+    })(this))["catch"](this.error), this.self.clients.claim());
   };
   return ServiceWorker;
 })();
-new ServiceWorker(self);
+new ServiceWorker(this);
 }).call(this);

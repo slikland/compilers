@@ -7,7 +7,7 @@ __extends=function(child, parent) { for (var key in parent) { if (__hasProp.call
 This is actually not a Class. It's a bunch of helper methods adding prototype methods to native classes.
 @class Prototypes
  */
-var isIE, __scopeIE8;
+var NetworkError, isIE, __scopeIE8;
 isIE = function() {
   var nav;
   nav = navigator.userAgent.toLowerCase();
@@ -374,6 +374,76 @@ if (navigator.mediaDevices == null) {
   navigator.mediaDevices = {};
 }
 navigator.getUserMedia = navigator.mediaDevices.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia;
+if (typeof Cache !== "undefined" && Cache !== null) {
+  if (!("add" in Cache.prototype)) {
+    Cache.prototype.add = function(request) {
+      return this.addAll([request]);
+    };
+  }
+  if (!("addAll" in Cache.prototype)) {
+    Cache.prototype.addAll = function(requests) {
+      var cache;
+      return cache = this;
+    };
+    NetworkError = function(message) {
+      this.name = 'NetworkError';
+      this.code = 19;
+      this.message = message;
+    };
+    NetworkError.prototype = Object.create(Error.prototype);
+    Promise.resolve().then(function() {
+      var requests, sequence;
+      if (arguments.length < 1) {
+        throw new TypeError;
+      }
+      sequence = [];
+      requests = requests.map(function(request) {
+        if (request instanceof Request) {
+          return request;
+        } else {
+          return String(request);
+        }
+      });
+      return Promise.all(requests.map(function(request) {
+        var scheme;
+        if (typeof request === 'string') {
+          request = new Request(request);
+        }
+        scheme = new URL(request.url).protocol;
+        if (scheme !== 'http:' && scheme !== 'https:') {
+          throw new NetworkError('Invalid scheme');
+        }
+        return fetch(request.clone());
+      }));
+    }).then(function(responses) {
+      return Promise.all(responses.map(function(response, i) {
+        return cache.put(requests[i], response);
+      }));
+    }).then(function() {
+      return void 0;
+    });
+  }
+}
+if (typeof CacheStorage !== "undefined" && CacheStorage !== null) {
+  if (!("match" in CacheStorage.prototype)) {
+    CacheStorage.prototype.match = function(request, opts) {
+      var caches;
+      caches = this;
+      return this.keys().then(function(cacheNames) {
+        var match;
+        match = void 0;
+        return cacheNames.reduce((function(chain, cacheName) {}, chain.then(function() {
+          return match || caches.open(cacheName).then(function(cache) {
+            return cache.match(request, opts);
+          }).then(function(response) {
+            match = response;
+            return match;
+          });
+        })), Promise.resolve());
+      });
+    };
+  }
+}
 /**
 EventDispatcher class for handling and triggering events.
 @class EventDispatcher
@@ -1083,10 +1153,11 @@ Detections = (function() {
       this.versionArr[k] = Number(v);
     }
     this.orientation = (typeof window !== "undefined" && window !== null ? window.innerWidth : void 0) > (typeof window !== "undefined" && window !== null ? window.innerHeight : void 0) ? 'landscape' : 'portrait';
-    this.touch = (__indexOf.call(window, 'ontouchstart') >= 0) || (navigator.maxTouchPoints > 0) || (navigator.msMaxTouchPoints > 0);
+    this.touch = ('ontouchstart' in window) || (navigator.maxTouchPoints > 0) || (navigator.msMaxTouchPoints > 0);
     this.tablet = /(ipad.*|tablet.*|(android.*?chrome((?!mobi).)*))$/i.test(this.ua);
     this.mobile = !this.tablet && Boolean(getFirstMatch(/(ipod|iphone|ipad)/i, this.ua) || /[^-]mobi/i.test(this.ua));
     this.desktop = !this.mobile && !this.tablet;
+    this.cache = 'serviceWorker' in navigator;
     this.canvas = testCanvas();
     this.webgl = testWebGL();
   }
@@ -4610,6 +4681,80 @@ ParseContent = (function(_super) {
   };
   return ParseContent;
 })(ParseData);
+var ServiceWorkerController;
+ServiceWorkerController = (function(_super) {
+  __extends(ServiceWorkerController, _super);
+  ServiceWorkerController["const"]({
+    INSTALLING: "serviceworker_controller_installing"
+  });
+  ServiceWorkerController["const"]({
+    INSTALLED: "serviceworker_controller_installed"
+  });
+  ServiceWorkerController["const"]({
+    ACTIVE: "serviceworker_controller_active"
+  });
+  ServiceWorkerController["const"]({
+    CHANGE: "serviceworker_controller_change"
+  });
+  ServiceWorkerController["const"]({
+    ERROR: "serviceworker_controller_error"
+  });
+  function ServiceWorkerController() {
+    this.error = __bind(this.error, this);
+    this.change = __bind(this.change, this);
+    this.registered = __bind(this.registered, this);
+    this.messages = __bind(this.messages, this);
+    var scope, src, _ref, _ref1, _ref2, _ref3, _ref4, _ref5, _ref6, _ref7;
+    src = (typeof app !== "undefined" && app !== null ? (_ref = app.config) != null ? (_ref1 = _ref.cache) != null ? _ref1.src : void 0 : void 0 : void 0) != null ? typeof app !== "undefined" && app !== null ? (_ref2 = app.config) != null ? (_ref3 = _ref2.cache) != null ? _ref3.src : void 0 : void 0 : void 0 : null;
+    scope = (typeof app !== "undefined" && app !== null ? (_ref4 = app.config) != null ? (_ref5 = _ref4.cache) != null ? _ref5.scope : void 0 : void 0 : void 0) != null ? typeof app !== "undefined" && app !== null ? (_ref6 = app.config) != null ? (_ref7 = _ref6.cache) != null ? _ref7.scope : void 0 : void 0 : void 0 : './';
+    if (src != null) {
+      navigator.serviceWorker.register(src, {
+        scope: scope
+      }).then(this.registered)["catch"](this.error);
+    }
+    ServiceWorkerController.__super__.constructor.apply(this, arguments);
+  }
+  ServiceWorkerController.prototype.messages = function(evt) {
+    return console.log("from worker:", evt.data);
+  };
+  ServiceWorkerController.prototype.registered = function(evt) {
+    var serviceWorker;
+    if (evt.installing) {
+      serviceWorker = evt.installing;
+      this.trigger(ServiceWorkerController.INSTALLING, {
+        data: serviceWorker
+      });
+    } else if (evt.waiting) {
+      serviceWorker = evt.waiting;
+      this.trigger(ServiceWorkerController.INSTALLED, {
+        data: serviceWorker
+      });
+    } else if (evt.active) {
+      serviceWorker = evt.active;
+      this.trigger(ServiceWorkerController.ACTIVE, {
+        data: serviceWorker
+      });
+    }
+    if (serviceWorker) {
+      serviceWorker.postMessage = serviceWorker.webkitPostMessage || serviceWorker.postMessage;
+      serviceWorker.postMessage(app.info.version);
+      serviceWorker.addEventListener('message', this.messages);
+      return serviceWorker.addEventListener('statechange', this.change);
+    }
+  };
+  ServiceWorkerController.prototype.change = function(evt) {
+    return this.trigger(ServiceWorkerController.CHANGE, {
+      data: evt
+    });
+  };
+  ServiceWorkerController.prototype.error = function(err) {
+    console.log('ServiceWorkerController registration failed: ', err);
+    return this.trigger(ServiceWorkerController.ERROR, {
+      data: err
+    });
+  };
+  return ServiceWorkerController;
+})(EventDispatcher);
 /**
 Base class to setup the configuration file and start loading of dependencies.
 @class NavigationLoader
@@ -4666,7 +4811,7 @@ NavigationLoader = (function(_super) {
     queue.on(AssetLoader.COMPLETE_FILE, this.configLoaded);
     queue.loadFile({
       id: 'config',
-      cache: false,
+      cache: true,
       src: p_configPath
     });
     false;
@@ -4687,7 +4832,7 @@ NavigationLoader = (function(_super) {
   	@private
    */
   NavigationLoader.prototype.configLoaded = function(evt) {
-    var data, _ref;
+    var data, _ref, _ref1;
     if (evt != null) {
       if ((_ref = evt.currentTarget) != null) {
         _ref.off(AssetLoader.COMPLETE_FILE, this.configLoaded);
@@ -4699,6 +4844,9 @@ NavigationLoader = (function(_super) {
     this.trigger(NavigationLoader.CONFIG_LOADED, {
       data: config.data
     });
+    if (typeof app !== "undefined" && app !== null ? (_ref1 = app.detections) != null ? _ref1.cache : void 0 : void 0) {
+      new ServiceWorkerController();
+    }
     this.loadContents();
     return false;
   };
@@ -5035,36 +5183,6 @@ NavigationLoader = (function(_super) {
   };
   return NavigationLoader;
 })(EventDispatcher);
-var ServiceWorkerController;
-ServiceWorkerController = (function(_super) {
-  __extends(ServiceWorkerController, _super);
-  ServiceWorkerController.getInstance = function() {
-    return ServiceWorkerController._instance != null ? ServiceWorkerController._instance : ServiceWorkerController._instance = (function(func, args, ctor) {
-      ctor.prototype = func.prototype;
-      var child = new ctor, result = func.apply(child, args);
-      return Object(result) === result ? result : child;
-    })(ServiceWorkerController, arguments, function(){});
-  };
-  function ServiceWorkerController() {
-    ServiceWorkerController.__super__.constructor.apply(this, arguments);
-  }
-  ServiceWorkerController.prototype.init = function() {
-    console.log('init');
-    if ('serviceWorker' in navigator) {
-      return navigator.serviceWorker.register(app.root + 'js/sw.js', {
-        scope: './'
-      }).then(this._swRegistered)["catch"](this._swRegisterError);
-    }
-  };
-  ServiceWorkerController.prototype._swRegistered = function(evt) {
-    console.log("Service Worker Registered", evt.scope);
-    return console.log("Service Worker Registered", evt);
-  };
-  ServiceWorkerController.prototype._swRegisterError = function(err) {
-    return console.log("ServiceWorker registration failed: ", err);
-  };
-  return ServiceWorkerController;
-})(EventDispatcher);
 /**
 Base class to setup the navigation and start loading of dependencies.
 @class Caim
@@ -5119,7 +5237,6 @@ Caim = (function(_super) {
     loader.on(NavigationLoader.LOAD_START, this.createPreloaderView);
     loader.on(NavigationLoader.LOAD_PROGRESS, this.progress);
     loader.on(NavigationLoader.LOAD_COMPLETE, this.hidePreloderView);
-    ServiceWorkerController.getInstance().init();
     false;
   }
   /**

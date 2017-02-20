@@ -36,11 +36,12 @@ class Detections
 			@versionArr[k] = Number(v)
 		
 		@orientation = if window?.innerWidth > window?.innerHeight then 'landscape' else 'portrait'
-		@touch = ('ontouchstart' in window) || (navigator.maxTouchPoints > 0) || (navigator.msMaxTouchPoints > 0)
+		@touch = ('ontouchstart' of window) || (navigator.maxTouchPoints > 0) || (navigator.msMaxTouchPoints > 0)
 		@tablet = /(ipad.*|tablet.*|(android.*?chrome((?!mobi).)*))$/i.test(@ua)
 		@mobile = !@tablet && Boolean(getFirstMatch(/(ipod|iphone|ipad)/i, @ua) || /[^-]mobi/i.test(@ua))
 		@desktop = !@mobile && !@tablet
 
+		@cache = ('serviceWorker' of navigator)
 		@canvas = testCanvas()
 		@webgl = testWebGL()
 		

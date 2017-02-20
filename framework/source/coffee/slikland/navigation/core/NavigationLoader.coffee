@@ -9,6 +9,8 @@
 #import slikland.navigation.core.data.ParseConfig
 #import slikland.navigation.core.data.ParseContent
 
+#import slikland.navigation.core.cache.ServiceWorkerController
+
 ###*
 Base class to setup the configuration file and start loading of dependencies.
 @class NavigationLoader
@@ -45,7 +47,7 @@ class NavigationLoader extends EventDispatcher
 		queue.on(AssetLoader.COMPLETE_FILE, @configLoaded)
 		queue.loadFile 
 			id: 'config',
-			cache: false,
+			cache: true,
 			src: p_configPath
 		false
 	
@@ -70,6 +72,7 @@ class NavigationLoader extends EventDispatcher
 		config = new ParseConfig(paths.translate(data))
 
 		@trigger(NavigationLoader.CONFIG_LOADED, {data:config.data})
+		if app?.detections?.cache then new ServiceWorkerController()
 
 		@loadContents()
 		false 

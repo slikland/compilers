@@ -1,4 +1,8 @@
 {
+	"cache":{
+		"src":"{base}js/sw.js",
+		"scope":"./"
+	},	
 	"paths":{
 		"cdn":"",
 		"base":"",
@@ -68,7 +72,7 @@
 			],
 			"destroyable":true,
 			"loadContent":true,
-			"cache":false
+			"cache":true
 		},
 		{
 			"id":"sub1",
@@ -89,7 +93,7 @@
 			"parentView":"sub1",
 			"destroyable":true,
 			"loadContent":true,
-			"cache":false
+			"cache":true
 		},
 		{
 			"id":"sub3",
@@ -98,7 +102,7 @@
 			"route":"/sub-view-03",
 			"destroyable":true,
 			"loadContent":true,
-			"cache":false
+			"cache":true
 		},
 		{
 			"id":"sub4",
@@ -107,7 +111,7 @@
 			"route":"/sub-view-04",
 			"destroyable":true,
 			"loadContent":true,
-			"cache":false
+			"cache":true
 		},
 		{
 			"id":"sub5",
@@ -116,7 +120,7 @@
 			"route":"/sub-view-05",
 			"destroyable":true,
 			"loadContent":true,
-			"cache":false
+			"cache":true
 		}
 	],
 	"required":
@@ -126,12 +130,12 @@
 			{
 				"id": "preloader-css",
 				"src": "{base}css/preloader.css",
-				"cache":false
+				"cache":true
 			},
 			{
 				"id":"preloader-content",
 				"content":"{base}data/preloader.json",
-				"cache":false
+				"cache":true
 			}
 		],
 		"core":
@@ -139,12 +143,7 @@
 			{
 				"id":"vendors",
 				"src":"{base}js/vendors.js",
-				"cache":false
-			},
-			{
-				"id":"tests-1",
-				"src":"{base}data/manifest.json",
-				"cache":false
+				"cache":true
 			}
 		],
 		"main":
@@ -152,7 +151,7 @@
 			{
 				"id": "main-css",
 				"src": "{base}css/main.css",
-				"cache":false
+				"cache":true
 			},
 			{
 				"id": "main-js",
@@ -162,7 +161,7 @@
 						"file":"{base}js/main.js"
 					}
 				],
-				"cache":false
+				"cache":true
 			},
 			{
 				"content":[
@@ -172,7 +171,7 @@
 						"cache":true
 					}
 				],
-				"cache":false
+				"cache":true
 			}
 		]
 	}
