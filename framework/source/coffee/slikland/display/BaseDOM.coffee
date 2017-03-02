@@ -13,6 +13,7 @@ Node::appendChild = (node) ->
 		el = node.element
 		node.parent = @
 	Node::__appendChild__.call(@, el)
+	return node
 
 Node::__removeChild__ = Node::removeChild
 Node::removeChild = (node) ->
@@ -21,6 +22,7 @@ Node::removeChild = (node) ->
 		el = node.element
 		node.parent = @
 	Node::__removeChild__.call(@, el)
+	return node
 Element::matches = Element::matches || Element::webkitMatchesSelector || Element::mozMatchesSelector || Element::msMatchesSelector || Element::oMatchesSelector
 Node::findParents = (query) ->
 	if @parentNode?
