@@ -30,6 +30,7 @@ class Main extends NavigationContainer
 		re.on(Resizer.BREAKPOINT_CHANGE, @change)
 
 		# console.log "main content:", @content
+		# console.log app.detections.os
 		super
 
 	change:(evt)->

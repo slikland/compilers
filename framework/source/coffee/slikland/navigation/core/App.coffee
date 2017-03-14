@@ -5,7 +5,12 @@ class App extends EventDispatcher
 	@project_version_raw : "SL_PROJECT_VERSION:0.0.0"
 	@project_date_raw : "SL_PROJECT_DATE:0000000000000"
 
-	@FRAMEWORK_VERSION : "3.1.3"
+	# @TODO
+	# IMPLEMENT THIS
+	# 
+	# HARDCODED !!!1!
+	# 
+	framework_version = "3.1.4"
 
 	_root = null
 	_loader = null
@@ -22,11 +27,17 @@ class App extends EventDispatcher
 	@get info:()->
 		info = {}
 
-		info.versionRaw = if App.project_version_raw == undefined || App.project_version_raw == 'undefined' then 'SL_PROJECT_VERSION:'+'Not versioned' else App.project_version_raw
-		info.version = info.versionRaw.replace('SL_PROJECT_VERSION:', '')
+		info.framework = {}
+		info.framework.version = framework_version
+		info.framework.lastUpdate = undefined
 
-		info.lastUpdateRaw = if App.project_date_raw == undefined || App.project_date_raw == 'undefined' then 'SL_PROJECT_DATE:'+'Not versioned' else App.project_date_raw
-		info.lastUpdate = new Date(parseFloat(info.lastUpdateRaw.replace('SL_PROJECT_DATE:', '')))
+		info.contents = {}
+		info.contents.version = undefined
+		info.contents.lastUpdate = undefined
+
+		info.project = {}
+		info.project.version = (if App.project_version_raw == undefined || App.project_version_raw == 'undefined' then 'SL_PROJECT_VERSION:'+'Not versioned' else App.project_version_raw).replace('SL_PROJECT_VERSION:', '')
+		info.project.lastUpdate = new Date(parseFloat((if App.project_date_raw == undefined || App.project_date_raw == 'undefined' then 'SL_PROJECT_DATE:'+'Not versioned' else App.project_date_raw).replace('SL_PROJECT_DATE:', '')))
 		return info
 
 	@set root:(p_value)->

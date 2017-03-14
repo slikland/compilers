@@ -1,5 +1,5 @@
 {
-	"cache":{
+	"cacheContents":{
 		"src":"{base}js/sw.js",
 		"scope":"./"
 	},	

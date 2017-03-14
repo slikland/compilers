@@ -7,18 +7,25 @@ class ServiceWorkerController extends EventDispatcher
 	@const CHANGE : "serviceworker_controller_change"
 	@const ERROR : "serviceworker_controller_error"
 
+	# Example in config file
+	# 
+	# "cacheContents":{
+	# 	"src":"{base}js/sw.js",
+	# 	"scope":"./"
+	# }
+	# 
 	constructor:()->
-		src = if app?.config?.cache?.src? then app?.config?.cache?.src else null
-		scope = if app?.config?.cache?.scope? then app?.config?.cache?.scope else './'
+		cache = app.config.cacheContents
+		src = if cache?.src? then cache?.src else null
 		if src?
 			navigator.serviceWorker
-			.register(src, {scope:scope})
+			.register(src, {scope:if cache?.scope? then cache?.scope else './'})
 			.then(@registered)
 			.catch(@error)
 		super
 
 	messages:(evt)=>
-		console.log("from worker:", evt.data)
+		console.log("From worker:", evt.data)
 
 	registered:(evt)=>
 		if evt.installing
@@ -31,11 +38,13 @@ class ServiceWorkerController extends EventDispatcher
 			serviceWorker = evt.active
 			@trigger(ServiceWorkerController.ACTIVE, {data:serviceWorker})
 
-		if serviceWorker
-			serviceWorker.postMessage = (serviceWorker.webkitPostMessage || serviceWorker.postMessage)
-			serviceWorker.postMessage(app.info.version)
+		if serviceWorker && !@loaded
+			@loaded = true
 			serviceWorker.addEventListener('message', @messages)
 			serviceWorker.addEventListener('statechange', @change)
+			
+			serviceWorker.postMessage = (serviceWorker.webkitPostMessage || serviceWorker.postMessage)
+			serviceWorker.postMessage({'version':app.info.contents.version})
 
 	change:(evt)=>
 		@trigger(ServiceWorkerController.CHANGE, {data:evt})

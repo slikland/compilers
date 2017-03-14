@@ -5,7 +5,7 @@ __indexOf=[].indexOf || function(item) { for (var i = 0, l = this.length; i < l;
 __extends=function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) Object.defineProperty(child, key, Object.getOwnPropertyDescriptor(parent, key)); } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 var ServiceWorker;
 ServiceWorker = (function() {
-  ServiceWorker.CACHE_VERSION = "5.4.6";
+  ServiceWorker.CACHE_VERSION = "0.0.0";
   function ServiceWorker(self) {
     this.self = self;
     this.activate = __bind(this.activate, this);
@@ -20,7 +20,10 @@ ServiceWorker = (function() {
     this.self.skipWaiting();
   }
   ServiceWorker.prototype.messages = function(evt) {
-    return console.log("from controller:", evt.data);
+    if (evt.data.version != null) {
+      ServiceWorker.CACHE_VERSION = evt.data.version;
+      return console.log("Version from controller:", evt.data.version);
+    }
   };
   ServiceWorker.prototype.error = function(err) {
     return console.log(err);
@@ -74,7 +77,7 @@ ServiceWorker = (function() {
             return true;
           }
         }).map(function(cacheName) {
-          console.log('delete files of version:', cacheName);
+          console.log('Delete cached files of version:', cacheName);
           return caches["delete"](cacheName);
         }));
       };

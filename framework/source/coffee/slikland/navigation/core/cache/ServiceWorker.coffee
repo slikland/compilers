@@ -1,6 +1,6 @@
 class ServiceWorker
-	@CACHE_VERSION : "5.4.6"
-	# @const CACHE_VERSION : app.info.version
+	@CACHE_VERSION : "0.0.0"
+	
 	constructor:(@self)->
 		# @self.addEventListener('install', @install)
 		@self.addEventListener('message', @messages)
@@ -9,8 +9,9 @@ class ServiceWorker
 		@self.skipWaiting()
 
 	messages:(evt)=>
-		console.log("from controller:", evt.data)
-		# ServiceWorker.CACHE_VERSION = evt.data
+		if evt.data.version?
+			ServiceWorker.CACHE_VERSION = evt.data.version
+			console.log("Version from controller:", evt.data.version)
 
 	error:(err)=>
 		console.log err
@@ -72,7 +73,7 @@ class ServiceWorker
 						if cacheName isnt ServiceWorker.CACHE_VERSION
 							return true 
 					).map((cacheName)=>
-						console.log 'delete files of version:', cacheName
+						console.log 'Delete cached files of version:', cacheName
 						return caches.delete(cacheName)
 					)
 				)

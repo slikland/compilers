@@ -72,7 +72,9 @@ class NavigationLoader extends EventDispatcher
 		config = new ParseConfig(paths.translate(data))
 
 		@trigger(NavigationLoader.CONFIG_LOADED, {data:config.data})
-		if app?.detections?.cache then new ServiceWorkerController()
+
+		if app?.detections?.cache? && app?.config?.cacheContents? && app.info.contents.version
+			app.workerController = new ServiceWorkerController()
 
 		@loadContents()
 		false 
@@ -238,6 +240,8 @@ class NavigationLoader extends EventDispatcher
 				if typeof(data) isnt 'string' then data = JSON.stringify(data)
 				JSONUtils.removeComments(data)
 				result = data
+				evt.item.result = evt.item.tag = evt.result = JSON.parse(result)
+
 			when 'js'
 				data = evt.result
 				data = data.replace(/^\/\/.*?(\n|$)/igm, '')
@@ -265,7 +269,7 @@ class NavigationLoader extends EventDispatcher
 		if contents? && evt.item.internal!=false
 			# @TODO 
 			# Sets the result of the content file to BaseView classes
-			# Praying for a good soul look and fix this shit... =}
+			# Praying for a good soul see this and fix this shit... =}
 			eval('contents["' + evt.item.___path?.join('"]["') + '"] = result')
 			#
 			# evt.item.src = removeParam('noCache', evt.item.src)

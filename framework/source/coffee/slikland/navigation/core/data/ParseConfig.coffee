@@ -79,8 +79,8 @@ class ParseConfig extends ParseData
 					_contents.push @_contentGroup(v)
 				if !v.id? || v.id is undefined
 					src = v.src || v.content
-					v.id = removeParam('noCache', src)
-					v.id = removeParam('v', src)
+					v.id = @removeParam('noCache', @getPath(src))
+					v.id = @removeParam('v', @getPath(src))
 				group[v.id] = v
 			results[id] = group
 		@data.required = results
@@ -92,7 +92,7 @@ class ParseConfig extends ParseData
 	@param {String} p_url
 	@private
 	###
-	removeParam=(p_param, p_url)->
+	removeParam:(p_param, p_url)->
 		param = null
 		params = []
 		results = p_url.split('?')[0]

@@ -27,7 +27,7 @@ class Detections
 	constructor:()->
 		@matched = null
 		@ua = navigator?.userAgent || ''
-		@platform = @os = navigator?.platform || ''
+		@platform = navigator?.platform || ''
 		@version = getFirstMatch(/version\/(\d+(\.\d+)*)/i, @ua)
 		
 		@getBrowser()
@@ -36,11 +36,12 @@ class Detections
 			@versionArr[k] = Number(v)
 		
 		@orientation = if window?.innerWidth > window?.innerHeight then 'landscape' else 'portrait'
-		@touch = ('ontouchstart' of window) || (navigator.maxTouchPoints > 0) || (navigator.msMaxTouchPoints > 0)
+		@touch = Boolean('ontouchstart' of window) || Boolean(navigator.maxTouchPoints > 0) || Boolean(navigator.msMaxTouchPoints > 0)
 		@tablet = /(ipad.*|tablet.*|(android.*?chrome((?!mobi).)*))$/i.test(@ua)
 		@mobile = !@tablet && Boolean(getFirstMatch(/(ipod|iphone|ipad)/i, @ua) || /[^-]mobi/i.test(@ua))
 		@desktop = !@mobile && !@tablet
 
+		@os = getOS()
 		@cache = ('serviceWorker' of navigator)
 		@canvas = testCanvas()
 		@webgl = testWebGL()
@@ -84,6 +85,29 @@ class Detections
 				break
 		return [@name, @version]
 		
+	getOS=()->
+		result = undefined
+		
+		switch navigator?.platform.toLowerCase()
+			when 'iphone', 'ipod', 'ipad', 'iphone simulator', 'ipod simulator', 'ipad simulator', 'Pike v7.6 release 92', 'Pike v7.8 release 517'
+				result = 'ios'
+			when 'macintosh', 'macintel', 'macppc', 'mac68k'
+				result = 'osx'
+			when 'android'
+				result = 'android'
+			when 'os/2', 'wince', 'pocket pc', 'windows'
+				result = 'windows'
+			when 'blackberry'
+				result = 'blackberry'
+
+		if (/linux armv+(\d{1}l)/i.test(navigator?.platform))
+			result = 'android'
+		else if (/linux+\s?.*?$/im.test(navigator?.platform))
+			result = 'linux'
+		else if (/win\d{2}/i.test(navigator?.platform))
+			result = 'windows'
+		return result
+
 	testWebGL=()->
 		try
 			return !!window.WebGLRenderingContext && Boolean(document.createElement("canvas").getContext('webgl')) || Boolean(document.createElement("canvas").getContext('experimental-webgl'))
