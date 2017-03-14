@@ -2877,7 +2877,8 @@ Node.prototype.appendChild = function(node) {
     el = node.element;
     node.parent = this;
   }
-  return Node.prototype.__appendChild__.call(this, el);
+  Node.prototype.__appendChild__.call(this, el);
+  return node;
 };
 Node.prototype.__removeChild__ = Node.prototype.removeChild;
 Node.prototype.removeChild = function(node) {
@@ -2887,7 +2888,8 @@ Node.prototype.removeChild = function(node) {
     el = node.element;
     node.parent = this;
   }
-  return Node.prototype.__removeChild__.call(this, el);
+  Node.prototype.__removeChild__.call(this, el);
+  return node;
 };
 Element.prototype.matches = Element.prototype.matches || Element.prototype.webkitMatchesSelector || Element.prototype.mozMatchesSelector || Element.prototype.msMatchesSelector || Element.prototype.oMatchesSelector;
 Node.prototype.findParents = function(query) {
