@@ -53,9 +53,6 @@ class Caim extends EventDispatcher
 		loader.on(NavigationLoader.LOAD_PROGRESS, @progress)
 		loader.on(NavigationLoader.LOAD_COMPLETE, @hidePreloderView)
 
-		# @TODO
-		# ServiceWorkerController.getInstance().init()
-		
 		false
 	
 	###*
@@ -67,7 +64,8 @@ class Caim extends EventDispatcher
 		evt?.currentTarget?.off?(NavigationLoader.CONFIG_LOADED, @configLoaded)
 		app.config = evt.data
 		app.conditions = if app.config.conditions? then ConditionsValidation.getInstance(app.config.conditions) else null
-		false 
+
+		false
 
 	###*
 	@method progress

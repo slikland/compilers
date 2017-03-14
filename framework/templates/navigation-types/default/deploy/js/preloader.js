@@ -7,7 +7,7 @@ __extends=function(child, parent) { for (var key in parent) { if (__hasProp.call
 This is actually not a Class. It's a bunch of helper methods adding prototype methods to native classes.
 @class Prototypes
  */
-var isIE, __scopeIE8;
+var NetworkError, isIE, __scopeIE8;
 isIE = function() {
   var nav;
   nav = navigator.userAgent.toLowerCase();
@@ -374,6 +374,76 @@ if (navigator.mediaDevices == null) {
   navigator.mediaDevices = {};
 }
 navigator.getUserMedia = navigator.mediaDevices.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia;
+if (typeof Cache !== "undefined" && Cache !== null) {
+  if (!("add" in Cache.prototype)) {
+    Cache.prototype.add = function(request) {
+      return this.addAll([request]);
+    };
+  }
+  if (!("addAll" in Cache.prototype)) {
+    Cache.prototype.addAll = function(requests) {
+      var cache;
+      return cache = this;
+    };
+    NetworkError = function(message) {
+      this.name = 'NetworkError';
+      this.code = 19;
+      this.message = message;
+    };
+    NetworkError.prototype = Object.create(Error.prototype);
+    Promise.resolve().then(function() {
+      var requests, sequence;
+      if (arguments.length < 1) {
+        throw new TypeError;
+      }
+      sequence = [];
+      requests = requests.map(function(request) {
+        if (request instanceof Request) {
+          return request;
+        } else {
+          return String(request);
+        }
+      });
+      return Promise.all(requests.map(function(request) {
+        var scheme;
+        if (typeof request === 'string') {
+          request = new Request(request);
+        }
+        scheme = new URL(request.url).protocol;
+        if (scheme !== 'http:' && scheme !== 'https:') {
+          throw new NetworkError('Invalid scheme');
+        }
+        return fetch(request.clone());
+      }));
+    }).then(function(responses) {
+      return Promise.all(responses.map(function(response, i) {
+        return cache.put(requests[i], response);
+      }));
+    }).then(function() {
+      return void 0;
+    });
+  }
+}
+if (typeof CacheStorage !== "undefined" && CacheStorage !== null) {
+  if (!("match" in CacheStorage.prototype)) {
+    CacheStorage.prototype.match = function(request, opts) {
+      var caches;
+      caches = this;
+      return this.keys().then(function(cacheNames) {
+        var match;
+        match = void 0;
+        return cacheNames.reduce((function(chain, cacheName) {}, chain.then(function() {
+          return match || caches.open(cacheName).then(function(cache) {
+            return cache.match(request, opts);
+          }).then(function(response) {
+            match = response;
+            return match;
+          });
+        })), Promise.resolve());
+      });
+    };
+  }
+}
 /**
 EventDispatcher class for handling and triggering events.
 @class EventDispatcher
@@ -585,11 +655,11 @@ EventDispatcher = (function() {
 })();
 var App, app, windowLoaded;
 App = (function(_super) {
-  var _conditions, _config, _container, _detections, _loader, _navigation, _root;
+  var framework_version, _conditions, _config, _container, _detections, _loader, _navigation, _root;
   __extends(App, _super);
-  App.project_version_raw = "SL_PROJECT_VERSION:1.0.0";
-  App.project_date_raw = "SL_PROJECT_DATE:1473979619231";
-  App.FRAMEWORK_VERSION = "3.1.3";
+  App.project_version_raw = "SL_PROJECT_VERSION:1.1.1";
+  App.project_date_raw = "SL_PROJECT_DATE:1489513136190";
+  framework_version = "3.1.4";
   _root = null;
   _loader = null;
   _config = null;
@@ -605,10 +675,15 @@ App = (function(_super) {
     info: function() {
       var info;
       info = {};
-      info.versionRaw = App.project_version_raw === void 0 || App.project_version_raw === 'undefined' ? 'SL_PROJECT_VERSION:' + 'Not versioned' : App.project_version_raw;
-      info.version = info.versionRaw.replace('SL_PROJECT_VERSION:', '');
-      info.lastUpdateRaw = App.project_date_raw === void 0 || App.project_date_raw === 'undefined' ? 'SL_PROJECT_DATE:' + 'Not versioned' : App.project_date_raw;
-      info.lastUpdate = new Date(parseFloat(info.lastUpdateRaw.replace('SL_PROJECT_DATE:', '')));
+      info.framework = {};
+      info.framework.version = framework_version;
+      info.framework.lastUpdate = void 0;
+      info.contents = {};
+      info.contents.version = void 0;
+      info.contents.lastUpdate = void 0;
+      info.project = {};
+      info.project.version = (App.project_version_raw === void 0 || App.project_version_raw === 'undefined' ? 'SL_PROJECT_VERSION:' + 'Not versioned' : App.project_version_raw).replace('SL_PROJECT_VERSION:', '');
+      info.project.lastUpdate = new Date(parseFloat((App.project_date_raw === void 0 || App.project_date_raw === 'undefined' ? 'SL_PROJECT_DATE:' + 'Not versioned' : App.project_date_raw).replace('SL_PROJECT_DATE:', '')));
       return info;
     }
   });
@@ -825,18 +900,29 @@ Debug = (function() {
       t += '\n';
       t += '--------------------';
       t += '\n';
-      t += 'Framework';
+      t += 'Caim Framework';
       t += '\n';
-      t += 'Version: ' + App.FRAMEWORK_VERSION;
+      t += 'Version: ' + app.info.framework.version;
       t += '\n';
       t += '--------------------';
       t += '\n';
       t += 'Project';
       t += '\n';
-      t += 'Version: ' + app.info.version;
+      t += 'Version: ' + app.info.project.version;
       t += '\n';
-      t += 'Last update: ' + app.info.lastUpdate;
+      t += 'Last update: ' + app.info.project.lastUpdate;
       t += '\n';
+      t += '--------------------';
+      t += '\n';
+      if (app.info.contents.version != null) {
+        t += 'Cache Contents Enabled';
+        t += '\n';
+        t += 'Version: ' + app.info.contents.version;
+        t += '\n';
+      } else {
+        t += 'Cache Contents Disabled';
+        t += '\n';
+      }
       t += '====================';
       c = 'color: #' + Math.floor(Math.random() * 16777215).toString(16);
       console.log('%c' + t, c);
@@ -993,7 +1079,7 @@ Detections Class
  */
 var Detections;
 Detections = (function() {
-  var getFirstMatch, testCanvas, testWebGL;
+  var getFirstMatch, getOS, testCanvas, testWebGL;
   Detections.prototype.matches = [
     {
       name: 'Opera',
@@ -1073,7 +1159,7 @@ Detections = (function() {
     var k, v, _ref;
     this.matched = null;
     this.ua = (typeof navigator !== "undefined" && navigator !== null ? navigator.userAgent : void 0) || '';
-    this.platform = this.os = (typeof navigator !== "undefined" && navigator !== null ? navigator.platform : void 0) || '';
+    this.platform = (typeof navigator !== "undefined" && navigator !== null ? navigator.platform : void 0) || '';
     this.version = getFirstMatch(/version\/(\d+(\.\d+)*)/i, this.ua);
     this.getBrowser();
     this.versionArr = this.version == null ? [] : this.version.split('.');
@@ -1083,10 +1169,12 @@ Detections = (function() {
       this.versionArr[k] = Number(v);
     }
     this.orientation = (typeof window !== "undefined" && window !== null ? window.innerWidth : void 0) > (typeof window !== "undefined" && window !== null ? window.innerHeight : void 0) ? 'landscape' : 'portrait';
-    this.touch = (__indexOf.call(window, 'ontouchstart') >= 0) || (navigator.maxTouchPoints > 0) || (navigator.msMaxTouchPoints > 0);
+    this.touch = Boolean('ontouchstart' in window) || Boolean(navigator.maxTouchPoints > 0) || Boolean(navigator.msMaxTouchPoints > 0);
     this.tablet = /(ipad.*|tablet.*|(android.*?chrome((?!mobi).)*))$/i.test(this.ua);
     this.mobile = !this.tablet && Boolean(getFirstMatch(/(ipod|iphone|ipad)/i, this.ua) || /[^-]mobi/i.test(this.ua));
     this.desktop = !this.mobile && !this.tablet;
+    this.os = getOS();
+    this.cache = 'serviceWorker' in navigator;
     this.canvas = testCanvas();
     this.webgl = testWebGL();
   }
@@ -1142,6 +1230,47 @@ Detections = (function() {
       }
     }
     return [this.name, this.version];
+  };
+  getOS = function() {
+    var result;
+    result = void 0;
+    switch (typeof navigator !== "undefined" && navigator !== null ? navigator.platform.toLowerCase() : void 0) {
+      case 'iphone':
+      case 'ipod':
+      case 'ipad':
+      case 'iphone simulator':
+      case 'ipod simulator':
+      case 'ipad simulator':
+      case 'Pike v7.6 release 92':
+      case 'Pike v7.8 release 517':
+        result = 'ios';
+        break;
+      case 'macintosh':
+      case 'macintel':
+      case 'macppc':
+      case 'mac68k':
+        result = 'osx';
+        break;
+      case 'android':
+        result = 'android';
+        break;
+      case 'os/2':
+      case 'wince':
+      case 'pocket pc':
+      case 'windows':
+        result = 'windows';
+        break;
+      case 'blackberry':
+        result = 'blackberry';
+    }
+    if (/linux armv+(\d{1}l)/i.test(typeof navigator !== "undefined" && navigator !== null ? navigator.platform : void 0)) {
+      result = 'android';
+    } else if (/linux+\s?.*?$/im.test(typeof navigator !== "undefined" && navigator !== null ? navigator.platform : void 0)) {
+      result = 'linux';
+    } else if (/win\d{2}/i.test(typeof navigator !== "undefined" && navigator !== null ? navigator.platform : void 0)) {
+      result = 'windows';
+    }
+    return result;
   };
   testWebGL = function() {
     var err;
@@ -2094,6 +2223,89 @@ this.createjs = this.createjs || {};
   };
   createjs.MediaPlugin = MediaPlugin;
 })();
+var PathsData;
+PathsData = (function(_super) {
+  var _data;
+  __extends(PathsData, _super);
+  _data = null;
+  PathsData.getInstance = function(p_value) {
+    return PathsData._instance != null ? PathsData._instance : PathsData._instance = new PathsData(p_value);
+  };
+  function PathsData(p_value) {
+    this._parseVars = __bind(this._parseVars, this);
+    this._parseData = __bind(this._parseData, this);
+    this.translate = __bind(this.translate, this);
+    if (this.data == null) {
+      this.data = p_value;
+    }
+    PathsData.__super__.constructor.apply(this, arguments);
+  }
+  PathsData.get({
+    data: function() {
+      return _data;
+    }
+  });
+  PathsData.set({
+    data: function(p_value) {
+      return _data = this._parseData(p_value);
+    }
+  });
+  /**
+  	@method translate
+  	@param {Object} p_source
+  	@return {String}
+   */
+  PathsData.prototype.translate = function(p_source) {
+    return this._parseVars(p_source);
+  };
+  /**
+  	@static
+  	@method translate
+  	@param {Object} p_value
+  	@param {Object} p_collection
+  	@return {String}
+   */
+  PathsData.translate = function(p_value, p_collection) {
+    return PathsData._parseVars(p_value, PathsData._parseData(p_collection));
+  };
+  /**
+  	@method _parseData
+  	@param {Object} p_vars
+  	@return {Object}
+  	@private
+   */
+  PathsData.prototype._parseData = function(p_vars) {
+    var o, p_varsStr, val;
+    p_varsStr = JSON.stringify(p_vars);
+    while ((o = /\{([^\"\{\}]+)\}/.exec(p_varsStr))) {
+      val = p_vars[o[1]];
+      if (!val) {
+        val = '';
+      }
+      p_varsStr = p_varsStr.replace(new RegExp('\{' + o[1] + '\}', 'ig'), val);
+      p_vars = JSON.parse(p_varsStr);
+    }
+    return p_vars;
+  };
+  /**
+  	@method _parseVars
+  	@param {Object} p_data
+  	@param {Object} p_vars
+  	@return {String}
+  	@private
+   */
+  PathsData.prototype._parseVars = function(p_vars) {
+    var k, v;
+    for (k in _data) {
+      v = _data[k];
+      p_vars = JSON.stringify(p_vars);
+      p_vars = p_vars.replace(new RegExp('\{' + k + '\}', 'ig'), v);
+      p_vars = JSON.parse(p_vars);
+    }
+    return p_vars;
+  };
+  return PathsData;
+})(EventDispatcher);
 var AssetLoader;
 AssetLoader = (function(_super) {
   __extends(AssetLoader, _super);
@@ -2118,6 +2330,7 @@ AssetLoader = (function(_super) {
     this._fileLoad = __bind(this._fileLoad, this);
     this._onFileError = __bind(this._onFileError, this);
     this._onError = __bind(this._onError, this);
+    this._onStartFile = __bind(this._onStartFile, this);
     this._groups = {};
   }
   AssetLoader.prototype.loadGroup = function(p_groupId, p_files) {
@@ -2145,6 +2358,7 @@ AssetLoader = (function(_super) {
       group.id = p_groupId;
       this._groups[p_groupId] = group;
       group.on(AssetLoader.ERROR, this._onError);
+      group.on(AssetLoader.START_FILE, this._onStartFile);
       group.on(AssetLoader.FILE_ERROR, this._onFileError);
       group.on(AssetLoader.COMPLETE_FILE, this._fileLoad);
     }
@@ -2159,8 +2373,12 @@ AssetLoader = (function(_super) {
     group = this.getGroup(p_groupId).setPreferXHR = p_value;
     return group;
   };
+  AssetLoader.prototype._onStartFile = function(evt) {
+    return evt.item.loaded = false;
+  };
   AssetLoader.prototype._onError = function(e) {
     var msg, _ref;
+    e.currentTarget.off(AssetLoader.START_FILE, this._onStartFile);
     e.currentTarget.off(AssetLoader.ERROR, this._onError);
     e.currentTarget.off(AssetLoader.COMPLETE_FILE, this._fileLoad);
     msg = e.title;
@@ -2172,16 +2390,40 @@ AssetLoader = (function(_super) {
     return false;
   };
   AssetLoader.prototype._onFileError = function(e) {
+    e.currentTarget.off(AssetLoader.START_FILE, this._onStartFile);
     e.currentTarget.off(AssetLoader.FILE_ERROR, this._onFileError);
     e.currentTarget.off(AssetLoader.COMPLETE_FILE, this._fileLoad);
     console.log(e);
     throw new Error(e.title).stack;
     return false;
   };
-  AssetLoader.prototype._fileLoad = function(e) {
-    e.currentTarget.off(AssetLoader.ERROR, this._onError);
-    e.currentTarget.off(AssetLoader.FILE_ERROR, this._onFileError);
-    e.item.result = e.item.tag = e.result;
+  AssetLoader.prototype._fileLoad = function(evt) {
+    var data, paths, result, _ref;
+    evt.item.loaded = true;
+    evt.currentTarget.off(AssetLoader.ERROR, this._onError);
+    evt.currentTarget.off(AssetLoader.FILE_ERROR, this._onFileError);
+    evt.item.result = evt.item.tag = evt.result;
+    if ((typeof app !== "undefined" && app !== null ? (_ref = app.config) != null ? _ref.paths : void 0 : void 0) != null) {
+      paths = PathsData.getInstance(app.config.paths);
+      switch (evt.item.ext) {
+        case 'json':
+          data = paths.translate(evt.result);
+          if (typeof data !== 'string') {
+            data = JSON.stringify(data);
+          }
+          JSONUtils.removeComments(data);
+          result = data;
+          evt.item.result = evt.item.tag = evt.result = JSON.parse(result);
+          break;
+        case 'js':
+          data = evt.result;
+          data = data.replace(/^\/\/.*?(\n|$)/igm, '');
+          result = eval('(function (){' + data + '}).call(self)');
+          break;
+        default:
+          result = evt.item;
+      }
+    }
     return false;
   };
   AssetLoader.prototype.getItem = function(p_id, p_groupId) {
@@ -4176,89 +4418,6 @@ JSONUtils = (function() {
   };
   return JSONUtils;
 })();
-var PathsData;
-PathsData = (function(_super) {
-  var _data;
-  __extends(PathsData, _super);
-  _data = null;
-  PathsData.getInstance = function(p_value) {
-    return PathsData._instance != null ? PathsData._instance : PathsData._instance = new PathsData(p_value);
-  };
-  function PathsData(p_value) {
-    this._parseVars = __bind(this._parseVars, this);
-    this._parseData = __bind(this._parseData, this);
-    this.translate = __bind(this.translate, this);
-    if (this.data == null) {
-      this.data = p_value;
-    }
-    PathsData.__super__.constructor.apply(this, arguments);
-  }
-  PathsData.get({
-    data: function() {
-      return _data;
-    }
-  });
-  PathsData.set({
-    data: function(p_value) {
-      return _data = this._parseData(p_value);
-    }
-  });
-  /**
-  	@method translate
-  	@param {Object} p_source
-  	@return {String}
-   */
-  PathsData.prototype.translate = function(p_source) {
-    return this._parseVars(p_source);
-  };
-  /**
-  	@static
-  	@method translate
-  	@param {Object} p_value
-  	@param {Object} p_collection
-  	@return {String}
-   */
-  PathsData.translate = function(p_value, p_collection) {
-    return PathsData._parseVars(p_value, PathsData._parseData(p_collection));
-  };
-  /**
-  	@method _parseData
-  	@param {Object} p_vars
-  	@return {Object}
-  	@private
-   */
-  PathsData.prototype._parseData = function(p_vars) {
-    var o, p_varsStr, val;
-    p_varsStr = JSON.stringify(p_vars);
-    while ((o = /\{([^\"\{\}]+)\}/.exec(p_varsStr))) {
-      val = p_vars[o[1]];
-      if (!val) {
-        val = '';
-      }
-      p_varsStr = p_varsStr.replace(new RegExp('\{' + o[1] + '\}', 'ig'), val);
-      p_vars = JSON.parse(p_varsStr);
-    }
-    return p_vars;
-  };
-  /**
-  	@method _parseVars
-  	@param {Object} p_data
-  	@param {Object} p_vars
-  	@return {String}
-  	@private
-   */
-  PathsData.prototype._parseVars = function(p_vars) {
-    var k, v;
-    for (k in _data) {
-      v = _data[k];
-      p_vars = JSON.stringify(p_vars);
-      p_vars = p_vars.replace(new RegExp('\{' + k + '\}', 'ig'), v);
-      p_vars = JSON.parse(p_vars);
-    }
-    return p_vars;
-  };
-  return PathsData;
-})(EventDispatcher);
 var ParseData;
 ParseData = (function(_super) {
   var _conditions;
@@ -4360,7 +4519,7 @@ ParseData = (function(_super) {
 })(EventDispatcher);
 var ParseConfig;
 ParseConfig = (function(_super) {
-  var removeParam, _contents, _required, _views;
+  var _contents, _required, _views;
   __extends(ParseConfig, _super);
   _views = null;
   _contents = null;
@@ -4475,8 +4634,8 @@ ParseConfig = (function(_super) {
         }
         if ((v.id == null) || v.id === void 0) {
           src = v.src || v.content;
-          v.id = removeParam('noCache', src);
-          v.id = removeParam('v', src);
+          v.id = this.removeParam('noCache', this.getPath(src));
+          v.id = this.removeParam('v', this.getPath(src));
         }
         group[v.id] = v;
       }
@@ -4491,7 +4650,7 @@ ParseConfig = (function(_super) {
   	@param {String} p_url
   	@private
    */
-  removeParam = function(p_param, p_url) {
+  ParseConfig.prototype.removeParam = function(p_param, p_url) {
     var i, param, params, query, results;
     param = null;
     params = [];
@@ -4610,6 +4769,83 @@ ParseContent = (function(_super) {
   };
   return ParseContent;
 })(ParseData);
+var ServiceWorkerController;
+ServiceWorkerController = (function(_super) {
+  __extends(ServiceWorkerController, _super);
+  ServiceWorkerController["const"]({
+    INSTALLING: "serviceworker_controller_installing"
+  });
+  ServiceWorkerController["const"]({
+    INSTALLED: "serviceworker_controller_installed"
+  });
+  ServiceWorkerController["const"]({
+    ACTIVE: "serviceworker_controller_active"
+  });
+  ServiceWorkerController["const"]({
+    CHANGE: "serviceworker_controller_change"
+  });
+  ServiceWorkerController["const"]({
+    ERROR: "serviceworker_controller_error"
+  });
+  function ServiceWorkerController() {
+    this.error = __bind(this.error, this);
+    this.change = __bind(this.change, this);
+    this.registered = __bind(this.registered, this);
+    this.messages = __bind(this.messages, this);
+    var cache, src;
+    cache = app.config.cacheContents;
+    src = (cache != null ? cache.src : void 0) != null ? cache != null ? cache.src : void 0 : null;
+    if (src != null) {
+      navigator.serviceWorker.register(src, {
+        scope: (cache != null ? cache.scope : void 0) != null ? cache != null ? cache.scope : void 0 : './'
+      }).then(this.registered)["catch"](this.error);
+    }
+    ServiceWorkerController.__super__.constructor.apply(this, arguments);
+  }
+  ServiceWorkerController.prototype.messages = function(evt) {
+    return console.log("From worker:", evt.data);
+  };
+  ServiceWorkerController.prototype.registered = function(evt) {
+    var serviceWorker;
+    if (evt.installing) {
+      serviceWorker = evt.installing;
+      this.trigger(ServiceWorkerController.INSTALLING, {
+        data: serviceWorker
+      });
+    } else if (evt.waiting) {
+      serviceWorker = evt.waiting;
+      this.trigger(ServiceWorkerController.INSTALLED, {
+        data: serviceWorker
+      });
+    } else if (evt.active) {
+      serviceWorker = evt.active;
+      this.trigger(ServiceWorkerController.ACTIVE, {
+        data: serviceWorker
+      });
+    }
+    if (serviceWorker && !this.loaded) {
+      this.loaded = true;
+      serviceWorker.addEventListener('message', this.messages);
+      serviceWorker.addEventListener('statechange', this.change);
+      serviceWorker.postMessage = serviceWorker.webkitPostMessage || serviceWorker.postMessage;
+      return serviceWorker.postMessage({
+        'version': app.info.contents.version
+      });
+    }
+  };
+  ServiceWorkerController.prototype.change = function(evt) {
+    return this.trigger(ServiceWorkerController.CHANGE, {
+      data: evt
+    });
+  };
+  ServiceWorkerController.prototype.error = function(err) {
+    console.log('ServiceWorkerController registration failed: ', err);
+    return this.trigger(ServiceWorkerController.ERROR, {
+      data: err
+    });
+  };
+  return ServiceWorkerController;
+})(EventDispatcher);
 /**
 Base class to setup the configuration file and start loading of dependencies.
 @class NavigationLoader
@@ -4666,7 +4902,7 @@ NavigationLoader = (function(_super) {
     queue.on(AssetLoader.COMPLETE_FILE, this.configLoaded);
     queue.loadFile({
       id: 'config',
-      cache: false,
+      cache: true,
       src: p_configPath
     });
     false;
@@ -4687,7 +4923,7 @@ NavigationLoader = (function(_super) {
   	@private
    */
   NavigationLoader.prototype.configLoaded = function(evt) {
-    var data, _ref;
+    var data, _ref, _ref1, _ref2;
     if (evt != null) {
       if ((_ref = evt.currentTarget) != null) {
         _ref.off(AssetLoader.COMPLETE_FILE, this.configLoaded);
@@ -4699,6 +4935,9 @@ NavigationLoader = (function(_super) {
     this.trigger(NavigationLoader.CONFIG_LOADED, {
       data: config.data
     });
+    if (((typeof app !== "undefined" && app !== null ? (_ref1 = app.detections) != null ? _ref1.cache : void 0 : void 0) != null) && ((typeof app !== "undefined" && app !== null ? (_ref2 = app.config) != null ? _ref2.cacheContents : void 0 : void 0) != null) && app.info.contents.version) {
+      app.workerController = new ServiceWorkerController();
+    }
     this.loadContents();
     return false;
   };
@@ -4908,6 +5147,7 @@ NavigationLoader = (function(_super) {
         }
         JSONUtils.removeComments(data);
         result = data;
+        evt.item.result = evt.item.tag = evt.result = JSON.parse(result);
         break;
       case 'js':
         data = evt.result;

@@ -82,15 +82,14 @@ class ShareUtils
 	#
 	# subject - {String}
 	# body - {String}
-	@email:(p_subject, p_body=null, p_trigger=false)->
-		console.log('email')
-		url = 'mailto:?'
+	@email:(p_email, p_subject=null, p_body=null, p_trigger=false)->
+		url = 'mailto:?'+p_email
 		params = []
 		if p_subject then params.push('subject=' + encodeURI(p_subject))
 		if p_body    then params.push('body=' + encodeURI(p_body))
 		url += params.join('&')
-		if p_trigger then ShareUtils._location(url)
-		console.log(url)
+		if p_trigger
+			ShareUtils.open(url, '_blank')
 		return url
 
 	# Private: call url.
@@ -98,7 +97,7 @@ class ShareUtils
 	# url - {string}
 	# name - {string}
 	# style - {string}
-	@open:(p_url, p_name='',p_style='width=600,height=400')->
+	@open:(p_url, p_name='',p_style='width=640,height=480')->
 		window.open(p_url,p_name,p_style)
 
 	# Private: window location.

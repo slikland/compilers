@@ -1,86 +1,85 @@
 class ServiceWorker
-	@CACHE_VERSION: "0.0.54670456789741"
-
+	@CACHE_VERSION : "0.0.0"
+	
 	constructor:(@self)->
-		# #console.log "ServiceWorker constructor", @self
+		# @self.addEventListener('install', @install)
+		@self.addEventListener('message', @messages)
+		@self.addEventListener('fetch', @fetch)
+		@self.addEventListener('activate', @activate)
+		@self.skipWaiting()
 
-		@_staticAssets = [
-			"../../js/preloader.js",
-			"../../js/vendors.js",
-			"../../js/main.js",
-			"../../css/preloader.css",
-			"../../css/main.css",
-			"../../css/fonts.css"
-		]
+	messages:(evt)=>
+		if evt.data.version?
+			ServiceWorker.CACHE_VERSION = evt.data.version
+			console.log("Version from controller:", evt.data.version)
 
-		console.log ServiceWorker.CACHE_VERSION
+	error:(err)=>
+		console.log err
 
-		@self.addEventListener('install', @_install)
-		@self.addEventListener('fetch', @_fetch)
-		@self.addEventListener('activate', @_activate)
-
-	_install:(event)=>
-		console.log "ServiceWorker install"
-		event.waitUntil(
+	install:(evt)=>
+		evt.waitUntil(
 			caches.open(ServiceWorker.CACHE_VERSION)
-			.then((cache)=>
-				return cache.addAll(@_staticAssets)
-			)
+			.then(@cacheFiles)
+			.catch(@error)
 		)
 
-	_fetch:(event)=>
-		if event.request.method isnt 'GET' or event.request.url.indexOf('sw.js') > -1
-			# If we don't block the event as shown below, then the request will go to
-			# the network as usual.
-			console.log('WORKER: fetch event ignored.', event.request.method, event.request.url);
+	cacheFiles:(evt)=>
+		return evt.addAll(@_staticAssets)
+		.then(()=>
+			# console.log 'Resources have been cached'
+			@self.skipWaiting()
+		)
+
+	fetch:(evt)=>
+		if evt.request.method isnt 'GET'
+			console.log 'fetch evt ignored.', evt.request.method, evt.request.url
 			return
-
-		
-		# cache falling back to network
-		event.respondWith(
-			caches.match(event.request)
+		evt.respondWith(
+			caches.match(evt.request)
 			.then((response)=>
-				console.log event.request.headers.getAll()
-				# Cache hit - return response
-				if (response)
-					console.log "fetch response: ", response
-					# response.setHeader(	"Access-Control-Allow-Headers", "x-requested-with, accept, authorization");
+				if response
+					# console.log 'Found in cache:', response.url
 					return response
-
-				fetchRequest = event.request.clone()
-
+				# console.log 'No response found in cache. About to fetch from network...'
+				fetchRequest = evt.request.clone()
+				cacheRequest = evt.request.clone()
 				return fetch(fetchRequest).then((response)=>
+					# console.log 'From network is:', response.url
 					if !response || response.status != 200 || response.type != "basic"
 						return response
 
 					responseToCache = response.clone()
-
-					caches.open(ServiceWorker.CACHE_VERSION)
+					caches
+					.open(ServiceWorker.CACHE_VERSION)
 					.then((cache)=>
-						cache.put(event.request, responseToCache)
+						cacheSaveRequest = evt.request.clone()
+						cache.put(cacheSaveRequest, responseToCache)
 					)
-
 					return response
 				)
+				.catch((err)=>
+					return caches.match(cacheRequest)
+				)
 			)
+			.catch(@error)
 		)
 
-	_activate:(event)=>
-		event.waitUntil(
-			caches.keys().then((cacheNames)=>
+	activate:(evt)=>
+		evt.waitUntil(
+			caches.keys()
+			.then((cacheNames)=>
 				return Promise.all(
 					cacheNames.filter((cacheName)=>
-						# Return true if you want to remove this cache,
-						# but remember that caches are shared across
-						# the whole origin
 						if cacheName isnt ServiceWorker.CACHE_VERSION
-							console.log 'delete', cacheName
 							return true 
 					).map((cacheName)=>
+						console.log 'Delete cached files of version:', cacheName
 						return caches.delete(cacheName)
 					)
 				)
 			)
+			.catch(@error)
+			@self.clients.claim()
 		)
 
-new ServiceWorker(self)
+new ServiceWorker(@)

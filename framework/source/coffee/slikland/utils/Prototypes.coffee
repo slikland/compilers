@@ -320,3 +320,68 @@ Node::off = Node::removeEventListener
 navigator.mediaDevices ?= {}
 navigator.getUserMedia = navigator.mediaDevices.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia
 
+##------------------------------------------------------------------------------
+#
+# CACHES POLYFILL BECAUSE IT IS NOT ADDED TO NATIVE YET!
+# 
+if Cache?
+	unless "add" of Cache::
+		Cache::add = (request) ->
+			@addAll [ request ]
+
+	unless "addAll" of Cache::
+		Cache::addAll = (requests) ->
+			cache = @
+
+		# Since DOMExceptions are not constructable:
+		NetworkError = (message) ->
+			@name = 'NetworkError'
+			@code = 19
+			@message = message
+			return
+
+		NetworkError:: = Object.create Error::
+		Promise.resolve().then(->
+			if arguments.length < 1 then throw new TypeError
+			# Simulate sequence<(Request or USVString)> binding:
+			sequence = []
+			requests = requests.map((request) ->
+				if request instanceof Request
+					request
+				else
+					String request
+					# may throw TypeError
+			)
+			Promise.all requests.map((request) ->
+				if typeof request == 'string'
+					request = new Request(request)
+				scheme = new URL(request.url).protocol
+				if scheme != 'http:' and scheme != 'https:'
+					throw new NetworkError('Invalid scheme')
+				fetch request.clone()
+			)
+		).then((responses) ->
+			# TODO: check that requests don't overwrite one another
+			# (don't think this is possible to polyfill due to opaque responses)
+			Promise.all responses.map((response, i) ->
+				cache.put requests[i], response
+			)
+		).then ->
+			return undefined
+
+if CacheStorage?
+	unless "match" of CacheStorage::
+		# This is probably vulnerable to race conditions (removing caches etc)
+		CacheStorage::match = (request, opts) ->
+			caches = @
+			@keys().then (cacheNames) ->
+				match = undefined
+				cacheNames.reduce ((chain, cacheName) ->
+				chain.then ->
+					match or caches.open(cacheName).then((cache) ->
+						cache.match request, opts
+						).then((response) ->
+							match = response
+							match
+						)
+				), Promise.resolve()

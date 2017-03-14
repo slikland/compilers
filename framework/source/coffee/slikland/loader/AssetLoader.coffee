@@ -1,6 +1,7 @@
 #import slikland.loader.PreloadFiles
 #import slikland.vendors.preloaderjs.CacheControllerPlugin
 #import slikland.vendors.preloaderjs.MediaPlugin
+#import slikland.navigation.core.data.PathsData
 
 class AssetLoader extends EventDispatcher
 
@@ -47,6 +48,7 @@ class AssetLoader extends EventDispatcher
 			@_groups[p_groupId] = group
 			
 			group.on(AssetLoader.ERROR, @_onError)
+			group.on(AssetLoader.START_FILE, @_onStartFile)
 			group.on(AssetLoader.FILE_ERROR, @_onFileError)
 			group.on(AssetLoader.COMPLETE_FILE, @_fileLoad)
 		group.setMaxConnections(p_concurrent)
@@ -56,7 +58,11 @@ class AssetLoader extends EventDispatcher
 		group = @getGroup(p_groupId).setPreferXHR = p_value
 		return group
 
+	_onStartFile:(evt)=>
+		evt.item.loaded = false
+
 	_onError:(e)=>
+		e.currentTarget.off(AssetLoader.START_FILE, @_onStartFile)
 		e.currentTarget.off(AssetLoader.ERROR, @_onError)
 		e.currentTarget.off(AssetLoader.COMPLETE_FILE, @_fileLoad)
 		msg = e.title
@@ -67,18 +73,35 @@ class AssetLoader extends EventDispatcher
 		false
 
 	_onFileError:(e)=>
+		e.currentTarget.off(AssetLoader.START_FILE, @_onStartFile)
 		e.currentTarget.off(AssetLoader.FILE_ERROR, @_onFileError)
 		e.currentTarget.off(AssetLoader.COMPLETE_FILE, @_fileLoad)
 		console.log e
 		throw new Error(e.title).stack
 		false
 
-	_fileLoad:(e)=>
-		e.currentTarget.off(AssetLoader.ERROR, @_onError)
-		e.currentTarget.off(AssetLoader.FILE_ERROR, @_onFileError)
+	_fileLoad:(evt)=>
+		evt.item.loaded = true
+		evt.currentTarget.off(AssetLoader.ERROR, @_onError)
+		evt.currentTarget.off(AssetLoader.FILE_ERROR, @_onFileError)
 		# console.log e.item.src
-		# e.result.src = e.item.src
-		e.item.result = e.item.tag = e.result
+		# evt.result.src = evt.item.src
+		evt.item.result = evt.item.tag = evt.result
+		if app?.config?.paths?
+			paths = PathsData.getInstance(app.config.paths)
+			switch evt.item.ext
+				when 'json'
+					data = paths.translate(evt.result)
+					if typeof(data) isnt 'string' then data = JSON.stringify(data)
+					JSONUtils.removeComments(data)
+					result = data
+					evt.item.result = evt.item.tag = evt.result = JSON.parse(result)
+				when 'js'
+					data = evt.result
+					data = data.replace(/^\/\/.*?(\n|$)/igm, '')
+					result = eval('(function (){' + data + '}).call(self)')
+				else
+					result = evt.item
 		false
 
 	getItem:(p_id, p_groupId=null)->

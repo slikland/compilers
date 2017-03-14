@@ -63,18 +63,28 @@ class Debug
 			t += '\n'
 			t += '--------------------'
 			t += '\n'
-			t += 'Framework'
+			t += 'Caim Framework'
 			t += '\n'
-			t += 'Version: '+App.FRAMEWORK_VERSION
+			t += 'Version: '+app.info.framework.version
 			t += '\n'
 			t += '--------------------'
 			t += '\n'
 			t += 'Project'
 			t += '\n'
-			t += 'Version: '+app.info.version
+			t += 'Version: '+app.info.project.version
 			t += '\n'
-			t += 'Last update: '+app.info.lastUpdate
+			t += 'Last update: '+app.info.project.lastUpdate
 			t += '\n'
+			t += '--------------------'
+			t += '\n'
+			if app.info.contents.version?
+				t += 'Cache Contents Enabled'
+				t += '\n'
+				t += 'Version: '+app.info.contents.version
+				t += '\n'
+			else
+				t += 'Cache Contents Disabled'
+				t += '\n'
 			t += '===================='
 			c = 'color: #' + Math.floor(Math.random()*16777215).toString(16);
 			console.log '%c'+ t, c
