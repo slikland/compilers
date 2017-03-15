@@ -92,6 +92,8 @@ class Caim extends EventDispatcher
 				@mainAssetsLoaded()
 				break
 			when 'preloader'
+				if app.config.required.preloader?.content?
+					_preloaderView.content = app.config.required.preloader.content
 				@preloaderAssetsLoaded()
 				break
 

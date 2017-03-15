@@ -33,7 +33,7 @@ do ->
 		
 		if p_loadItem.src.indexOf("?v=") == -1
 			ts = new Date().getTime()
-			cache = if cv then "?v="+app.info.version+"&noCache="+ts else "?v="+app.info.version
+			cache = if cv then "?v="+app.info.project.version+"&noCache="+ts else "?v="+app.info.project.version
 			p_loadItem.src += cache
 		 
 		return true
