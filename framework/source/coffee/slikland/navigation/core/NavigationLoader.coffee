@@ -316,12 +316,12 @@ class NavigationLoader extends EventDispatcher
 	@private
 	###
 	loadComplete:(evt)=>
-		@removeLoader(evt.currentTarget)
+		if evt then @removeLoader(evt.currentTarget)
 
 		step = loaderSteps[loaderStep]
-		@assetsLoaded(step?.id)
+		if step then @assetsLoaded(step.id)
 
-		loaderRatio += step.ratio
+		loaderRatio += step?.ratio
 		loaderStep++
 		
 		if loaderStep >= loaderSteps.length
@@ -330,8 +330,10 @@ class NavigationLoader extends EventDispatcher
 			currentStep = loaderSteps[loaderStep]
 			queue = @addLoader(currentStep.id)
 			@addFiles(currentStep.data, queue)
-			queue.load()
-			if queue._loadQueue.length + queue._currentLoads.length is 0 then @loadComplete()
+			if queue._loadQueue.length + queue._currentLoads.length is 0
+				@loadComplete()
+			else
+				queue.load()
 		false
 
 	###*
