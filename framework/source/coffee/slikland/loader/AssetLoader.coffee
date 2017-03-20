@@ -95,7 +95,7 @@ class AssetLoader extends EventDispatcher
 					if typeof(data) isnt 'string' then data = JSON.stringify(data)
 					JSONUtils.removeComments(data)
 					result = data
-					evt.item.result = evt.item.tag = evt.result = JSON.parse(result)
+					result = evt.item.result = evt.item.tag = evt.result = JSON.parse(result)
 				when 'js'
 					data = evt.result
 					data = data.replace(/^\/\/.*?(\n|$)/igm, '')
