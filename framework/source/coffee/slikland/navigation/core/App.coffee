@@ -105,10 +105,8 @@ class App extends EventDispatcher
 		switch evt.type
 			when 'blur', 'pagehide'
 				evtType = App.WINDOW_INACTIVE
-				document.title = 'blur'
 			when 'focus', 'pageshow'
 				evtType = App.WINDOW_ACTIVE
-				document.title = 'focus'
 		@trigger(evtType)
 		
 if !app
