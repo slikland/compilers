@@ -5,11 +5,15 @@ class App extends EventDispatcher
 	@project_version_raw : "SL_PROJECT_VERSION:0.0.0"
 	@project_date_raw : "SL_PROJECT_DATE:0000000000000"
 
+	@WINDOW_ACTIVE:"windowActive"
+	@WINDOW_INACTIVE:"windowInactive"
+	
 	# @TODO
 	# IMPLEMENT THIS
 	# 
 	# HARDCODED !!!1!
 	# 
+	
 	framework_version = "3.1.4"
 
 	_root = null
@@ -75,49 +79,38 @@ class App extends EventDispatcher
 	@get detections:()->
 		return _detections
 
+	@get hiddenProp:()->
+		prop = null
+		if 'hidden' of document
+			prop = document['hidden']
+		else
+			prefixes = ['webkit','moz','ms','o']
+			i = 0
+			while i < prefixes.length
+				if prefixes[i] + 'Hidden' of document
+					prop = document[prefixes[i] + 'Hidden']
+					break
+				i++
+		return prop
+
 	_checkWindowActivity:()->
-		@_hidden = 'hidden'
-		if @_hidden in document
+		if @hiddenProp
 			document.addEventListener 'visibilitychange', @_windowVisibilityChange
-		else if (@_hidden = 'mozHidden') in document
-			document.addEventListener 'mozvisibilitychange', @_windowVisibilityChange
-		else if (@_hidden = 'webkitHidden') in document
-			document.addEventListener 'webkitvisibilitychange', @_windowVisibilityChange
-		else if (@_hidden = 'msHidden') in document
-			document.addEventListener 'msvisibilitychange', @_windowVisibilityChange
-		else if 'onfocusin' in document
+		else if 'onfocusin' of document
 			document.onfocusin = document.onfocusout = @_windowVisibilityChange
 		else
 			window.onpageshow = window.onpagehide = window.onfocus = window.onblur = @_windowVisibilityChange
 
-		if document[@_hidden] != undefined
-			@_windowVisibilityChange.call window, type: if document[@_hidden] then 'blur' else 'focus'
-
-	_windowVisibilityChange:(evt)->
-		v = 'visible'
-		h = 'hidden'
-		evtMap =
-			focus: false
-			focusin: false
-			pageshow: false
-			blur: true
-			focusout: true
-			pagehide: true
-		evt = evt or window.event
-		if evt.type in evtMap
-			hidden = evtMap[evt.type]
-		else
-			hidden = document[@_hidden]
-
-		eventType = if hidden then 'windowInactive' else 'windowActive'
-
-		try
-			@dispatchEvent(new Event(eventType))
-		catch err
-			newEvent = document.createEvent('Event')
-			newEvent.initEvent(eventType, true, true)
-			@dispatchEvent(newEvent)
-
+	_windowVisibilityChange:(evt)=>
+		switch evt.type
+			when 'blur', 'pagehide'
+				evtType = App.WINDOW_INACTIVE
+				document.title = 'blur'
+			when 'focus', 'pageshow'
+				evtType = App.WINDOW_ACTIVE
+				document.title = 'focus'
+		@trigger(evtType)
+		
 if !app
 	app = new App()
 
