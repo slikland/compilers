@@ -164,7 +164,7 @@ class StringUtils
 
 	
 	###*
-	A method to convert milisecounds (Number) in a String on time format.
+	A method to convert milisecounds (Number) to a String on time format.
 	@method toTimeFormat
 	@static
 	@param {Number} p_miliseconds - The number in milisecounds.
@@ -175,6 +175,21 @@ class StringUtils
 		minutes = Math.floor(p_miliseconds / 60)
 		seconds = Math.floor(p_miliseconds % 60)
 		return String( if p_decimal then @addDecimalZero(minutes) + ":" + @addDecimalZero(seconds) else  minutes + ":" + seconds)
+
+	###*
+	A method to convert a String time format to secounds (Number).
+	@method fromTimeFormat
+	@static
+	@param {String} p_timeformat - The String time format
+	@return {Number}
+	###	
+	@fromTimeFormat:(p_timeformat)->
+		a = p_timeformat.split(':')
+		if a.length >2
+			result = Number((a[0]*3600)+Number(a[1])*60+Number(a[2]))
+		else
+			result = Number(a[0])*60+Number(a[1])
+		return result/60
 
 	###*
 	A method to add a zero before if the p_value is smaller that 10 and bigger that -1.
