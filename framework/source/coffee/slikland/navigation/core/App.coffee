@@ -14,7 +14,7 @@ class App extends EventDispatcher
 	# HARDCODED !!!1!
 	# 
 	
-	framework_version = "3.1.4"
+	framework_version = "3.1.5"
 
 	_root = null
 	_loader = null
@@ -79,7 +79,7 @@ class App extends EventDispatcher
 	@get detections:()->
 		return _detections
 
-	@get hiddenProp:()->
+	@get windowHidden:()->
 		prop = null
 		if 'hidden' of document
 			prop = document['hidden']
@@ -94,7 +94,7 @@ class App extends EventDispatcher
 		return prop
 
 	_checkWindowActivity:()->
-		if @hiddenProp
+		if @windowHidden
 			document.addEventListener 'visibilitychange', @_windowVisibilityChange
 		else if 'onfocusin' of document
 			document.onfocusin = document.onfocusout = @_windowVisibilityChange
@@ -108,7 +108,7 @@ class App extends EventDispatcher
 			when 'focus', 'pageshow'
 				evtType = App.WINDOW_ACTIVE
 		@trigger(evtType)
-		
+
 if !app
 	app = new App()
 

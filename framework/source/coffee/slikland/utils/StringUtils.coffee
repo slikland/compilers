@@ -189,7 +189,7 @@ class StringUtils
 			result = Number((a[0]*3600)+Number(a[1])*60+Number(a[2]))
 		else
 			result = Number(a[0])*60+Number(a[1])
-		return result/60
+		return result
 
 	###*
 	A method to add a zero before if the p_value is smaller that 10 and bigger that -1.
