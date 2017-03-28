@@ -14,6 +14,15 @@ class LanguageData extends EventDispatcher
 	constructor:()->
 		super
 
+	hasLanguage:(p_value)->
+		result = false
+		if typeof(p_value) == 'string' && _data?.length > 0
+			for i in [0..._data.length]
+				if _data[i].iso == p_value
+					result = true
+					break
+		return result
+
 	@get data:(p_value)->
 		return _data
 
@@ -33,14 +42,13 @@ class LanguageData extends EventDispatcher
 		return _current
 
 	@set current:(p_value)->
-		if _data?.length > 0
-			if typeof(p_value) == 'string'
-				for i in [0..._data.length]
-					if _data[i].iso == p_value
-						_current = _data[i]
-						break
-			else
-				_current = p_value
+		if typeof(p_value) == 'string' && _data?.length > 0
+			for i in [0..._data.length]
+				if _data[i].iso == p_value
+					_current = _data[i]
+					break
+		else
+			_current = p_value
 		false
 	@get default:()->
 		return _default
