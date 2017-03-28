@@ -36,7 +36,7 @@ class Caim extends EventDispatcher
 		if !(p_preloaderView instanceof BaseView)
 			throw new Error('The param p_preloaderView is null or the instance of param p_preloaderView is not either BaseView class')
 		else
-			_preloaderView = p_preloaderView 
+			_preloaderView = p_preloaderView
 
 		wrapper = if !(p_wrapper)? then document.body else p_wrapper
 
@@ -46,6 +46,7 @@ class Caim extends EventDispatcher
 
 		loader = new NavigationLoader(if app.root? then app.root+p_configPath else p_configPath)
 
+		loader.on(NavigationLoader.LANGUAGE_DATA_LOADED, @languageDataLoaded)
 		loader.on(NavigationLoader.CONFIG_LOADED, @configLoaded)
 		loader.on(NavigationLoader.GROUP_ASSETS_LOADED, @groupLoaded)
 
@@ -55,6 +56,25 @@ class Caim extends EventDispatcher
 
 		false
 	
+	###*
+	@method languageDataLoaded
+	@param {Event} evt
+	@private
+	###
+	languageDataLoaded:(evt)=>
+		evt.currentTarget.off(NavigationLoader.LANGUAGE_DATA_LOADED, @languageDataLoaded)
+		@selectLanguage(evt.data, evt.currentTarget)
+		false
+	
+	###*
+	@method selectLanguage
+	@param {Object} p_data
+	@private
+	###
+	selectLanguage:(p_data, p_loader)=>
+		p_loader.selectLanguage(p_data)
+		false
+
 	###*
 	@method configLoaded
 	@param {Event} evt
@@ -104,7 +124,6 @@ class Caim extends EventDispatcher
 		evt?.currentTarget?.off?(NavigationLoader.LOAD_START, @createPreloaderView)
 		if app.config.required.preloader?.content?
 			_preloaderView.content = app.config.required.preloader.content
-
 		wrapper.appendChild(_preloaderView.element)
 		_preloaderView.on(BaseView.CREATE_COMPLETE, @showPreloaderView)
 		_preloaderView.createStart()

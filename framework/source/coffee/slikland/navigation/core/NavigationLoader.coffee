@@ -4,12 +4,10 @@
 #import slikland.utils.JSONUtils
 #import slikland.loader.AssetLoader
 
+#import slikland.navigation.core.data.LanguageData
 #import slikland.navigation.core.data.PathsData
-#import slikland.navigation.core.data.ParseData
 #import slikland.navigation.core.data.ParseConfig
 #import slikland.navigation.core.data.ParseContent
-
-#import slikland.navigation.core.cache.ServiceWorkerController
 
 ###*
 Base class to setup the configuration file and start loading of dependencies.
@@ -18,6 +16,7 @@ Base class to setup the configuration file and start loading of dependencies.
 ###
 class NavigationLoader extends EventDispatcher
 
+	@const LANGUAGE_DATA_LOADED : "language_data_loaded"
 	@const CONFIG_LOADED : "config_loaded"
 	@const GROUP_ASSETS_LOADED : "group_assets_loaded"
 
@@ -28,6 +27,7 @@ class NavigationLoader extends EventDispatcher
 
 	paths = null
 	config = null
+	lang = null
 	totalContentsLoaded = null
 	
 	loaderStep = 0
@@ -66,16 +66,46 @@ class NavigationLoader extends EventDispatcher
 	###
 	configLoaded:(evt)=>
 		evt?.currentTarget?.off(AssetLoader.COMPLETE_FILE, @configLoaded)
-
 		data = evt.result
-		paths = PathsData.getInstance(data.paths)
-		config = new ParseConfig(paths.translate(data))
 
+		if data.languages?
+			lang = LanguageData.getInstance()
+			lang.data = data.languages
+
+		if data.paths?
+			@trigger(NavigationLoader.LANGUAGE_DATA_LOADED, {data:data, language:lang})
+		else
+			@selectLanguage(data)
+		false 
+
+	###*
+	@method selectLanguage
+	@param {Event} evt
+	@private
+	###
+	selectLanguage:(p_data)=>
+		if lang?
+			if lang.current?.path?
+				current = lang.current.path
+			else
+				current = lang.default.path
+	
+		if p_data.paths?
+			p_data.paths['language'] = current
+			paths = PathsData.getInstance(p_data.paths)
+			result = paths.translate(p_data)
+		else
+			result = p_data
+		@parseConfig(result)
+
+	###*
+	@method parseConfig
+	@param {Event} evt
+	@private
+	###
+	parseConfig:(p_data)=>
+		config = new ParseConfig(p_data)
 		@trigger(NavigationLoader.CONFIG_LOADED, {data:config.data})
-
-		if app?.detections?.cache? && app?.config?.cacheContents? && app.info.contents.version
-			app.workerController = new ServiceWorkerController()
-
 		@loadContents()
 		false 
 
@@ -241,7 +271,6 @@ class NavigationLoader extends EventDispatcher
 				JSONUtils.removeComments(data)
 				result = data
 				result = evt.item.result = evt.item.tag = evt.result = JSON.parse(result)
-
 			when 'js'
 				data = evt.result
 				data = data.replace(/^\/\/.*?(\n|$)/igm, '')
