@@ -80,7 +80,7 @@ class NavigationLoader extends EventDispatcher
 
 	###*
 	@method selectLanguage
-	@param {Event} evt
+	@param {Object} p_data
 	@private
 	###
 	selectLanguage:(p_data)=>
@@ -100,7 +100,7 @@ class NavigationLoader extends EventDispatcher
 
 	###*
 	@method parseConfig
-	@param {Event} evt
+	@param {Object} p_data
 	@private
 	###
 	parseConfig:(p_data)=>
