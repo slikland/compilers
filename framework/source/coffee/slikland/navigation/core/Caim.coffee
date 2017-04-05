@@ -20,6 +20,7 @@ Base class to setup the navigation and start loading of dependencies.
 ###
 class Caim extends EventDispatcher
 	
+	_loader = null
 	_mainView = null
 	_preloaderView = null
 
@@ -44,17 +45,25 @@ class Caim extends EventDispatcher
 		app.loader = AssetLoader.getInstance()
 		app.detections = Detections.getInstance()
 
-		loader = new NavigationLoader(if app.root? then app.root+p_configPath else p_configPath)
+		_loader = new NavigationLoader(if app.root? then app.root+p_configPath else p_configPath)
 
-		loader.on(NavigationLoader.LANGUAGE_DATA_LOADED, @languageDataLoaded)
-		loader.on(NavigationLoader.CONFIG_LOADED, @configLoaded)
-		loader.on(NavigationLoader.GROUP_ASSETS_LOADED, @groupLoaded)
+		_loader.on(NavigationLoader.LANGUAGE_DATA_LOADED, @languageDataLoaded)
+		_loader.on(NavigationLoader.CONFIG_LOADED, @configLoaded)
+		_loader.on(NavigationLoader.GROUP_ASSETS_LOADED, @groupLoaded)
 
-		loader.on(NavigationLoader.LOAD_START, @createPreloaderView)
-		loader.on(NavigationLoader.LOAD_PROGRESS, @progress)
-		loader.on(NavigationLoader.LOAD_COMPLETE, @hidePreloderView)
+		_loader.on(NavigationLoader.LOAD_START, @createPreloaderView)
+		_loader.on(NavigationLoader.LOAD_PROGRESS, @progress)
+		_loader.on(NavigationLoader.LOAD_COMPLETE, @hidePreloderView)
 
 		false
+	
+	###*
+	@method loaded
+	@param {Boolean}
+	@protected
+	###
+	@get loaded:()=>
+		return _loader.loaded
 	
 	###*
 	@method languageDataLoaded
@@ -63,7 +72,7 @@ class Caim extends EventDispatcher
 	###
 	languageDataLoaded:(evt)=>
 		evt.currentTarget.off(NavigationLoader.LANGUAGE_DATA_LOADED, @languageDataLoaded)
-		@selectLanguage(evt.data, evt.currentTarget)
+		@selectLanguage(evt.data)
 		false
 	
 	###*
@@ -71,8 +80,8 @@ class Caim extends EventDispatcher
 	@param {Object} p_data
 	@private
 	###
-	selectLanguage:(p_data, p_loader)=>
-		p_loader.selectLanguage(p_data)
+	selectLanguage:(p_data)=>
+		_loader.selectLanguage(p_data)
 		false
 
 	###*

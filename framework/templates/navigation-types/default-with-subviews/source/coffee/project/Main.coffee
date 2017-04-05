@@ -37,7 +37,7 @@ class Main extends NavigationContainer
 			route = "/sub-view-02/test-dynamic-route"
 		else
 			route = app.config.views[evt.srcElement.id].route
-		app.navigation.gotoView(route)
+		app.navigation.gotoRoute(route, true)
 
 	@get controller:=>
 		return _controller

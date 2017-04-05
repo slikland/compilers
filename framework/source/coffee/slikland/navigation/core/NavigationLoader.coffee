@@ -60,6 +60,14 @@ class NavigationLoader extends EventDispatcher
 		return AssetLoader.getInstance()
 
 	###*
+	@method loaded
+	@return {Boolean}
+	@protected
+	###
+	@get loaded:()->
+		return @_loaded
+
+	###*
 	@method configLoaded
 	@param {Event} evt
 	@private
@@ -355,6 +363,7 @@ class NavigationLoader extends EventDispatcher
 		
 		if loaderStep >= loaderSteps.length
 			@trigger(NavigationLoader.LOAD_COMPLETE)
+			@_loaded = true
 		else
 			currentStep = loaderSteps[loaderStep]
 			queue = @addLoader(currentStep.id)

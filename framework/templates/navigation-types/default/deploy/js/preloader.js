@@ -659,7 +659,9 @@ App = (function(_super) {
   __extends(App, _super);
   App.project_version_raw = "SL_PROJECT_VERSION:1.1.1";
   App.project_date_raw = "SL_PROJECT_DATE:1489513136190";
-  framework_version = "3.1.4";
+  App.WINDOW_ACTIVE = "windowActive";
+  App.WINDOW_INACTIVE = "windowInactive";
+  framework_version = "3.1.6";
   _root = null;
   _loader = null;
   _config = null;
@@ -668,6 +670,7 @@ App = (function(_super) {
   _conditions = null;
   _detections = null;
   function App() {
+    this._windowVisibilityChange = __bind(this._windowVisibilityChange, this);
     App.__super__.constructor.apply(this, arguments);
     this._checkWindowActivity();
   }
@@ -757,55 +760,47 @@ App = (function(_super) {
       return _detections;
     }
   });
-  App.prototype._checkWindowActivity = function() {
-    var _ref, _ref1, _ref2, _ref3;
-    this._hidden = 'hidden';
-    if (_ref = this._hidden, __indexOf.call(document, _ref) >= 0) {
-      document.addEventListener('visibilitychange', this._windowVisibilityChange);
-    } else if (_ref1 = (this._hidden = 'mozHidden'), __indexOf.call(document, _ref1) >= 0) {
-      document.addEventListener('mozvisibilitychange', this._windowVisibilityChange);
-    } else if (_ref2 = (this._hidden = 'webkitHidden'), __indexOf.call(document, _ref2) >= 0) {
-      document.addEventListener('webkitvisibilitychange', this._windowVisibilityChange);
-    } else if (_ref3 = (this._hidden = 'msHidden'), __indexOf.call(document, _ref3) >= 0) {
-      document.addEventListener('msvisibilitychange', this._windowVisibilityChange);
-    } else if (__indexOf.call(document, 'onfocusin') >= 0) {
-      document.onfocusin = document.onfocusout = this._windowVisibilityChange;
-    } else {
-      window.onpageshow = window.onpagehide = window.onfocus = window.onblur = this._windowVisibilityChange;
+  App.get({
+    windowHidden: function() {
+      var i, prefixes, prop;
+      prop = null;
+      if ('hidden' in document) {
+        prop = document['hidden'];
+      } else {
+        prefixes = ['webkit', 'moz', 'ms', 'o'];
+        i = 0;
+        while (i < prefixes.length) {
+          if (prefixes[i] + 'Hidden' in document) {
+            prop = document[prefixes[i] + 'Hidden'];
+            break;
+          }
+          i++;
+        }
+      }
+      return prop;
     }
-    if (document[this._hidden] !== void 0) {
-      return this._windowVisibilityChange.call(window, {
-        type: document[this._hidden] ? 'blur' : 'focus'
-      });
+  });
+  App.prototype._checkWindowActivity = function() {
+    if (this.windowHidden) {
+      return document.addEventListener('visibilitychange', this._windowVisibilityChange);
+    } else if ('onfocusin' in document) {
+      return document.onfocusin = document.onfocusout = this._windowVisibilityChange;
+    } else {
+      return window.onpageshow = window.onpagehide = window.onfocus = window.onblur = this._windowVisibilityChange;
     }
   };
   App.prototype._windowVisibilityChange = function(evt) {
-    var err, eventType, evtMap, h, hidden, newEvent, v, _ref;
-    v = 'visible';
-    h = 'hidden';
-    evtMap = {
-      focus: false,
-      focusin: false,
-      pageshow: false,
-      blur: true,
-      focusout: true,
-      pagehide: true
-    };
-    evt = evt || window.event;
-    if (_ref = evt.type, __indexOf.call(evtMap, _ref) >= 0) {
-      hidden = evtMap[evt.type];
-    } else {
-      hidden = document[this._hidden];
+    var evtType;
+    switch (evt.type) {
+      case 'blur':
+      case 'pagehide':
+        evtType = App.WINDOW_INACTIVE;
+        break;
+      case 'focus':
+      case 'pageshow':
+        evtType = App.WINDOW_ACTIVE;
     }
-    eventType = hidden ? 'windowInactive' : 'windowActive';
-    try {
-      return this.dispatchEvent(new Event(eventType));
-    } catch (_error) {
-      err = _error;
-      newEvent = document.createEvent('Event');
-      newEvent.initEvent(eventType, true, true);
-      return this.dispatchEvent(newEvent);
-    }
+    return this.trigger(evtType);
   };
   return App;
 })(EventDispatcher);
@@ -1684,7 +1679,7 @@ StringUtils = (function() {
     return str.replace(/(^\w)/, this._upperCase);
   };
   /**
-  	A method to convert milisecounds (Number) in a String on time format.
+  	A method to convert milisecounds (Number) to a String on time format.
   	@method toTimeFormat
   	@static
   	@param {Number} p_miliseconds - The number in milisecounds.
@@ -1699,6 +1694,23 @@ StringUtils = (function() {
     minutes = Math.floor(p_miliseconds / 60);
     seconds = Math.floor(p_miliseconds % 60);
     return String(p_decimal ? this.addDecimalZero(minutes) + ":" + this.addDecimalZero(seconds) : minutes + ":" + seconds);
+  };
+  /**
+  	A method to convert a String time format to secounds (Number).
+  	@method fromTimeFormat
+  	@static
+  	@param {String} p_timeformat - The String time format
+  	@return {Number}
+   */
+  StringUtils.fromTimeFormat = function(p_timeformat) {
+    var a, result;
+    a = p_timeformat.split(':');
+    if (a.length > 2) {
+      result = Number((a[0] * 3600) + Number(a[1]) * 60 + Number(a[2]));
+    } else {
+      result = Number(a[0]) * 60 + Number(a[1]);
+    }
+    return result;
   };
   /**
   	A method to add a zero before if the p_value is smaller that 10 and bigger that -1.
@@ -1957,7 +1969,7 @@ StringUtils = (function() {
     }
     if (p_loadItem.src.indexOf("?v=") === -1) {
       ts = new Date().getTime();
-      cache = cv ? "?v=" + app.info.version + "&noCache=" + ts : "?v=" + app.info.version;
+      cache = cv ? "?v=" + app.info.project.version + "&noCache=" + ts : "?v=" + app.info.project.version;
       p_loadItem.src += cache;
     }
     return true;
@@ -2215,7 +2227,7 @@ this.createjs = this.createjs || {};
     }
     if (p_loadItem.src.indexOf("?v=") === -1) {
       ts = new Date().getTime();
-      cache = cv ? "?v=" + app.info.version + "&noCache=" + ts : "?v=" + app.info.version;
+      cache = cv ? "?v=" + app.info.project.version + "&noCache=" + ts : "?v=" + app.info.project.version;
       p_loadItem.src += cache;
     }
     loader = new createjs.MediaLoader(p_loadItem, false);
@@ -2413,7 +2425,7 @@ AssetLoader = (function(_super) {
           }
           JSONUtils.removeComments(data);
           result = data;
-          evt.item.result = evt.item.tag = evt.result = JSON.parse(result);
+          result = evt.item.result = evt.item.tag = evt.result = JSON.parse(result);
           break;
         case 'js':
           data = evt.result;
@@ -2886,7 +2898,7 @@ Node.prototype.removeChild = function(node) {
   el = node;
   if (node instanceof BaseDOM) {
     el = node.element;
-    node.parent = this;
+    node._parent = null;
   }
   Node.prototype.__removeChild__.call(this, el);
   return node;
@@ -3314,7 +3326,7 @@ BaseDOM = (function(_super) {
     if (typeof this.off === "function") {
       this.off();
     }
-    return typeof this.remove === "function" ? this.remove() : void 0;
+    return typeof this.removeAll === "function" ? this.removeAll() : void 0;
   };
   return BaseDOM;
 })(EventDispatcher);
@@ -4420,6 +4432,91 @@ JSONUtils = (function() {
   };
   return JSONUtils;
 })();
+var LanguageData;
+LanguageData = (function(_super) {
+  var _current, _data, _default;
+  __extends(LanguageData, _super);
+  LanguageData["const"]({
+    SELECT_LANGUAGE: "select_language"
+  });
+  _data = null;
+  _current = void 0;
+  _default = void 0;
+  LanguageData.getInstance = function() {
+    return LanguageData._instance != null ? LanguageData._instance : LanguageData._instance = new LanguageData();
+  };
+  function LanguageData() {
+    LanguageData.__super__.constructor.apply(this, arguments);
+  }
+  LanguageData.prototype.hasLanguage = function(p_value) {
+    var i, result, _i, _ref;
+    result = false;
+    if (typeof p_value === 'string' && (_data != null ? _data.length : void 0) > 0) {
+      for (i = _i = 0, _ref = _data.length; 0 <= _ref ? _i < _ref : _i > _ref; i = 0 <= _ref ? ++_i : --_i) {
+        if (_data[i].iso === p_value) {
+          result = true;
+          break;
+        }
+      }
+    }
+    return result;
+  };
+  LanguageData.get({
+    data: function(p_value) {
+      return _data;
+    }
+  });
+  LanguageData.set({
+    data: function(p_value) {
+      var k, v;
+      _data = p_value;
+      for (k in p_value) {
+        v = p_value[k];
+        if (!v.iso || v.iso && v.iso === "") {
+          throw new Error('Please sets the "iso" object (ISO 639-1 standard) in languages object of config file.');
+        }
+        if (!v.path || v.path && v.path === "") {
+          throw new Error('Please sets the "path" object in languages object of config file.');
+        }
+        if (v["default"] != null) {
+          _default = v;
+        }
+      }
+      if (!_default) {
+        p_value[0]["default"] = true;
+        _default = p_value[0];
+      }
+      return false;
+    }
+  });
+  LanguageData.get({
+    current: function() {
+      return _current;
+    }
+  });
+  LanguageData.set({
+    current: function(p_value) {
+      var i, _i, _ref;
+      if (typeof p_value === 'string' && (_data != null ? _data.length : void 0) > 0) {
+        for (i = _i = 0, _ref = _data.length; 0 <= _ref ? _i < _ref : _i > _ref; i = 0 <= _ref ? ++_i : --_i) {
+          if (_data[i].iso === p_value) {
+            _current = _data[i];
+            break;
+          }
+        }
+      } else {
+        _current = p_value;
+      }
+      return false;
+    }
+  });
+  LanguageData.get({
+    "default": function() {
+      return _default;
+    }
+  });
+  return LanguageData;
+})(EventDispatcher);
 var ParseData;
 ParseData = (function(_super) {
   var _conditions;
@@ -4771,83 +4868,6 @@ ParseContent = (function(_super) {
   };
   return ParseContent;
 })(ParseData);
-var ServiceWorkerController;
-ServiceWorkerController = (function(_super) {
-  __extends(ServiceWorkerController, _super);
-  ServiceWorkerController["const"]({
-    INSTALLING: "serviceworker_controller_installing"
-  });
-  ServiceWorkerController["const"]({
-    INSTALLED: "serviceworker_controller_installed"
-  });
-  ServiceWorkerController["const"]({
-    ACTIVE: "serviceworker_controller_active"
-  });
-  ServiceWorkerController["const"]({
-    CHANGE: "serviceworker_controller_change"
-  });
-  ServiceWorkerController["const"]({
-    ERROR: "serviceworker_controller_error"
-  });
-  function ServiceWorkerController() {
-    this.error = __bind(this.error, this);
-    this.change = __bind(this.change, this);
-    this.registered = __bind(this.registered, this);
-    this.messages = __bind(this.messages, this);
-    var cache, src;
-    cache = app.config.cacheContents;
-    src = (cache != null ? cache.src : void 0) != null ? cache != null ? cache.src : void 0 : null;
-    if (src != null) {
-      navigator.serviceWorker.register(src, {
-        scope: (cache != null ? cache.scope : void 0) != null ? cache != null ? cache.scope : void 0 : './'
-      }).then(this.registered)["catch"](this.error);
-    }
-    ServiceWorkerController.__super__.constructor.apply(this, arguments);
-  }
-  ServiceWorkerController.prototype.messages = function(evt) {
-    return console.log("From worker:", evt.data);
-  };
-  ServiceWorkerController.prototype.registered = function(evt) {
-    var serviceWorker;
-    if (evt.installing) {
-      serviceWorker = evt.installing;
-      this.trigger(ServiceWorkerController.INSTALLING, {
-        data: serviceWorker
-      });
-    } else if (evt.waiting) {
-      serviceWorker = evt.waiting;
-      this.trigger(ServiceWorkerController.INSTALLED, {
-        data: serviceWorker
-      });
-    } else if (evt.active) {
-      serviceWorker = evt.active;
-      this.trigger(ServiceWorkerController.ACTIVE, {
-        data: serviceWorker
-      });
-    }
-    if (serviceWorker && !this.loaded) {
-      this.loaded = true;
-      serviceWorker.addEventListener('message', this.messages);
-      serviceWorker.addEventListener('statechange', this.change);
-      serviceWorker.postMessage = serviceWorker.webkitPostMessage || serviceWorker.postMessage;
-      return serviceWorker.postMessage({
-        'version': app.info.contents.version
-      });
-    }
-  };
-  ServiceWorkerController.prototype.change = function(evt) {
-    return this.trigger(ServiceWorkerController.CHANGE, {
-      data: evt
-    });
-  };
-  ServiceWorkerController.prototype.error = function(err) {
-    console.log('ServiceWorkerController registration failed: ', err);
-    return this.trigger(ServiceWorkerController.ERROR, {
-      data: err
-    });
-  };
-  return ServiceWorkerController;
-})(EventDispatcher);
 /**
 Base class to setup the configuration file and start loading of dependencies.
 @class NavigationLoader
@@ -4855,8 +4875,11 @@ Base class to setup the configuration file and start loading of dependencies.
  */
 var NavigationLoader;
 NavigationLoader = (function(_super) {
-  var config, currentStep, loaderRatio, loaderStep, loaderSteps, paths, removeParam, totalContentsLoaded;
+  var config, currentStep, lang, loaderRatio, loaderStep, loaderSteps, paths, removeParam, totalContentsLoaded;
   __extends(NavigationLoader, _super);
+  NavigationLoader["const"]({
+    LANGUAGE_DATA_LOADED: "language_data_loaded"
+  });
   NavigationLoader["const"]({
     CONFIG_LOADED: "config_loaded"
   });
@@ -4877,6 +4900,7 @@ NavigationLoader = (function(_super) {
   });
   paths = null;
   config = null;
+  lang = null;
   totalContentsLoaded = null;
   loaderStep = 0;
   loaderRatio = 0;
@@ -4895,6 +4919,8 @@ NavigationLoader = (function(_super) {
     this.initialQueue = __bind(this.initialQueue, this);
     this.contentLoaded = __bind(this.contentLoaded, this);
     this.loadContents = __bind(this.loadContents, this);
+    this.parseConfig = __bind(this.parseConfig, this);
+    this.selectLanguage = __bind(this.selectLanguage, this);
     this.configLoaded = __bind(this.configLoaded, this);
     var queue;
     if (!p_configPath) {
@@ -4920,26 +4946,75 @@ NavigationLoader = (function(_super) {
     }
   });
   /**
+  	@method loaded
+  	@return {Boolean}
+  	@protected
+   */
+  NavigationLoader.get({
+    loaded: function() {
+      return this._loaded;
+    }
+  });
+  /**
   	@method configLoaded
   	@param {Event} evt
   	@private
    */
   NavigationLoader.prototype.configLoaded = function(evt) {
-    var data, _ref, _ref1, _ref2;
+    var data, _ref;
     if (evt != null) {
       if ((_ref = evt.currentTarget) != null) {
         _ref.off(AssetLoader.COMPLETE_FILE, this.configLoaded);
       }
     }
     data = evt.result;
-    paths = PathsData.getInstance(data.paths);
-    config = new ParseConfig(paths.translate(data));
+    if (data.languages != null) {
+      lang = LanguageData.getInstance();
+      lang.data = data.languages;
+    }
+    if (data.paths != null) {
+      this.trigger(NavigationLoader.LANGUAGE_DATA_LOADED, {
+        data: data,
+        language: lang
+      });
+    } else {
+      this.selectLanguage(data);
+    }
+    return false;
+  };
+  /**
+  	@method selectLanguage
+  	@param {Object} p_data
+  	@private
+   */
+  NavigationLoader.prototype.selectLanguage = function(p_data) {
+    var current, result, _ref;
+    if (lang != null) {
+      if (((_ref = lang.current) != null ? _ref.path : void 0) != null) {
+        current = lang.current.path;
+      } else {
+        current = lang["default"].path;
+      }
+    }
+    if (p_data.paths != null) {
+      p_data.paths['language'] = current;
+      paths = PathsData.getInstance(p_data.paths);
+      result = paths.translate(p_data);
+    } else {
+      result = p_data;
+    }
+    return this.parseConfig(result);
+  };
+  /**
+  	@method parseConfig
+  	@param {Object} p_data
+  	@private
+   */
+  NavigationLoader.prototype.parseConfig = function(p_data) {
+    config = new ParseConfig(p_data);
     this.trigger(NavigationLoader.CONFIG_LOADED, {
       data: config.data
     });
-    if (((typeof app !== "undefined" && app !== null ? (_ref1 = app.detections) != null ? _ref1.cache : void 0 : void 0) != null) && ((typeof app !== "undefined" && app !== null ? (_ref2 = app.config) != null ? _ref2.cacheContents : void 0 : void 0) != null) && app.info.contents.version) {
-      app.workerController = new ServiceWorkerController();
-    }
     this.loadContents();
     return false;
   };
@@ -5149,7 +5224,7 @@ NavigationLoader = (function(_super) {
         }
         JSONUtils.removeComments(data);
         result = data;
-        evt.item.result = evt.item.tag = evt.result = JSON.parse(result);
+        result = evt.item.result = evt.item.tag = evt.result = JSON.parse(result);
         break;
       case 'js':
         data = evt.result;
@@ -5241,20 +5316,26 @@ NavigationLoader = (function(_super) {
    */
   NavigationLoader.prototype.loadComplete = function(evt) {
     var queue, step;
-    this.removeLoader(evt.currentTarget);
+    if (evt) {
+      this.removeLoader(evt.currentTarget);
+    }
     step = loaderSteps[loaderStep];
-    this.assetsLoaded(step != null ? step.id : void 0);
-    loaderRatio += step.ratio;
+    if (step) {
+      this.assetsLoaded(step.id);
+    }
+    loaderRatio += step != null ? step.ratio : void 0;
     loaderStep++;
     if (loaderStep >= loaderSteps.length) {
       this.trigger(NavigationLoader.LOAD_COMPLETE);
+      this._loaded = true;
     } else {
       currentStep = loaderSteps[loaderStep];
       queue = this.addLoader(currentStep.id);
       this.addFiles(currentStep.data, queue);
-      queue.load();
       if (queue._loadQueue.length + queue._currentLoads.length === 0) {
         this.loadComplete();
+      } else {
+        queue.load();
       }
     }
     return false;
@@ -5284,8 +5365,9 @@ Base class to setup the navigation and start loading of dependencies.
  */
 var Caim;
 Caim = (function(_super) {
-  var wrapper, _mainView, _preloaderView;
+  var wrapper, _loader, _mainView, _preloaderView;
   __extends(Caim, _super);
+  _loader = null;
   _mainView = null;
   _preloaderView = null;
   wrapper = null;
@@ -5297,7 +5379,7 @@ Caim = (function(_super) {
   	@param {HTMLElement} [p_wrapper = null] Custom container to attach the navigation.
    */
   function Caim(p_preloaderView, p_configPath, p_wrapper) {
-    var loader, _ref, _ref1;
+    var _ref, _ref1;
     if (p_configPath == null) {
       p_configPath = "data/config.json";
     }
@@ -5316,6 +5398,8 @@ Caim = (function(_super) {
     this.groupLoaded = __bind(this.groupLoaded, this);
     this.progress = __bind(this.progress, this);
     this.configLoaded = __bind(this.configLoaded, this);
+    this.selectLanguage = __bind(this.selectLanguage, this);
+    this.languageDataLoaded = __bind(this.languageDataLoaded, this);
     if (!(p_preloaderView instanceof BaseView)) {
       throw new Error('The param p_preloaderView is null or the instance of param p_preloaderView is not either BaseView class');
     } else {
@@ -5325,14 +5409,44 @@ Caim = (function(_super) {
     app.root = ((_ref = document.querySelector("base")) != null ? _ref.href : void 0) || ((_ref1 = document.getElementsByTagName("base")[0]) != null ? _ref1.href : void 0);
     app.loader = AssetLoader.getInstance();
     app.detections = Detections.getInstance();
-    loader = new NavigationLoader(app.root != null ? app.root + p_configPath : p_configPath);
-    loader.on(NavigationLoader.CONFIG_LOADED, this.configLoaded);
-    loader.on(NavigationLoader.GROUP_ASSETS_LOADED, this.groupLoaded);
-    loader.on(NavigationLoader.LOAD_START, this.createPreloaderView);
-    loader.on(NavigationLoader.LOAD_PROGRESS, this.progress);
-    loader.on(NavigationLoader.LOAD_COMPLETE, this.hidePreloderView);
+    _loader = new NavigationLoader(app.root != null ? app.root + p_configPath : p_configPath);
+    _loader.on(NavigationLoader.LANGUAGE_DATA_LOADED, this.languageDataLoaded);
+    _loader.on(NavigationLoader.CONFIG_LOADED, this.configLoaded);
+    _loader.on(NavigationLoader.GROUP_ASSETS_LOADED, this.groupLoaded);
+    _loader.on(NavigationLoader.LOAD_START, this.createPreloaderView);
+    _loader.on(NavigationLoader.LOAD_PROGRESS, this.progress);
+    _loader.on(NavigationLoader.LOAD_COMPLETE, this.hidePreloderView);
     false;
   }
+  /**
+  	@method loaded
+  	@param {Boolean}
+  	@protected
+   */
+  Caim.get({
+    loaded: function() {
+      return _loader.loaded;
+    }
+  });
+  /**
+  	@method languageDataLoaded
+  	@param {Event} evt
+  	@private
+   */
+  Caim.prototype.languageDataLoaded = function(evt) {
+    evt.currentTarget.off(NavigationLoader.LANGUAGE_DATA_LOADED, this.languageDataLoaded);
+    this.selectLanguage(evt.data);
+    return false;
+  };
+  /**
+  	@method selectLanguage
+  	@param {Object} p_data
+  	@private
+   */
+  Caim.prototype.selectLanguage = function(p_data) {
+    _loader.selectLanguage(p_data);
+    return false;
+  };
   /**
   	@method configLoaded
   	@param {Event} evt
@@ -5394,7 +5508,7 @@ Caim = (function(_super) {
   	@protected
    */
   Caim.prototype.createPreloaderView = function(evt) {
-    var _ref;
+    var _ref, _ref1;
     if (evt == null) {
       evt = null;
     }
@@ -5404,6 +5518,9 @@ Caim = (function(_super) {
           _ref.off(NavigationLoader.LOAD_START, this.createPreloaderView);
         }
       }
+    }
+    if (((_ref1 = app.config.required.preloader) != null ? _ref1.content : void 0) != null) {
+      _preloaderView.content = app.config.required.preloader.content;
     }
     wrapper.appendChild(_preloaderView.element);
     _preloaderView.on(BaseView.CREATE_COMPLETE, this.showPreloaderView);

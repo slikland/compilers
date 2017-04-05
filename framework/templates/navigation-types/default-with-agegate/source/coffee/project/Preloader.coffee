@@ -1,7 +1,7 @@
-#import slikland.navigation.core.NavigationLoader
+#import slikland.navigation.core.Caim
 #import project.views.TemplatePreloaderView
 
-class Preloader extends NavigationLoader
+class Preloader extends Caim
 
 	preloaderView = null
 
@@ -16,14 +16,13 @@ class Preloader extends NavigationLoader
 
 	# Override this method to stop default rotine of NavigationLoader
 	hidePreloderView:(evt=null)=>
-		if @ageGate? && @answer?
-			@destroyAgeGate()
-
 		if @loaded && @answer?
+			if @ageGate? 
+				@destroyAgeGate()
 			super
 
 	attachAgeGate:(evt=null)=>
-		@ageGate = new BaseDOM('div')
+		@ageGate = new BaseDOM({element:'div'})
 		@ageGate.className = 'age-gate'
 		@ageGate.css({
 			'width': '100%'
@@ -31,15 +30,15 @@ class Preloader extends NavigationLoader
 			'background-image': 'url("http://dummyimage.com/666x666&text=Age+gate+dummy+image")'
 			'background-color': '#'+Math.floor(Math.random()*16777215).toString(16)
 		})
-		document.body.appendChild(@ageGate.element)
+		document.body.appendChild(@ageGate)
 
-		@buttons = new BaseDOM('div')
+		@buttons = new BaseDOM({element:'div'})
 		@buttons.css({
 			'text-align': 'center'
 		})
 		@ageGate.appendChild(@buttons.element)
 
-		@buttonYes = new BaseDOM('button')
+		@buttonYes = new BaseDOM({element:'button'})
 		@buttonYes.text = "YES"
 		@buttons.appendChild(@buttonYes)
 		@buttonYes.element.onclick = @clickYes
@@ -48,7 +47,7 @@ class Preloader extends NavigationLoader
 			'text-align': 'center'
 		})
 
-		@buttonNo = new BaseDOM('button')
+		@buttonNo = new BaseDOM({element:'button'})
 		@buttonNo.text = "NO"
 		@buttons.appendChild(@buttonNo)
 		@buttonNo.element.onclick = @clickNo
@@ -82,7 +81,7 @@ class Preloader extends NavigationLoader
 
 		@ageGate.removeAll()
 		@ageGate.destroy()
-		document.body.removeChild(@ageGate.element)
+		document.body.removeChild(@ageGate)
 		@ageGate = null
 		
 app.on 'windowLoad', =>

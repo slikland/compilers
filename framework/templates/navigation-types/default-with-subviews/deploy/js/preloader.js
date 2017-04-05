@@ -4,6 +4,1295 @@ __hasProp={}.hasOwnProperty,
 __indexOf=[].indexOf || function(item) { for (var i = 0, l = this.length; i < l; i++) { if (i in this && this[i] === item) return i; } return -1; },
 __extends=function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) Object.defineProperty(child, key, Object.getOwnPropertyDescriptor(parent, key)); } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 /**
+This is actually not a Class. It's a bunch of helper methods adding prototype methods to native classes.
+@class Prototypes
+ */
+var NetworkError, isIE, __scopeIE8;
+isIE = function() {
+  var nav;
+  nav = navigator.userAgent.toLowerCase();
+  if (nav.indexOf('msie') !== -1) {
+    return parseInt(nav.split('msie')[1]);
+  } else {
+    return false;
+  }
+};
+if (isIE() === 8) {
+  __scopeIE8 = document.createElement("IE8_" + Math.random());
+}
+/**
+This method is a decorator to create constant variable to a class.  
+A extending class cannot override this constant either can't be reassigned.  
+* Please ignore de backslash on \\\@ as the code formatter doesn't escape atmarks.
+@method @const
+@example
+	class A
+		\@const PI: 3.14
+	console.log(A.PI) // 3.14
+	class B extends A
+		\@const PI: 3.14159 // Will throw error
+	console.log(B.PI) // Already thrown error before, but will be 3.14
+ */
+Function.prototype["const"] = function(p_prop) {
+  var name, o, value, __scope;
+  __scope = __scopeIE8 ? __scopeIE8 : this;
+  for (name in p_prop) {
+    value = p_prop[name];
+    o = {};
+    o.get = function() {
+      return value;
+    };
+    o.set = function() {
+      throw new Error("Can't set const " + name);
+    };
+    o.configurable = true;
+    o.enumerable = true;
+    Object.defineProperty(__scope, name, o);
+  }
+  return null;
+};
+/**
+EXPERIMENTAL
+This method is a decorator to protect a property of a class instance removing the property name from enumerable list.  
+* Please ignore de backslash on \\\@ as the code formatter doesn't escape atmarks.
+@method @protectProperties
+@example
+	class A
+		\@protectProperties ["_a", "_b"]
+		constructor:()->
+			@_a = 1
+	console.log(new A()) // Will not list _a either _b as enumerable
+ */
+Function.prototype.protectProperties = function(p_props) {
+  var name, o, __scope, _base, _i, _len;
+  console.warn('@protectProperties is an experimental feature. Use with caution.');
+  p_props = [].concat(p_props);
+  if ((_base = this.prototype)['___'] == null) {
+    _base['___'] = {};
+  }
+  __scope = __scopeIE8 ? __scopeIE8 : this.prototype;
+  for (_i = 0, _len = p_props.length; _i < _len; _i++) {
+    name = p_props[_i];
+    o = {};
+    o['get'] = function() {
+      return this.___[name];
+    };
+    o['set'] = function(value) {
+      return this.___[name] = value;
+    };
+    o.enumerable = false;
+    Object.defineProperty(__scope, name, o);
+  }
+  return null;
+};
+/**
+Getter decorator for a class instance.  
+With this decorator you're able to assign a getter method to a variable.  
+Also for a special case, you can assign a scope to the getter so you can create static getter to a class.  
+* Please ignore de backslash on \\\@ as the code formatter doesn't escape atmarks.
+@method @get
+@example
+	// Instance getter
+	class A
+		\@get test:()->
+			return 'Hello world!'
+	a = new A()
+	console.log(a.test) // Hello world!
+	// Static getter
+	class A
+		\@get \@, TEST:()->
+			return 'Hello world!'
+	console.log(A.TEST) // Hello world!
+ */
+Function.prototype.get = function(scope, p_prop) {
+  var enumerable, getter, name, __scope;
+  enumerable = false;
+  if (!p_prop) {
+    p_prop = scope;
+    __scope = __scopeIE8 ? __scopeIE8 : this.prototype;
+  } else {
+    enumerable = true;
+    __scope = scope;
+  }
+  for (name in p_prop) {
+    getter = p_prop[name];
+    Object.defineProperty(__scope, name, {
+      get: getter,
+      configurable: true,
+      enumerable: enumerable
+    });
+  }
+  return null;
+};
+/**
+Setter decorator for a class instance.  
+With this decorator you're able to assign a setter method to a variable.  
+Also for a special case, you can assign a scope to the setter so you can create static setter to a class.  
+* Please ignore de backslash on \\\@ as the code formatter doesn't escape atmarks.
+@method @set
+@example
+	// Instance getter / stter
+	class A
+		\@get test:()->
+			return \@_test
+		\@set test:(value)->
+			\@_test = value
+	a = new A()
+	a.test = 'Hello setter'
+	console.log(a.test) // Hello setter
+	// Static getter / setter
+	class A
+		\@get \@, TEST:()->
+			return @_TEST
+		\@set \@, TEST:(value)->
+			\@_TEST = value
+	A.TEST = 'Hello setter'
+	console.log(A.TEST) // Hello setter
+ */
+Function.prototype.set = function(scope, p_prop) {
+  var enumerable, name, setter, __scope;
+  enumerable = false;
+  if (!p_prop) {
+    p_prop = scope;
+    __scope = __scopeIE8 ? __scopeIE8 : this.prototype;
+  } else {
+    enumerable = true;
+    __scope = scope;
+  }
+  for (name in p_prop) {
+    setter = p_prop[name];
+    Object.defineProperty(__scope, name, {
+      set: setter,
+      configurable: true,
+      enumerable: enumerable
+    });
+  }
+  return null;
+};
+if (!("bind" in Function.prototype)) {
+  Function.prototype.bind = function(owner) {
+    var args, that;
+    that = this;
+    if (arguments_.length <= 1) {
+      return function() {
+        return that.apply(owner, arguments_);
+      };
+    } else {
+      args = Array.prototype.slice.call(arguments_, 1);
+      return function() {
+        return that.apply(owner, (arguments_.length === 0 ? args : args.concat(Array.prototype.slice.call(arguments_))));
+      };
+    }
+  };
+}
+if (!("trim" in String.prototype)) {
+  String.prototype.trim = function(char) {
+    if (char == null) {
+      char = null;
+    }
+    return this.ltrim(char).rtrim(char);
+  };
+}
+String.prototype.ltrim = function(char) {
+  var re;
+  if (char == null) {
+    char = null;
+  }
+  if (!char) {
+    char = '\\s';
+  }
+  re = new RegExp('^' + char + '*');
+  re.global = true;
+  re.multiline = true;
+  return this.replace(re, '');
+};
+String.prototype.rtrim = function(char) {
+  var re;
+  if (char == null) {
+    char = null;
+  }
+  if (!char) {
+    char = '\\s';
+  }
+  re = new RegExp(char + '*$');
+  re.global = true;
+  re.multiline = true;
+  return this.replace(re, '');
+};
+String.prototype.padLeft = function(length, char) {
+  var text;
+  if (char == null) {
+    char = ' ';
+  }
+  if (char.length === 0) {
+    char = ' ';
+  }
+  text = this;
+  while (text.length < length) {
+    text = char + text;
+  }
+  return text;
+};
+String.prototype.padRight = function(length, char) {
+  var text;
+  if (char == null) {
+    char = ' ';
+  }
+  if (char.length === 0) {
+    char = ' ';
+  }
+  text = this;
+  while (text.length < length) {
+    text += char;
+  }
+  return text;
+};
+if (!("isArray" in Array.prototype)) {
+  Array.isArray = function(arg) {
+    return Object.prototype.toString.call(arg) === '[object Array]';
+  };
+}
+if (!("indexOf" in Array.prototype)) {
+  Array.prototype.indexOf = function(find, i) {
+    var n;
+    if (i === void 0) {
+      i = 0;
+    }
+    if (i < 0) {
+      i += this.length;
+    }
+    if (i < 0) {
+      i = 0;
+    }
+    n = this.length;
+    while (i < n) {
+      if (i in this && this[i] === find) {
+        return i;
+      }
+      i++;
+    }
+    return -1;
+  };
+}
+if (!("lastIndexOf" in Array.prototype)) {
+  Array.prototype.lastIndexOf = function(find, i) {
+    if (i === void 0) {
+      i = this.length - 1;
+    }
+    if (i < 0) {
+      i += this.length;
+    }
+    if (i > this.length - 1) {
+      i = this.length - 1;
+    }
+    i++;
+    while (i-- > 0) {
+      if (i in this && this[i] === find) {
+        return i;
+      }
+    }
+    return -1;
+  };
+}
+if (!("forEach" in Array.prototype)) {
+  Array.prototype.forEach = function(action, that) {
+    var i, n, _results;
+    i = 0;
+    n = this.length;
+    _results = [];
+    while (i < n) {
+      if (i in this) {
+        action.call(that, this[i], i, this);
+      }
+      _results.push(i++);
+    }
+    return _results;
+  };
+}
+if (!("map" in Array.prototype)) {
+  Array.prototype.map = function(mapper, that) {
+    var i, n, other;
+    other = new Array(this.length);
+    i = 0;
+    n = this.length;
+    while (i < n) {
+      if (i in this) {
+        other[i] = mapper.call(that, this[i], i, this);
+      }
+      i++;
+    }
+    return other;
+  };
+}
+if (!("filter" in Array.prototype)) {
+  Array.prototype.filter = function(filter, that) {
+    var i, n, other, v;
+    other = [];
+    v = void 0;
+    i = 0;
+    n = this.length;
+    while (i < n) {
+      if (i in this && filter.call(that, v = this[i], i, this)) {
+        other.push(v);
+      }
+      i++;
+    }
+    return other;
+  };
+}
+if (!("every" in Array.prototype)) {
+  Array.prototype.every = function(tester, that) {
+    var i, n;
+    i = 0;
+    n = this.length;
+    while (i < n) {
+      if (i in this && !tester.call(that, this[i], i, this)) {
+        return false;
+      }
+      i++;
+    }
+    return true;
+  };
+}
+if (!("some" in Array.prototype)) {
+  Array.prototype.some = function(tester, that) {
+    var i, n;
+    i = 0;
+    n = this.length;
+    while (i < n) {
+      if (i in this && tester.call(that, this[i], i, this)) {
+        return true;
+      }
+      i++;
+    }
+    return false;
+  };
+}
+Node.prototype.on = Node.prototype.addEventListener;
+Node.prototype.off = Node.prototype.removeEventListener;
+if (navigator.mediaDevices == null) {
+  navigator.mediaDevices = {};
+}
+navigator.getUserMedia = navigator.mediaDevices.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia;
+if (typeof Cache !== "undefined" && Cache !== null) {
+  if (!("add" in Cache.prototype)) {
+    Cache.prototype.add = function(request) {
+      return this.addAll([request]);
+    };
+  }
+  if (!("addAll" in Cache.prototype)) {
+    Cache.prototype.addAll = function(requests) {
+      var cache;
+      return cache = this;
+    };
+    NetworkError = function(message) {
+      this.name = 'NetworkError';
+      this.code = 19;
+      this.message = message;
+    };
+    NetworkError.prototype = Object.create(Error.prototype);
+    Promise.resolve().then(function() {
+      var requests, sequence;
+      if (arguments.length < 1) {
+        throw new TypeError;
+      }
+      sequence = [];
+      requests = requests.map(function(request) {
+        if (request instanceof Request) {
+          return request;
+        } else {
+          return String(request);
+        }
+      });
+      return Promise.all(requests.map(function(request) {
+        var scheme;
+        if (typeof request === 'string') {
+          request = new Request(request);
+        }
+        scheme = new URL(request.url).protocol;
+        if (scheme !== 'http:' && scheme !== 'https:') {
+          throw new NetworkError('Invalid scheme');
+        }
+        return fetch(request.clone());
+      }));
+    }).then(function(responses) {
+      return Promise.all(responses.map(function(response, i) {
+        return cache.put(requests[i], response);
+      }));
+    }).then(function() {
+      return void 0;
+    });
+  }
+}
+if (typeof CacheStorage !== "undefined" && CacheStorage !== null) {
+  if (!("match" in CacheStorage.prototype)) {
+    CacheStorage.prototype.match = function(request, opts) {
+      var caches;
+      caches = this;
+      return this.keys().then(function(cacheNames) {
+        var match;
+        match = void 0;
+        return cacheNames.reduce((function(chain, cacheName) {}, chain.then(function() {
+          return match || caches.open(cacheName).then(function(cache) {
+            return cache.match(request, opts);
+          }).then(function(response) {
+            match = response;
+            return match;
+          });
+        })), Promise.resolve());
+      });
+    };
+  }
+}
+/**
+EventDispatcher class for handling and triggering events.
+@class EventDispatcher
+ */
+var EventDispatcher;
+EventDispatcher = (function() {
+  function EventDispatcher() {
+    this._triggerStacked = __bind(this._triggerStacked, this);
+    this.trigger = __bind(this.trigger, this);
+  }
+  EventDispatcher.prototype._events = null;
+  /**
+  	Add a event listener.
+  	@method on
+  	@param {String} event Event name.
+  	@param {function} handler A callback function to handle the event.<br>
+  	The callback function can receive 1 or 2 parameters. The first parameter is the event data itself and the second parameter is the custom data of the triggering event.
+  	@example
+  		function someEventHandler(e, data)
+  		{
+  			console.log(e); // Returns event data with it's type and target/currentTarget set to the scope
+  			console.log(data); // If the triggering event has any custom data
+  		}
+  		var ed = new EventDispatcher()
+  		ed.on('someEvent', someEventHandler);
+   */
+  EventDispatcher.prototype.on = function(p_event, p_handler) {
+    if (!this._events) {
+      this._events = {};
+    }
+    if (!this._events[p_event]) {
+      this._events[p_event] = [];
+    }
+    if (!(__indexOf.call(this._events[p_event], p_handler) >= 0)) {
+      return this._events[p_event].unshift(p_handler);
+    }
+  };
+  /**
+  	Remove an event listener.
+  	**BEWARE**
+  	> Calling this method without a handler will remove all listeners attached to this event.
+  	> If calling without the event name, will remove all listeners attached to this instance.
+  	@method off
+  	@param {String} [event=null] Event name.
+  	@param {function} [handler=null]
+  	A callback function added in the {{#crossLink "EventDispatcher/on:method"}}{{/crossLink}} call.
+   */
+  EventDispatcher.prototype.off = function(p_event, p_handler) {
+    var events, i;
+    if (p_event == null) {
+      p_event = null;
+    }
+    if (p_handler == null) {
+      p_handler = null;
+    }
+    if (!this._events) {
+      this._events = {};
+      return;
+    }
+    if ((p_event != null) && Boolean(this._events[p_event])) {
+      events = this._events[p_event];
+      if (!p_handler) {
+        return this._events[p_event].length = 0;
+      } else {
+        while ((i = events.indexOf(p_handler)) >= 0) {
+          events.splice(i, 1);
+        }
+        return this._events[p_event] = events;
+      }
+    } else {
+      return this._events = {};
+    }
+  };
+  /**
+  	Triggers an event.
+  	@method trigger
+  	@param {String} event Event name.
+  	@param {object} [data=null] Custom event data.
+  	@param {object} [target=null] Target that will be specified in the `event.target`. The `event.currentTarget` will always be this instance.
+  	@example
+  		var ed = new EventDispatcher()
+  		// Will just trigger the event
+  		ed.trigger('someEvent'); 
+  		// Will trigger the event with the object which can be retrieved by the second
+  		// parameter of the handler function.
+  		ed.trigger('someEvent', {someData: true}); 
+  		// Will set the event target to window. On the handler's first parameter
+  		//`event.target` will be window, and event.currentTarget will be the `ev` instance.
+  		ed.trigger('someEvent', {someData: true}, window);
+   */
+  EventDispatcher.prototype.trigger = function(evt, data, target) {
+    var e, events, i, k, v, _i, _len, _results;
+    if (data == null) {
+      data = null;
+    }
+    if (target == null) {
+      target = null;
+    }
+    if (Array.isArray(evt)) {
+      for (_i = 0, _len = evt.length; _i < _len; _i++) {
+        e = evt[_i];
+        this.trigger(evt, data);
+      }
+      return;
+    }
+    if (!this._events) {
+      this._events = {};
+    }
+    events = this._events[evt];
+    if (!events || events.length === 0) {
+      return;
+    }
+    if (!target) {
+      target = this;
+    }
+    e = {
+      type: evt,
+      target: target,
+      currentTarget: this
+    };
+    if (typeof data === 'object') {
+      for (k in data) {
+        v = data[k];
+        if (!e[k]) {
+          e[k] = v;
+        }
+      }
+    }
+    i = events.length;
+    _results = [];
+    while (i-- > 0) {
+      _results.push(typeof events[i] === "function" ? events[i](e, data) : void 0);
+    }
+    return _results;
+  };
+  /**
+  	Check if a event handler is already set.
+  	@method hasEvent
+  	@param {String} event Event name.
+  	@param {function} [handler=null] A callback function added in the {{#crossLink "EventDispatcher/on:method"}}{{/crossLink}} call.
+  	@return {Boolean}
+   */
+  EventDispatcher.prototype.hasEvent = function(p_event, p_handler) {
+    var event;
+    if (!this._events) {
+      this._events = {};
+      return;
+    }
+    for (event in this._events) {
+      if (event === p_event) {
+        if (this._events[event].indexOf(p_handler) > -1) {
+          return true;
+        }
+      }
+    }
+    return false;
+  };
+  /**
+  	Triggers an event after the current code block has finished processing.
+  	This is useful for stacking up events that needs to be triggered at the end of the function but it's validating beforehand.
+  	@method stackTrigger
+  	@param {String} event Event name.
+  	@param {object} [data=null] Custom event data.
+  	@param {object} [target=null] Target that will be specified in the `event.target`. The `event.currentTarget` will always be this instance.
+  	@example
+  		var ed = new EventDispatcher()
+  		var someObject = {a: true, b: false, c: true};
+  		ed.on('isA', function(){console.log('Is A!');});
+  		ed.on('isB', function(){console.log('Is B!');});
+  		ed.on('isC', function(){console.log('Is C!');});
+  		function test()
+  		{
+  			console.log("Init test()");
+  			if(someObject.a) ed.stackTrigger('isA');
+  			if(someObject.b) ed.stackTrigger('isB');
+  			if(someObject.c) ed.stackTrigger('isC');
+  			console.log("End test()");
+  		}
+  		// This will result in:
+  		// log: 'Init test()'
+  		// log: 'End test()'
+  		// log: 'isA'
+  		// log: 'isC'
+   */
+  EventDispatcher.prototype.stackTrigger = function(evt, data, target) {
+    if (data == null) {
+      data = null;
+    }
+    if (target == null) {
+      target = null;
+    }
+    if (!this._stackTriggerer) {
+      this._stackTriggerer = [];
+    }
+    this._stackTriggerer.push([evt, data, target]);
+    clearTimeout(this._stackTriggerTimeout);
+    return this._stackTriggerTimeout = setTimeout(this._triggerStacked, 0);
+  };
+  EventDispatcher.prototype._triggerStacked = function() {
+    var i, l;
+    l = this._stackTriggerer.length;
+    i = -1;
+    while (++i < l) {
+      this.trigger.apply(this, this._stackTriggerer[i]);
+    }
+    return this._stackTriggerer.length = 0;
+  };
+  return EventDispatcher;
+})();
+var App, app, windowLoaded;
+App = (function(_super) {
+  var framework_version, _conditions, _config, _container, _detections, _loader, _navigation, _root;
+  __extends(App, _super);
+  App.project_version_raw = "SL_PROJECT_VERSION:0.0.0";
+  App.project_date_raw = "SL_PROJECT_DATE:0000000000000";
+  App.WINDOW_ACTIVE = "windowActive";
+  App.WINDOW_INACTIVE = "windowInactive";
+  framework_version = "3.1.6";
+  _root = null;
+  _loader = null;
+  _config = null;
+  _container = null;
+  _navigation = null;
+  _conditions = null;
+  _detections = null;
+  function App() {
+    this._windowVisibilityChange = __bind(this._windowVisibilityChange, this);
+    App.__super__.constructor.apply(this, arguments);
+    this._checkWindowActivity();
+  }
+  App.get({
+    info: function() {
+      var info;
+      info = {};
+      info.framework = {};
+      info.framework.version = framework_version;
+      info.framework.lastUpdate = void 0;
+      info.contents = {};
+      info.contents.version = void 0;
+      info.contents.lastUpdate = void 0;
+      info.project = {};
+      info.project.version = (App.project_version_raw === void 0 || App.project_version_raw === 'undefined' ? 'SL_PROJECT_VERSION:' + 'Not versioned' : App.project_version_raw).replace('SL_PROJECT_VERSION:', '');
+      info.project.lastUpdate = new Date(parseFloat((App.project_date_raw === void 0 || App.project_date_raw === 'undefined' ? 'SL_PROJECT_DATE:' + 'Not versioned' : App.project_date_raw).replace('SL_PROJECT_DATE:', '')));
+      return info;
+    }
+  });
+  App.set({
+    root: function(p_value) {
+      return _root = p_value;
+    }
+  });
+  App.get({
+    root: function() {
+      return _root;
+    }
+  });
+  App.set({
+    loader: function(p_value) {
+      return _loader = p_value;
+    }
+  });
+  App.get({
+    loader: function() {
+      return _loader;
+    }
+  });
+  App.set({
+    config: function(p_value) {
+      return _config = p_value;
+    }
+  });
+  App.get({
+    config: function() {
+      return _config;
+    }
+  });
+  App.set({
+    container: function(p_value) {
+      return _container = p_value;
+    }
+  });
+  App.get({
+    container: function() {
+      return _container;
+    }
+  });
+  App.set({
+    navigation: function(p_value) {
+      return _navigation = p_value;
+    }
+  });
+  App.get({
+    navigation: function() {
+      return _navigation;
+    }
+  });
+  App.set({
+    conditions: function(p_value) {
+      return _conditions = p_value;
+    }
+  });
+  App.get({
+    conditions: function() {
+      return _conditions;
+    }
+  });
+  App.set({
+    detections: function(p_value) {
+      return _detections = p_value;
+    }
+  });
+  App.get({
+    detections: function() {
+      return _detections;
+    }
+  });
+  App.get({
+    windowHidden: function() {
+      var i, prefixes, prop;
+      prop = null;
+      if ('hidden' in document) {
+        prop = document['hidden'];
+      } else {
+        prefixes = ['webkit', 'moz', 'ms', 'o'];
+        i = 0;
+        while (i < prefixes.length) {
+          if (prefixes[i] + 'Hidden' in document) {
+            prop = document[prefixes[i] + 'Hidden'];
+            break;
+          }
+          i++;
+        }
+      }
+      return prop;
+    }
+  });
+  App.prototype._checkWindowActivity = function() {
+    if (this.windowHidden) {
+      return document.addEventListener('visibilitychange', this._windowVisibilityChange);
+    } else if ('onfocusin' in document) {
+      return document.onfocusin = document.onfocusout = this._windowVisibilityChange;
+    } else {
+      return window.onpageshow = window.onpagehide = window.onfocus = window.onblur = this._windowVisibilityChange;
+    }
+  };
+  App.prototype._windowVisibilityChange = function(evt) {
+    var evtType;
+    switch (evt.type) {
+      case 'blur':
+      case 'pagehide':
+        evtType = App.WINDOW_INACTIVE;
+        break;
+      case 'focus':
+      case 'pageshow':
+        evtType = App.WINDOW_ACTIVE;
+    }
+    return this.trigger(evtType);
+  };
+  return App;
+})(EventDispatcher);
+if (!app) {
+  app = new App();
+}
+windowLoaded = (function(_this) {
+  return function() {
+    if (window.remove) {
+      window.remove('load', windowLoaded);
+    } else if (window.detachEvent) {
+      window.detachEvent('onload', windowLoaded);
+    } else {
+      window.onload = null;
+    }
+    return app.trigger('windowLoad');
+  };
+})(this);
+if (window.addEventListener) {
+  window.addEventListener('load', windowLoaded);
+} else if (window.attachEvent) {
+  window.attachEvent('onload', windowLoaded);
+} else {
+  window.onload = windowLoaded;
+}
+/**
+Debug Class
+@class Debug
+@static
+@final
+ */
+var Debug,
+  __slice = [].slice;
+Debug = (function() {
+  function Debug() {}
+  Debug.debug = false;
+  Debug.light = 0x48b224;
+  Debug.dark = 0x2c035d;
+  /**
+  	@method init
+  	@static
+   */
+  Debug.init = function() {
+    var c, err, re, t, _ref;
+    Debug._console = window.console;
+    try {
+      Debug._log = Function.prototype.bind.call((_ref = Debug._console) != null ? _ref.log : void 0, Debug._console);
+    } catch (_error) {
+      err = _error;
+    }
+    if (window.Debug == null) {
+      window.Debug = Debug;
+    }
+    if (!Debug.check()) {
+      eval('window[Math.random()]()');
+    }
+    re = new RegExp(/debug=(1|true)/i);
+    Debug.debug = re.test(window.location.search);
+    re = new RegExp(/debug=(0|false)/i);
+    if (!Debug.debug && !re.test(window.location.search)) {
+      re = new RegExp(/([\.|\/]local\.|localhost|127\.0\.0\.1|192\.\d+\.\d+\.\d+|dev\.s\d+\.slikland\.)/i);
+      Debug.debug = re.test(window.location.href);
+    }
+    if (!Debug.debug || !window.console) {
+      window.console = {
+        assert: function() {},
+        clear: function() {},
+        count: function() {},
+        debug: function() {},
+        dir: function() {},
+        dirxml: function() {},
+        error: function() {},
+        exception: function() {},
+        group: function() {},
+        groupCollapsed: function() {},
+        groupEnd: function() {},
+        info: function() {},
+        log: function() {},
+        profile: function() {},
+        profileEnd: function() {},
+        table: function() {},
+        time: function() {},
+        timeEnd: function() {},
+        timeStamp: function() {},
+        trace: function() {},
+        warn: function() {}
+      };
+    } else {
+      t = '====================';
+      t += '\n';
+      t += '   DEBUG MODE ON';
+      t += '\n';
+      t += '--------------------';
+      t += '\n';
+      t += 'Caim Framework';
+      t += '\n';
+      t += 'Version: ' + app.info.framework.version;
+      t += '\n';
+      t += '--------------------';
+      t += '\n';
+      t += 'Project';
+      t += '\n';
+      t += 'Version: ' + app.info.project.version;
+      t += '\n';
+      t += 'Last update: ' + app.info.project.lastUpdate;
+      t += '\n';
+      t += '--------------------';
+      t += '\n';
+      if (app.info.contents.version != null) {
+        t += 'Cache Contents Enabled';
+        t += '\n';
+        t += 'Version: ' + app.info.contents.version;
+        t += '\n';
+      } else {
+        t += 'Cache Contents Disabled';
+        t += '\n';
+      }
+      t += '====================';
+      c = 'color: #' + Math.floor(Math.random() * 16777215).toString(16);
+      console.log('%c' + t, c);
+    }
+    return false;
+  };
+  /**
+  	@method check
+  	@param {String} [value = null]
+  	@return {String}
+  	@static
+   */
+  Debug.check = function(value) {
+    var c, col, o, sign;
+    if (value == null) {
+      value = null;
+    }
+    o = '';
+    c = '';
+    col = this.light;
+    while (col > 0) {
+      c = String.fromCharCode(col & 0xFF) + c;
+      col >>= 8;
+    }
+    o += btoa(c);
+    c = '';
+    col = this.dark;
+    while (col > 0) {
+      c = String.fromCharCode(col & 0xFF) + c;
+      col >>= 8;
+    }
+    o += btoa(c);
+    sign = o.toLowerCase();
+    if (value) {
+      return sign === value.toLowerCase();
+    } else {
+      return sign.charAt(0) === 's' && sign.charAt(1) === 'l';
+    }
+  };
+  /**
+  	@method log
+  	@static
+   */
+  Debug.log = function() {
+    if (Debug._log != null) {
+      return typeof Debug._log === "function" ? Debug._log.apply(Debug, arguments) : void 0;
+    } else {
+      try {
+        return console.log.apply(console, arguments);
+      } catch (_error) {}
+    }
+  };
+  /**
+  	@method logTime
+  	@param {Array} args...
+  	@static
+   */
+  Debug.logTime = function() {
+    var args, s, st, style, t, v;
+    args = 1 <= arguments.length ? __slice.call(arguments, 0) : [];
+    t = new Date().getTime();
+    if (!this.itm) {
+      this.itm = this.ctm = t;
+    }
+    st = t - this.ctm;
+    v = st.toString();
+    while (v.length < 6) {
+      v = ' ' + v;
+    }
+    s = v + '|';
+    v = (this.ctm - this.itm).toString();
+    while (v.length < 6) {
+      v = ' ' + v;
+    }
+    s = s + v;
+    s = ['%c' + s + ':'];
+    style = 'font-weight: bold;';
+    if (st > 100) {
+      style += 'color: red;';
+    } else if (st > 50) {
+      style += 'color: orange;';
+    }
+    s.push(style);
+    Debug.log.apply(this, [].concat(s, args));
+    return this.ctm = t;
+  };
+  return Debug;
+})();
+if (!window.atob) {
+  window.atob = function(value) {
+    var b0, b1, b2, c0, c1, c2, c3, cs, i, l, ret;
+    cs = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/';
+    l = value.length;
+    i = 0;
+    ret = '';
+    while (i < l) {
+      c0 = value.charAt(i);
+      c1 = value.charAt(i + 1);
+      c2 = value.charAt(i + 2);
+      c3 = value.charAt(i + 3);
+      c0 = cs.indexOf(c0);
+      c1 = cs.indexOf(c1);
+      c2 = cs.indexOf(c2);
+      c3 = cs.indexOf(c3);
+      if (c2 < 0) {
+        c2 = 0;
+      }
+      if (c3 < 0) {
+        c3 = 0;
+      }
+      b0 = (c0 << 2 & 0xFF) | c1 >> 4;
+      b1 = (c1 << 4 & 0xFF) | c2 >> 2;
+      b2 = (c2 << 6 & 0xFF) | c3 & 0x3F;
+      ret += String.fromCharCode(b0);
+      ret += String.fromCharCode(b1);
+      ret += String.fromCharCode(b2);
+      i += 4;
+    }
+    return ret;
+  };
+  window.btoa = function(value) {
+    var b0, b1, b2, c0, c1, c2, c3, cs, i, l, ret;
+    cs = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/';
+    l = value.length;
+    i = 0;
+    ret = '';
+    while (i < l) {
+      b0 = value.charCodeAt(i + 0) & 0xFF;
+      b1 = value.charCodeAt(i + 1) & 0xFF;
+      b2 = value.charCodeAt(i + 2) & 0xFF;
+      c0 = b0 >> 2 & 0x3F;
+      c1 = (b0 << 4 | b1 >> 4) & 0x3F;
+      c2 = (b1 << 2 | b2 >> 6) & 0x3F;
+      c3 = b2 & 0x3F;
+      ret += cs.charAt(c0) + cs.charAt(c1) + cs.charAt(c2) + cs.charAt(c3);
+      i += 3;
+    }
+    i = l % 3;
+    l = ret.length;
+    if (i === 1) {
+      ret = ret.substr(0, l - 2) + "==";
+    } else if (i === 2) {
+      ret = ret.substr(0, l - 1) + "=";
+    }
+    return ret;
+  };
+}
+window.Debug = Debug;
+Debug.init();
+/**
+Detections Class
+@class Detections
+@extends Class
+ */
+var Detections;
+Detections = (function() {
+  var getFirstMatch, getOS, testCanvas, testWebGL;
+  Detections.prototype.matches = [
+    {
+      name: 'Opera',
+      nick: /opera/i,
+      test: /opera|opr/i,
+      version: /(?:opera|opr)[\s\/](\d+(\.\d+)*)/i
+    }, {
+      name: 'Windows Phone',
+      nick: /WindowsPhone/i,
+      test: /windows phone/i,
+      version: /iemobile\/(\d+(\.\d+)*)/i
+    }, {
+      name: 'Edge',
+      nick: /edge|edgehtml/i,
+      test: /edge|msapphost|edgehtml/i,
+      version: /(?:edge|edgehtml)\/(\d+(\.\d+)*)/i
+    }, {
+      name: 'Internet Explorer',
+      nick: /explorer|internetexplorer|ie/i,
+      test: /msie|trident/i,
+      version: /(?:msie |rv:)(\d+(\.\d+)*)/i
+    }, {
+      name: 'Chrome',
+      nick: /Chrome/i,
+      test: /chrome|crios|crmo/i,
+      version: /(?:chrome|crios|crmo)\/(\d+(\.\d+)*)/i
+    }, {
+      name: 'iPod',
+      nick: /iPod/i,
+      test: /ipod/i
+    }, {
+      name: 'iPhone',
+      nick: /iPhone/i,
+      test: /iphone/i
+    }, {
+      name: 'iPad',
+      nick: /iPad/i,
+      test: /ipad/i
+    }, {
+      name: 'FirefoxOS',
+      nick: /FirefoxOS|ffos/i,
+      test: /\((mobile|tablet);[^\)]*rv:[\d\.]+\)firefox|iceweasel/i,
+      version: /(?:firefox|iceweasel)[ \/](\d+(\.\d+)?)/i
+    }, {
+      name: 'Firefox',
+      nick: /Firefox|ff/i,
+      test: /firefox|iceweasel/i,
+      version: /(?:firefox|iceweasel)[ \/](\d+(\.\d+)?)/i
+    }, {
+      name: 'Android',
+      nick: /Android/i,
+      test: /android/i
+    }, {
+      name: 'BlackBerry',
+      nick: /BlackBerry/i,
+      test: /(blackberry)|(\bbb)|(rim\stablet)\d+/i,
+      version: /blackberry[\d]+\/(\d+(\.\d+)?)/i
+    }, {
+      name: 'WebOS',
+      nick: /WebOS/i,
+      test: /(web|hpw)os/i,
+      version: /w(?:eb)?osbrowser\/(\d+(\.\d+)?)/i
+    }, {
+      name: 'Safari',
+      nick: /safari/i,
+      test: /safari/i
+    }
+  ];
+  Detections.getInstance = function() {
+    return Detections._instance != null ? Detections._instance : Detections._instance = (function(func, args, ctor) {
+      ctor.prototype = func.prototype;
+      var child = new ctor, result = func.apply(child, args);
+      return Object(result) === result ? result : child;
+    })(Detections, arguments, function(){});
+  };
+  function Detections() {
+    var k, v, _ref;
+    this.matched = null;
+    this.ua = (typeof navigator !== "undefined" && navigator !== null ? navigator.userAgent : void 0) || '';
+    this.platform = (typeof navigator !== "undefined" && navigator !== null ? navigator.platform : void 0) || '';
+    this.version = getFirstMatch(/version\/(\d+(\.\d+)*)/i, this.ua);
+    this.getBrowser();
+    this.versionArr = this.version == null ? [] : this.version.split('.');
+    _ref = this.versionArr;
+    for (k in _ref) {
+      v = _ref[k];
+      this.versionArr[k] = Number(v);
+    }
+    this.orientation = (typeof window !== "undefined" && window !== null ? window.innerWidth : void 0) > (typeof window !== "undefined" && window !== null ? window.innerHeight : void 0) ? 'landscape' : 'portrait';
+    this.touch = Boolean('ontouchstart' in window) || Boolean(navigator.maxTouchPoints > 0) || Boolean(navigator.msMaxTouchPoints > 0);
+    this.tablet = /(ipad.*|tablet.*|(android.*?chrome((?!mobi).)*))$/i.test(this.ua);
+    this.mobile = !this.tablet && Boolean(getFirstMatch(/(ipod|iphone|ipad)/i, this.ua) || /[^-]mobi/i.test(this.ua));
+    this.desktop = !this.mobile && !this.tablet;
+    this.os = getOS();
+    this.cache = 'serviceWorker' in navigator;
+    this.canvas = testCanvas();
+    this.webgl = testWebGL();
+  }
+  Detections.prototype.test = function(value) {
+    var i, l, m, result, v, _i, _ref;
+    if (!this.matched) {
+      return 0;
+    }
+    if (!(m = value.match(/(?:(?:(\D.*?)(?:\s|$))?(\D.*?)(?:\s|$))?(?:([\d\.]+))?/))) {
+      return 0;
+    }
+    result = 0;
+    if (m[1]) {
+      if (new RegExp(m[1], 'i').test(this.os)) {
+        result = 1;
+      } else {
+        return 0;
+      }
+    }
+    if (m[2]) {
+      if ((_ref = this.matched.nick) != null ? _ref.test(m[2]) : void 0) {
+        result = 1;
+      } else {
+        return 0;
+      }
+    }
+    if (m[3]) {
+      v = m[3].split('.');
+      l = v.length;
+      if (l > this.versionArr.length) {
+        l = this.versionArr.length;
+      }
+      for (i = _i = 0; 0 <= l ? _i <= l : _i >= l; i = 0 <= l ? ++_i : --_i) {
+        if (this.versionArr[i] > v[i]) {
+          return 2;
+        } else if (this.versionArr[i] < v[i]) {
+          return -1;
+        }
+      }
+    }
+    return result;
+  };
+  Detections.prototype.getBrowser = function() {
+    var m, _i, _len, _ref;
+    _ref = this.matches;
+    for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+      m = _ref[_i];
+      if (m.test.test(this.ua)) {
+        this.name = m.name;
+        this.version = this.version || getFirstMatch(m.version, this.ua);
+        this.matched = m;
+        break;
+      }
+    }
+    return [this.name, this.version];
+  };
+  getOS = function() {
+    var result;
+    result = void 0;
+    switch (typeof navigator !== "undefined" && navigator !== null ? navigator.platform.toLowerCase() : void 0) {
+      case 'iphone':
+      case 'ipod':
+      case 'ipad':
+      case 'iphone simulator':
+      case 'ipod simulator':
+      case 'ipad simulator':
+      case 'Pike v7.6 release 92':
+      case 'Pike v7.8 release 517':
+        result = 'ios';
+        break;
+      case 'macintosh':
+      case 'macintel':
+      case 'macppc':
+      case 'mac68k':
+        result = 'osx';
+        break;
+      case 'android':
+        result = 'android';
+        break;
+      case 'os/2':
+      case 'wince':
+      case 'pocket pc':
+      case 'windows':
+        result = 'windows';
+        break;
+      case 'blackberry':
+        result = 'blackberry';
+    }
+    if (/linux armv+(\d{1}l)/i.test(typeof navigator !== "undefined" && navigator !== null ? navigator.platform : void 0)) {
+      result = 'android';
+    } else if (/linux+\s?.*?$/im.test(typeof navigator !== "undefined" && navigator !== null ? navigator.platform : void 0)) {
+      result = 'linux';
+    } else if (/win\d{2}/i.test(typeof navigator !== "undefined" && navigator !== null ? navigator.platform : void 0)) {
+      result = 'windows';
+    }
+    return result;
+  };
+  testWebGL = function() {
+    var err;
+    try {
+      return !!window.WebGLRenderingContext && Boolean(document.createElement("canvas").getContext('webgl')) || Boolean(document.createElement("canvas").getContext('experimental-webgl'));
+    } catch (_error) {
+      err = _error;
+      return false;
+    }
+  };
+  testCanvas = function() {
+    var err;
+    try {
+      return !!window.CanvasRenderingContext2D && Boolean(document.createElement("canvas").getContext('2d'));
+    } catch (_error) {
+      err = _error;
+      return false;
+    }
+  };
+  getFirstMatch = function(re, val) {
+    var m;
+    m = val.match(re);
+    return (m && m.length > 1 && m[1]) || null;
+  };
+  return Detections;
+})();
+/**
 It's a simple wrapper to PreloadJS.
 See more info on <a href="http://www.createjs.com/docs/preloadjs/" target="_blank" class="crosslink">PreloadJS Docs</a>
 @class PreloadFiles
@@ -390,7 +1679,7 @@ StringUtils = (function() {
     return str.replace(/(^\w)/, this._upperCase);
   };
   /**
-  	A method to convert milisecounds (Number) in a String on time format.
+  	A method to convert milisecounds (Number) to a String on time format.
   	@method toTimeFormat
   	@static
   	@param {Number} p_miliseconds - The number in milisecounds.
@@ -405,6 +1694,23 @@ StringUtils = (function() {
     minutes = Math.floor(p_miliseconds / 60);
     seconds = Math.floor(p_miliseconds % 60);
     return String(p_decimal ? this.addDecimalZero(minutes) + ":" + this.addDecimalZero(seconds) : minutes + ":" + seconds);
+  };
+  /**
+  	A method to convert a String time format to secounds (Number).
+  	@method fromTimeFormat
+  	@static
+  	@param {String} p_timeformat - The String time format
+  	@return {Number}
+   */
+  StringUtils.fromTimeFormat = function(p_timeformat) {
+    var a, result;
+    a = p_timeformat.split(':');
+    if (a.length > 2) {
+      result = Number((a[0] * 3600) + Number(a[1]) * 60 + Number(a[2]));
+    } else {
+      result = Number(a[0]) * 60 + Number(a[1]);
+    }
+    return result;
   };
   /**
   	A method to add a zero before if the p_value is smaller that 10 and bigger that -1.
@@ -663,7 +1969,7 @@ StringUtils = (function() {
     }
     if (p_loadItem.src.indexOf("?v=") === -1) {
       ts = new Date().getTime();
-      cache = cv ? "?v=" + app.info.version + "&noCache=" + ts : "?v=" + app.info.version;
+      cache = cv ? "?v=" + app.info.project.version + "&noCache=" + ts : "?v=" + app.info.project.version;
       p_loadItem.src += cache;
     }
     return true;
@@ -921,222 +2227,13 @@ this.createjs = this.createjs || {};
     }
     if (p_loadItem.src.indexOf("?v=") === -1) {
       ts = new Date().getTime();
-      cache = cv ? "?v=" + app.info.version + "&noCache=" + ts : "?v=" + app.info.version;
+      cache = cv ? "?v=" + app.info.project.version + "&noCache=" + ts : "?v=" + app.info.project.version;
       p_loadItem.src += cache;
     }
     loader = new createjs.MediaLoader(p_loadItem, false);
     return loader;
   };
   createjs.MediaPlugin = MediaPlugin;
-})();
-/**
-EventDispatcher class for handling and triggering events.
-@class EventDispatcher
- */
-var EventDispatcher;
-EventDispatcher = (function() {
-  function EventDispatcher() {
-    this._triggerStacked = __bind(this._triggerStacked, this);
-    this.trigger = __bind(this.trigger, this);
-  }
-  EventDispatcher.prototype._events = null;
-  /**
-  	Add a event listener.
-  	@method on
-  	@param {String} event Event name.
-  	@param {function} handler A callback function to handle the event.<br>
-  	The callback function can receive 1 or 2 parameters. The first parameter is the event data itself and the second parameter is the custom data of the triggering event.
-  	@example
-  		function someEventHandler(e, data)
-  		{
-  			console.log(e); // Returns event data with it's type and target/currentTarget set to the scope
-  			console.log(data); // If the triggering event has any custom data
-  		}
-  		var ed = new EventDispatcher()
-  		ed.on('someEvent', someEventHandler);
-   */
-  EventDispatcher.prototype.on = function(p_event, p_handler) {
-    if (!this._events) {
-      this._events = {};
-    }
-    if (!this._events[p_event]) {
-      this._events[p_event] = [];
-    }
-    if (!(__indexOf.call(this._events[p_event], p_handler) >= 0)) {
-      return this._events[p_event].unshift(p_handler);
-    }
-  };
-  /**
-  	Remove an event listener.
-  	**BEWARE**
-  	> Calling this method without a handler will remove all listeners attached to this event.
-  	> If calling without the event name, will remove all listeners attached to this instance.
-  	@method off
-  	@param {String} [event=null] Event name.
-  	@param {function} [handler=null]
-  	A callback function added in the {{#crossLink "EventDispatcher/on:method"}}{{/crossLink}} call.
-   */
-  EventDispatcher.prototype.off = function(p_event, p_handler) {
-    var events, i;
-    if (p_event == null) {
-      p_event = null;
-    }
-    if (p_handler == null) {
-      p_handler = null;
-    }
-    if (!this._events) {
-      this._events = {};
-      return;
-    }
-    if ((p_event != null) && Boolean(this._events[p_event])) {
-      events = this._events[p_event];
-      if (!p_handler) {
-        return this._events[p_event].length = 0;
-      } else {
-        while ((i = events.indexOf(p_handler)) >= 0) {
-          events.splice(i, 1);
-        }
-        return this._events[p_event] = events;
-      }
-    } else {
-      return this._events = {};
-    }
-  };
-  /**
-  	Triggers an event.
-  	@method trigger
-  	@param {String} event Event name.
-  	@param {object} [data=null] Custom event data.
-  	@param {object} [target=null] Target that will be specified in the `event.target`. The `event.currentTarget` will always be this instance.
-  	@example
-  		var ed = new EventDispatcher()
-  		// Will just trigger the event
-  		ed.trigger('someEvent'); 
-  		// Will trigger the event with the object which can be retrieved by the second
-  		// parameter of the handler function.
-  		ed.trigger('someEvent', {someData: true}); 
-  		// Will set the event target to window. On the handler's first parameter
-  		//`event.target` will be window, and event.currentTarget will be the `ev` instance.
-  		ed.trigger('someEvent', {someData: true}, window);
-   */
-  EventDispatcher.prototype.trigger = function(evt, data, target) {
-    var e, events, i, k, v, _i, _len, _results;
-    if (data == null) {
-      data = null;
-    }
-    if (target == null) {
-      target = null;
-    }
-    if (Array.isArray(evt)) {
-      for (_i = 0, _len = evt.length; _i < _len; _i++) {
-        e = evt[_i];
-        this.trigger(evt, data);
-      }
-      return;
-    }
-    if (!this._events) {
-      this._events = {};
-    }
-    events = this._events[evt];
-    if (!events || events.length === 0) {
-      return;
-    }
-    if (!target) {
-      target = this;
-    }
-    e = {
-      type: evt,
-      target: target,
-      currentTarget: this
-    };
-    if (typeof data === 'object') {
-      for (k in data) {
-        v = data[k];
-        if (!e[k]) {
-          e[k] = v;
-        }
-      }
-    }
-    i = events.length;
-    _results = [];
-    while (i-- > 0) {
-      _results.push(typeof events[i] === "function" ? events[i](e, data) : void 0);
-    }
-    return _results;
-  };
-  /**
-  	Check if a event handler is already set.
-  	@method hasEvent
-  	@param {String} event Event name.
-  	@param {function} [handler=null] A callback function added in the {{#crossLink "EventDispatcher/on:method"}}{{/crossLink}} call.
-  	@return {Boolean}
-   */
-  EventDispatcher.prototype.hasEvent = function(p_event, p_handler) {
-    var event;
-    if (!this._events) {
-      this._events = {};
-      return;
-    }
-    for (event in this._events) {
-      if (event === p_event) {
-        if (this._events[event].indexOf(p_handler) > -1) {
-          return true;
-        }
-      }
-    }
-    return false;
-  };
-  /**
-  	Triggers an event after the current code block has finished processing.
-  	This is useful for stacking up events that needs to be triggered at the end of the function but it's validating beforehand.
-  	@method stackTrigger
-  	@param {String} event Event name.
-  	@param {object} [data=null] Custom event data.
-  	@param {object} [target=null] Target that will be specified in the `event.target`. The `event.currentTarget` will always be this instance.
-  	@example
-  		var ed = new EventDispatcher()
-  		var someObject = {a: true, b: false, c: true};
-  		ed.on('isA', function(){console.log('Is A!');});
-  		ed.on('isB', function(){console.log('Is B!');});
-  		ed.on('isC', function(){console.log('Is C!');});
-  		function test()
-  		{
-  			console.log("Init test()");
-  			if(someObject.a) ed.stackTrigger('isA');
-  			if(someObject.b) ed.stackTrigger('isB');
-  			if(someObject.c) ed.stackTrigger('isC');
-  			console.log("End test()");
-  		}
-  		// This will result in:
-  		// log: 'Init test()'
-  		// log: 'End test()'
-  		// log: 'isA'
-  		// log: 'isC'
-   */
-  EventDispatcher.prototype.stackTrigger = function(evt, data, target) {
-    if (data == null) {
-      data = null;
-    }
-    if (target == null) {
-      target = null;
-    }
-    if (!this._stackTriggerer) {
-      this._stackTriggerer = [];
-    }
-    this._stackTriggerer.push([evt, data, target]);
-    clearTimeout(this._stackTriggerTimeout);
-    return this._stackTriggerTimeout = setTimeout(this._triggerStacked, 0);
-  };
-  EventDispatcher.prototype._triggerStacked = function() {
-    var i, l;
-    l = this._stackTriggerer.length;
-    i = -1;
-    while (++i < l) {
-      this.trigger.apply(this, this._stackTriggerer[i]);
-    }
-    return this._stackTriggerer.length = 0;
-  };
-  return EventDispatcher;
 })();
 var PathsData;
 PathsData = (function(_super) {
@@ -1220,6 +2317,162 @@ PathsData = (function(_super) {
     return p_vars;
   };
   return PathsData;
+})(EventDispatcher);
+var AssetLoader;
+AssetLoader = (function(_super) {
+  __extends(AssetLoader, _super);
+  AssetLoader.INITIALIZE = "initialize";
+  AssetLoader.COMPLETE_ALL = "complete";
+  AssetLoader.COMPLETE_FILE = "fileload";
+  AssetLoader.PROGRESS_ALL = "progress";
+  AssetLoader.PROGRESS_FILE = "fileprogress";
+  AssetLoader.START_ALL = "loadstart";
+  AssetLoader.START_FILE = "filestart";
+  AssetLoader.ERROR = "error";
+  AssetLoader.FILE_ERROR = "fileerror";
+  AssetLoader.prototype._groups = null;
+  AssetLoader.getInstance = function() {
+    return AssetLoader._instance != null ? AssetLoader._instance : AssetLoader._instance = (function(func, args, ctor) {
+      ctor.prototype = func.prototype;
+      var child = new ctor, result = func.apply(child, args);
+      return Object(result) === result ? result : child;
+    })(AssetLoader, arguments, function(){});
+  };
+  function AssetLoader() {
+    this._fileLoad = __bind(this._fileLoad, this);
+    this._onFileError = __bind(this._onFileError, this);
+    this._onError = __bind(this._onError, this);
+    this._onStartFile = __bind(this._onStartFile, this);
+    this._groups = {};
+  }
+  AssetLoader.prototype.loadGroup = function(p_groupId, p_files) {
+    var group;
+    group = this.getGroup(p_groupId);
+    group.loadManifest(p_files);
+    return group;
+  };
+  AssetLoader.prototype.getAllGroups = function() {
+    return this._groups;
+  };
+  AssetLoader.prototype.getGroup = function(p_groupId, p_concurrent, p_xhr) {
+    var group;
+    if (p_concurrent == null) {
+      p_concurrent = 3;
+    }
+    if (p_xhr == null) {
+      p_xhr = true;
+    }
+    group = this._groups[p_groupId];
+    if (!group) {
+      group = new createjs.LoadQueue(p_xhr);
+      group.installPlugin(createjs.CacheControllerPlugin);
+      group.installPlugin(createjs.MediaPlugin);
+      group.id = p_groupId;
+      this._groups[p_groupId] = group;
+      group.on(AssetLoader.ERROR, this._onError);
+      group.on(AssetLoader.START_FILE, this._onStartFile);
+      group.on(AssetLoader.FILE_ERROR, this._onFileError);
+      group.on(AssetLoader.COMPLETE_FILE, this._fileLoad);
+    }
+    group.setMaxConnections(p_concurrent);
+    return group;
+  };
+  AssetLoader.prototype.preferXHR = function(p_groupId, p_value) {
+    var group;
+    if (p_value == null) {
+      p_value = true;
+    }
+    group = this.getGroup(p_groupId).setPreferXHR = p_value;
+    return group;
+  };
+  AssetLoader.prototype._onStartFile = function(evt) {
+    return evt.item.loaded = false;
+  };
+  AssetLoader.prototype._onError = function(e) {
+    var msg, _ref;
+    e.currentTarget.off(AssetLoader.START_FILE, this._onStartFile);
+    e.currentTarget.off(AssetLoader.ERROR, this._onError);
+    e.currentTarget.off(AssetLoader.COMPLETE_FILE, this._fileLoad);
+    msg = e.title;
+    if ((e != null ? (_ref = e.data) != null ? _ref.src : void 0 : void 0) != null) {
+      e.fileName = e.data.src;
+      msg += " " + e.data.src;
+    }
+    throw new Error(msg).stack;
+    return false;
+  };
+  AssetLoader.prototype._onFileError = function(e) {
+    e.currentTarget.off(AssetLoader.START_FILE, this._onStartFile);
+    e.currentTarget.off(AssetLoader.FILE_ERROR, this._onFileError);
+    e.currentTarget.off(AssetLoader.COMPLETE_FILE, this._fileLoad);
+    console.log(e);
+    throw new Error(e.title).stack;
+    return false;
+  };
+  AssetLoader.prototype._fileLoad = function(evt) {
+    var data, paths, result, _ref;
+    evt.item.loaded = true;
+    evt.currentTarget.off(AssetLoader.ERROR, this._onError);
+    evt.currentTarget.off(AssetLoader.FILE_ERROR, this._onFileError);
+    evt.item.result = evt.item.tag = evt.result;
+    if ((typeof app !== "undefined" && app !== null ? (_ref = app.config) != null ? _ref.paths : void 0 : void 0) != null) {
+      paths = PathsData.getInstance(app.config.paths);
+      switch (evt.item.ext) {
+        case 'json':
+          data = paths.translate(evt.result);
+          if (typeof data !== 'string') {
+            data = JSON.stringify(data);
+          }
+          JSONUtils.removeComments(data);
+          result = data;
+          result = evt.item.result = evt.item.tag = evt.result = JSON.parse(result);
+          break;
+        case 'js':
+          data = evt.result;
+          data = data.replace(/^\/\/.*?(\n|$)/igm, '');
+          result = eval('(function (){' + data + '}).call(self)');
+          break;
+        default:
+          result = evt.item;
+      }
+    }
+    return false;
+  };
+  AssetLoader.prototype.getItem = function(p_id, p_groupId) {
+    var i, k, v, _ref, _ref1;
+    if (p_groupId == null) {
+      p_groupId = null;
+    }
+    if (p_groupId) {
+      return (_ref = this._groups[p_groupId]) != null ? _ref.getItem(p_id) : void 0;
+    }
+    _ref1 = this._groups;
+    for (k in _ref1) {
+      v = _ref1[k];
+      if (i = v.getItem(p_id)) {
+        return i;
+      }
+    }
+  };
+  AssetLoader.prototype.getResult = function(p_id, p_groupId) {
+    var i, k, result, v, _ref, _ref1;
+    if (p_groupId == null) {
+      p_groupId = null;
+    }
+    result = null;
+    if (p_groupId) {
+      result = (_ref = this._groups[p_groupId]) != null ? _ref.getResult(p_id) : void 0;
+    }
+    _ref1 = this._groups;
+    for (k in _ref1) {
+      v = _ref1[k];
+      if (i = v.getResult(p_id)) {
+        result = i;
+      }
+    }
+    return result;
+  };
+  return AssetLoader;
 })(EventDispatcher);
 var ObjectUtils;
 ObjectUtils = (function() {
@@ -1348,6 +2601,1735 @@ ObjectUtils = (function() {
   };
   return ObjectUtils;
 })();
+/**
+Singleton ConditionsValidation class
+@class ConditionsValidation
+ */
+var ConditionsValidation,
+  __slice = [].slice;
+ConditionsValidation = (function() {
+  var _detections, _list;
+  _list = null;
+  _detections = null;
+  ConditionsValidation.getInstance = function(p_data) {
+    return ConditionsValidation._instance != null ? ConditionsValidation._instance : ConditionsValidation._instance = new ConditionsValidation(p_data);
+  };
+  /**
+  	@class ConditionsValidation
+  	@constructor
+  	@param {Object} p_data
+   */
+  function ConditionsValidation(p_data) {
+    this.validate = __bind(this.validate, this);
+    _detections = Detections.getInstance();
+    _list = ObjectUtils.clone(p_data);
+  }
+  /**
+  	Add object condition in internal list.
+  	@method add
+  	@param {Object} p_obj
+  	@return {Boolean}
+   */
+  ConditionsValidation.prototype.add = function(p_obj) {
+    var k, v;
+    if (ObjectUtils.hasSameKey(p_obj, _list) || ObjectUtils.isEqual(p_obj, _list)) {
+      throw new Error('The object ' + JSON.stringify(p_obj) + ' already exists in validations list.');
+    }
+    for (k in p_obj) {
+      v = p_obj[k];
+      _list[k] = v;
+    }
+    return true;
+  };
+  /**
+  	Returns the internal list of registered conditions.
+  	@attribute list
+  	@type {Object}
+  	@readOnly
+   */
+  ConditionsValidation.get({
+    list: function() {
+      return _list;
+    }
+  });
+  /**
+  	Returns the object condition of internal list.
+  	@method get
+  	@param {String} p_keyID
+  	@return {Object}
+   */
+  ConditionsValidation.prototype.get = function(p_keyID) {
+    if (this.has(p_keyID)) {
+      return _list[p_keyID];
+    } else {
+      throw new Error("The key " + p_keyID + " does not exists in validations list.");
+    }
+  };
+  /**
+  	Checks the conditions already added in internal list.
+  	@method has
+  	@param {String} p_keyID
+  	@return {Boolean}
+   */
+  ConditionsValidation.prototype.has = function(p_keyID) {
+    if (_list[p_keyID]) {
+      return true;
+    } else {
+      return false;
+    }
+  };
+  /**
+  	Removes the object condition of internal list.
+  	@method remove
+  	@param {String} p_keyID
+  	@return {Boolean}
+   */
+  ConditionsValidation.prototype.remove = function(p_keyID) {
+    if (_list[p_keyID]) {
+      delete _list[p_keyID];
+      return true;
+    } else {
+      throw new Error("The key " + p_keyID + " does not exists in validations list.");
+    }
+    return false;
+  };
+  /**
+  	This method accepts the ID of a condition object or a group of ID with a <a href="//developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Expressions_and_Operators" target="_blank" class="crosslink">default operators</a>, to returns if only one condition is a valid condition or a group with a sum of conditions are valid.
+  	@method test
+  	@param {String} p_args The ID of a condition or a group with a sum of conditions.
+  	@return {Boolean}
+  	@example
+  	```
+  	//Example of conditions list in config file
+  	...
+  	"conditions": {
+  		"small": {
+  			"browser":{
+  				"mobile": true
+  			},
+  			"size": {
+  				"min-width":300
+  			}
+  		},
+  		"medium": {
+  			"browser":{
+  				"tablet": true
+  			},
+  			"orientation":"landscape",
+  			"size": {
+  				"min-width":992
+  			}
+  		},
+  		"large": {
+  			"browser":{
+  				"desktop": true
+  			},
+  			"size": {
+  				"min-width":1200
+  			}
+  		},
+  		"xtra_large": {
+  			"size": {
+  				"min-width":1500
+  			}
+  		},
+  		"full": {
+  			"size": {
+  				"min-width":1910
+  			}
+  		}
+  	}
+  	...
+  	//Example condition with operators in some content file
+  	...
+  	"src":[
+  		{
+  			"condition":"xtra_large && full",
+  			"file":"file.json"
+  		},
+  		{
+  			"condition":"medium || xtra_large",
+  			"file":"file.json"
+  		},
+  		{
+  			"condition":"small < medium",
+  			"file":"file.json"
+  		},
+  		{
+  			"condition":"(small > medium) || medium",
+  			"file":"file.json"
+  		}
+  	]
+  	//Example single condition in some content file
+  	...
+  	"src":[
+  		{
+  			"condition":"default",
+  			"file":"{base}data/home.json"
+  		}
+  	]
+  	...
+  	```
+   */
+  ConditionsValidation.prototype.test = function(p_args) {
+    var parsed, validate;
+    parsed = p_args.replace(new RegExp(/[a-zA-Z0-9-_]+/g), "validate('$&')");
+    validate = this.validate;
+    return eval('(function(){return (' + parsed + ');})();');
+  };
+  ConditionsValidation.prototype.validate = function(p_keyID) {
+    var a, err, i, k, key, match, matchSize, r, result, total, v, value, _i, _ref, _ref1;
+    result = [];
+    _ref = this.get(p_keyID);
+    for (k in _ref) {
+      v = _ref[k];
+      switch (k) {
+        case "size":
+          matchSize = true;
+          for (key in v) {
+            value = v[key];
+            switch (key) {
+              case "max-width":
+                if (window.innerWidth > value) {
+                  matchSize = false;
+                  break;
+                }
+                break;
+              case "min-width":
+                if (window.innerWidth < value) {
+                  matchSize = false;
+                  break;
+                }
+                break;
+              case "max-height":
+                if (window.innerHeight > value) {
+                  matchSize = false;
+                  break;
+                }
+                break;
+              case "min-height":
+                if (window.innerHeight < value) {
+                  matchSize = false;
+                  break;
+                }
+            }
+          }
+          result.push(matchSize);
+          break;
+        case "browser":
+          for (key in v) {
+            value = v[key];
+            switch (key) {
+              case "ua":
+                result.push(new RegExp(value).test(_detections.ua));
+                break;
+              case "version":
+                a = value.match(/\d+/g);
+                total = a.length;
+                if (total > _detections.versionArr.length) {
+                  total = _detections.versionArr.length;
+                }
+                for (i = _i = 0; 0 <= total ? _i <= total : _i >= total; i = 0 <= total ? ++_i : --_i) {
+                  if (a[i] === void 0) {
+                    continue;
+                  }
+                  match = 0;
+                  if (a[i] > _detections.versionArr[i]) {
+                    match = 1;
+                    break;
+                  } else if (a[i] < _detections.versionArr[i]) {
+                    match = -1;
+                    break;
+                  }
+                }
+                r = ((_ref1 = value.match(/[<>=]+/g)) != null ? _ref1[0] : void 0) || '==';
+                if (r.lengh === 0) {
+                  r = '==';
+                }
+                result.push(eval('0' + r + 'match'));
+                break;
+              default:
+                try {
+                  if (_detections[key] != null) {
+                    result.push(value === _detections[key]);
+                  }
+                } catch (_error) {
+                  err = _error;
+                }
+            }
+          }
+          break;
+        case "domain":
+          result.push(v.toLowerCase() === window.location.hostname.toLowerCase());
+          break;
+        case "platform":
+          result.push(v.toLowerCase() === _detections.platform.toLowerCase());
+      }
+    }
+    if (result.indexOf(false) === -1) {
+      return true;
+    } else {
+      return false;
+    }
+  };
+  ConditionsValidation.prototype.customTest = function() {
+    var p_args, p_callback;
+    p_callback = arguments[0], p_args = 2 <= arguments.length ? __slice.call(arguments, 1) : [];
+    return p_callback.call(void 0, p_args);
+  };
+  return ConditionsValidation;
+})();
+var BaseDOM,
+  __slice = [].slice;
+Node.prototype.__appendChild__ = Node.prototype.appendChild;
+Node.prototype.appendChild = function(node) {
+  var el;
+  el = node;
+  if (node instanceof BaseDOM) {
+    el = node.element;
+    node.parent = this;
+  }
+  Node.prototype.__appendChild__.call(this, el);
+  return node;
+};
+Node.prototype.__removeChild__ = Node.prototype.removeChild;
+Node.prototype.removeChild = function(node) {
+  var el;
+  el = node;
+  if (node instanceof BaseDOM) {
+    el = node.element;
+    node._parent = null;
+  }
+  Node.prototype.__removeChild__.call(this, el);
+  return node;
+};
+Element.prototype.matches = Element.prototype.matches || Element.prototype.webkitMatchesSelector || Element.prototype.mozMatchesSelector || Element.prototype.msMatchesSelector || Element.prototype.oMatchesSelector;
+Node.prototype.findParents = function(query) {
+  if (this.parentNode != null) {
+    if (this.parentNode.matches(query)) {
+      return this.parentNode;
+    } else {
+      return this.parentNode.findParents(query);
+    }
+  }
+  return null;
+};
+/**
+Base DOM manipulation class
+@class BaseDOM
+ */
+BaseDOM = (function(_super) {
+  __extends(BaseDOM, _super);
+  function BaseDOM() {
+    var className, element, i, namespace, option, p_options;
+    p_options = 1 <= arguments.length ? __slice.call(arguments, 0) : [];
+    BaseDOM.__super__.constructor.apply(this, arguments);
+    element = 'div';
+    className = null;
+    namespace = null;
+    if (typeof p_options[0] === 'string' || p_options[0] instanceof HTMLElement) {
+      element = p_options[0];
+    } else {
+      i = p_options.length;
+      while (i--) {
+        option = p_options[i];
+        if (option.element != null) {
+          element = option.element;
+        }
+        if (option.className != null) {
+          className = option.className;
+        }
+        if (option.namespace != null) {
+          namespace = option.namespace;
+        }
+      }
+    }
+    if (typeof element === 'string') {
+      if (namespace) {
+        this._namespace = namespace;
+        this._element = document.createElementNS(this._namespace, element);
+      } else {
+        this._element = document.createElement(element);
+      }
+    } else if (element instanceof HTMLElement) {
+      this._element = element;
+    }
+    if (className) {
+      this.addClass(className);
+    }
+    this._element.__instance__ = this;
+  }
+  BaseDOM.get({
+    element: function() {
+      return this._element;
+    }
+  });
+  BaseDOM.get({
+    namespace: function() {
+      return this._namespace;
+    }
+  });
+  BaseDOM.get({
+    childNodes: function() {
+      return this.element.childNodes;
+    }
+  });
+  BaseDOM.get({
+    width: function() {
+      return this.getBounds().width;
+    }
+  });
+  BaseDOM.get({
+    height: function() {
+      return this.getBounds().height;
+    }
+  });
+  BaseDOM.get({
+    left: function() {
+      return this.getBounds().left;
+    }
+  });
+  BaseDOM.get({
+    top: function() {
+      return this.getBounds().top;
+    }
+  });
+  BaseDOM.get({
+    x: function() {
+      return this.getBounds().left;
+    }
+  });
+  BaseDOM.get({
+    y: function() {
+      return this.getBounds().top;
+    }
+  });
+  BaseDOM.get({
+    parent: function() {
+      return this._parent;
+    }
+  });
+  BaseDOM.set({
+    parent: function(value) {
+      if (!(value instanceof BaseDOM) && !(value instanceof Node)) {
+        throw new Error('Parent instance is not either Node or BaseDOM');
+      }
+      return this._parent = value;
+    }
+  });
+  BaseDOM.get({
+    className: function() {
+      return this.element.className;
+    }
+  });
+  BaseDOM.set({
+    className: function(value) {
+      return this.element.className = value.trim();
+    }
+  });
+  BaseDOM.get({
+    text: function() {
+      return this.html;
+    }
+  });
+  BaseDOM.set({
+    text: function(value) {
+      return this.html = value;
+    }
+  });
+  BaseDOM.get({
+    html: function() {
+      return this.element.innerHTML;
+    }
+  });
+  BaseDOM.set({
+    html: function(value) {
+      return this.element.innerHTML = value;
+    }
+  });
+  BaseDOM.get({
+    isAttached: function() {
+      return (typeof document.contains === "function" ? document.contains(this.element) : void 0) || document.body.contains(this.element);
+    }
+  });
+  BaseDOM.get({
+    attributes: function() {
+      return this.element.attributes;
+    }
+  });
+  BaseDOM.prototype.appendChild = function(child) {
+    return this.appendChildAt(child);
+  };
+  BaseDOM.prototype.appendChildAt = function(child, index) {
+    var el;
+    if (index == null) {
+      index = -1;
+    }
+    el = child;
+    if (child instanceof BaseDOM) {
+      el = child.element;
+    }
+    if (index === -1 || index >= this.childNodes.length) {
+      this.element.appendChild(el);
+    } else {
+      this.element.insertBefore(el, this.childNodes[index]);
+    }
+    if (child instanceof BaseDOM) {
+      child.parent = this;
+    }
+    return child;
+  };
+  BaseDOM.prototype.remove = function() {
+    var _ref;
+    return (_ref = this.parent) != null ? typeof _ref.removeChild === "function" ? _ref.removeChild(this) : void 0 : void 0;
+  };
+  BaseDOM.prototype.removeChild = function(child) {
+    var el, _ref;
+    el = child;
+    if (child instanceof BaseDOM) {
+      el = child != null ? child.element : void 0;
+    }
+    try {
+      return (_ref = this.element) != null ? typeof _ref.removeChild === "function" ? _ref.removeChild(el) : void 0 : void 0;
+    } catch (_error) {}
+  };
+  BaseDOM.prototype.removeChildAt = function(index) {
+    if (index == null) {
+      index = -1;
+    }
+    if (index < this.childNodes.length) {
+      return typeof this.removeChild === "function" ? this.removeChild(this.childNodes[i]) : void 0;
+    }
+  };
+  BaseDOM.prototype.removeAll = function() {
+    var childs, i, _results;
+    childs = this.childNodes;
+    i = childs.length;
+    _results = [];
+    while (i-- > 0) {
+      _results.push(this.removeChild(childs[i]));
+    }
+    return _results;
+  };
+  BaseDOM.prototype.matches = function(query) {
+    return this.element.matches(query);
+  };
+  BaseDOM.prototype.findParents = function(query) {
+    return this.element.findParents(query);
+  };
+  BaseDOM.prototype.find = function(query, onlyInstances) {
+    var element;
+    if (onlyInstances == null) {
+      onlyInstances = false;
+    }
+    element = this.element.querySelector(query);
+    if (onlyInstances) {
+      return element != null ? element.__instance__ : void 0;
+    } else {
+      return element;
+    }
+  };
+  BaseDOM.prototype.findAll = function(query, onlyInstances) {
+    var elements, els, i, l, p;
+    if (onlyInstances == null) {
+      onlyInstances = false;
+    }
+    elements = this.element.querySelectorAll(query);
+    if (onlyInstances) {
+      els = [];
+      i = -1;
+      l = elements.length;
+      p = 0;
+      while (++i < l) {
+        if (elements[i].__instance__) {
+          els[p++] = elements[i].__instance__;
+        }
+      }
+      elements = els;
+    }
+    return elements;
+  };
+  BaseDOM.prototype.attr = function(name, value, namespace) {
+    var k, v, _results;
+    if (value == null) {
+      value = 'nonenonenone';
+    }
+    if (namespace == null) {
+      namespace = false;
+    }
+    if (typeof name === 'string') {
+      return this._attr(name, value, namespace);
+    } else if (typeof name === 'object') {
+      _results = [];
+      for (k in name) {
+        v = name[k];
+        _results.push(this._attr(k, v, namespace));
+      }
+      return _results;
+    }
+  };
+  BaseDOM.prototype._attr = function(name, value, namespace) {
+    if (value == null) {
+      value = 'nonenonenone';
+    }
+    if (namespace == null) {
+      namespace = false;
+    }
+    if (namespace === false) {
+      namespace = this.namespace;
+    }
+    if (value !== 'nonenonenone') {
+      if (namespace) {
+        this.element.setAttributeNS(namespace, name, value);
+      } else {
+        this.element.setAttribute(name, value);
+      }
+    }
+    if (namespace) {
+      return this.element.getAttributeNS(namespace, name);
+    } else {
+      return this.element.getAttribute(name);
+    }
+  };
+  BaseDOM.prototype._css = function(name, value) {
+    if (value == null) {
+      value = null;
+    }
+    if (value !== null) {
+      this.element.style[name] = value;
+    }
+    return this.element.style[name];
+  };
+  BaseDOM.prototype.css = function(name, value) {
+    var k, v, _results;
+    if (value == null) {
+      value = null;
+    }
+    if (typeof name === 'string') {
+      return this._css(name, value);
+    } else if (typeof name === 'object') {
+      _results = [];
+      for (k in name) {
+        v = name[k];
+        _results.push(this._css(k, v));
+      }
+      return _results;
+    }
+  };
+  BaseDOM.prototype.addClass = function(className) {
+    var classNames, i, p;
+    if (typeof className === 'string') {
+      className = className.replace(/\s+/ig, ' ').split(' ');
+    } else if (typeof className !== 'Array') {
+      return;
+    }
+    classNames = this.className.replace(/\s+/ig, ' ').split(' ');
+    p = classNames.length;
+    i = className.length;
+    while (i-- > 0) {
+      if (classNames.indexOf(className[i]) >= 0) {
+        continue;
+      }
+      classNames[p++] = className[i];
+    }
+    return this.className = classNames.join(' ');
+  };
+  BaseDOM.prototype.removeClass = function(className) {
+    var classNames, i, p;
+    if (typeof className === 'string') {
+      className = className.replace(/\s+/ig, ' ').split(' ');
+    } else if (typeof className !== 'Array') {
+      return;
+    }
+    classNames = this.className.replace(/\s+/ig, ' ').split(' ');
+    i = className.length;
+    while (i-- > 0) {
+      if ((p = classNames.indexOf(className[i])) >= 0) {
+        classNames.splice(p, 1);
+      }
+    }
+    return this.className = classNames.join(' ');
+  };
+  BaseDOM.prototype.toggleClass = function(className, toggle) {
+    var i, _results;
+    if (toggle == null) {
+      toggle = null;
+    }
+    if (toggle !== null) {
+      if (toggle) {
+        this.addClass(className);
+      } else {
+        this.removeClass(className);
+      }
+      return;
+    }
+    if (typeof className === 'string') {
+      className = className.replace(/\s+/ig, ' ').split(' ');
+    } else if (typeof className !== 'Array') {
+      return;
+    }
+    i = className.length;
+    _results = [];
+    while (i-- > 0) {
+      if (this.hasClass(className[i])) {
+        _results.push(this.removeClass(className[i]));
+      } else {
+        _results.push(this.addClass(className[i]));
+      }
+    }
+    return _results;
+  };
+  BaseDOM.prototype.hasClass = function(className) {
+    var classNames, hasClass, i;
+    if (typeof className === 'string') {
+      className = className.replace(/\s+/ig, ' ').split(' ');
+    } else if (typeof className !== 'Array') {
+      return;
+    }
+    classNames = this.className.replace(/\s+/ig, ' ').split(' ');
+    i = className.length;
+    hasClass = true;
+    while (i-- > 0) {
+      hasClass &= classNames.indexOf(className[i]) >= 0;
+    }
+    return hasClass;
+  };
+  BaseDOM.prototype.getBounds = function(target) {
+    var bounds, boundsObj, k, tbounds, v;
+    if (target == null) {
+      target = null;
+    }
+    boundsObj = {};
+    bounds = this.element.getBoundingClientRect();
+    for (k in bounds) {
+      v = bounds[k];
+      boundsObj[k] = v;
+    }
+    if (target) {
+      if (target instanceof BaseDOM) {
+        tbounds = target.getBounds();
+      } else if (target instanceof HTMLElement) {
+        tbounds = target.getBoundingClientRect();
+      }
+    }
+    if (tbounds) {
+      boundsObj.top -= tbounds.top;
+      boundsObj.left -= tbounds.left;
+      boundsObj.bottom -= tbounds.top;
+      boundsObj.right -= tbounds.left;
+    }
+    boundsObj.width = boundsObj.right - boundsObj.left;
+    boundsObj.height = boundsObj.bottom - boundsObj.top;
+    return boundsObj;
+  };
+  BaseDOM.prototype.destroy = function() {
+    if (typeof this.off === "function") {
+      this.off();
+    }
+    return typeof this.removeAll === "function" ? this.removeAll() : void 0;
+  };
+  return BaseDOM;
+})(EventDispatcher);
+/**
+@class MetaController
+@extends EventDispatcher
+@final
+ */
+var MetaController;
+MetaController = (function(_super) {
+  __extends(MetaController, _super);
+  /**
+  	Runtime controls some meta tags of current view.<br>
+  	For add/edit these tags or values, put the meta object in content file, like explained below:
+  	@class MetaController
+  	@constructor
+  	@example
+  	```
+  	"meta":
+  	{
+  		"title": "Default Template - title",
+  		"description":"description",
+  		"webAppCapable":"true",
+  		"color":"#ff00ff",
+  		"manifest":"{base}data/manifest.json",
+  		"favicon":"{images}icons/favicon-default.ico",
+  		"icons":[
+  			{
+  				"rel":"apple-touch-icon", 
+  				"sizes":"57x57",
+  				"href":"{images}icons/apple-touch-icon-57x57.png"
+  			},
+  			{
+  				"rel":"apple-touch-icon", 
+  				"sizes":"60x60",
+  				"href":"{images}icons/apple-touch-icon-60x60.png"
+  			},
+  			{
+  				"rel":"apple-touch-icon", 
+  				"sizes":"72x72",
+  				"href":"{images}icons/apple-touch-icon-72x72.png"
+  			},
+  			{
+  				"rel":"apple-touch-icon", 
+  				"sizes":"76x76",
+  				"href":"{images}icons/apple-touch-icon-76x76.png"
+  			},
+  			{
+  				"rel":"apple-touch-icon", 
+  				"sizes":"114x114",
+  				"href":"{images}icons/apple-touch-icon-114x114.png"
+  			},
+  			{
+  				"rel":"apple-touch-icon", 
+  				"sizes":"120x120",
+  				"href":"{images}icons/apple-touch-icon-120x120.png"
+  			},
+  			{
+  				"rel":"apple-touch-icon", 
+  				"sizes":"144x144",
+  				"href":"{images}icons/apple-touch-icon-144x144.png"
+  			},
+  			{
+  				"rel":"apple-touch-icon", 
+  				"sizes":"152x152",
+  				"href":"{images}icons/apple-touch-icon-152x152.png"
+  			},
+  			{
+  				"rel":"apple-touch-icon", 
+  				"sizes":"180x180",
+  				"href":"{images}icons/apple-touch-icon-180x180.png"
+  			},
+  			{
+  				"rel":"icon",
+  				"href":"{images}icons/favicon-16x16.png", 
+  				"sizes":"16x16"
+  			},
+  			{
+  				"rel":"icon",
+  				"href":"{images}icons/favicon-32x32.png", 
+  				"sizes":"32x32"
+  			},
+  			{
+  				"rel":"icon",
+  				"href":"{images}icons/favicon-96x96.png", 
+  				"sizes":"96x96"
+  			},
+  			{
+  				"rel":"icon",
+  				"href":"{images}icons/android-chrome-192x192.png", 
+  				"sizes":"192x192"
+  			}
+  		]
+  	}
+  	```
+   */
+  function MetaController() {
+    MetaController.__super__.constructor.apply(this, arguments);
+  }
+  MetaController.getInstance = function() {
+    return MetaController._instance != null ? MetaController._instance : MetaController._instance = new MetaController();
+  };
+  /**
+  	@method change
+  	@param {Object} p_data
+   */
+  MetaController.prototype.change = function(p_data) {
+    var e, k, v;
+    if (p_data != null) {
+      for (k in p_data) {
+        v = p_data[k];
+        try {
+          this[k] = v;
+        } catch (_error) {
+          e = _error;
+        }
+      }
+    }
+    return false;
+  };
+  /**
+  	@method applyMeta
+  	@param {String} p_name
+  	@param {String} p_value
+  	@protected
+   */
+  MetaController.prototype.applyMeta = function(p_name, p_value) {
+    var meta;
+    if (p_value != null) {
+      if (document.querySelector('meta[name=' + p_name + ']') != null) {
+        document.querySelector('meta[name=' + p_name + ']').content = p_value;
+      } else {
+        meta = document.createElement('meta');
+        meta.name = p_name;
+        meta.content = p_value;
+        this.head.appendChild(meta);
+      }
+    }
+    return false;
+  };
+  /**
+  	@method applyLink
+  	@param {String} p_rel
+  	@param {String} p_value
+  	@protected
+   */
+  MetaController.prototype.applyLink = function(p_rel, p_href, p_others) {
+    var k, link, v;
+    if (p_others == null) {
+      p_others = null;
+    }
+    link = document.createElement('link');
+    link.rel = p_rel;
+    link.href = p_href;
+    if ((p_others != null) && typeof p_others === "object") {
+      for (k in p_others) {
+        v = p_others[k];
+        link[k] = v;
+      }
+    }
+    this.head.appendChild(link);
+    return false;
+  };
+  /**
+  	@attribute head
+  	@type {HTMLElement}
+  	@readOnly
+   */
+  MetaController.get({
+    head: function() {
+      return document.head || document.getElementsByTagName('head')[0];
+    }
+  });
+  /**
+  	@attribute viewport
+  	@type {String}
+   */
+  MetaController.set({
+    viewport: function(p_value) {
+      return this.applyMeta('viewport', p_value);
+    }
+  });
+  /**
+  	@attribute title
+  	@type {String}
+   */
+  MetaController.set({
+    title: function(p_value) {
+      if (p_value != null) {
+        document.title = p_value;
+        return this.applyMeta('apple-mobile-web-app-title', p_value);
+      }
+    }
+  });
+  /**
+  	@attribute description
+  	@type {String}
+   */
+  MetaController.set({
+    description: function(p_value) {
+      return this.applyMeta('description', p_value);
+    }
+  });
+  /**
+  	@attribute favicon
+  	@type {String}
+   */
+  MetaController.set({
+    favicon: function(p_value) {
+      if (this._favicon == null) {
+        this._favicon = p_value;
+        this.applyLink('icon', p_value, {
+          "type": "image/x-icon"
+        });
+      }
+      return false;
+    }
+  });
+  /**
+  	@attribute icons
+  	@type {String}
+   */
+  MetaController.set({
+    icons: function(p_value) {
+      var k, v;
+      for (k in p_value) {
+        v = p_value[k];
+        this.applyLink(v['rel'], v['href'], {
+          "sizes": v["sizes"]
+        });
+      }
+      return false;
+    }
+  });
+  /**
+  	*Only for iOS
+  	@attribute splash
+  	@type {String}
+   */
+  MetaController.set({
+    splash: function(p_value) {
+      this.applyLink('apple-touch-startup-image', p_value);
+      return false;
+    }
+  });
+  /**
+  	@attribute webAppCapable
+  	@type {String}
+   */
+  MetaController.set({
+    webAppCapable: function(p_value) {
+      var value;
+      value = p_value === true || p_value === "true" ? 'yes' : 'no';
+      this.applyMeta('mobile-web-app-capable', value);
+      this.applyMeta('apple-mobile-web-app-capable', value);
+      return false;
+    }
+  });
+  /**
+  	@attribute color
+  	@type {String}
+   */
+  MetaController.set({
+    color: function(p_color) {
+      this.webAppCapable = true;
+      this.applyMeta('theme-color', p_color);
+      this.applyMeta('msapplication-navbutton-color', p_color);
+      this.applyMeta('apple-mobile-web-app-status-bar-style', 'black-translucent');
+      return false;
+    }
+  });
+  /**
+  	*Only for Android
+  	@attribute manifest
+  	@type {String}
+  	@example
+  	```
+  	{
+  	  "lang": "en",
+  	  "scope": "/scope/",	  
+  	  "name": "Web Application Manifest Sample",
+  	  "short_name": "Application",
+  	  "display": "standalone",
+  	  "orientation": "landscape",
+  	  "start_url": "index.html",
+  	  "theme_color": "aliceblue",
+  	  "background_color": "blue",
+  	  "icons": [
+  	    {
+  	      "src": "launcher-icon-0-75x.png",
+  	      "sizes": "36x36",
+  	      "type": "image/png",
+  	      "density": 0.75
+  	    },
+  	    {
+  	      "src": "launcher-icon-1x.png",
+  	      "sizes": "48x48",
+  	      "type": "image/png",
+  	      "density": 1.0
+  	    },
+  	    {
+  	      "src": "launcher-icon-1-5x.png",
+  	      "sizes": "72x72",
+  	      "type": "image/png",
+  	      "density": 1.5
+  	    },
+  	    {
+  	      "src": "launcher-icon-2x.png",
+  	      "sizes": "96x96",
+  	      "type": "image/png",
+  	      "density": 2.0
+  	    },
+  	    {
+  	      "src": "launcher-icon-3x.png",
+  	      "sizes": "144x144",
+  	      "type": "image/png",
+  	      "density": 3.0
+  	    },
+  	    {
+  	      "src": "launcher-icon-4x.png",
+  	      "sizes": "192x192",
+  	      "type": "image/png",
+  	      "density": 4.0
+  	    }
+  	  ]
+  	}	
+  	```
+   */
+  MetaController.set({
+    manifest: function(p_value) {
+      this.applyLink('manifest', p_value);
+      return false;
+    }
+  });
+  return MetaController;
+})(EventDispatcher);
+/**
+Base View
+@class BaseView
+@extends BaseDOM
+@uses MetaController
+ */
+var BaseView;
+BaseView = (function(_super) {
+  /**
+  	Triggered before the create routine view starts. Triggered when {{#crossLink "BaseView/createStart:method"}}{{/crossLink}} is called.
+  	@event CREATE_START
+  	@static
+   */
+  var _meta;
+  __extends(BaseView, _super);
+  BaseView["const"]({
+    CREATE_START: 'create_start'
+  });
+  /**
+  	Triggered when the create routine view starts. Triggered when {{#crossLink "BaseView/create:method"}}{{/crossLink}} is called.
+  	@event CREATE
+  	@static
+   */
+  BaseView["const"]({
+    CREATE: 'create'
+  });
+  /**
+  	Triggered when the create routine view is finished. Triggered when {{#crossLink "BaseView/createComplete:method"}}{{/crossLink}} is called.
+  	@event CREATE_COMPLETE
+  	@static
+   */
+  BaseView["const"]({
+    CREATE_COMPLETE: 'create_complete'
+  });
+  /**
+  	Triggered before the showing routine view starts. Triggered when {{#crossLink "BaseView/showStart:method"}}{{/crossLink}} is called.
+  	@event SHOW_START
+  	@static
+   */
+  BaseView["const"]({
+    SHOW_START: 'show_start'
+  });
+  /**
+  	Triggered when the showing routine view starts. Triggered when {{#crossLink "BaseView/show:method"}}{{/crossLink}} is called.
+  	@event SHOW
+  	@static
+   */
+  BaseView["const"]({
+    SHOW: 'show'
+  });
+  /**
+  	Triggered when the showing routine view is finished. Triggered when {{#crossLink "BaseView/showComplete:method"}}{{/crossLink}} is called.
+  	@event SHOW_COMPLETE
+  	@static
+   */
+  BaseView["const"]({
+    SHOW_COMPLETE: 'show_complete'
+  });
+  /**
+  	Triggered before the hiding routine view starts. Triggered when {{#crossLink "BaseView/hideStart:method"}}{{/crossLink}} is called.
+  	@event HIDE_START
+  	@static
+   */
+  BaseView["const"]({
+    HIDE_START: 'hide_start'
+  });
+  /**
+  	Triggered when the hiding routine view starts. Triggered when {{#crossLink "BaseView/hide:method"}}{{/crossLink}} is called.
+  	@event HIDE
+  	@static
+   */
+  BaseView["const"]({
+    HIDE: 'hide'
+  });
+  /**
+  	Triggered when the hiding routine view is finished. Triggered when {{#crossLink "BaseView/hideComplete:method"}}{{/crossLink}} is called.
+  	@event HIDE_COMPLETE
+  	@static
+   */
+  BaseView["const"]({
+    HIDE_COMPLETE: 'hide_complete'
+  });
+  /**
+  	Triggered when the destroy routine view starts. Triggered when {{#crossLink "BaseView/destroy:method"}}{{/crossLink}} is called.
+  	@event DESTROY
+  	@static
+   */
+  BaseView["const"]({
+    DESTROY: 'destroy'
+  });
+  /**
+  	Triggered when the destroy routine view is finished. Triggered when {{#crossLink "BaseView/destroyComplete:method"}}{{/crossLink}} is called.
+  	@event DESTROY_COMPLETE
+  	@static
+   */
+  BaseView["const"]({
+    DESTROY_COMPLETE: 'destroy_complete'
+  });
+  /**
+  	Triggered when the view pauses. Usually when {{#crossLink "BaseView/pause:method"}}{{/crossLink}} is called.
+  	@event PAUSE
+  	@static
+   */
+  BaseView["const"]({
+    PAUSE: 'pause'
+  });
+  /**
+  	Triggered when the view resumes. Usually when {{#crossLink "BaseView/resume:method"}}{{/crossLink}} is called.
+  	@event RESUME
+  	@static
+   */
+  BaseView["const"]({
+    RESUME: 'resume'
+  });
+  /**
+  	@class BaseView
+  	@constructor	
+  	@param {Object} [p_data=null] 
+  	Data object sets the default and/or custom values of properties of view for navigation controller.<br>
+  	If this object it's not null, some default properties are not required explained below:
+  	Default Key|Type|Required
+  	-|-|-
+  	id|{{#crossLink "String"}}{{/crossLink}}|__Yes__
+  	class|{{#crossLink "String"}}{{/crossLink}}|__Yes__
+  	route|{{#crossLink "String"}}{{/crossLink}} / {{#crossLink "RegExp"}}{{/crossLink}}|__No__
+  	content|{{#crossLink "String"}}{{/crossLink}} / {{#crossLink "JSON"}}{{/crossLink}}|__No__
+  	cache|{{#crossLink "Boolean"}}{{/crossLink}}|__No__
+  	parentView|{{#crossLink "String"}}{{/crossLink}}|__No__
+  	destroyable|{{#crossLink "Boolean"}}{{/crossLink}}|__No__
+  	loadContent|{{#crossLink "Boolean"}}{{/crossLink}}|__No__
+  	snap *(only for scroll navigation type)*|{{#crossLink "Boolean"}}{{/crossLink}}|__No__
+  	subviewsWrapper|<a href="//developer.mozilla.org/en-US/docs/Web/Guide/CSS/Getting_Started/Selectors" target="_blank" class="crosslink">Selectors</a>|__No__
+  	attachToParentWrapper|<a href="//developer.mozilla.org/en-US/docs/Web/Guide/CSS/Getting_Started/Selectors" target="_blank" class="crosslink">Selectors</a>|__No__
+  	@example
+  	```
+  	{
+  		"id":"home",
+  		"class":"template-home-view", //the valid formats are "ClassName", "class-name", "class name" or "class_name"
+  		"route":"/", //valid formats are String or RegExp
+  		"content":"data/home.json",
+  		"cache":true,
+  		"parentView":"someViewID", //the unique ID of parent view
+  		"destroyable":true,
+  		"loadContent":true,
+  		"snap":true, //only for scroll navigation type
+  		"subviewsWrapper":"CSSSelector", //like #ID or .className etc
+  		"attachToParentWrapper":"CSSSelector" //like #ID or .className etc
+  	}
+  	```
+  	@param {String} [p_CSSClassName=null]
+   */
+  _meta = null;
+  function BaseView(p_data, p_CSSClassName) {
+    if (p_data == null) {
+      p_data = null;
+    }
+    if (p_CSSClassName == null) {
+      p_CSSClassName = null;
+    }
+    this.destroyComplete = __bind(this.destroyComplete, this);
+    this.destroy = __bind(this.destroy, this);
+    this.resume = __bind(this.resume, this);
+    this.pause = __bind(this.pause, this);
+    this.hideComplete = __bind(this.hideComplete, this);
+    this.hide = __bind(this.hide, this);
+    this.hideStart = __bind(this.hideStart, this);
+    this.showComplete = __bind(this.showComplete, this);
+    this.show = __bind(this.show, this);
+    this.showStart = __bind(this.showStart, this);
+    this.createComplete = __bind(this.createComplete, this);
+    this.create = __bind(this.create, this);
+    this.createStart = __bind(this.createStart, this);
+    this.getReverseParentList = __bind(this.getReverseParentList, this);
+    this._created = false;
+    this._showed = false;
+    this.data = p_data ? p_data : {};
+    this.id = this._data.id != null ? this._data.id : void 0;
+    this.content = this._data.content != null ? this._data.content : void 0;
+    this.route = this._data.route != null ? this._data.route : void 0;
+    this.routeData = !this._routeData ? null : void 0;
+    this.parentView = this._data.parentView != null ? this._data.parentView : void 0;
+    this.subviews = this._data.subviews != null ? this._data.subviews : void 0;
+    this.destroyable = this._data.destroyable != null ? this._data.destroyable : void 0;
+    _meta = MetaController.getInstance();
+    BaseView.__super__.constructor.call(this, {
+      element: 'div',
+      className: p_CSSClassName
+    });
+  }
+  /**
+  	Returns the loader queue of this specific view.
+  	@attribute loader
+  	@type {createjs.LoadQueue}
+  	@default null
+  	@readOnly
+   */
+  BaseView.get({
+    loader: function() {
+      var _ref;
+      if (this._id != null) {
+        return typeof app !== "undefined" && app !== null ? (_ref = app.loader) != null ? _ref.getGroup(this._id) : void 0 : void 0;
+      } else {
+        return null;
+      }
+    }
+  });
+  /**
+  	Returns true if the view was created.
+  	@attribute created
+  	@type {Boolean}
+  	@default false
+  	@protected
+  	@readOnly
+   */
+  BaseView.get({
+    created: function() {
+      return this._created;
+    }
+  });
+  /**
+  	Returns true if the view was shown.
+  	@attribute showed
+  	@type {Boolean}
+  	@default false
+  	@protected
+  	@readOnly
+   */
+  BaseView.get({
+    showed: function() {
+      return this._showed;
+    }
+  });
+  /**
+  	Sets/gets a clone of data object with default and/or custom values of properties of view.
+  	@attribute data
+  	@type {Object}
+  	@default {}
+   */
+  BaseView.get({
+    data: function() {
+      return this._data;
+    }
+  });
+  BaseView.set({
+    data: function(p_value) {
+      return this._data = p_value;
+    }
+  });
+  /**
+  	Sets/gets the unique ID of view.
+  	@attribute id
+  	@type {String}
+  	@default null
+   */
+  BaseView.get({
+    id: function() {
+      return this._id;
+    }
+  });
+  BaseView.set({
+    id: function(p_value) {
+      return this._id = p_value;
+    }
+  });
+  /**
+  	Sets/gets the content of view.
+  	@attribute content
+  	@type {String|Object|JSON}
+  	@default null
+   */
+  BaseView.get({
+    content: function() {
+      return this._content;
+    }
+  });
+  BaseView.set({
+    content: function(p_value) {
+      return this._content = p_value;
+    }
+  });
+  /**
+  	Sets/gets the route of view.
+  	@attribute route
+  	@type {String|RegExp}
+  	@default null
+   */
+  BaseView.get({
+    route: function() {
+      return this._route;
+    }
+  });
+  BaseView.set({
+    route: function(p_value) {
+      return this._route = p_value;
+    }
+  });
+  /**
+  	Sets/gets the actual route data.
+  	@attribute routeData
+  	@type {Object}
+  	@protected
+  	@default null
+   */
+  BaseView.get({
+    routeData: function() {
+      return this._routeData;
+    }
+  });
+  BaseView.set({
+    routeData: function(p_value) {
+      return this._routeData = p_value;
+    }
+  });
+  /**
+  	Sets/gets the parent view of this view.
+  	@attribute parentView
+  	@type {BaseView}
+  	@default null
+   */
+  BaseView.get({
+    parentView: function() {
+      return this._parentView;
+    }
+  });
+  BaseView.set({
+    parentView: function(p_value) {
+      return this._parentView = p_value;
+    }
+  });
+  /**
+  	Sets/gets a array of {{#crossLink "BaseView"}}{{/crossLink}} instances of subviews of this view.
+  	@attribute subviews
+  	@type {Array}
+  	@default null
+   */
+  BaseView.get({
+    subviews: function() {
+      return this._subviews;
+    }
+  });
+  BaseView.set({
+    subviews: function(p_value) {
+      return this._subviews = p_value;
+    }
+  });
+  /**
+  	Sets/gets if this views is destroyable.
+  	@attribute destroyable
+  	@type {Boolean}
+  	@default false
+   */
+  BaseView.get({
+    destroyable: function() {
+      return this._destroyable;
+    }
+  });
+  BaseView.set({
+    destroyable: function(p_value) {
+      return this._destroyable = p_value;
+    }
+  });
+  /**
+  	Sets/gets the type is a 'view' or a 'sub-view'.
+  	@attribute type
+  	@type {String}
+  	@protected
+  	@default null
+   */
+  BaseView.get({
+    type: function() {
+      return this._type;
+    }
+  });
+  BaseView.set({
+    type: function(p_value) {
+      return this._type = p_value;
+    }
+  });
+  /**
+  	Returns the meta object of his content.
+  	@attribute meta
+  	@type {Object}
+  	@default null
+  	@readOnly
+   */
+  BaseView.get({
+    meta: function() {
+      var _ref, _ref1;
+      if (((_ref = this._content) != null ? _ref.meta : void 0) != null) {
+        return (_ref1 = this._content) != null ? _ref1.meta : void 0;
+      }
+    }
+  });
+  /**
+  	Sets/gets the loading progress of this view.
+  	@attribute progress
+  	@type {Number}
+  	@protected
+   */
+  BaseView.get({
+    progress: function() {
+      if (this._progress != null) {
+        return this._progress;
+      } else {
+        return this.loader.progress;
+      }
+    }
+  });
+  BaseView.set({
+    progress: function(p_value) {
+      return this._progress = p_value;
+    }
+  });
+  /**
+  	Returns the reverse path of his parent view.
+  	@attribute reverseParentPath
+  	@type {Array}
+  	@protected
+  	@readOnly
+   */
+  BaseView.get({
+    reverseParentPath: function() {
+      this.getReverseParentList(this);
+      return this._parentPath.reverse();
+    }
+  });
+  /**
+  	Returns the path of his parent view.
+  	@attribute parentPath
+  	@type {Array}
+  	@protected
+  	@readOnly
+   */
+  BaseView.get({
+    parentPath: function() {
+      this.getReverseParentList(this);
+      return this._parentPath;
+    }
+  });
+  /**
+  	Returns the wrapper container for the sub-views of this view.
+  	@attribute subviewsWrapper
+  	@type {HTMLElement}
+  	@default null
+  	@readOnly
+   */
+  BaseView.get({
+    subviewsWrapper: function() {
+      var _ref;
+      if (((_ref = this._data) != null ? _ref.subviewsWrapper : void 0) != null) {
+        return this.find(this._data.subviewsWrapper);
+      }
+    }
+  });
+  /**
+  	Returns the CSS Selector of the wrapper container for attach this view.
+  	@attribute attachToParentWrapper
+  	@type {String}
+  	@default null
+  	@readOnly
+   */
+  BaseView.get({
+    attachToParentWrapper: function() {
+      var _ref;
+      if (((_ref = this._data) != null ? _ref.attachToParentWrapper : void 0) != null) {
+        return this._data.attachToParentWrapper;
+      }
+    }
+  });
+  /**
+  	Returns a reverse list of the parent path of this view.
+  	@method getReverseParentList
+  	@param {Object|JSON} [p_subview=null]
+  	@private
+  	@readOnly
+   */
+  BaseView.prototype.getReverseParentList = function(p_subview) {
+    if (p_subview == null) {
+      p_subview = null;
+    }
+    this._parentPath = [];
+    if ((p_subview != null ? p_subview.parentView : void 0) != null) {
+      this.getReverseParentList(p_subview.parentView);
+      this._parentPath.push(p_subview.id);
+    }
+    return false;
+  };
+  /**
+  	Usually starts before the creation routine of view calling by the navigation controller.<br>
+  	Callback the method {{#crossLink "BaseView/create:method"}}{{/crossLink}} and trigger the event {{#crossLink "BaseView/CREATE_START:event"}}{{/crossLink}} after complete.
+  	@method createStart
+  	@param {Event} [evt=null]
+   */
+  BaseView.prototype.createStart = function(evt) {
+    if (evt == null) {
+      evt = null;
+    }
+    this.trigger(BaseView.CREATE_START, this);
+    this.create();
+    return false;
+  };
+  /**
+  	Usually starts when the creation routine of view calling by the navigation controller.<br>
+  	Callback the method {{#crossLink "BaseView/createComplete:method"}}{{/crossLink}} and trigger the event {{#crossLink "BaseView/CREATE:event"}}{{/crossLink}} after complete.
+  	@method create
+  	@param {Event} [evt=null]
+   */
+  BaseView.prototype.create = function(evt) {
+    if (evt == null) {
+      evt = null;
+    }
+    this.trigger(BaseView.CREATE, this);
+    this.createComplete();
+    return false;
+  };
+  /**
+  	Usually starts when finished the creation routine of view calling by the navigation controller and trigger the event {{#crossLink "BaseView/CREATE_COMPLETE:event"}}{{/crossLink}} after complete the routine.
+  	@method createComplete
+  	@param {Event} [evt=null]
+   */
+  BaseView.prototype.createComplete = function(evt) {
+    if (evt == null) {
+      evt = null;
+    }
+    this._created = true;
+    this.trigger(BaseView.CREATE_COMPLETE, this);
+    return false;
+  };
+  /**
+  	Usually starts before the showing routine of view calling by the navigation controller.<br>
+  	Callback the method {{#crossLink "BaseView/show:method"}}{{/crossLink}} and trigger the event {{#crossLink "BaseView/SHOW_START:event"}}{{/crossLink}} after complete.
+  	@method showStart
+  	@param {Event} [evt=null]
+   */
+  BaseView.prototype.showStart = function(evt) {
+    if (evt == null) {
+      evt = null;
+    }
+    this.trigger(BaseView.SHOW_START, this);
+    _meta.change(this.meta);
+    this.show();
+    return false;
+  };
+  /**
+  	Usually starts when the showing routine of view calling by the navigation controller.<br>
+  	Callback the method {{#crossLink "BaseView/showComplete:method"}}{{/crossLink}} and trigger the event {{#crossLink "BaseView/SHOW:event"}}{{/crossLink}} after complete.
+  	@method show
+  	@param {Event} [evt=null]
+   */
+  BaseView.prototype.show = function(evt) {
+    if (evt == null) {
+      evt = null;
+    }
+    this.trigger(BaseView.SHOW, this);
+    this.showComplete();
+    return false;
+  };
+  /**
+  	Usually when finished the showing routine of view calling by the navigation controller and trigger the event {{#crossLink "BaseView/SHOW_COMPLETE:event"}}{{/crossLink}} after complete the routine.
+  	@method showComplete
+  	@param {Event} [evt=null]
+   */
+  BaseView.prototype.showComplete = function(evt) {
+    if (evt == null) {
+      evt = null;
+    }
+    this._showed = true;
+    this.trigger(BaseView.SHOW_COMPLETE, this);
+    return false;
+  };
+  /**
+  	Usually starts before the hiding routine of view calling by the navigation controller.<br>
+  	Callback the method {{#crossLink "BaseView/hide:method"}}{{/crossLink}} and trigger the event {{#crossLink "BaseView/HIDE_START:event"}}{{/crossLink}} after complete.
+  	@method hideStart
+  	@param {Event} [evt=null]
+   */
+  BaseView.prototype.hideStart = function(evt) {
+    if (evt == null) {
+      evt = null;
+    }
+    this.trigger(BaseView.HIDE_START, this);
+    this.hide();
+    return false;
+  };
+  /**
+  	Usually starts when the hiding routine of view calling by the navigation controller.<br>
+  	Callback the method {{#crossLink "BaseView/hideComplete:method"}}{{/crossLink}} and trigger the event {{#crossLink "BaseView/HIDE:event"}}{{/crossLink}} after complete.
+  	@method hide
+  	@param {Event} [evt=null]
+   */
+  BaseView.prototype.hide = function(evt) {
+    if (evt == null) {
+      evt = null;
+    }
+    this._showed = false;
+    this.trigger(BaseView.HIDE, this);
+    this.hideComplete();
+    return false;
+  };
+  /**
+  	Usually when finished the hiding routine of view calling by the navigation controller and trigger the event {{#crossLink "BaseView/HIDE_COMPLETE:event"}}{{/crossLink}} after complete the routine.
+  	@method hideComplete
+  	@param {Event} [evt=null]
+   */
+  BaseView.prototype.hideComplete = function(evt) {
+    if (evt == null) {
+      evt = null;
+    }
+    this.trigger(BaseView.HIDE_COMPLETE, this);
+    return false;
+  };
+  /**
+  	Usually used to pauses animations or something else in looping in view.
+  	Trigger the event {{#crossLink "BaseView/PAUSE:event"}}{{/crossLink}} after complete.
+  	@method pause
+   */
+  BaseView.prototype.pause = function() {
+    this.trigger(BaseView.PAUSE, this);
+    return false;
+  };
+  /**
+  	Usually used to resumes animations or something else in view.
+  	Trigger the event {{#crossLink "BaseView/RESUME:event"}}{{/crossLink}} after complete.
+  	@method pause
+   */
+  BaseView.prototype.resume = function() {
+    this.trigger(BaseView.RESUME, this);
+    return false;
+  };
+  /**
+  	Usually starts when the destroying routine of view calling by the navigation controller.<br>
+  	Callback the method {{#crossLink "BaseView/destroyComplete:method"}}{{/crossLink}} and trigger the event {{#crossLink "BaseView/DESTROY:event"}}{{/crossLink}} after complete.
+  	@method destroy
+  	@param {Event} [evt=null]
+   */
+  BaseView.prototype.destroy = function(evt) {
+    var _ref;
+    if (evt == null) {
+      evt = null;
+    }
+    this._created = false;
+    this.removeAll();
+    if ((_ref = this._parentPath) != null) {
+      _ref.length = 0;
+    }
+    this._parentPath = null;
+    this._routeData = null;
+    this._data = null;
+    this.trigger(BaseView.DESTROY, this);
+    this.destroyComplete();
+    return false;
+  };
+  /**
+  	Usually when finished the destroying routine of view calling by the navigation controller and trigger the event {{#crossLink "BaseView/DESTROY_COMPLETE:event"}}{{/crossLink}} after complete the routine.
+  	@method destroyComplete
+  	@param {Event} [evt=null]
+   */
+  BaseView.prototype.destroyComplete = function(evt) {
+    if (evt == null) {
+      evt = null;
+    }
+    this.trigger(BaseView.DESTROY_COMPLETE, this);
+    this.off();
+    return false;
+  };
+  return BaseView;
+})(BaseDOM);
 var JSONUtils;
 JSONUtils = (function() {
   function JSONUtils() {}
@@ -1450,161 +4432,90 @@ JSONUtils = (function() {
   };
   return JSONUtils;
 })();
-var AssetLoader;
-AssetLoader = (function(_super) {
-  __extends(AssetLoader, _super);
-  AssetLoader.INITIALIZE = "initialize";
-  AssetLoader.COMPLETE_ALL = "complete";
-  AssetLoader.COMPLETE_FILE = "fileload";
-  AssetLoader.PROGRESS_ALL = "progress";
-  AssetLoader.PROGRESS_FILE = "fileprogress";
-  AssetLoader.START_ALL = "loadstart";
-  AssetLoader.START_FILE = "filestart";
-  AssetLoader.ERROR = "error";
-  AssetLoader.FILE_ERROR = "fileerror";
-  AssetLoader.prototype._groups = null;
-  AssetLoader.getInstance = function() {
-    return AssetLoader._instance != null ? AssetLoader._instance : AssetLoader._instance = (function(func, args, ctor) {
-      ctor.prototype = func.prototype;
-      var child = new ctor, result = func.apply(child, args);
-      return Object(result) === result ? result : child;
-    })(AssetLoader, arguments, function(){});
+var LanguageData;
+LanguageData = (function(_super) {
+  var _current, _data, _default;
+  __extends(LanguageData, _super);
+  LanguageData["const"]({
+    SELECT_LANGUAGE: "select_language"
+  });
+  _data = null;
+  _current = void 0;
+  _default = void 0;
+  LanguageData.getInstance = function() {
+    return LanguageData._instance != null ? LanguageData._instance : LanguageData._instance = new LanguageData();
   };
-  function AssetLoader() {
-    this._fileLoad = __bind(this._fileLoad, this);
-    this._onFileError = __bind(this._onFileError, this);
-    this._onError = __bind(this._onError, this);
-    this._onStartFile = __bind(this._onStartFile, this);
-    this._groups = {};
+  function LanguageData() {
+    LanguageData.__super__.constructor.apply(this, arguments);
   }
-  AssetLoader.prototype.loadGroup = function(p_groupId, p_files) {
-    var group;
-    group = this.getGroup(p_groupId);
-    group.loadManifest(p_files);
-    return group;
-  };
-  AssetLoader.prototype.getAllGroups = function() {
-    return this._groups;
-  };
-  AssetLoader.prototype.getGroup = function(p_groupId, p_concurrent, p_xhr) {
-    var group;
-    if (p_concurrent == null) {
-      p_concurrent = 3;
-    }
-    if (p_xhr == null) {
-      p_xhr = true;
-    }
-    group = this._groups[p_groupId];
-    if (!group) {
-      group = new createjs.LoadQueue(p_xhr);
-      group.installPlugin(createjs.CacheControllerPlugin);
-      group.installPlugin(createjs.MediaPlugin);
-      group.id = p_groupId;
-      this._groups[p_groupId] = group;
-      group.on(AssetLoader.ERROR, this._onError);
-      group.on(AssetLoader.START_FILE, this._onStartFile);
-      group.on(AssetLoader.FILE_ERROR, this._onFileError);
-      group.on(AssetLoader.COMPLETE_FILE, this._fileLoad);
-    }
-    group.setMaxConnections(p_concurrent);
-    return group;
-  };
-  AssetLoader.prototype.preferXHR = function(p_groupId, p_value) {
-    var group;
-    if (p_value == null) {
-      p_value = true;
-    }
-    group = this.getGroup(p_groupId).setPreferXHR = p_value;
-    return group;
-  };
-  AssetLoader.prototype._onStartFile = function(evt) {
-    return evt.item.loaded = false;
-  };
-  AssetLoader.prototype._onError = function(e) {
-    var msg, _ref;
-    e.currentTarget.off(AssetLoader.START_FILE, this._onStartFile);
-    e.currentTarget.off(AssetLoader.ERROR, this._onError);
-    e.currentTarget.off(AssetLoader.COMPLETE_FILE, this._fileLoad);
-    msg = e.title;
-    if ((e != null ? (_ref = e.data) != null ? _ref.src : void 0 : void 0) != null) {
-      e.fileName = e.data.src;
-      msg += " " + e.data.src;
-    }
-    throw new Error(msg).stack;
-    return false;
-  };
-  AssetLoader.prototype._onFileError = function(e) {
-    e.currentTarget.off(AssetLoader.START_FILE, this._onStartFile);
-    e.currentTarget.off(AssetLoader.FILE_ERROR, this._onFileError);
-    e.currentTarget.off(AssetLoader.COMPLETE_FILE, this._fileLoad);
-    console.log(e);
-    throw new Error(e.title).stack;
-    return false;
-  };
-  AssetLoader.prototype._fileLoad = function(evt) {
-    var data, paths, result, _ref;
-    evt.item.loaded = true;
-    evt.currentTarget.off(AssetLoader.ERROR, this._onError);
-    evt.currentTarget.off(AssetLoader.FILE_ERROR, this._onFileError);
-    evt.item.result = evt.item.tag = evt.result;
-    if ((typeof app !== "undefined" && app !== null ? (_ref = app.config) != null ? _ref.paths : void 0 : void 0) != null) {
-      paths = PathsData.getInstance(app.config.paths);
-      switch (evt.item.ext) {
-        case 'json':
-          data = paths.translate(evt.result);
-          if (typeof data !== 'string') {
-            data = JSON.stringify(data);
-          }
-          JSONUtils.removeComments(data);
-          result = data;
-          evt.item.result = evt.item.tag = evt.result = JSON.parse(result);
+  LanguageData.prototype.hasLanguage = function(p_value) {
+    var i, result, _i, _ref;
+    result = false;
+    if (typeof p_value === 'string' && (_data != null ? _data.length : void 0) > 0) {
+      for (i = _i = 0, _ref = _data.length; 0 <= _ref ? _i < _ref : _i > _ref; i = 0 <= _ref ? ++_i : --_i) {
+        if (_data[i].iso === p_value) {
+          result = true;
           break;
-        case 'js':
-          data = evt.result;
-          data = data.replace(/^\/\/.*?(\n|$)/igm, '');
-          result = eval('(function (){' + data + '}).call(self)');
-          break;
-        default:
-          result = evt.item;
-      }
-    }
-    return false;
-  };
-  AssetLoader.prototype.getItem = function(p_id, p_groupId) {
-    var i, k, v, _ref, _ref1;
-    if (p_groupId == null) {
-      p_groupId = null;
-    }
-    if (p_groupId) {
-      return (_ref = this._groups[p_groupId]) != null ? _ref.getItem(p_id) : void 0;
-    }
-    _ref1 = this._groups;
-    for (k in _ref1) {
-      v = _ref1[k];
-      if (i = v.getItem(p_id)) {
-        return i;
-      }
-    }
-  };
-  AssetLoader.prototype.getResult = function(p_id, p_groupId) {
-    var i, k, result, v, _ref, _ref1;
-    if (p_groupId == null) {
-      p_groupId = null;
-    }
-    result = null;
-    if (p_groupId) {
-      result = (_ref = this._groups[p_groupId]) != null ? _ref.getResult(p_id) : void 0;
-    }
-    _ref1 = this._groups;
-    for (k in _ref1) {
-      v = _ref1[k];
-      if (i = v.getResult(p_id)) {
-        result = i;
+        }
       }
     }
     return result;
   };
-  return AssetLoader;
+  LanguageData.get({
+    data: function(p_value) {
+      return _data;
+    }
+  });
+  LanguageData.set({
+    data: function(p_value) {
+      var k, v;
+      _data = p_value;
+      for (k in p_value) {
+        v = p_value[k];
+        if (!v.iso || v.iso && v.iso === "") {
+          throw new Error('Please sets the "iso" object (ISO 639-1 standard) in languages object of config file.');
+        }
+        if (!v.path || v.path && v.path === "") {
+          throw new Error('Please sets the "path" object in languages object of config file.');
+        }
+        if (v["default"] != null) {
+          _default = v;
+        }
+      }
+      if (!_default) {
+        p_value[0]["default"] = true;
+        _default = p_value[0];
+      }
+      return false;
+    }
+  });
+  LanguageData.get({
+    current: function() {
+      return _current;
+    }
+  });
+  LanguageData.set({
+    current: function(p_value) {
+      var i, _i, _ref;
+      if (typeof p_value === 'string' && (_data != null ? _data.length : void 0) > 0) {
+        for (i = _i = 0, _ref = _data.length; 0 <= _ref ? _i < _ref : _i > _ref; i = 0 <= _ref ? ++_i : --_i) {
+          if (_data[i].iso === p_value) {
+            _current = _data[i];
+            break;
+          }
+        }
+      } else {
+        _current = p_value;
+      }
+      return false;
+    }
+  });
+  LanguageData.get({
+    "default": function() {
+      return _default;
+    }
+  });
+  return LanguageData;
 })(EventDispatcher);
 var ParseData;
 ParseData = (function(_super) {
@@ -1707,7 +4618,7 @@ ParseData = (function(_super) {
 })(EventDispatcher);
 var ParseConfig;
 ParseConfig = (function(_super) {
-  var removeParam, _contents, _required, _views;
+  var _contents, _required, _views;
   __extends(ParseConfig, _super);
   _views = null;
   _contents = null;
@@ -1822,8 +4733,8 @@ ParseConfig = (function(_super) {
         }
         if ((v.id == null) || v.id === void 0) {
           src = v.src || v.content;
-          v.id = removeParam('noCache', src);
-          v.id = removeParam('v', src);
+          v.id = this.removeParam('noCache', this.getPath(src));
+          v.id = this.removeParam('v', this.getPath(src));
         }
         group[v.id] = v;
       }
@@ -1838,7 +4749,7 @@ ParseConfig = (function(_super) {
   	@param {String} p_url
   	@private
    */
-  removeParam = function(p_param, p_url) {
+  ParseConfig.prototype.removeParam = function(p_param, p_url) {
     var i, param, params, query, results;
     param = null;
     params = [];
@@ -1957,80 +4868,6 @@ ParseContent = (function(_super) {
   };
   return ParseContent;
 })(ParseData);
-var ServiceWorkerController;
-ServiceWorkerController = (function(_super) {
-  __extends(ServiceWorkerController, _super);
-  ServiceWorkerController["const"]({
-    INSTALLING: "serviceworker_controller_installing"
-  });
-  ServiceWorkerController["const"]({
-    INSTALLED: "serviceworker_controller_installed"
-  });
-  ServiceWorkerController["const"]({
-    ACTIVE: "serviceworker_controller_active"
-  });
-  ServiceWorkerController["const"]({
-    CHANGE: "serviceworker_controller_change"
-  });
-  ServiceWorkerController["const"]({
-    ERROR: "serviceworker_controller_error"
-  });
-  function ServiceWorkerController() {
-    this.error = __bind(this.error, this);
-    this.change = __bind(this.change, this);
-    this.registered = __bind(this.registered, this);
-    this.messages = __bind(this.messages, this);
-    var scope, src, _ref, _ref1, _ref2, _ref3, _ref4, _ref5, _ref6, _ref7;
-    src = (typeof app !== "undefined" && app !== null ? (_ref = app.config) != null ? (_ref1 = _ref.cache) != null ? _ref1.src : void 0 : void 0 : void 0) != null ? typeof app !== "undefined" && app !== null ? (_ref2 = app.config) != null ? (_ref3 = _ref2.cache) != null ? _ref3.src : void 0 : void 0 : void 0 : null;
-    scope = (typeof app !== "undefined" && app !== null ? (_ref4 = app.config) != null ? (_ref5 = _ref4.cache) != null ? _ref5.scope : void 0 : void 0 : void 0) != null ? typeof app !== "undefined" && app !== null ? (_ref6 = app.config) != null ? (_ref7 = _ref6.cache) != null ? _ref7.scope : void 0 : void 0 : void 0 : './';
-    if (src != null) {
-      navigator.serviceWorker.register(src, {
-        scope: scope
-      }).then(this.registered)["catch"](this.error);
-    }
-    ServiceWorkerController.__super__.constructor.apply(this, arguments);
-  }
-  ServiceWorkerController.prototype.messages = function(evt) {
-    return console.log("from worker:", evt.data);
-  };
-  ServiceWorkerController.prototype.registered = function(evt) {
-    var serviceWorker;
-    if (evt.installing) {
-      serviceWorker = evt.installing;
-      this.trigger(ServiceWorkerController.INSTALLING, {
-        data: serviceWorker
-      });
-    } else if (evt.waiting) {
-      serviceWorker = evt.waiting;
-      this.trigger(ServiceWorkerController.INSTALLED, {
-        data: serviceWorker
-      });
-    } else if (evt.active) {
-      serviceWorker = evt.active;
-      this.trigger(ServiceWorkerController.ACTIVE, {
-        data: serviceWorker
-      });
-    }
-    if (serviceWorker) {
-      serviceWorker.postMessage = serviceWorker.webkitPostMessage || serviceWorker.postMessage;
-      serviceWorker.postMessage(app.info.version);
-      serviceWorker.addEventListener('message', this.messages);
-      return serviceWorker.addEventListener('statechange', this.change);
-    }
-  };
-  ServiceWorkerController.prototype.change = function(evt) {
-    return this.trigger(ServiceWorkerController.CHANGE, {
-      data: evt
-    });
-  };
-  ServiceWorkerController.prototype.error = function(err) {
-    console.log('ServiceWorkerController registration failed: ', err);
-    return this.trigger(ServiceWorkerController.ERROR, {
-      data: err
-    });
-  };
-  return ServiceWorkerController;
-})(EventDispatcher);
 /**
 Base class to setup the configuration file and start loading of dependencies.
 @class NavigationLoader
@@ -2038,8 +4875,11 @@ Base class to setup the configuration file and start loading of dependencies.
  */
 var NavigationLoader;
 NavigationLoader = (function(_super) {
-  var config, currentStep, loaderRatio, loaderStep, loaderSteps, paths, removeParam, totalContentsLoaded;
+  var config, currentStep, lang, loaderRatio, loaderStep, loaderSteps, paths, removeParam, totalContentsLoaded;
   __extends(NavigationLoader, _super);
+  NavigationLoader["const"]({
+    LANGUAGE_DATA_LOADED: "language_data_loaded"
+  });
   NavigationLoader["const"]({
     CONFIG_LOADED: "config_loaded"
   });
@@ -2060,6 +4900,7 @@ NavigationLoader = (function(_super) {
   });
   paths = null;
   config = null;
+  lang = null;
   totalContentsLoaded = null;
   loaderStep = 0;
   loaderRatio = 0;
@@ -2078,6 +4919,8 @@ NavigationLoader = (function(_super) {
     this.initialQueue = __bind(this.initialQueue, this);
     this.contentLoaded = __bind(this.contentLoaded, this);
     this.loadContents = __bind(this.loadContents, this);
+    this.parseConfig = __bind(this.parseConfig, this);
+    this.selectLanguage = __bind(this.selectLanguage, this);
     this.configLoaded = __bind(this.configLoaded, this);
     var queue;
     if (!p_configPath) {
@@ -2103,26 +4946,75 @@ NavigationLoader = (function(_super) {
     }
   });
   /**
+  	@method loaded
+  	@return {Boolean}
+  	@protected
+   */
+  NavigationLoader.get({
+    loaded: function() {
+      return this._loaded;
+    }
+  });
+  /**
   	@method configLoaded
   	@param {Event} evt
   	@private
    */
   NavigationLoader.prototype.configLoaded = function(evt) {
-    var data, _ref, _ref1;
+    var data, _ref;
     if (evt != null) {
       if ((_ref = evt.currentTarget) != null) {
         _ref.off(AssetLoader.COMPLETE_FILE, this.configLoaded);
       }
     }
     data = evt.result;
-    paths = PathsData.getInstance(data.paths);
-    config = new ParseConfig(paths.translate(data));
+    if (data.languages != null) {
+      lang = LanguageData.getInstance();
+      lang.data = data.languages;
+    }
+    if (data.paths != null) {
+      this.trigger(NavigationLoader.LANGUAGE_DATA_LOADED, {
+        data: data,
+        language: lang
+      });
+    } else {
+      this.selectLanguage(data);
+    }
+    return false;
+  };
+  /**
+  	@method selectLanguage
+  	@param {Object} p_data
+  	@private
+   */
+  NavigationLoader.prototype.selectLanguage = function(p_data) {
+    var current, result, _ref;
+    if (lang != null) {
+      if (((_ref = lang.current) != null ? _ref.path : void 0) != null) {
+        current = lang.current.path;
+      } else {
+        current = lang["default"].path;
+      }
+    }
+    if (p_data.paths != null) {
+      p_data.paths['language'] = current;
+      paths = PathsData.getInstance(p_data.paths);
+      result = paths.translate(p_data);
+    } else {
+      result = p_data;
+    }
+    return this.parseConfig(result);
+  };
+  /**
+  	@method parseConfig
+  	@param {Object} p_data
+  	@private
+   */
+  NavigationLoader.prototype.parseConfig = function(p_data) {
+    config = new ParseConfig(p_data);
     this.trigger(NavigationLoader.CONFIG_LOADED, {
       data: config.data
     });
-    if (typeof app !== "undefined" && app !== null ? (_ref1 = app.detections) != null ? _ref1.cache : void 0 : void 0) {
-      new ServiceWorkerController();
-    }
     this.loadContents();
     return false;
   };
@@ -2332,7 +5224,7 @@ NavigationLoader = (function(_super) {
         }
         JSONUtils.removeComments(data);
         result = data;
-        evt.item.result = evt.item.tag = evt.result = JSON.parse(result);
+        result = evt.item.result = evt.item.tag = evt.result = JSON.parse(result);
         break;
       case 'js':
         data = evt.result;
@@ -2424,20 +5316,26 @@ NavigationLoader = (function(_super) {
    */
   NavigationLoader.prototype.loadComplete = function(evt) {
     var queue, step;
-    this.removeLoader(evt.currentTarget);
+    if (evt) {
+      this.removeLoader(evt.currentTarget);
+    }
     step = loaderSteps[loaderStep];
-    this.assetsLoaded(step != null ? step.id : void 0);
-    loaderRatio += step.ratio;
+    if (step) {
+      this.assetsLoaded(step.id);
+    }
+    loaderRatio += step != null ? step.ratio : void 0;
     loaderStep++;
     if (loaderStep >= loaderSteps.length) {
       this.trigger(NavigationLoader.LOAD_COMPLETE);
+      this._loaded = true;
     } else {
       currentStep = loaderSteps[loaderStep];
       queue = this.addLoader(currentStep.id);
       this.addFiles(currentStep.data, queue);
-      queue.load();
       if (queue._loadQueue.length + queue._currentLoads.length === 0) {
         this.loadComplete();
+      } else {
+        queue.load();
       }
     }
     return false;
@@ -2459,6 +5357,298 @@ NavigationLoader = (function(_super) {
     return false;
   };
   return NavigationLoader;
+})(EventDispatcher);
+/**
+Base class to setup the navigation and start loading of dependencies.
+@class Caim
+@extends EventDispatcher
+ */
+var Caim;
+Caim = (function(_super) {
+  var wrapper, _loader, _mainView, _preloaderView;
+  __extends(Caim, _super);
+  _loader = null;
+  _mainView = null;
+  _preloaderView = null;
+  wrapper = null;
+  /**
+  	@class Caim
+  	@constructor
+  	@param {BaseView} p_preloaderView The view of the first loading, it's called by the method {{#crossLink "Caim/createPreloaderView:method"}}{{/crossLink}} and attached on container when the preloader assets is completely loaded.
+  	@param {String} [p_configPath = "data/config.json"] Path of the navigation configuration file.
+  	@param {HTMLElement} [p_wrapper = null] Custom container to attach the navigation.
+   */
+  function Caim(p_preloaderView, p_configPath, p_wrapper) {
+    var _ref, _ref1;
+    if (p_configPath == null) {
+      p_configPath = "data/config.json";
+    }
+    if (p_wrapper == null) {
+      p_wrapper = null;
+    }
+    this.mainAssetsLoaded = __bind(this.mainAssetsLoaded, this);
+    this.preloaderAssetsLoaded = __bind(this.preloaderAssetsLoaded, this);
+    this.coreAssetsLoaded = __bind(this.coreAssetsLoaded, this);
+    this._showMainView = __bind(this._showMainView, this);
+    this._createMainView = __bind(this._createMainView, this);
+    this.destroyPreloderView = __bind(this.destroyPreloderView, this);
+    this.hidePreloderView = __bind(this.hidePreloderView, this);
+    this.showPreloaderView = __bind(this.showPreloaderView, this);
+    this.createPreloaderView = __bind(this.createPreloaderView, this);
+    this.groupLoaded = __bind(this.groupLoaded, this);
+    this.progress = __bind(this.progress, this);
+    this.configLoaded = __bind(this.configLoaded, this);
+    this.selectLanguage = __bind(this.selectLanguage, this);
+    this.languageDataLoaded = __bind(this.languageDataLoaded, this);
+    if (!(p_preloaderView instanceof BaseView)) {
+      throw new Error('The param p_preloaderView is null or the instance of param p_preloaderView is not either BaseView class');
+    } else {
+      _preloaderView = p_preloaderView;
+    }
+    wrapper = p_wrapper == null ? document.body : p_wrapper;
+    app.root = ((_ref = document.querySelector("base")) != null ? _ref.href : void 0) || ((_ref1 = document.getElementsByTagName("base")[0]) != null ? _ref1.href : void 0);
+    app.loader = AssetLoader.getInstance();
+    app.detections = Detections.getInstance();
+    _loader = new NavigationLoader(app.root != null ? app.root + p_configPath : p_configPath);
+    _loader.on(NavigationLoader.LANGUAGE_DATA_LOADED, this.languageDataLoaded);
+    _loader.on(NavigationLoader.CONFIG_LOADED, this.configLoaded);
+    _loader.on(NavigationLoader.GROUP_ASSETS_LOADED, this.groupLoaded);
+    _loader.on(NavigationLoader.LOAD_START, this.createPreloaderView);
+    _loader.on(NavigationLoader.LOAD_PROGRESS, this.progress);
+    _loader.on(NavigationLoader.LOAD_COMPLETE, this.hidePreloderView);
+    false;
+  }
+  /**
+  	@method loaded
+  	@param {Boolean}
+  	@protected
+   */
+  Caim.get({
+    loaded: function() {
+      return _loader.loaded;
+    }
+  });
+  /**
+  	@method languageDataLoaded
+  	@param {Event} evt
+  	@private
+   */
+  Caim.prototype.languageDataLoaded = function(evt) {
+    evt.currentTarget.off(NavigationLoader.LANGUAGE_DATA_LOADED, this.languageDataLoaded);
+    this.selectLanguage(evt.data);
+    return false;
+  };
+  /**
+  	@method selectLanguage
+  	@param {Object} p_data
+  	@private
+   */
+  Caim.prototype.selectLanguage = function(p_data) {
+    _loader.selectLanguage(p_data);
+    return false;
+  };
+  /**
+  	@method configLoaded
+  	@param {Event} evt
+  	@private
+   */
+  Caim.prototype.configLoaded = function(evt) {
+    var _ref;
+    if (evt != null) {
+      if ((_ref = evt.currentTarget) != null) {
+        if (typeof _ref.off === "function") {
+          _ref.off(NavigationLoader.CONFIG_LOADED, this.configLoaded);
+        }
+      }
+    }
+    app.config = evt.data;
+    app.conditions = app.config.conditions != null ? ConditionsValidation.getInstance(app.config.conditions) : null;
+    return false;
+  };
+  /**
+  	@method progress
+  	@param {Event} evt
+  	@private
+   */
+  Caim.prototype.progress = function(evt) {
+    if (_preloaderView != null) {
+      _preloaderView.progress = evt.progress;
+    }
+    return false;
+  };
+  /**
+  	@method groupLoaded
+  	@param {Event} evt
+  	@private
+   */
+  Caim.prototype.groupLoaded = function(evt) {
+    var k, v, _ref;
+    switch (evt.id) {
+      case 'core':
+        this.coreAssetsLoaded();
+        break;
+      case 'main':
+        _ref = app.config.required.main;
+        for (k in _ref) {
+          v = _ref[k];
+          if (v.ext === 'js' && v.id.search(/main/i) !== -1) {
+            _mainView = app.config.required.main[v.id].result;
+          }
+        }
+        this.mainAssetsLoaded();
+        break;
+      case 'preloader':
+        this.preloaderAssetsLoaded();
+        break;
+    }
+  };
+  /**
+  	@method createPreloaderView
+  	@param {Event} [evt=null]
+  	@protected
+   */
+  Caim.prototype.createPreloaderView = function(evt) {
+    var _ref, _ref1;
+    if (evt == null) {
+      evt = null;
+    }
+    if (evt != null) {
+      if ((_ref = evt.currentTarget) != null) {
+        if (typeof _ref.off === "function") {
+          _ref.off(NavigationLoader.LOAD_START, this.createPreloaderView);
+        }
+      }
+    }
+    if (((_ref1 = app.config.required.preloader) != null ? _ref1.content : void 0) != null) {
+      _preloaderView.content = app.config.required.preloader.content;
+    }
+    wrapper.appendChild(_preloaderView.element);
+    _preloaderView.on(BaseView.CREATE_COMPLETE, this.showPreloaderView);
+    _preloaderView.createStart();
+    return false;
+  };
+  /**
+  	@method showPreloaderView
+  	@param {Event} [evt=null]
+  	@protected
+   */
+  Caim.prototype.showPreloaderView = function(evt) {
+    if (evt == null) {
+      evt = null;
+    }
+    _preloaderView.off(BaseView.CREATE_COMPLETE, this.showPreloaderView);
+    _preloaderView.showStart();
+    return false;
+  };
+  /**
+  	@method hidePreloderView
+  	@param {Event} [evt=null]
+  	@protected
+   */
+  Caim.prototype.hidePreloderView = function(evt) {
+    if (evt == null) {
+      evt = null;
+    }
+    _preloaderView.on(BaseView.HIDE_COMPLETE, this.destroyPreloderView);
+    _preloaderView.progress = 1;
+    _preloaderView.hideStart();
+    return false;
+  };
+  /**
+  	@method destroyPreloderView
+  	@param {Event} [evt=null]
+  	@protected
+   */
+  Caim.prototype.destroyPreloderView = function(evt) {
+    var hiddenFonts, _ref;
+    if (evt == null) {
+      evt = null;
+    }
+    hiddenFonts = document.getElementById('hiddenFonts');
+    if (hiddenFonts != null) {
+      if ((_ref = hiddenFonts.parentNode) != null) {
+        _ref.removeChild(hiddenFonts);
+      }
+    }
+    _preloaderView.off(BaseView.HIDE_COMPLETE, this.destroyPreloderView);
+    _preloaderView.on(BaseView.DESTROY_COMPLETE, this._createMainView);
+    _preloaderView.destroy();
+    return false;
+  };
+  /**
+  	@method _createMainView
+  	@private
+   */
+  Caim.prototype._createMainView = function() {
+    var _ref, _ref1;
+    _preloaderView.off(BaseView.DESTROY_COMPLETE, this._createMainView);
+    wrapper.removeChild(_preloaderView.element);
+    _preloaderView = null;
+    if (!(_mainView instanceof BaseView)) {
+      throw new Error('The instance of Main class is not either BaseView class');
+    }
+    app.container = _mainView;
+    wrapper.appendChild(_mainView.element);
+    _mainView.on(BaseView.CREATE_COMPLETE, this._showMainView);
+    if (((_ref = app.config.navigation) != null ? _ref.startBefore : void 0) || ((_ref1 = app.config.navigation) != null ? _ref1.startBefore : void 0) === void 0) {
+      _mainView.setupNavigation(app.config);
+      _mainView.createStart();
+    } else {
+      _mainView.createStart();
+      _mainView.setupNavigation(app.config);
+    }
+    return false;
+  };
+  /**
+  	@method _showMainView
+  	@param {Event} [evt=null]
+  	@private
+   */
+  Caim.prototype._showMainView = function(evt) {
+    if (evt == null) {
+      evt = null;
+    }
+    _mainView.off(BaseView.CREATE_COMPLETE, this._showMainView);
+    _mainView.showStart();
+    return false;
+  };
+  /**
+  	Called only when the core assets is completely loaded.
+  	@method coreAssetsLoaded
+  	@param {Event} [evt=null]
+  	@protected
+   */
+  Caim.prototype.coreAssetsLoaded = function(evt) {
+    if (evt == null) {
+      evt = null;
+    }
+    return false;
+  };
+  /**
+  	Called only when the preloader assets is completely loaded.
+  	@method preloaderAssetsLoaded
+  	@param {Event} [evt=null]
+  	@protected
+   */
+  Caim.prototype.preloaderAssetsLoaded = function(evt) {
+    if (evt == null) {
+      evt = null;
+    }
+    return false;
+  };
+  /**
+  	Called only when the main assets is completely loaded.
+  	@method mainAssetsLoaded
+  	@param {Event} [evt=null]
+  	@protected
+   */
+  Caim.prototype.mainAssetsLoaded = function(evt) {
+    if (evt == null) {
+      evt = null;
+    }
+    return false;
+  };
+  return Caim;
 })(EventDispatcher);
 var TemplatePreloaderView;
 TemplatePreloaderView = (function(_super) {
@@ -2527,7 +5717,7 @@ Preloader = (function(_super) {
     Preloader.__super__.constructor.call(this, new TemplatePreloaderView());
   }
   return Preloader;
-})(NavigationLoader);
+})(Caim);
 app.on('windowLoad', (function(_this) {
   return function() {
     return new Preloader();

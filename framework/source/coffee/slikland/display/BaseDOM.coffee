@@ -20,7 +20,7 @@ Node::removeChild = (node) ->
 	el = node
 	if node instanceof BaseDOM
 		el = node.element
-		node.parent = @
+		node._parent = null
 	Node::__removeChild__.call(@, el)
 	return node
 Element::matches = Element::matches || Element::webkitMatchesSelector || Element::mozMatchesSelector || Element::msMatchesSelector || Element::oMatchesSelector
@@ -377,4 +377,4 @@ class BaseDOM extends EventDispatcher
 
 	destroy:()->
 		@off?()
-		@remove?()
+		@removeAll?()
