@@ -5413,7 +5413,6 @@ Caim = (function(_super) {
     _loader.on(NavigationLoader.LANGUAGE_DATA_LOADED, this.languageDataLoaded);
     _loader.on(NavigationLoader.CONFIG_LOADED, this.configLoaded);
     _loader.on(NavigationLoader.GROUP_ASSETS_LOADED, this.groupLoaded);
-    _loader.on(NavigationLoader.LOAD_START, this.createPreloaderView);
     _loader.on(NavigationLoader.LOAD_PROGRESS, this.progress);
     _loader.on(NavigationLoader.LOAD_COMPLETE, this.hidePreloderView);
     false;
@@ -5499,6 +5498,7 @@ Caim = (function(_super) {
         break;
       case 'preloader':
         this.preloaderAssetsLoaded();
+        this.createPreloaderView();
         break;
     }
   };
@@ -5507,19 +5507,9 @@ Caim = (function(_super) {
   	@param {Event} [evt=null]
   	@protected
    */
-  Caim.prototype.createPreloaderView = function(evt) {
-    var _ref, _ref1;
-    if (evt == null) {
-      evt = null;
-    }
-    if (evt != null) {
-      if ((_ref = evt.currentTarget) != null) {
-        if (typeof _ref.off === "function") {
-          _ref.off(NavigationLoader.LOAD_START, this.createPreloaderView);
-        }
-      }
-    }
-    if (((_ref1 = app.config.required.preloader) != null ? _ref1.content : void 0) != null) {
+  Caim.prototype.createPreloaderView = function() {
+    var _ref;
+    if (((_ref = app.config.required.preloader) != null ? _ref.content : void 0) != null) {
       _preloaderView.content = app.config.required.preloader.content;
     }
     wrapper.appendChild(_preloaderView.element);

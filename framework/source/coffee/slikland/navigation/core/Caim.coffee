@@ -51,7 +51,7 @@ class Caim extends EventDispatcher
 		_loader.on(NavigationLoader.CONFIG_LOADED, @configLoaded)
 		_loader.on(NavigationLoader.GROUP_ASSETS_LOADED, @groupLoaded)
 
-		_loader.on(NavigationLoader.LOAD_START, @createPreloaderView)
+		# _loader.on(NavigationLoader.LOAD_START, @createPreloaderView)
 		_loader.on(NavigationLoader.LOAD_PROGRESS, @progress)
 		_loader.on(NavigationLoader.LOAD_COMPLETE, @hidePreloderView)
 
@@ -122,6 +122,7 @@ class Caim extends EventDispatcher
 				break
 			when 'preloader'
 				@preloaderAssetsLoaded()
+				@createPreloaderView()
 				break
 
 	###*
@@ -129,8 +130,7 @@ class Caim extends EventDispatcher
 	@param {Event} [evt=null]
 	@protected
 	###
-	createPreloaderView:(evt=null)=>
-		evt?.currentTarget?.off?(NavigationLoader.LOAD_START, @createPreloaderView)
+	createPreloaderView:()=>
 		if app.config.required.preloader?.content?
 			_preloaderView.content = app.config.required.preloader.content
 		wrapper.appendChild(_preloaderView.element)
