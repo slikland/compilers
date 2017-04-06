@@ -320,6 +320,14 @@ Node::off = Node::removeEventListener
 navigator.mediaDevices ?= {}
 navigator.getUserMedia = navigator.mediaDevices.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia
 
+window.requestAnimationFrame = window.requestAnimationFrame || window.mozRequestAnimationFrame || window.webkitRequestAnimationFrame || window.msRequestAnimationFrame || (f) ->
+  #simulate calling code 60 
+  setTimeout f, 1000 / 60
+
+window.cancelAnimationFrame = window.cancelAnimationFrame || window.mozCancelAnimationFrame || (requestID) ->
+  clearTimeout requestID
+  return false
+
 ##------------------------------------------------------------------------------
 #
 # CACHES POLYFILL BECAUSE IT IS NOT ADDED TO NATIVE YET!
