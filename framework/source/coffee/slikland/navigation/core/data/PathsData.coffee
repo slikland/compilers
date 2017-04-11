@@ -42,6 +42,9 @@ class PathsData extends EventDispatcher
 	@private
 	###
 	_parseData:(p_vars)=>
+		if window.paths?
+			for k, v of window.paths
+				p_vars[k] = v
 		p_varsStr = JSON.stringify(p_vars)
 		while (o = /\{([^\"\{\}]+)\}/.exec(p_varsStr))
 			val = p_vars[o[1]]
