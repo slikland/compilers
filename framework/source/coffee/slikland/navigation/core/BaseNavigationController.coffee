@@ -1,4 +1,5 @@
 #import slikland.navigation.core.data.ViewsData
+#import slikland.navigation.core.meta.MetaController
 
 ###*
 BaseNavigationController is a base class for any type of navigation controller.<br>
@@ -126,6 +127,7 @@ class BaseNavigationController extends EventDispatcher
 	@protected
 	###
 	change:(p_id)=>
+		MetaController.getInstance().change(@currentView.meta)
 		@trigger(BaseNavigationController.CHANGE_VIEW, {data:@data})
 		false
 	

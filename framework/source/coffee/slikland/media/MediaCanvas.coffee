@@ -72,7 +72,7 @@ class MediaCanvas extends BaseDOM
 			@video.element.on 'error', @error
 
 		@seek = @startFrom
-		if @autoplay
+		if document.hasFocus() && @autoplay
 			@play()
 		@trigger(MediaCanvas.CANSTART, {'duration':@duration})
 		return false
