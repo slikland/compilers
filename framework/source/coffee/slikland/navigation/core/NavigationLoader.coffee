@@ -94,12 +94,13 @@ class NavigationLoader extends EventDispatcher
 	selectLanguage:(p_data)=>
 		if lang?
 			if lang.current?.path?
-				current = lang.current.path
+				current = lang.current
 			else
-				current = lang.default.path
+				current = lang.default
 	
 		if p_data.paths?
-			p_data.paths['language'] = current
+			p_data.paths['language-route'] = current.route
+			p_data.paths['language-data'] = current.path
 			paths = PathsData.getInstance(p_data.paths)
 			result = paths.translate(p_data)
 		else

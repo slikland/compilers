@@ -19,7 +19,10 @@ class LanguageData extends EventDispatcher
 		if typeof(p_value) == 'string' && _data?.length > 0
 			for i in [0..._data.length]
 				if _data[i].iso == p_value
-					result = true
+					result = _data[i]
+					break
+				else if _data[i].route == p_value
+					result = _data[i]
 					break
 		return result
 
@@ -31,6 +34,7 @@ class LanguageData extends EventDispatcher
 		for k, v of p_value
 			# ref: https://en.wikipedia.org/wiki/Language_localisation
 			if !v.iso || v.iso && v.iso == "" then throw new Error('Please sets the "iso" object (ISO 639-1 standard) in languages object of config file.')
+			if !v.route || v.route && v.route == "" then throw new Error('Please sets the "route" object in languages object of config file.')
 			if !v.path || v.path && v.path == "" then throw new Error('Please sets the "path" object in languages object of config file.')
 			if v.default? then _default = v
 		if !_default
