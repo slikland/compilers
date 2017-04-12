@@ -3,7 +3,7 @@ class Versioner extends EventDispatcher
 	path = null
 	resultVersion = null
 	resultDate = null
-	versionRegex : /(SL_PROJECT_VERSION):\d.\d.\d/g
+	versionRegex : /(SL_PROJECT_VERSION):\d+\.\d+\.\d+/g
 	dateRegex : /(SL_PROJECT_DATE):[\d]+/g
 
 	constructor: (p_path) ->

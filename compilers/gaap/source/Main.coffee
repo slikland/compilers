@@ -34,16 +34,21 @@ class Main
 	constructor:()->
 		@docs = false
 		@ugly = false
+		@verbose = false
 		options = process.argv.splice(2)
 		@_buildFile = 'build.coffee'
 		for o in options
 			switch o
 				when 'uglify'
 					@ugly = true
+				when '--verbose'
+					@verbose = true
 				when 'docs'
 					@docs = true
 			if o.indexOf('.coffee') >= 1
 				@_buildFile = o
+
+		Main.verbose = @verbose
 
 		@coffeeCompiler = new CoffeeCompiler()
 		@coffeeCompiler.ugly = @ugly
@@ -146,8 +151,9 @@ class Main
 		@buildFile.docs['linkNatives'] = true
 		@buildFile.docs['attributesEmit'] = false
 		@buildFile.docs['selleck'] = true
+
 		@buildFile.docs['syntaxtype'] = 'coffee'
-		@buildFile.docs['extension'] = '.coffee'
+		@buildFile.docs['extension'] ?= '.coffee'
 
 		
 		@buildFile.docs['paths'] = @buildFile.docs['source']

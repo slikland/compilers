@@ -314,7 +314,7 @@ Versioner = (function(_super) {
   path = null;
   resultVersion = null;
   resultDate = null;
-  Versioner.prototype.versionRegex = /(SL_PROJECT_VERSION):\d.\d.\d/g;
+  Versioner.prototype.versionRegex = /(SL_PROJECT_VERSION):\d+\.\d+\.\d+/g;
   Versioner.prototype.dateRegex = /(SL_PROJECT_DATE):[\d]+/g;
   function Versioner(p_path) {
     this.nextVersion = __bind(this.nextVersion, this);
@@ -1294,6 +1294,9 @@ CoffeeCompiler = (function() {
         v.usedBy = {};
       }
       usedFiles = this._parseFilesRecursive(cache, sourcePaths, files);
+      if (Main.verbose) {
+        console.log(usedFiles.join('\n'));
+      }
       return this.usedFiles = this._removeDuplicates(usedFiles);
     };
     Task.prototype.output = function(ugly, version) {
@@ -1594,6 +1597,7 @@ Main = (function() {
     var o, options, _i, _len;
     this.docs = false;
     this.ugly = false;
+    this.verbose = false;
     options = process.argv.splice(2);
     this._buildFile = 'build.coffee';
     for (_i = 0, _len = options.length; _i < _len; _i++) {
@@ -1602,6 +1606,9 @@ Main = (function() {
         case 'uglify':
           this.ugly = true;
           break;
+        case '--verbose':
+          this.verbose = true;
+          break;
         case 'docs':
           this.docs = true;
       }
@@ -1609,6 +1616,7 @@ Main = (function() {
         this._buildFile = o;
       }
     }
+    Main.verbose = this.verbose;
     this.coffeeCompiler = new CoffeeCompiler();
     this.coffeeCompiler.ugly = this.ugly;
     this.lessCompiler = new LessCompiler();
@@ -1715,7 +1723,7 @@ Main = (function() {
     return (_ref = this._buildfileWatcher) != null ? _ref.close() : void 0;
   };
   Main.prototype._buildDocs = function() {
-    var json, options, opts, _ref, _ref1;
+    var json, options, opts, _base, _ref, _ref1;
     if (!this.docs || this.docs && (((_ref = this.buildFile) != null ? _ref.docs : void 0) == null) || (((_ref1 = this.buildFile) != null ? _ref1.docs : void 0) == null)) {
       return;
     }
@@ -1727,7 +1735,9 @@ Main = (function() {
     this.buildFile.docs['attributesEmit'] = false;
     this.buildFile.docs['selleck'] = true;
     this.buildFile.docs['syntaxtype'] = 'coffee';
-    this.buildFile.docs['extension'] = '.coffee';
+    if ((_base = this.buildFile.docs)['extension'] == null) {
+      _base['extension'] = '.coffee';
+    }
     this.buildFile.docs['paths'] = this.buildFile.docs['source'];
     this.buildFile.docs['outdir'] = this.buildFile.docs['options']['output'];
     options = yuidocs.Project.init(yuidocs.clone(this.buildFile.docs));
