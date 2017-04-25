@@ -1,5 +1,6 @@
 #import slikland.navigation.types.DefaultNavigationController
 #import slikland.navigation.core.NavigationContainer
+#import slikland.navigation.core.data.LanguageData
 #import slikland.utils.Resizer
 
 #############################
@@ -12,6 +13,10 @@
 class Main extends NavigationContainer
 	_controller = new DefaultNavigationController()
 	re = Resizer.getInstance()
+
+	constructor: () ->
+		super
+		console.log Error().stack
 
 	create:(evt=null)=>
 		menu = new BaseDOM()
@@ -28,6 +33,8 @@ class Main extends NavigationContainer
 			@button.text = v.id
 			@button.element.on 'click', @click
 		re.on(Resizer.BREAKPOINT_CHANGE, @change)
+
+		# console.log LanguageData.getInstance()
 
 		# console.log "main content:", @content
 		# console.log app.detections.os

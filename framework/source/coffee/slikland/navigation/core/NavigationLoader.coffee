@@ -77,14 +77,10 @@ class NavigationLoader extends EventDispatcher
 		data = evt.result
 
 		if data.languages?
-			lang = LanguageData.getInstance()
-			lang.data = data.languages
-
-		if data.paths?
-			@trigger(NavigationLoader.LANGUAGE_DATA_LOADED, {data:data, language:lang})
-		else
 			@selectLanguage(data)
-		false 
+		else
+			@parseConfig(data)
+		false
 
 	###*
 	@method selectLanguage
@@ -92,20 +88,22 @@ class NavigationLoader extends EventDispatcher
 	@private
 	###
 	selectLanguage:(p_data)=>
-		if lang?
-			if lang.current?.path?
-				current = lang.current
-			else
-				current = lang.default
-	
-		if p_data.paths?
-			p_data.paths['language-route'] = current.route
-			p_data.paths['language-data'] = current.path
-			paths = PathsData.getInstance(p_data.paths)
-			result = paths.translate(p_data)
-		else
-			result = p_data
-		@parseConfig(result)
+		languages = LanguageData.getInstance(p_data.languages)
+		parts = document.location.href.split('/')
+		i = parts.length
+		while i--
+			part = parts[i]
+			if languages.hasLanguage(part, 'sufix')
+				selected = part
+				break
+		languages.current = selected || languages.default.iso
+		if !p_data.paths
+			p_data['paths'] = {}
+
+		p_data.paths['language-data'] = languages.current['data-path']
+		
+		@parseConfig(p_data)
+		false
 
 	###*
 	@method parseConfig
@@ -113,6 +111,9 @@ class NavigationLoader extends EventDispatcher
 	@private
 	###
 	parseConfig:(p_data)=>
+		paths = PathsData.getInstance(p_data.paths)
+		p_data = paths.translate(p_data)
+
 		config = new ParseConfig(p_data)
 		@trigger(NavigationLoader.CONFIG_LOADED, {data:config.data})
 		@loadContents()

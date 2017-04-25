@@ -2,27 +2,36 @@
 #import slikland.navigation.core.data.PathsData
 
 class LanguageData extends EventDispatcher
-	@const SELECT_LANGUAGE : "select_language"
-
+	
 	_data = null
 	_current = undefined
 	_default = undefined
 
-	@getInstance:()=>
-		@_instance ?= new @()
+	@getInstance:(p_data)=>
+		@_instance ?= new @(p_data)
 	
-	constructor:()->
+	constructor:(p_data)->
+		@data = p_data
 		super
 
-	hasLanguage:(p_value)->
+	hasLanguage:(p_value, p_filter='iso')->
 		result = false
-		if typeof(p_value) == 'string' && _data?.length > 0
-			for i in [0..._data.length]
-				if _data[i].iso == p_value
-					result = _data[i]
+		if typeof(p_value) == 'string' && typeof(p_filter) == 'string'
+			for i in [0...@data.length]
+				if @data[i][p_filter] == p_value
+					result = true
 					break
-				else if _data[i].route == p_value
-					result = _data[i]
+		return result
+
+	getLanguage:(p_value)->
+		result = null
+		if typeof(p_value) == 'string'
+			for i in [0...@data.length]
+				if @data[i].iso == p_value
+					result = @data[i]
+					break
+				else if @data[i].sufix == p_value
+					result = @data[i]
 					break
 		return result
 
@@ -34,25 +43,31 @@ class LanguageData extends EventDispatcher
 		for k, v of p_value
 			# ref: https://en.wikipedia.org/wiki/Language_localisation
 			if !v.iso || v.iso && v.iso == "" then throw new Error('Please sets the "iso" object (ISO 639-1 standard) in languages object of config file.')
-			if !v.route || v.route && v.route == "" then throw new Error('Please sets the "route" object in languages object of config file.')
-			if !v.path || v.path && v.path == "" then throw new Error('Please sets the "path" object in languages object of config file.')
-			if v.default? then _default = v
-		if !_default
+			if !v.sufix || v.sufix && v.sufix == "" then throw new Error('Please sets the "sufix" object in languages object of config file.')
+			if !v['data-path'] || v['data-path'] && v['data-path'] == "" then throw new Error('Please sets the "data-path" object in languages object of config file.')
+			if v.default? then @default = v
+		if !@default
 			p_value[0].default = true
-			_default = p_value[0]
+			@default = p_value[0]
 		false
 
 	@get current:()->
 		return _current
 
 	@set current:(p_value)->
-		if typeof(p_value) == 'string' && _data?.length > 0
-			for i in [0..._data.length]
-				if _data[i].iso == p_value
-					_current = _data[i]
+		if typeof(p_value) == 'string'
+			for i in [0...@data.length]
+				if @data[i].iso == p_value
+					_current = @data[i]
 					break
-		else
-			_current = p_value
+				else if @data[i].sufix == p_value
+					_current = @data[i]
+					break
+			if !_current then throw new Error('The value '+p_value+' isnt a valid "iso" or "sufix".')
 		false
+
 	@get default:()->
 		return _default
+	
+	@set default:(p_value)->
+		_default = p_value

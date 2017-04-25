@@ -79,6 +79,18 @@ class Navigation extends EventDispatcher
 			viewID =  @getViewByRoute(current)
 		else
 			viewID = null
+		
+		if app.languages
+			languages = app.languages
+			if languages.default && viewID
+				parts = @routeData.raw.split('/')
+				if !languages.hasLanguage(parts[0], 'sufix')
+					if app.config.views[viewID].route
+						route = app.config.views[viewID].route
+					else
+						route = '/'
+					@replaceRoute(route)
+
 		_controller.start(viewID)
 		false
 	
@@ -125,6 +137,9 @@ class Navigation extends EventDispatcher
 		if routeData?
 			results.raw = pathData.rawPath
 			results.params = pathData.params
+			if app.languages
+				results['language-iso'] = app.languages.current.iso
+				results['language-sufix'] = app.languages.current.sufix
 			results.route = routeData[0]?[0]?.route
 			results.parsed = routeData[1]
 		return results
@@ -152,12 +167,8 @@ class Navigation extends EventDispatcher
 	@param {String|Object} p_value
 	@deprecated Uses the {{#crossLink "Navigation/gotoRoute:method"}}{{/crossLink}} or {{#crossLink "Navigation/gotoView:method"}}{{/crossLink}}
 	###
-	goto:(p_value)=>
+	goto:(p_value, p_trigger=false)=>
 		throw new Error('This method is already deprecated.')
-		# if p_value.indexOf('/') == 0
-		# 	@gotoRoute(p_value)
-		# else
-		# 	@gotoView(p_value)
 		false
 
 	###*
@@ -177,7 +188,10 @@ class Navigation extends EventDispatcher
 	gotoRoute:(p_value, p_trigger=false)=>
 		return if !p_value?
 		if p_value.indexOf('/') == 0
-			_router.goto(p_value, p_trigger)
+			if app.languages
+				_router.goto('/'+app.languages.current.sufix+p_value, p_trigger)
+			else
+				_router.goto(p_value, p_trigger)
 		else
 			throw new Error('The value "'+p_value+'" is not a valid format to route ("/example")')
 		false
@@ -190,7 +204,10 @@ class Navigation extends EventDispatcher
 	replaceRoute:(p_value, p_trigger=false)=>
 		return if !p_value?
 		if p_value.indexOf('/') == 0
-			_router.replace(p_value, p_trigger)
+			if app.languages
+				_router.replace('/'+app.languages.current.sufix+p_value, p_trigger)
+			else
+				_router.replace(p_value, p_trigger)
 		else
 			throw new Error('The value "'+p_value+'" is not a valid format to route ("/example")')
 		false

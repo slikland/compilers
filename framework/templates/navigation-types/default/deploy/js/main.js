@@ -300,6 +300,7 @@ BaseNavigationController = (function(_super) {
   	@protected
    */
   BaseNavigationController.prototype.change = function(p_id) {
+    MetaController.getInstance().change(this.currentView.meta);
     this.trigger(BaseNavigationController.CHANGE_VIEW, {
       data: this.data
     });
@@ -1114,7 +1115,7 @@ Navigation = (function(_super) {
   	@param {Event} [evt=null]
    */
   Navigation.prototype.start = function(evt) {
-    var current, pathData, routes, viewID;
+    var current, languages, parts, pathData, route, routes, viewID;
     if (evt == null) {
       evt = null;
     }
@@ -1126,6 +1127,20 @@ Navigation = (function(_super) {
       viewID = this.getViewByRoute(current);
     } else {
       viewID = null;
+    }
+    if (app.languages) {
+      languages = app.languages;
+      if (languages["default"] && viewID) {
+        parts = this.routeData.raw.split('/');
+        if (!languages.hasLanguage(parts[0], 'sufix')) {
+          if (app.config.views[viewID].route) {
+            route = app.config.views[viewID].route;
+          } else {
+            route = '/';
+          }
+          this.replaceRoute(route);
+        }
+      }
     }
     _controller.start(viewID);
     return false;
@@ -1181,6 +1196,10 @@ Navigation = (function(_super) {
       if (routeData != null) {
         results.raw = pathData.rawPath;
         results.params = pathData.params;
+        if (app.languages) {
+          results['language-iso'] = app.languages.current.iso;
+          results['language-sufix'] = app.languages.current.sufix;
+        }
         results.route = (_ref = routeData[0]) != null ? (_ref1 = _ref[0]) != null ? _ref1.route : void 0 : void 0;
         results.parsed = routeData[1];
       }
@@ -1214,7 +1233,10 @@ Navigation = (function(_super) {
   	@param {String|Object} p_value
   	@deprecated Uses the {{#crossLink "Navigation/gotoRoute:method"}}{{/crossLink}} or {{#crossLink "Navigation/gotoView:method"}}{{/crossLink}}
    */
-  Navigation.prototype.goto = function(p_value) {
+  Navigation.prototype.goto = function(p_value, p_trigger) {
+    if (p_trigger == null) {
+      p_trigger = false;
+    }
     throw new Error('This method is already deprecated.');
     return false;
   };
@@ -1243,7 +1265,11 @@ Navigation = (function(_super) {
       return;
     }
     if (p_value.indexOf('/') === 0) {
-      _router.goto(p_value, p_trigger);
+      if (app.languages) {
+        _router.goto('/' + app.languages.current.sufix + p_value, p_trigger);
+      } else {
+        _router.goto(p_value, p_trigger);
+      }
     } else {
       throw new Error('The value "' + p_value + '" is not a valid format to route ("/example")');
     }
@@ -1262,7 +1288,11 @@ Navigation = (function(_super) {
       return;
     }
     if (p_value.indexOf('/') === 0) {
-      _router.replace(p_value, p_trigger);
+      if (app.languages) {
+        _router.replace('/' + app.languages.current.sufix + p_value, p_trigger);
+      } else {
+        _router.replace(p_value, p_trigger);
+      }
     } else {
       throw new Error('The value "' + p_value + '" is not a valid format to route ("/example")');
     }
@@ -1811,12 +1841,13 @@ var Main;
 Main = (function(_super) {
   var re, _controller;
   __extends(Main, _super);
-  function Main() {
-    this.create = __bind(this.create, this);
-    return Main.__super__.constructor.apply(this, arguments);
-  }
   _controller = new DefaultNavigationController();
   re = Resizer.getInstance();
+  function Main() {
+    this.create = __bind(this.create, this);
+    Main.__super__.constructor.apply(this, arguments);
+    console.log(Error().stack);
+  }
   Main.prototype.create = function(evt) {
     var k, menu, v, _ref;
     if (evt == null) {

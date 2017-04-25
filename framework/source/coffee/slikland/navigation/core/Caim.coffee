@@ -20,7 +20,6 @@ Base class to setup the navigation and start loading of dependencies.
 ###
 class Caim extends EventDispatcher
 	
-	_loader = null
 	_mainView = null
 	_preloaderView = null
 
@@ -45,43 +44,15 @@ class Caim extends EventDispatcher
 		app.loader = AssetLoader.getInstance()
 		app.detections = Detections.getInstance()
 
-		_loader = new NavigationLoader(if app.root? then app.root+p_configPath else p_configPath)
+		loader = new NavigationLoader(if app.root? then app.root+p_configPath else p_configPath)
 
-		_loader.on(NavigationLoader.LANGUAGE_DATA_LOADED, @languageDataLoaded)
-		_loader.on(NavigationLoader.CONFIG_LOADED, @configLoaded)
-		_loader.on(NavigationLoader.GROUP_ASSETS_LOADED, @groupLoaded)
+		loader.on(NavigationLoader.CONFIG_LOADED, @configLoaded)
+		loader.on(NavigationLoader.GROUP_ASSETS_LOADED, @groupLoaded)
 
-		# _loader.on(NavigationLoader.LOAD_START, @createPreloaderView)
-		_loader.on(NavigationLoader.LOAD_PROGRESS, @progress)
-		_loader.on(NavigationLoader.LOAD_COMPLETE, @hidePreloderView)
+		# loader.on(NavigationLoader.LOAD_START, @createPreloaderView)
+		loader.on(NavigationLoader.LOAD_PROGRESS, @progress)
+		loader.on(NavigationLoader.LOAD_COMPLETE, @hidePreloderView)
 
-		false
-	
-	###*
-	@method loaded
-	@param {Boolean}
-	@protected
-	###
-	@get loaded:()=>
-		return _loader.loaded
-	
-	###*
-	@method languageDataLoaded
-	@param {Event} evt
-	@private
-	###
-	languageDataLoaded:(evt)=>
-		evt.currentTarget.off(NavigationLoader.LANGUAGE_DATA_LOADED, @languageDataLoaded)
-		@selectLanguage(evt.data)
-		false
-	
-	###*
-	@method selectLanguage
-	@param {Object} p_data
-	@private
-	###
-	selectLanguage:(p_data)=>
-		_loader.selectLanguage(p_data)
 		false
 
 	###*
@@ -93,6 +64,7 @@ class Caim extends EventDispatcher
 		evt?.currentTarget?.off?(NavigationLoader.CONFIG_LOADED, @configLoaded)
 		app.config = evt.data
 		app.conditions = if app.config.conditions? then ConditionsValidation.getInstance(app.config.conditions) else null
+		app.languages = if app.config.languages? then LanguageData.getInstance() else null
 
 		false
 
