@@ -172,6 +172,8 @@ class CoffeeCompiler
 			for k, v of cache
 				v.usedBy = {}
 			usedFiles = @_parseFilesRecursive(cache, sourcePaths, files)
+			if Main.verbose
+				console.log(usedFiles.join('\n'))
 			@usedFiles = @_removeDuplicates(usedFiles)
 
 		output:(ugly = false, version=null)->
