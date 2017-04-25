@@ -1841,13 +1841,12 @@ var Main;
 Main = (function(_super) {
   var re, _controller;
   __extends(Main, _super);
-  _controller = new DefaultNavigationController();
-  re = Resizer.getInstance();
   function Main() {
     this.create = __bind(this.create, this);
-    Main.__super__.constructor.apply(this, arguments);
-    console.log(Error().stack);
+    return Main.__super__.constructor.apply(this, arguments);
   }
+  _controller = new DefaultNavigationController();
+  re = Resizer.getInstance();
   Main.prototype.create = function(evt) {
     var k, menu, v, _ref;
     if (evt == null) {

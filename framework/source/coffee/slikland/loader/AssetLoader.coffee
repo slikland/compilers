@@ -89,6 +89,7 @@ class AssetLoader extends EventDispatcher
 		evt.item.result = evt.item.tag = evt.result
 		if app?.config?.paths?
 			paths = PathsData.getInstance(app.config.paths)
+			
 			switch evt.item.ext
 				when 'json'
 					data = paths.translate(evt.result)
@@ -99,9 +100,27 @@ class AssetLoader extends EventDispatcher
 				when 'js'
 					data = evt.result
 					data = data.replace(/^\/\/.*?(\n|$)/igm, '')
-					result = eval('(function (){' + data + '}).call(self)')
+					if evt.item.id.search(/main/i) != -1
+						# result = evt.item.result = eval(data)
+						result = evt.item.result = data
+					else
+						result = eval('(function (){' + data + '}).call(self)')
+				when 'css'
+					head = document.querySelector("head") || document.getElementsByTagName("head")[0]
+					style = document.createElement('style')
+					style.id = evt.item.id
+					style.type = "text/css"
+					head.appendChild(style)
+					si = head.querySelectorAll('style').length
+					try
+						style.appendChild(document.createTextNode(evt.result))
+					catch e
+						if document.all
+							document.styleSheets[si].cssText = evt.result
+					result = style
 				else
 					result = evt.item
+
 		false
 
 	getItem:(p_id, p_groupId=null)->

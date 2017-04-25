@@ -275,35 +275,15 @@ class NavigationLoader extends EventDispatcher
 		evt.item.loaded = true
 		
 		switch evt.item.ext
-			when 'json'
-				data = paths.translate(evt.result)
-				if typeof(data) isnt 'string' then data = JSON.stringify(data)
-				JSONUtils.removeComments(data)
-				result = data
-				result = evt.item.result = evt.item.tag = evt.result = JSON.parse(result)
 			when 'js'
-				data = evt.result
-				data = data.replace(/^\/\/.*?(\n|$)/igm, '')
-				if currentStep.id == 'main'
-					main = result = evt.item.result = eval(data)
-				else
-					result = eval('(function (){' + data + '}).call(self)')
-			when 'css'
-				head = document.querySelector("head") || document.getElementsByTagName("head")[0]
-				style = document.createElement('style')
-				style.id = evt.item.id
-				style.type = "text/css"
-				head.appendChild(style)
-				si = head.querySelectorAll('style').length
-				try
-					style.appendChild(document.createTextNode(evt.result))
-				catch e
-					if document.all
-						document.styleSheets[si].cssText = evt.result
-				result = style
+				# data = evt.result
+				# if currentStep.id == 'main' && evt.item.id.search(/main/i) != -1
+				# 	# result = evt.item.result = eval(data)
+					window.main ?= {}
+				# 	window.main['view'] = result
 			else
 				result = evt.item
-		
+
 		contents = config.views[currentStep.id]?.content || config.required[currentStep.id]?.content
 		if contents? && evt.item.internal!=false
 			# @TODO 
@@ -313,7 +293,8 @@ class NavigationLoader extends EventDispatcher
 			#
 			# evt.item.src = removeParam('noCache', evt.item.src)
 			# evt.item.src = removeParam('v', evt.item.src)
-		if main? then main.content = contents
+			if window.main
+				window.main['content'] = contents
 		@trigger(NavigationLoader.LOAD_FILE_COMPLETE, {id:evt.item.id, group:currentStep.id, data:evt.item, result:result})
 		false
 

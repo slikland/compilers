@@ -2424,7 +2424,7 @@ AssetLoader = (function(_super) {
     return false;
   };
   AssetLoader.prototype._fileLoad = function(evt) {
-    var data, paths, result, _ref;
+    var data, e, head, paths, result, si, style, _ref;
     evt.item.loaded = true;
     evt.currentTarget.off(AssetLoader.ERROR, this._onError);
     evt.currentTarget.off(AssetLoader.FILE_ERROR, this._onFileError);
@@ -2444,7 +2444,28 @@ AssetLoader = (function(_super) {
         case 'js':
           data = evt.result;
           data = data.replace(/^\/\/.*?(\n|$)/igm, '');
-          result = eval('(function (){' + data + '}).call(self)');
+          if (evt.item.id.search(/main/i) !== -1) {
+            result = evt.item.result = data;
+          } else {
+            result = eval('(function (){' + data + '}).call(self)');
+          }
+          break;
+        case 'css':
+          head = document.querySelector("head") || document.getElementsByTagName("head")[0];
+          style = document.createElement('style');
+          style.id = evt.item.id;
+          style.type = "text/css";
+          head.appendChild(style);
+          si = head.querySelectorAll('style').length;
+          try {
+            style.appendChild(document.createTextNode(evt.result));
+          } catch (_error) {
+            e = _error;
+            if (document.all) {
+              document.styleSheets[si].cssText = evt.result;
+            }
+          }
+          result = style;
           break;
         default:
           result = evt.item;
@@ -5254,43 +5275,13 @@ NavigationLoader = (function(_super) {
   	@private
    */
   NavigationLoader.prototype.loadFileComplete = function(evt) {
-    var contents, data, e, head, main, result, si, style, _ref, _ref1, _ref2;
+    var contents, result, _ref, _ref1, _ref2;
     evt.item.loaded = true;
     switch (evt.item.ext) {
-      case 'json':
-        data = paths.translate(evt.result);
-        if (typeof data !== 'string') {
-          data = JSON.stringify(data);
-        }
-        JSONUtils.removeComments(data);
-        result = data;
-        result = evt.item.result = evt.item.tag = evt.result = JSON.parse(result);
-        break;
       case 'js':
-        data = evt.result;
-        data = data.replace(/^\/\/.*?(\n|$)/igm, '');
-        if (currentStep.id === 'main') {
-          main = result = evt.item.result = eval(data);
-        } else {
-          result = eval('(function (){' + data + '}).call(self)');
+        if (window.main == null) {
+          window.main = {};
         }
-        break;
-      case 'css':
-        head = document.querySelector("head") || document.getElementsByTagName("head")[0];
-        style = document.createElement('style');
-        style.id = evt.item.id;
-        style.type = "text/css";
-        head.appendChild(style);
-        si = head.querySelectorAll('style').length;
-        try {
-          style.appendChild(document.createTextNode(evt.result));
-        } catch (_error) {
-          e = _error;
-          if (document.all) {
-            document.styleSheets[si].cssText = evt.result;
-          }
-        }
-        result = style;
         break;
       default:
         result = evt.item;
@@ -5298,9 +5289,9 @@ NavigationLoader = (function(_super) {
     contents = ((_ref = config.views[currentStep.id]) != null ? _ref.content : void 0) || ((_ref1 = config.required[currentStep.id]) != null ? _ref1.content : void 0);
     if ((contents != null) && evt.item.internal !== false) {
       eval('contents["' + ((_ref2 = evt.item.___path) != null ? _ref2.join('"]["') : void 0) + '"] = result');
-    }
-    if (main != null) {
-      main.content = contents;
+      if (window.main) {
+        window.main['content'] = contents;
+      }
     }
     this.trigger(NavigationLoader.LOAD_FILE_COMPLETE, {
       id: evt.item.id,
@@ -5499,7 +5490,10 @@ Caim = (function(_super) {
         for (k in _ref) {
           v = _ref[k];
           if (v.ext === 'js' && v.id.search(/main/i) !== -1) {
-            _mainView = app.config.required.main[v.id].result;
+            _mainView = app.config.required.main[v.id].result = eval(app.config.required.main[v.id].result);
+            _mainView.content = window.main['content'];
+            delete window.main['content'];
+            delete window.main;
           }
         }
         this.mainAssetsLoaded();

@@ -14,10 +14,6 @@ class Main extends NavigationContainer
 	_controller = new DefaultNavigationController()
 	re = Resizer.getInstance()
 
-	constructor: () ->
-		super
-		console.log Error().stack
-
 	create:(evt=null)=>
 		menu = new BaseDOM()
 		menu.className = 'menu'
