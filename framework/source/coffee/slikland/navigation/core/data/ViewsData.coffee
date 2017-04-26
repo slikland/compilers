@@ -76,9 +76,12 @@ class ViewsData extends EventDispatcher
 			view = @get(p_id)
 		else
 			data = @getData(p_id)
-			klass = eval(data.class)
-			view = new klass(data, data.id+'-view')
-			data.class = view
+			if typeof data.class is 'string'
+				klass = eval(data.class)
+				view = new klass(data, data.id+'-view')
+				data.class = view
+			else
+				view = data.class
 
 		if !view.parentView?
 			view.type = 'view'
