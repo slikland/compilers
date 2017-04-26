@@ -225,11 +225,13 @@ class Navigation extends EventDispatcher
 	@method gotoView
 	@param {String} p_value
 	###
-	gotoView:(p_value)=>
+	gotoView:(p_value, p_replace=null, p_trigger=false)=>
 		if p_value.indexOf('/') == 0
 			throw new Error('The value "'+p_value+'" is not a valid format to viewID ("areaID")')
 		else
 			_controller.goto(p_value)
+			if p_replace?
+				@replaceRoute(p_replace, p_trigger)
 		false
 
 	###*
