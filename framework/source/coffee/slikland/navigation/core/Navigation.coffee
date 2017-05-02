@@ -110,9 +110,7 @@ class Navigation extends EventDispatcher
 	@readOnly
 	###
 	@get currentView:->
-		view = @_currentView || _controller.currentView
-		view.routeData = @routeData
-		return view
+		return @_currentView || _controller.currentView
 
 	###*
 	Returns the previous view
@@ -215,10 +213,13 @@ class Navigation extends EventDispatcher
 	###*
 	@method gotoDefault
 	###
-	gotoDefault:(p_trigger=false)=>
+	gotoDefault:(p_trigger=false, p_replace=null)=>
 		if app.config.navigation?.defaultView?
 			view = app.config.navigation.defaultView
-			@gotoRoute(@getRouteByView(view), p_trigger)
+			if app.config.views[view].route
+				@gotoRoute(@getRouteByView(view), p_trigger)
+			else
+				@gotoView(view, p_replace, p_trigger)
 		false
 
 	###*
@@ -265,19 +266,22 @@ class Navigation extends EventDispatcher
 	###
 	_change:(evt=null)=>
 		# TODO: @setRoute(@getRouteByView(@_currentView.id))
+
 		switch evt.type
 			when BaseNavigationController.CHANGE_VIEW
 				@_currentView = evt.data.currentView
 				@_previousView = evt.data.previousView
 				@_visibleViews = evt.data.visibleViews
-				
+				@_currentView.routeData = evt.data.currentView.routeData = @routeData
 				@trigger(Navigation.CHANGE_VIEW, {data:evt.data})
+
 			when BaseNavigationController.CHANGE
-				@trigger(Navigation.CHANGE_INTERNAL_VIEW, {view:evt.view, transition:evt.transition})
+				view = evt.view
+				view.routeData = @routeData
+				@trigger(Navigation.CHANGE_INTERNAL_VIEW, {view:view, transition:evt.transition})
 			
 			when NavigationRouter.CHANGE_ROUTE
 				@trigger(Navigation.CHANGE_ROUTE, {data:@routeData})
 				if @routeData.route? then @gotoView(@getViewByRoute(@routeData.route))
 			# when NavigationRouter.CHANGE
 			# 	@trigger(Navigation.CHANGE, {data:@routeData})
-

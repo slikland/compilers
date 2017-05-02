@@ -19,7 +19,9 @@ class Main extends NavigationContainer
 		menu.className = 'menu'
 		@appendChildAt(menu, 0)
 		
-		# app.navigation.on(Navigation.CHANGE_ROUTE, @change)
+		# app.navigation.on(Navigation.CHANGE_INTERNAL_VIEW, @change)
+		app.navigation.on(Navigation.CHANGE_ROUTE, @change)
+		# app.navigation.on(Navigation.CHANGE_VIEW, @change)
 		
 		for k, v of app.config.views
 			@button = new BaseDOM()
@@ -28,7 +30,7 @@ class Main extends NavigationContainer
 			@button.attr({'id':v.id})
 			@button.text = v.id
 			@button.element.on 'click', @click
-		re.on(Resizer.BREAKPOINT_CHANGE, @change)
+		# re.on(Resizer.BREAKPOINT_CHANGE, @change)
 
 		# console.log LanguageData.getInstance()
 
@@ -37,7 +39,8 @@ class Main extends NavigationContainer
 		super
 
 	change:(evt)->
-		console.log evt
+		console.log app.navigation.previousView?.routeData
+		# console.log evt.view
 
 	click:(evt)->
 		route = app.config.views[evt.srcElement.id].route

@@ -94,8 +94,13 @@ ViewsData = (function(_super) {
       view = this.get(p_id);
     } else {
       data = this.getData(p_id);
-      klass = eval(data["class"]);
-      view = new klass(data, data.id + '-view');
+      if (typeof data["class"] === 'string') {
+        klass = eval(data["class"]);
+        view = new klass(data, data.id + '-view');
+        data["class"] = view;
+      } else {
+        view = data["class"];
+      }
     }
     if (view.parentView == null) {
       view.type = 'view';
@@ -1164,10 +1169,7 @@ Navigation = (function(_super) {
    */
   Navigation.get({
     currentView: function() {
-      var view;
-      view = this._currentView || _controller.currentView;
-      view.routeData = this.routeData;
-      return view;
+      return this._currentView || _controller.currentView;
     }
   });
   /**
@@ -1301,14 +1303,21 @@ Navigation = (function(_super) {
   /**
   	@method gotoDefault
    */
-  Navigation.prototype.gotoDefault = function(p_trigger) {
+  Navigation.prototype.gotoDefault = function(p_trigger, p_replace) {
     var view, _ref;
     if (p_trigger == null) {
       p_trigger = false;
     }
+    if (p_replace == null) {
+      p_replace = null;
+    }
     if (((_ref = app.config.navigation) != null ? _ref.defaultView : void 0) != null) {
       view = app.config.navigation.defaultView;
-      this.gotoRoute(this.getRouteByView(view), p_trigger);
+      if (app.config.views[view].route) {
+        this.gotoRoute(this.getRouteByView(view), p_trigger);
+      } else {
+        this.gotoView(view, p_replace, p_trigger);
+      }
     }
     return false;
   };
@@ -1316,11 +1325,20 @@ Navigation = (function(_super) {
   	@method gotoView
   	@param {String} p_value
    */
-  Navigation.prototype.gotoView = function(p_value) {
+  Navigation.prototype.gotoView = function(p_value, p_replace, p_trigger) {
+    if (p_replace == null) {
+      p_replace = null;
+    }
+    if (p_trigger == null) {
+      p_trigger = false;
+    }
     if (p_value.indexOf('/') === 0) {
       throw new Error('The value "' + p_value + '" is not a valid format to viewID ("areaID")');
     } else {
       _controller.goto(p_value);
+      if (p_replace != null) {
+        this.replaceRoute(p_replace, p_trigger);
+      }
     }
     return false;
   };
@@ -1364,6 +1382,7 @@ Navigation = (function(_super) {
   	@private
    */
   Navigation.prototype._change = function(evt) {
+    var view;
     if (evt == null) {
       evt = null;
     }
@@ -1372,12 +1391,15 @@ Navigation = (function(_super) {
         this._currentView = evt.data.currentView;
         this._previousView = evt.data.previousView;
         this._visibleViews = evt.data.visibleViews;
+        this._currentView.routeData = evt.data.currentView.routeData = this.routeData;
         return this.trigger(Navigation.CHANGE_VIEW, {
           data: evt.data
         });
       case BaseNavigationController.CHANGE:
+        view = evt.view;
+        view.routeData = this.routeData;
         return this.trigger(Navigation.CHANGE_INTERNAL_VIEW, {
-          view: evt.view,
+          view: view,
           transition: evt.transition
         });
       case NavigationRouter.CHANGE_ROUTE:
@@ -1855,6 +1877,7 @@ Main = (function(_super) {
     menu = new BaseDOM();
     menu.className = 'menu';
     this.appendChildAt(menu, 0);
+    app.navigation.on(Navigation.CHANGE_ROUTE, this.change);
     _ref = app.config.views;
     for (k in _ref) {
       v = _ref[k];
@@ -1867,11 +1890,11 @@ Main = (function(_super) {
       this.button.text = v.id;
       this.button.element.on('click', this.click);
     }
-    re.on(Resizer.BREAKPOINT_CHANGE, this.change);
     return Main.__super__.create.apply(this, arguments);
   };
   Main.prototype.change = function(evt) {
-    return console.log(evt);
+    var _ref;
+    return console.log((_ref = app.navigation.previousView) != null ? _ref.routeData : void 0);
   };
   Main.prototype.click = function(evt) {
     var route;
