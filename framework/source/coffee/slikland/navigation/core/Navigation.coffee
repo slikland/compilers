@@ -292,7 +292,6 @@ class Navigation extends EventDispatcher
 	###
 	_change:(evt=null)=>
 		# TODO: @setRoute(@getRouteByView(@_currentView.id))
-
 		switch evt.type
 			when BaseNavigationController.CHANGE
 				@trigger(Navigation.CHANGE_INTERNAL_VIEW, {view:evt.view, transition:evt.transition})

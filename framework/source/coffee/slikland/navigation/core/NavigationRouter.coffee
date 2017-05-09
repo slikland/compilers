@@ -92,7 +92,7 @@ class NavigationRouter extends EventDispatcher
 	@private
 	###
 	_parsePath:(p_rawPath)->
-		pathParts = /^(?:#?!?\/*)([^?]*)\??(.*?)$/.exec(p_rawPath)
+		pathParts = /^(?:#?!?\/*)([^?]*\??.*?)$/.exec(p_rawPath)
 		path = pathParts[1]
 		params = @_parseParams(pathParts[2])
 		return {rawPath: p_rawPath, path: path, params: params}

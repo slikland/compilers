@@ -680,7 +680,7 @@ NavigationRouter = (function(_super) {
    */
   NavigationRouter.prototype._parsePath = function(p_rawPath) {
     var params, path, pathParts;
-    pathParts = /^(?:#?!?\/*)([^?]*)\??(.*?)$/.exec(p_rawPath);
+    pathParts = /^(?:#?!?\/*)([^?]*\??.*?)$/.exec(p_rawPath);
     path = pathParts[1];
     params = this._parseParams(pathParts[2]);
     return {
@@ -1898,12 +1898,8 @@ Main = (function(_super) {
   _controller = new DefaultNavigationController();
   re = Resizer.getInstance();
   Main.prototype.createStart = function(evt) {
-    var _ref;
     if (evt == null) {
       evt = null;
-    }
-    if ((_ref = app.navigation) != null) {
-      _ref.on(Navigation.CHANGE_VIEW, this.change);
     }
     return Main.__super__.createStart.apply(this, arguments);
   };

@@ -17,7 +17,7 @@ class Main extends NavigationContainer
 	createStart:(evt=null)=>
 		# app.navigation?.on(Navigation.CHANGE_INTERNAL_VIEW, @change)
 		# app.navigation?.on(Navigation.CHANGE_ROUTE, @change)
-		app.navigation?.on(Navigation.CHANGE_VIEW, @change)
+		# app.navigation?.on(Navigation.CHANGE_VIEW, @change)
 		super
 
 	create:(evt=null)=>
