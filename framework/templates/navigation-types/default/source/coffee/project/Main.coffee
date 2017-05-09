@@ -42,6 +42,7 @@ class Main extends NavigationContainer
 		super
 
 	change:(evt)->
+		console.log evt
 		v = app.navigation.previousView
 		console.log v?.id, v?.routeData
 

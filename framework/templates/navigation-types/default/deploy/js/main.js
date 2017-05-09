@@ -1927,6 +1927,7 @@ Main = (function(_super) {
   };
   Main.prototype.change = function(evt) {
     var v;
+    console.log(evt);
     v = app.navigation.previousView;
     return console.log(v != null ? v.id : void 0, v != null ? v.routeData : void 0);
   };
