@@ -1073,6 +1073,8 @@ Navigation = (function(_super) {
       p_controller = null;
     }
     this._change = __bind(this._change, this);
+    this._changeRoute = __bind(this._changeRoute, this);
+    this._changeView = __bind(this._changeView, this);
     this.getRouteByView = __bind(this.getRouteByView, this);
     this.getViewByRoute = __bind(this.getViewByRoute, this);
     this.gotoView = __bind(this.gotoView, this);
@@ -1098,10 +1100,10 @@ Navigation = (function(_super) {
   Navigation.prototype.setup = function(p_data) {
     var k, v, _ref, _ref1, _ref2, _ref3;
     _controller.on(BaseNavigationController.CHANGE, this._change);
-    _controller.on(BaseNavigationController.CHANGE_VIEW, this._change);
+    _controller.on(BaseNavigationController.CHANGE_VIEW, this._changeView);
     _controller.setup(p_data);
     _router.on(NavigationRouter.CHANGE, this._change);
-    _router.on(NavigationRouter.CHANGE_ROUTE, this._change);
+    _router.on(NavigationRouter.CHANGE_ROUTE, this._changeRoute);
     _router.setup(app.root, (_ref = app.config.navigation) != null ? _ref.forceHashBang : void 0);
     _ref1 = p_data.views;
     for (k in _ref1) {
@@ -1196,14 +1198,14 @@ Navigation = (function(_super) {
       routeData = _router._checkRoutes(pathData.path);
       results = {};
       if (routeData != null) {
-        results.raw = pathData.rawPath;
-        results.params = pathData.params;
+        results['raw'] = pathData.rawPath;
+        results['params'] = pathData.params;
         if (app.languages) {
           results['language-iso'] = app.languages.current.iso;
           results['language-sufix'] = app.languages.current.sufix;
         }
-        results.route = (_ref = routeData[0]) != null ? (_ref1 = _ref[0]) != null ? _ref1.route : void 0 : void 0;
-        results.parsed = routeData[1];
+        results['route'] = (_ref = routeData[0]) != null ? (_ref1 = _ref[0]) != null ? _ref1.route : void 0 : void 0;
+        results['parsed'] = routeData[1];
       }
       return results;
     }
@@ -1377,39 +1379,64 @@ Navigation = (function(_super) {
     return null;
   };
   /**
+  	@method _changeView
+  	@param {Event} [evt=null]
+  	@private
+   */
+  Navigation.prototype._changeView = function(evt) {
+    if (evt == null) {
+      evt = null;
+    }
+    this._currentView = evt.data.currentView;
+    this._previousView = evt.data.previousView;
+    this._visibleViews = evt.data.visibleViews;
+    this._currentView.routeData = this.routeData;
+    this.trigger(Navigation.CHANGE_VIEW, {
+      data: evt.data
+    });
+    return false;
+  };
+  /**
+  	@method _changeRoute
+  	@param {Event} [evt=null]
+  	@private
+   */
+  Navigation.prototype._changeRoute = function(evt) {
+    var data;
+    if (evt == null) {
+      evt = null;
+    }
+    data = this.routeData;
+    if (data.route != null) {
+      this.gotoView(this.getViewByRoute(data.route));
+    }
+    this.trigger(Navigation.CHANGE_ROUTE, {
+      data: data
+    });
+    return false;
+  };
+  /**
   	@method _change
   	@param {Event} [evt=null]
   	@private
    */
   Navigation.prototype._change = function(evt) {
-    var view;
     if (evt == null) {
       evt = null;
     }
     switch (evt.type) {
-      case BaseNavigationController.CHANGE_VIEW:
-        this._currentView = evt.data.currentView;
-        this._previousView = evt.data.previousView;
-        this._visibleViews = evt.data.visibleViews;
-        this._currentView.routeData = evt.data.currentView.routeData = this.routeData;
-        return this.trigger(Navigation.CHANGE_VIEW, {
-          data: evt.data
-        });
       case BaseNavigationController.CHANGE:
-        view = evt.view;
-        view.routeData = this.routeData;
-        return this.trigger(Navigation.CHANGE_INTERNAL_VIEW, {
-          view: view,
+        this.trigger(Navigation.CHANGE_INTERNAL_VIEW, {
+          view: evt.view,
           transition: evt.transition
         });
-      case NavigationRouter.CHANGE_ROUTE:
-        this.trigger(Navigation.CHANGE_ROUTE, {
+        break;
+      case NavigationRouter.CHANGE:
+        this.trigger(Navigation.CHANGE, {
           data: this.routeData
         });
-        if (this.routeData.route != null) {
-          return this.gotoView(this.getViewByRoute(this.routeData.route));
-        }
     }
+    return false;
   };
   return Navigation;
 })(EventDispatcher);
@@ -1865,10 +1892,21 @@ Main = (function(_super) {
   __extends(Main, _super);
   function Main() {
     this.create = __bind(this.create, this);
+    this.createStart = __bind(this.createStart, this);
     return Main.__super__.constructor.apply(this, arguments);
   }
   _controller = new DefaultNavigationController();
   re = Resizer.getInstance();
+  Main.prototype.createStart = function(evt) {
+    var _ref;
+    if (evt == null) {
+      evt = null;
+    }
+    if ((_ref = app.navigation) != null) {
+      _ref.on(Navigation.CHANGE_VIEW, this.change);
+    }
+    return Main.__super__.createStart.apply(this, arguments);
+  };
   Main.prototype.create = function(evt) {
     var k, menu, v, _ref;
     if (evt == null) {
@@ -1877,7 +1915,6 @@ Main = (function(_super) {
     menu = new BaseDOM();
     menu.className = 'menu';
     this.appendChildAt(menu, 0);
-    app.navigation.on(Navigation.CHANGE_ROUTE, this.change);
     _ref = app.config.views;
     for (k in _ref) {
       v = _ref[k];
@@ -1893,8 +1930,9 @@ Main = (function(_super) {
     return Main.__super__.create.apply(this, arguments);
   };
   Main.prototype.change = function(evt) {
-    var _ref;
-    return console.log((_ref = app.navigation.previousView) != null ? _ref.routeData : void 0);
+    var v;
+    v = app.navigation.previousView;
+    return console.log(v != null ? v.id : void 0, v != null ? v.routeData : void 0);
   };
   Main.prototype.click = function(evt) {
     var route;

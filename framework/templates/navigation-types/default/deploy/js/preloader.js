@@ -4008,7 +4008,7 @@ BaseView = (function(_super) {
   });
   BaseView.set({
     routeData: function(p_value) {
-      return this._routeData = p_value;
+      return this._routeData = ObjectUtils.clone(p_value);
     }
   });
   /**
@@ -4641,21 +4641,28 @@ ParseData = (function(_super) {
   	@static
    */
   ParseData.getProperties = function(p_obj) {
-    var clone, i, prop, result, value, _i, _ref, _ref1;
+    var clone, foundItem, i, prop, result, value, _i, _ref;
     if (p_obj == null) {
       throw new Error('The param p_obj cannot be null');
     }
     result = {};
     if (typeof p_obj === 'object') {
       clone = ObjectUtils.clone(p_obj);
+      foundItem = null;
       for (i = _i = 0, _ref = clone.length; 0 <= _ref ? _i < _ref : _i > _ref; i = 0 <= _ref ? ++_i : --_i) {
-        _ref1 = clone[i];
-        for (prop in _ref1) {
-          value = _ref1[prop];
-          if (prop !== 'condition' && prop !== 'file') {
-            result[prop] = value;
+        if (clone[i].condition != null) {
+          if (_conditions != null ? typeof _conditions.test === "function" ? _conditions.test(clone[i].condition) : void 0 : void 0) {
+            foundItem = clone[i];
           }
+        } else if (!foundItem) {
+          foundItem = clone[i];
         }
+      }
+    }
+    for (prop in foundItem) {
+      value = foundItem[prop];
+      if (prop !== 'condition' && prop !== 'file') {
+        result[prop] = value;
       }
     }
     return result;

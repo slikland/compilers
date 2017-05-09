@@ -70,7 +70,7 @@
 
 				}
 			],
-			"destroyable":true,
+			"destroyable":false,
 			"loadContent":true,
 			"cache":true
 		},
@@ -79,7 +79,7 @@
 			"class":"template-sub-view",
 			"content":"{base}data/sub1.json",
 			"route":"/sub-view-01",
-			"destroyable":true,
+			"destroyable":false,
 			"loadContent":true,
 			"cache":true
 			
@@ -89,7 +89,7 @@
 			"class":"template-sub-view",
 			"content":"{base}data/sub2.json",
 			"route":"/sub-view-02",
-			"destroyable":true,
+			"destroyable":false,
 			"loadContent":true,
 			"cache":true
 		},
@@ -98,7 +98,7 @@
 			"class":"template-sub-view",
 			"content":"{base}data/sub3.json",
 			"route":"/sub-view-03",
-			"destroyable":true,
+			"destroyable":false,
 			"loadContent":true,
 			"cache":true
 		},
@@ -107,7 +107,7 @@
 			"class":"template-sub-view",
 			"content":"{base}data/sub4.json",
 			"route":"/sub-view-04",
-			"destroyable":true,
+			"destroyable":false,
 			"loadContent":true,
 			"cache":true
 		},
@@ -116,7 +116,7 @@
 			"class":"template-sub-view",
 			"content":"{base}data/sub5.json",
 			"route":"/sub-view-05",
-			"destroyable":true,
+			"destroyable":false,
 			"loadContent":true,
 			"cache":true
 		}

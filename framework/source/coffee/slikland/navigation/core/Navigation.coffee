@@ -52,11 +52,11 @@ class Navigation extends EventDispatcher
 	###
 	setup:(p_data)=>
 		_controller.on(BaseNavigationController.CHANGE, @_change)
-		_controller.on(BaseNavigationController.CHANGE_VIEW, @_change)
+		_controller.on(BaseNavigationController.CHANGE_VIEW, @_changeView)
 		_controller.setup(p_data)
 
 		_router.on(NavigationRouter.CHANGE, @_change)
-		_router.on(NavigationRouter.CHANGE_ROUTE, @_change)
+		_router.on(NavigationRouter.CHANGE_ROUTE, @_changeRoute)
 		_router.setup(app.root, app.config.navigation?.forceHashBang)
 		
 		for k, v of p_data.views
@@ -129,17 +129,17 @@ class Navigation extends EventDispatcher
 	###
 	@get routeData:()->
 		pathData = _router._parsePath(_router.getCurrentPath())
-		routeData = _router._checkRoutes(pathData.path)
+		routeData =  _router._checkRoutes(pathData.path)
 
 		results = {}
 		if routeData?
-			results.raw = pathData.rawPath
-			results.params = pathData.params
+			results['raw'] = pathData.rawPath
+			results['params'] = pathData.params
 			if app.languages
 				results['language-iso'] = app.languages.current.iso
 				results['language-sufix'] = app.languages.current.sufix
-			results.route = routeData[0]?[0]?.route
-			results.parsed = routeData[1]
+			results['route'] = routeData[0]?[0]?.route
+			results['parsed'] = routeData[1]
 		return results
 
 	###*
@@ -260,6 +260,32 @@ class Navigation extends EventDispatcher
 		return null
 
 	###*
+	@method _changeView
+	@param {Event} [evt=null]
+	@private
+	###
+	_changeView:(evt=null)=>
+		@_currentView = evt.data.currentView
+		@_previousView = evt.data.previousView
+		@_visibleViews = evt.data.visibleViews
+		@_currentView.routeData = @routeData
+		
+		@trigger(Navigation.CHANGE_VIEW, {data:evt.data})
+		false
+
+	###*
+	@method _changeRoute
+	@param {Event} [evt=null]
+	@private
+	###
+	_changeRoute:(evt=null)=>
+		data = @routeData
+		if data.route? then @gotoView(@getViewByRoute(data.route))
+		@trigger(Navigation.CHANGE_ROUTE, {data:data})
+		false
+
+
+	###*
 	@method _change
 	@param {Event} [evt=null]
 	@private
@@ -268,20 +294,9 @@ class Navigation extends EventDispatcher
 		# TODO: @setRoute(@getRouteByView(@_currentView.id))
 
 		switch evt.type
-			when BaseNavigationController.CHANGE_VIEW
-				@_currentView = evt.data.currentView
-				@_previousView = evt.data.previousView
-				@_visibleViews = evt.data.visibleViews
-				@_currentView.routeData = evt.data.currentView.routeData = @routeData
-				@trigger(Navigation.CHANGE_VIEW, {data:evt.data})
-
 			when BaseNavigationController.CHANGE
-				view = evt.view
-				view.routeData = @routeData
-				@trigger(Navigation.CHANGE_INTERNAL_VIEW, {view:view, transition:evt.transition})
+				@trigger(Navigation.CHANGE_INTERNAL_VIEW, {view:evt.view, transition:evt.transition})
 			
-			when NavigationRouter.CHANGE_ROUTE
-				@trigger(Navigation.CHANGE_ROUTE, {data:@routeData})
-				if @routeData.route? then @gotoView(@getViewByRoute(@routeData.route))
-			# when NavigationRouter.CHANGE
-			# 	@trigger(Navigation.CHANGE, {data:@routeData})
+			when NavigationRouter.CHANGE
+				@trigger(Navigation.CHANGE, {data:@routeData})
+		false

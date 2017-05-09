@@ -1,4 +1,5 @@
 #import slikland.display.BaseDOM
+#import slikland.utils.ObjectUtils
 #import slikland.navigation.core.meta.MetaController
 
 ###*
@@ -233,7 +234,7 @@ class BaseView extends BaseDOM
 	@get routeData:->
 		return @_routeData
 	@set routeData:(p_value)->
-		@_routeData = p_value
+		@_routeData = ObjectUtils.clone(p_value)
 
 	###*
 	Sets/gets the parent view of this view.

@@ -14,14 +14,17 @@ class Main extends NavigationContainer
 	_controller = new DefaultNavigationController()
 	re = Resizer.getInstance()
 
+	createStart:(evt=null)=>
+		# app.navigation?.on(Navigation.CHANGE_INTERNAL_VIEW, @change)
+		# app.navigation?.on(Navigation.CHANGE_ROUTE, @change)
+		app.navigation?.on(Navigation.CHANGE_VIEW, @change)
+		super
+
 	create:(evt=null)=>
 		menu = new BaseDOM()
 		menu.className = 'menu'
 		@appendChildAt(menu, 0)
 		
-		# app.navigation.on(Navigation.CHANGE_INTERNAL_VIEW, @change)
-		app.navigation.on(Navigation.CHANGE_ROUTE, @change)
-		# app.navigation.on(Navigation.CHANGE_VIEW, @change)
 		
 		for k, v of app.config.views
 			@button = new BaseDOM()
@@ -39,8 +42,8 @@ class Main extends NavigationContainer
 		super
 
 	change:(evt)->
-		console.log app.navigation.previousView?.routeData
-		# console.log evt.view
+		v = app.navigation.previousView
+		console.log v?.id, v?.routeData
 
 	click:(evt)->
 		route = app.config.views[evt.srcElement.id].route
