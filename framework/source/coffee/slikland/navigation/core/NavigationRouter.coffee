@@ -167,6 +167,7 @@ class NavigationRouter extends EventDispatcher
 	###
 	goto:(p_path, p_trigger = true)->
 		p_path = p_path.replace(/^(?:#?!?\/*)([^?]*\??.*?)$/, '$1')
+		# console.log @_getParams()
 		if p_path == @_currentPath
 			return
 		@_currentPath = p_path
