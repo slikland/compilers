@@ -4478,9 +4478,19 @@ LanguageData = (function(_super) {
     return LanguageData._instance != null ? LanguageData._instance : LanguageData._instance = new LanguageData(p_data);
   };
   function LanguageData(p_data) {
+    this._replaceRoute = __bind(this._replaceRoute, this);
     this.data = p_data;
     LanguageData.__super__.constructor.apply(this, arguments);
   }
+  LanguageData.prototype.gotoLanguage = function(p_iso) {
+    var parsedRoute;
+    parsedRoute = app.navigation.routeData.route.replace(/\{(.*?)\}/g, this._replaceRoute);
+    return window.location = app.root + this.getLanguage(p_iso).sufix + parsedRoute;
+  };
+  LanguageData.prototype._replaceRoute = function(match0, match1) {
+    var _ref;
+    return ((_ref = app.navigation.routeData.parsed) != null ? _ref[match1] : void 0) || '';
+  };
   LanguageData.prototype.hasLanguage = function(p_value, p_filter) {
     var i, result, _i, _ref;
     if (p_filter == null) {

@@ -119,7 +119,7 @@ class NavigationRouter extends EventDispatcher
 	###
 	_onPathChange:(evt=null)=>
 		@_currentPath = @_getPath()
-
+		
 		if @_trigger
 			@_triggerPath(@_currentPath)
 		@_trigger = true
@@ -172,7 +172,6 @@ class NavigationRouter extends EventDispatcher
 		@_currentPath = p_path
 		@_trigger = p_trigger
 		if @_usePushState
-			# console.log p_path, @_getParams()
 			history.pushState({}, p_path, @_rootPath + p_path)
 			if @_trigger
 				@_onPathChange()
