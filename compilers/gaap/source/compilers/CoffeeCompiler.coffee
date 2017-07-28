@@ -117,7 +117,7 @@ class CoffeeCompiler
 					hasNamespaces = true
 				source += c.js + '\n'
 		if hasNamespaces
-			source = @constructor._ADD_NAMESPACE_FN + '\n' + '__addNamespace(this, '+JSON.stringify(namespaces)+');\n' + source
+			source = @constructor._ADD_NAMESPACE_FN + '\n' + '__addNamespace(null, '+JSON.stringify(namespaces)+');\n' + source
 		source = @_rewriteCsFuncs(source)
 		if !task.bare
 			source = '(function() {\n' + source + '}).call(this);'
