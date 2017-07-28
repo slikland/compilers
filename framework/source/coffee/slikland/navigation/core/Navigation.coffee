@@ -52,11 +52,11 @@ class Navigation extends EventDispatcher
 	###
 	setup:(p_data)=>
 		_controller.on(BaseNavigationController.CHANGE, @_change)
-		_controller.on(BaseNavigationController.CHANGE_VIEW, @_change)
+		_controller.on(BaseNavigationController.CHANGE_VIEW, @_changeView)
 		_controller.setup(p_data)
 
 		_router.on(NavigationRouter.CHANGE, @_change)
-		_router.on(NavigationRouter.CHANGE_ROUTE, @_change)
+		_router.on(NavigationRouter.CHANGE_ROUTE, @_changeRoute)
 		_router.setup(app.root, app.config.navigation?.forceHashBang)
 		
 		for k, v of p_data.views
@@ -110,9 +110,7 @@ class Navigation extends EventDispatcher
 	@readOnly
 	###
 	@get currentView:->
-		view = @_currentView || _controller.currentView
-		view.routeData = @routeData
-		return view
+		return @_currentView || _controller.currentView
 
 	###*
 	Returns the previous view
@@ -131,17 +129,17 @@ class Navigation extends EventDispatcher
 	###
 	@get routeData:()->
 		pathData = _router._parsePath(_router.getCurrentPath())
-		routeData = _router._checkRoutes(pathData.path)
+		routeData =  _router._checkRoutes(pathData.path)
 
 		results = {}
 		if routeData?
-			results.raw = pathData.rawPath
-			results.params = pathData.params
+			results['raw'] = pathData.rawPath
+			results['params'] = pathData.params
 			if app.languages
 				results['language-iso'] = app.languages.current.iso
 				results['language-sufix'] = app.languages.current.sufix
-			results.route = routeData[0]?[0]?.route
-			results.parsed = routeData[1]
+			results['route'] = routeData[0]?[0]?.route
+			results['parsed'] = routeData[1]
 		return results
 
 	###*
@@ -215,21 +213,26 @@ class Navigation extends EventDispatcher
 	###*
 	@method gotoDefault
 	###
-	gotoDefault:(p_trigger=false)=>
+	gotoDefault:(p_trigger=false, p_replace=null)=>
 		if app.config.navigation?.defaultView?
 			view = app.config.navigation.defaultView
-			@gotoRoute(@getRouteByView(view), p_trigger)
+			if app.config.views[view].route
+				@gotoRoute(@getRouteByView(view), p_trigger)
+			else
+				@gotoView(view, p_replace, p_trigger)
 		false
 
 	###*
 	@method gotoView
 	@param {String} p_value
 	###
-	gotoView:(p_value)=>
+	gotoView:(p_value, p_replace=null, p_trigger=false)=>
 		if p_value.indexOf('/') == 0
 			throw new Error('The value "'+p_value+'" is not a valid format to viewID ("areaID")')
 		else
 			_controller.goto(p_value)
+			if p_replace?
+				@replaceRoute(p_replace, p_trigger)
 		false
 
 	###*
@@ -257,6 +260,32 @@ class Navigation extends EventDispatcher
 		return null
 
 	###*
+	@method _changeView
+	@param {Event} [evt=null]
+	@private
+	###
+	_changeView:(evt=null)=>
+		@_currentView = evt.data.currentView
+		@_previousView = evt.data.previousView
+		@_visibleViews = evt.data.visibleViews
+		@_currentView.routeData = @routeData
+		
+		@trigger(Navigation.CHANGE_VIEW, {data:evt.data})
+		false
+
+	###*
+	@method _changeRoute
+	@param {Event} [evt=null]
+	@private
+	###
+	_changeRoute:(evt=null)=>
+		data = @routeData
+		if data.route? then @gotoView(@getViewByRoute(data.route))
+		@trigger(Navigation.CHANGE_ROUTE, {data:data})
+		false
+
+
+	###*
 	@method _change
 	@param {Event} [evt=null]
 	@private
@@ -264,18 +293,9 @@ class Navigation extends EventDispatcher
 	_change:(evt=null)=>
 		# TODO: @setRoute(@getRouteByView(@_currentView.id))
 		switch evt.type
-			when BaseNavigationController.CHANGE_VIEW
-				@_currentView = evt.data.currentView
-				@_previousView = evt.data.previousView
-				@_visibleViews = evt.data.visibleViews
-				
-				@trigger(Navigation.CHANGE_VIEW, {data:evt.data})
 			when BaseNavigationController.CHANGE
 				@trigger(Navigation.CHANGE_INTERNAL_VIEW, {view:evt.view, transition:evt.transition})
 			
-			when NavigationRouter.CHANGE_ROUTE
-				@trigger(Navigation.CHANGE_ROUTE, {data:@routeData})
-				if @routeData.route? then @gotoView(@getViewByRoute(@routeData.route))
-			# when NavigationRouter.CHANGE
-			# 	@trigger(Navigation.CHANGE, {data:@routeData})
-
+			when NavigationRouter.CHANGE
+				@trigger(Navigation.CHANGE, {data:@routeData})
+		false

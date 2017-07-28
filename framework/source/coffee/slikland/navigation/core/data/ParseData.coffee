@@ -50,10 +50,17 @@ class ParseData extends EventDispatcher
 		result = {}
 		if typeof(p_obj) == 'object'
 			clone = ObjectUtils.clone(p_obj)
+			foundItem = null
 			for i in [0...clone.length]
-				for prop, value of clone[i]
-					if prop != 'condition' && prop != 'file'
-						result[prop] = value
+				if clone[i].condition?
+					if _conditions?.test?(clone[i].condition)
+						foundItem = clone[i]
+				else if !foundItem
+					foundItem = clone[i]
+		for prop, value of foundItem
+			if prop != 'condition' && prop != 'file'
+				result[prop] = value
+
 		return result
 
 	###*

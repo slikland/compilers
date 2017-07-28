@@ -14,6 +14,13 @@ class LanguageData extends EventDispatcher
 		@data = p_data
 		super
 
+	gotoLanguage:(p_iso)->
+		parsedRoute = app.navigation.routeData.route.replace(/\{(.*?)\}/g, @_replaceRoute)
+		window.location = app.root + @getLanguage(p_iso).sufix + parsedRoute
+
+	_replaceRoute:(match0, match1)=>
+		return app.navigation.routeData.parsed?[match1] || ''
+
 	hasLanguage:(p_value, p_filter='iso')->
 		result = false
 		if typeof(p_value) == 'string' && typeof(p_filter) == 'string'

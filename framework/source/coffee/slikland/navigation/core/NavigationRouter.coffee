@@ -92,7 +92,7 @@ class NavigationRouter extends EventDispatcher
 	@private
 	###
 	_parsePath:(p_rawPath)->
-		pathParts = /^(?:#?!?\/*)([^?]*)\??(.*?)$/.exec(p_rawPath)
+		pathParts = /^(?:#?!?\/*)([^?]*\??.*?)$/.exec(p_rawPath)
 		path = pathParts[1]
 		params = @_parseParams(pathParts[2])
 		return {rawPath: p_rawPath, path: path, params: params}
@@ -119,7 +119,7 @@ class NavigationRouter extends EventDispatcher
 	###
 	_onPathChange:(evt=null)=>
 		@_currentPath = @_getPath()
-
+		
 		if @_trigger
 			@_triggerPath(@_currentPath)
 		@_trigger = true
@@ -167,6 +167,7 @@ class NavigationRouter extends EventDispatcher
 	###
 	goto:(p_path, p_trigger = true)->
 		p_path = p_path.replace(/^(?:#?!?\/*)([^?]*\??.*?)$/, '$1')
+		# console.log @_getParams()
 		if p_path == @_currentPath
 			return
 		@_currentPath = p_path

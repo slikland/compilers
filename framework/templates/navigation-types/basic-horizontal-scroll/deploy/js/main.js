@@ -94,8 +94,13 @@ ViewsData = (function(_super) {
       view = this.get(p_id);
     } else {
       data = this.getData(p_id);
-      klass = eval(data["class"]);
-      view = new klass(data, data.id + '-view');
+      if (typeof data["class"] === 'string') {
+        klass = eval(data["class"]);
+        view = new klass(data, data.id + '-view');
+        data["class"] = view;
+      } else {
+        view = data["class"];
+      }
     }
     if (view.parentView == null) {
       view.type = 'view';
@@ -300,6 +305,7 @@ BaseNavigationController = (function(_super) {
   	@protected
    */
   BaseNavigationController.prototype.change = function(p_id) {
+    MetaController.getInstance().change(this.currentView.meta);
     this.trigger(BaseNavigationController.CHANGE_VIEW, {
       data: this.data
     });
@@ -727,7 +733,7 @@ NavigationRouter = (function(_super) {
    */
   NavigationRouter.prototype._parsePath = function(p_rawPath) {
     var params, path, pathParts;
-    pathParts = /^(?:#?!?\/*)([^?]*)\??(.*?)$/.exec(p_rawPath);
+    pathParts = /^(?:#?!?\/*)([^?]*\??.*?)$/.exec(p_rawPath);
     path = pathParts[1];
     params = this._parseParams(pathParts[2]);
     return {
@@ -1120,6 +1126,8 @@ Navigation = (function(_super) {
       p_controller = null;
     }
     this._change = __bind(this._change, this);
+    this._changeRoute = __bind(this._changeRoute, this);
+    this._changeView = __bind(this._changeView, this);
     this.getRouteByView = __bind(this.getRouteByView, this);
     this.getViewByRoute = __bind(this.getViewByRoute, this);
     this.gotoView = __bind(this.gotoView, this);
@@ -1145,10 +1153,10 @@ Navigation = (function(_super) {
   Navigation.prototype.setup = function(p_data) {
     var k, v, _ref, _ref1, _ref2, _ref3;
     _controller.on(BaseNavigationController.CHANGE, this._change);
-    _controller.on(BaseNavigationController.CHANGE_VIEW, this._change);
+    _controller.on(BaseNavigationController.CHANGE_VIEW, this._changeView);
     _controller.setup(p_data);
     _router.on(NavigationRouter.CHANGE, this._change);
-    _router.on(NavigationRouter.CHANGE_ROUTE, this._change);
+    _router.on(NavigationRouter.CHANGE_ROUTE, this._changeRoute);
     _router.setup(app.root, (_ref = app.config.navigation) != null ? _ref.forceHashBang : void 0);
     _ref1 = p_data.views;
     for (k in _ref1) {
@@ -1167,7 +1175,7 @@ Navigation = (function(_super) {
   	@param {Event} [evt=null]
    */
   Navigation.prototype.start = function(evt) {
-    var current, pathData, routes, viewID;
+    var current, languages, parts, pathData, route, routes, viewID;
     if (evt == null) {
       evt = null;
     }
@@ -1179,6 +1187,20 @@ Navigation = (function(_super) {
       viewID = this.getViewByRoute(current);
     } else {
       viewID = null;
+    }
+    if (app.languages) {
+      languages = app.languages;
+      if (languages["default"] && viewID) {
+        parts = this.routeData.raw.split('/');
+        if (!languages.hasLanguage(parts[0], 'sufix')) {
+          if (app.config.views[viewID].route) {
+            route = app.config.views[viewID].route;
+          } else {
+            route = '/';
+          }
+          this.replaceRoute(route);
+        }
+      }
     }
     _controller.start(viewID);
     return false;
@@ -1202,10 +1224,7 @@ Navigation = (function(_super) {
    */
   Navigation.get({
     currentView: function() {
-      var view;
-      view = this._currentView || _controller.currentView;
-      view.routeData = this.routeData;
-      return view;
+      return this._currentView || _controller.currentView;
     }
   });
   /**
@@ -1232,10 +1251,14 @@ Navigation = (function(_super) {
       routeData = _router._checkRoutes(pathData.path);
       results = {};
       if (routeData != null) {
-        results.raw = pathData.rawPath;
-        results.params = pathData.params;
-        results.route = (_ref = routeData[0]) != null ? (_ref1 = _ref[0]) != null ? _ref1.route : void 0 : void 0;
-        results.parsed = routeData[1];
+        results['raw'] = pathData.rawPath;
+        results['params'] = pathData.params;
+        if (app.languages) {
+          results['language-iso'] = app.languages.current.iso;
+          results['language-sufix'] = app.languages.current.sufix;
+        }
+        results['route'] = (_ref = routeData[0]) != null ? (_ref1 = _ref[0]) != null ? _ref1.route : void 0 : void 0;
+        results['parsed'] = routeData[1];
       }
       return results;
     }
@@ -1267,7 +1290,10 @@ Navigation = (function(_super) {
   	@param {String|Object} p_value
   	@deprecated Uses the {{#crossLink "Navigation/gotoRoute:method"}}{{/crossLink}} or {{#crossLink "Navigation/gotoView:method"}}{{/crossLink}}
    */
-  Navigation.prototype.goto = function(p_value) {
+  Navigation.prototype.goto = function(p_value, p_trigger) {
+    if (p_trigger == null) {
+      p_trigger = false;
+    }
     throw new Error('This method is already deprecated.');
     return false;
   };
@@ -1296,7 +1322,11 @@ Navigation = (function(_super) {
       return;
     }
     if (p_value.indexOf('/') === 0) {
-      _router.goto(p_value, p_trigger);
+      if (app.languages) {
+        _router.goto('/' + app.languages.current.sufix + p_value, p_trigger);
+      } else {
+        _router.goto(p_value, p_trigger);
+      }
     } else {
       throw new Error('The value "' + p_value + '" is not a valid format to route ("/example")');
     }
@@ -1315,7 +1345,11 @@ Navigation = (function(_super) {
       return;
     }
     if (p_value.indexOf('/') === 0) {
-      _router.replace(p_value, p_trigger);
+      if (app.languages) {
+        _router.replace('/' + app.languages.current.sufix + p_value, p_trigger);
+      } else {
+        _router.replace(p_value, p_trigger);
+      }
     } else {
       throw new Error('The value "' + p_value + '" is not a valid format to route ("/example")');
     }
@@ -1324,14 +1358,21 @@ Navigation = (function(_super) {
   /**
   	@method gotoDefault
    */
-  Navigation.prototype.gotoDefault = function(p_trigger) {
+  Navigation.prototype.gotoDefault = function(p_trigger, p_replace) {
     var view, _ref;
     if (p_trigger == null) {
       p_trigger = false;
     }
+    if (p_replace == null) {
+      p_replace = null;
+    }
     if (((_ref = app.config.navigation) != null ? _ref.defaultView : void 0) != null) {
       view = app.config.navigation.defaultView;
-      this.gotoRoute(this.getRouteByView(view), p_trigger);
+      if (app.config.views[view].route) {
+        this.gotoRoute(this.getRouteByView(view), p_trigger);
+      } else {
+        this.gotoView(view, p_replace, p_trigger);
+      }
     }
     return false;
   };
@@ -1339,11 +1380,20 @@ Navigation = (function(_super) {
   	@method gotoView
   	@param {String} p_value
    */
-  Navigation.prototype.gotoView = function(p_value) {
+  Navigation.prototype.gotoView = function(p_value, p_replace, p_trigger) {
+    if (p_replace == null) {
+      p_replace = null;
+    }
+    if (p_trigger == null) {
+      p_trigger = false;
+    }
     if (p_value.indexOf('/') === 0) {
       throw new Error('The value "' + p_value + '" is not a valid format to viewID ("areaID")');
     } else {
       _controller.goto(p_value);
+      if (p_replace != null) {
+        this.replaceRoute(p_replace, p_trigger);
+      }
     }
     return false;
   };
@@ -1382,6 +1432,43 @@ Navigation = (function(_super) {
     return null;
   };
   /**
+  	@method _changeView
+  	@param {Event} [evt=null]
+  	@private
+   */
+  Navigation.prototype._changeView = function(evt) {
+    if (evt == null) {
+      evt = null;
+    }
+    this._currentView = evt.data.currentView;
+    this._previousView = evt.data.previousView;
+    this._visibleViews = evt.data.visibleViews;
+    this._currentView.routeData = this.routeData;
+    this.trigger(Navigation.CHANGE_VIEW, {
+      data: evt.data
+    });
+    return false;
+  };
+  /**
+  	@method _changeRoute
+  	@param {Event} [evt=null]
+  	@private
+   */
+  Navigation.prototype._changeRoute = function(evt) {
+    var data;
+    if (evt == null) {
+      evt = null;
+    }
+    data = this.routeData;
+    if (data.route != null) {
+      this.gotoView(this.getViewByRoute(data.route));
+    }
+    this.trigger(Navigation.CHANGE_ROUTE, {
+      data: data
+    });
+    return false;
+  };
+  /**
   	@method _change
   	@param {Event} [evt=null]
   	@private
@@ -1391,26 +1478,18 @@ Navigation = (function(_super) {
       evt = null;
     }
     switch (evt.type) {
-      case BaseNavigationController.CHANGE_VIEW:
-        this._currentView = evt.data.currentView;
-        this._previousView = evt.data.previousView;
-        this._visibleViews = evt.data.visibleViews;
-        return this.trigger(Navigation.CHANGE_VIEW, {
-          data: evt.data
-        });
       case BaseNavigationController.CHANGE:
-        return this.trigger(Navigation.CHANGE_INTERNAL_VIEW, {
+        this.trigger(Navigation.CHANGE_INTERNAL_VIEW, {
           view: evt.view,
           transition: evt.transition
         });
-      case NavigationRouter.CHANGE_ROUTE:
-        this.trigger(Navigation.CHANGE_ROUTE, {
+        break;
+      case NavigationRouter.CHANGE:
+        this.trigger(Navigation.CHANGE, {
           data: this.routeData
         });
-        if (this.routeData.route != null) {
-          return this.gotoView(this.getViewByRoute(this.routeData.route));
-        }
     }
+    return false;
   };
   return Navigation;
 })(EventDispatcher);

@@ -76,8 +76,12 @@ class ViewsData extends EventDispatcher
 			view = @get(p_id)
 		else
 			data = @getData(p_id)
-			klass = eval(data.class)
-			view = new klass(data, data.id+'-view')
+			if typeof data.class is 'string'
+				klass = eval(data.class)
+				view = new klass(data, data.id+'-view')
+				data.class = view
+			else
+				view = data.class
 
 		if !view.parentView?
 			view.type = 'view'
@@ -86,7 +90,7 @@ class ViewsData extends EventDispatcher
 			app.container.subviews[view.id] = view
 		else
 			if typeof view.parentView is 'string' then view.parentView = @get(view.parentView)
-		
+
 		if view.subviews?
 			for k, v of view.subviews
 				subview = @create(v.id)

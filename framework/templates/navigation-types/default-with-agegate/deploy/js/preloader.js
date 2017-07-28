@@ -374,6 +374,13 @@ if (navigator.mediaDevices == null) {
   navigator.mediaDevices = {};
 }
 navigator.getUserMedia = navigator.mediaDevices.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia;
+window.requestAnimationFrame = window.requestAnimationFrame || window.mozRequestAnimationFrame || window.webkitRequestAnimationFrame || window.msRequestAnimationFrame || function(f) {
+  return setTimeout(f, 1000 / 60);
+};
+window.cancelAnimationFrame = window.cancelAnimationFrame || window.mozCancelAnimationFrame || function(requestID) {
+  clearTimeout(requestID);
+  return false;
+};
 if (typeof Cache !== "undefined" && Cache !== null) {
   if (!("add" in Cache.prototype)) {
     Cache.prototype.add = function(request) {
@@ -661,7 +668,7 @@ App = (function(_super) {
   App.project_date_raw = "SL_PROJECT_DATE:0000000000000";
   App.WINDOW_ACTIVE = "windowActive";
   App.WINDOW_INACTIVE = "windowInactive";
-  framework_version = "3.1.6";
+  framework_version = "3.2.0";
   _root = null;
   _loader = null;
   _config = null;
@@ -2287,7 +2294,14 @@ PathsData = (function(_super) {
   	@private
    */
   PathsData.prototype._parseData = function(p_vars) {
-    var o, p_varsStr, val;
+    var k, o, p_varsStr, v, val, _ref;
+    if (window.paths != null) {
+      _ref = window.paths;
+      for (k in _ref) {
+        v = _ref[k];
+        p_vars[k] = v;
+      }
+    }
     p_varsStr = JSON.stringify(p_vars);
     while ((o = /\{([^\"\{\}]+)\}/.exec(p_varsStr))) {
       val = p_vars[o[1]];
@@ -2410,7 +2424,7 @@ AssetLoader = (function(_super) {
     return false;
   };
   AssetLoader.prototype._fileLoad = function(evt) {
-    var data, paths, result, _ref;
+    var data, e, head, paths, result, si, style, _ref;
     evt.item.loaded = true;
     evt.currentTarget.off(AssetLoader.ERROR, this._onError);
     evt.currentTarget.off(AssetLoader.FILE_ERROR, this._onFileError);
@@ -2430,7 +2444,28 @@ AssetLoader = (function(_super) {
         case 'js':
           data = evt.result;
           data = data.replace(/^\/\/.*?(\n|$)/igm, '');
-          result = eval('(function (){' + data + '}).call(self)');
+          if (evt.item.id.search(/main/i) !== -1) {
+            result = evt.item.result = data;
+          } else {
+            result = eval('(function (){' + data + '}).call(self)');
+          }
+          break;
+        case 'css':
+          head = document.querySelector("head") || document.getElementsByTagName("head")[0];
+          style = document.createElement('style');
+          style.id = evt.item.id;
+          style.type = "text/css";
+          head.appendChild(style);
+          si = head.querySelectorAll('style').length;
+          try {
+            style.appendChild(document.createTextNode(evt.result));
+          } catch (_error) {
+            e = _error;
+            if (document.all) {
+              document.styleSheets[si].cssText = evt.result;
+            }
+          }
+          result = style;
           break;
         default:
           result = evt.item;
@@ -3973,7 +4008,7 @@ BaseView = (function(_super) {
   });
   BaseView.set({
     routeData: function(p_value) {
-      return this._routeData = p_value;
+      return this._routeData = ObjectUtils.clone(p_value);
     }
   });
   /**
@@ -4436,25 +4471,52 @@ var LanguageData;
 LanguageData = (function(_super) {
   var _current, _data, _default;
   __extends(LanguageData, _super);
-  LanguageData["const"]({
-    SELECT_LANGUAGE: "select_language"
-  });
   _data = null;
   _current = void 0;
   _default = void 0;
-  LanguageData.getInstance = function() {
-    return LanguageData._instance != null ? LanguageData._instance : LanguageData._instance = new LanguageData();
+  LanguageData.getInstance = function(p_data) {
+    return LanguageData._instance != null ? LanguageData._instance : LanguageData._instance = new LanguageData(p_data);
   };
-  function LanguageData() {
+  function LanguageData(p_data) {
+    this._replaceRoute = __bind(this._replaceRoute, this);
+    this.data = p_data;
     LanguageData.__super__.constructor.apply(this, arguments);
   }
-  LanguageData.prototype.hasLanguage = function(p_value) {
+  LanguageData.prototype.gotoLanguage = function(p_iso) {
+    var parsedRoute;
+    parsedRoute = app.navigation.routeData.route.replace(/\{(.*?)\}/g, this._replaceRoute);
+    return window.location = app.root + this.getLanguage(p_iso).sufix + parsedRoute;
+  };
+  LanguageData.prototype._replaceRoute = function(match0, match1) {
+    var _ref;
+    return ((_ref = app.navigation.routeData.parsed) != null ? _ref[match1] : void 0) || '';
+  };
+  LanguageData.prototype.hasLanguage = function(p_value, p_filter) {
     var i, result, _i, _ref;
+    if (p_filter == null) {
+      p_filter = 'iso';
+    }
     result = false;
-    if (typeof p_value === 'string' && (_data != null ? _data.length : void 0) > 0) {
-      for (i = _i = 0, _ref = _data.length; 0 <= _ref ? _i < _ref : _i > _ref; i = 0 <= _ref ? ++_i : --_i) {
-        if (_data[i].iso === p_value) {
+    if (typeof p_value === 'string' && typeof p_filter === 'string') {
+      for (i = _i = 0, _ref = this.data.length; 0 <= _ref ? _i < _ref : _i > _ref; i = 0 <= _ref ? ++_i : --_i) {
+        if (this.data[i][p_filter] === p_value) {
           result = true;
+          break;
+        }
+      }
+    }
+    return result;
+  };
+  LanguageData.prototype.getLanguage = function(p_value) {
+    var i, result, _i, _ref;
+    result = null;
+    if (typeof p_value === 'string') {
+      for (i = _i = 0, _ref = this.data.length; 0 <= _ref ? _i < _ref : _i > _ref; i = 0 <= _ref ? ++_i : --_i) {
+        if (this.data[i].iso === p_value) {
+          result = this.data[i];
+          break;
+        } else if (this.data[i].sufix === p_value) {
+          result = this.data[i];
           break;
         }
       }
@@ -4475,16 +4537,19 @@ LanguageData = (function(_super) {
         if (!v.iso || v.iso && v.iso === "") {
           throw new Error('Please sets the "iso" object (ISO 639-1 standard) in languages object of config file.');
         }
-        if (!v.path || v.path && v.path === "") {
-          throw new Error('Please sets the "path" object in languages object of config file.');
+        if (!v.sufix || v.sufix && v.sufix === "") {
+          throw new Error('Please sets the "sufix" object in languages object of config file.');
+        }
+        if (!v['data-path'] || v['data-path'] && v['data-path'] === "") {
+          throw new Error('Please sets the "data-path" object in languages object of config file.');
         }
         if (v["default"] != null) {
-          _default = v;
+          this["default"] = v;
         }
       }
-      if (!_default) {
+      if (!this["default"]) {
         p_value[0]["default"] = true;
-        _default = p_value[0];
+        this["default"] = p_value[0];
       }
       return false;
     }
@@ -4497,15 +4562,19 @@ LanguageData = (function(_super) {
   LanguageData.set({
     current: function(p_value) {
       var i, _i, _ref;
-      if (typeof p_value === 'string' && (_data != null ? _data.length : void 0) > 0) {
-        for (i = _i = 0, _ref = _data.length; 0 <= _ref ? _i < _ref : _i > _ref; i = 0 <= _ref ? ++_i : --_i) {
-          if (_data[i].iso === p_value) {
-            _current = _data[i];
+      if (typeof p_value === 'string') {
+        for (i = _i = 0, _ref = this.data.length; 0 <= _ref ? _i < _ref : _i > _ref; i = 0 <= _ref ? ++_i : --_i) {
+          if (this.data[i].iso === p_value) {
+            _current = this.data[i];
+            break;
+          } else if (this.data[i].sufix === p_value) {
+            _current = this.data[i];
             break;
           }
         }
-      } else {
-        _current = p_value;
+        if (!_current) {
+          throw new Error('The value ' + p_value + ' isnt a valid "iso" or "sufix".');
+        }
       }
       return false;
     }
@@ -4513,6 +4582,11 @@ LanguageData = (function(_super) {
   LanguageData.get({
     "default": function() {
       return _default;
+    }
+  });
+  LanguageData.set({
+    "default": function(p_value) {
+      return _default = p_value;
     }
   });
   return LanguageData;
@@ -4577,21 +4651,28 @@ ParseData = (function(_super) {
   	@static
    */
   ParseData.getProperties = function(p_obj) {
-    var clone, i, prop, result, value, _i, _ref, _ref1;
+    var clone, foundItem, i, prop, result, value, _i, _ref;
     if (p_obj == null) {
       throw new Error('The param p_obj cannot be null');
     }
     result = {};
     if (typeof p_obj === 'object') {
       clone = ObjectUtils.clone(p_obj);
+      foundItem = null;
       for (i = _i = 0, _ref = clone.length; 0 <= _ref ? _i < _ref : _i > _ref; i = 0 <= _ref ? ++_i : --_i) {
-        _ref1 = clone[i];
-        for (prop in _ref1) {
-          value = _ref1[prop];
-          if (prop !== 'condition' && prop !== 'file') {
-            result[prop] = value;
+        if (clone[i].condition != null) {
+          if (_conditions != null ? typeof _conditions.test === "function" ? _conditions.test(clone[i].condition) : void 0 : void 0) {
+            foundItem = clone[i];
           }
+        } else if (!foundItem) {
+          foundItem = clone[i];
         }
+      }
+    }
+    for (prop in foundItem) {
+      value = foundItem[prop];
+      if (prop !== 'condition' && prop !== 'file') {
+        result[prop] = value;
       }
     }
     return result;
@@ -4969,16 +5050,9 @@ NavigationLoader = (function(_super) {
     }
     data = evt.result;
     if (data.languages != null) {
-      lang = LanguageData.getInstance();
-      lang.data = data.languages;
-    }
-    if (data.paths != null) {
-      this.trigger(NavigationLoader.LANGUAGE_DATA_LOADED, {
-        data: data,
-        language: lang
-      });
-    } else {
       this.selectLanguage(data);
+    } else {
+      this.parseConfig(data);
     }
     return false;
   };
@@ -4988,22 +5062,24 @@ NavigationLoader = (function(_super) {
   	@private
    */
   NavigationLoader.prototype.selectLanguage = function(p_data) {
-    var current, result, _ref;
-    if (lang != null) {
-      if (((_ref = lang.current) != null ? _ref.path : void 0) != null) {
-        current = lang.current.path;
-      } else {
-        current = lang["default"].path;
+    var i, languages, part, parts, selected;
+    languages = LanguageData.getInstance(p_data.languages);
+    parts = document.location.href.split('/');
+    i = parts.length;
+    while (i--) {
+      part = parts[i];
+      if (languages.hasLanguage(part, 'sufix')) {
+        selected = part;
+        break;
       }
     }
-    if (p_data.paths != null) {
-      p_data.paths['language'] = current;
-      paths = PathsData.getInstance(p_data.paths);
-      result = paths.translate(p_data);
-    } else {
-      result = p_data;
+    languages.current = selected || languages["default"].iso;
+    if (!p_data.paths) {
+      p_data['paths'] = {};
     }
-    return this.parseConfig(result);
+    p_data.paths['language-data'] = languages.current['data-path'];
+    this.parseConfig(p_data);
+    return false;
   };
   /**
   	@method parseConfig
@@ -5011,6 +5087,8 @@ NavigationLoader = (function(_super) {
   	@private
    */
   NavigationLoader.prototype.parseConfig = function(p_data) {
+    paths = PathsData.getInstance(p_data.paths);
+    p_data = paths.translate(p_data);
     config = new ParseConfig(p_data);
     this.trigger(NavigationLoader.CONFIG_LOADED, {
       data: config.data
@@ -5214,43 +5292,13 @@ NavigationLoader = (function(_super) {
   	@private
    */
   NavigationLoader.prototype.loadFileComplete = function(evt) {
-    var contents, data, e, head, main, result, si, style, _ref, _ref1, _ref2;
+    var contents, result, _ref, _ref1, _ref2;
     evt.item.loaded = true;
     switch (evt.item.ext) {
-      case 'json':
-        data = paths.translate(evt.result);
-        if (typeof data !== 'string') {
-          data = JSON.stringify(data);
-        }
-        JSONUtils.removeComments(data);
-        result = data;
-        result = evt.item.result = evt.item.tag = evt.result = JSON.parse(result);
-        break;
       case 'js':
-        data = evt.result;
-        data = data.replace(/^\/\/.*?(\n|$)/igm, '');
-        if (currentStep.id === 'main') {
-          main = result = evt.item.result = eval(data);
-        } else {
-          result = eval('(function (){' + data + '}).call(self)');
+        if (window.main == null) {
+          window.main = {};
         }
-        break;
-      case 'css':
-        head = document.querySelector("head") || document.getElementsByTagName("head")[0];
-        style = document.createElement('style');
-        style.id = evt.item.id;
-        style.type = "text/css";
-        head.appendChild(style);
-        si = head.querySelectorAll('style').length;
-        try {
-          style.appendChild(document.createTextNode(evt.result));
-        } catch (_error) {
-          e = _error;
-          if (document.all) {
-            document.styleSheets[si].cssText = evt.result;
-          }
-        }
-        result = style;
         break;
       default:
         result = evt.item;
@@ -5258,9 +5306,9 @@ NavigationLoader = (function(_super) {
     contents = ((_ref = config.views[currentStep.id]) != null ? _ref.content : void 0) || ((_ref1 = config.required[currentStep.id]) != null ? _ref1.content : void 0);
     if ((contents != null) && evt.item.internal !== false) {
       eval('contents["' + ((_ref2 = evt.item.___path) != null ? _ref2.join('"]["') : void 0) + '"] = result');
-    }
-    if (main != null) {
-      main.content = contents;
+      if (window.main) {
+        window.main['content'] = contents;
+      }
     }
     this.trigger(NavigationLoader.LOAD_FILE_COMPLETE, {
       id: evt.item.id,
@@ -5365,9 +5413,8 @@ Base class to setup the navigation and start loading of dependencies.
  */
 var Caim;
 Caim = (function(_super) {
-  var wrapper, _loader, _mainView, _preloaderView;
+  var wrapper, _mainView, _preloaderView;
   __extends(Caim, _super);
-  _loader = null;
   _mainView = null;
   _preloaderView = null;
   wrapper = null;
@@ -5379,7 +5426,7 @@ Caim = (function(_super) {
   	@param {HTMLElement} [p_wrapper = null] Custom container to attach the navigation.
    */
   function Caim(p_preloaderView, p_configPath, p_wrapper) {
-    var _ref, _ref1;
+    var loader, _ref, _ref1;
     if (p_configPath == null) {
       p_configPath = "data/config.json";
     }
@@ -5398,8 +5445,6 @@ Caim = (function(_super) {
     this.groupLoaded = __bind(this.groupLoaded, this);
     this.progress = __bind(this.progress, this);
     this.configLoaded = __bind(this.configLoaded, this);
-    this.selectLanguage = __bind(this.selectLanguage, this);
-    this.languageDataLoaded = __bind(this.languageDataLoaded, this);
     if (!(p_preloaderView instanceof BaseView)) {
       throw new Error('The param p_preloaderView is null or the instance of param p_preloaderView is not either BaseView class');
     } else {
@@ -5409,44 +5454,13 @@ Caim = (function(_super) {
     app.root = ((_ref = document.querySelector("base")) != null ? _ref.href : void 0) || ((_ref1 = document.getElementsByTagName("base")[0]) != null ? _ref1.href : void 0);
     app.loader = AssetLoader.getInstance();
     app.detections = Detections.getInstance();
-    _loader = new NavigationLoader(app.root != null ? app.root + p_configPath : p_configPath);
-    _loader.on(NavigationLoader.LANGUAGE_DATA_LOADED, this.languageDataLoaded);
-    _loader.on(NavigationLoader.CONFIG_LOADED, this.configLoaded);
-    _loader.on(NavigationLoader.GROUP_ASSETS_LOADED, this.groupLoaded);
-    _loader.on(NavigationLoader.LOAD_START, this.createPreloaderView);
-    _loader.on(NavigationLoader.LOAD_PROGRESS, this.progress);
-    _loader.on(NavigationLoader.LOAD_COMPLETE, this.hidePreloderView);
+    loader = new NavigationLoader(app.root != null ? app.root + p_configPath : p_configPath);
+    loader.on(NavigationLoader.CONFIG_LOADED, this.configLoaded);
+    loader.on(NavigationLoader.GROUP_ASSETS_LOADED, this.groupLoaded);
+    loader.on(NavigationLoader.LOAD_PROGRESS, this.progress);
+    loader.on(NavigationLoader.LOAD_COMPLETE, this.hidePreloderView);
     false;
   }
-  /**
-  	@method loaded
-  	@param {Boolean}
-  	@protected
-   */
-  Caim.get({
-    loaded: function() {
-      return _loader.loaded;
-    }
-  });
-  /**
-  	@method languageDataLoaded
-  	@param {Event} evt
-  	@private
-   */
-  Caim.prototype.languageDataLoaded = function(evt) {
-    evt.currentTarget.off(NavigationLoader.LANGUAGE_DATA_LOADED, this.languageDataLoaded);
-    this.selectLanguage(evt.data);
-    return false;
-  };
-  /**
-  	@method selectLanguage
-  	@param {Object} p_data
-  	@private
-   */
-  Caim.prototype.selectLanguage = function(p_data) {
-    _loader.selectLanguage(p_data);
-    return false;
-  };
   /**
   	@method configLoaded
   	@param {Event} evt
@@ -5463,6 +5477,7 @@ Caim = (function(_super) {
     }
     app.config = evt.data;
     app.conditions = app.config.conditions != null ? ConditionsValidation.getInstance(app.config.conditions) : null;
+    app.languages = app.config.languages != null ? LanguageData.getInstance() : null;
     return false;
   };
   /**
@@ -5492,13 +5507,17 @@ Caim = (function(_super) {
         for (k in _ref) {
           v = _ref[k];
           if (v.ext === 'js' && v.id.search(/main/i) !== -1) {
-            _mainView = app.config.required.main[v.id].result;
+            _mainView = app.config.required.main[v.id].result = eval(app.config.required.main[v.id].result);
+            _mainView.content = window.main['content'];
+            delete window.main['content'];
+            delete window.main;
           }
         }
         this.mainAssetsLoaded();
         break;
       case 'preloader':
         this.preloaderAssetsLoaded();
+        this.createPreloaderView();
         break;
     }
   };
@@ -5507,19 +5526,9 @@ Caim = (function(_super) {
   	@param {Event} [evt=null]
   	@protected
    */
-  Caim.prototype.createPreloaderView = function(evt) {
-    var _ref, _ref1;
-    if (evt == null) {
-      evt = null;
-    }
-    if (evt != null) {
-      if ((_ref = evt.currentTarget) != null) {
-        if (typeof _ref.off === "function") {
-          _ref.off(NavigationLoader.LOAD_START, this.createPreloaderView);
-        }
-      }
-    }
-    if (((_ref1 = app.config.required.preloader) != null ? _ref1.content : void 0) != null) {
+  Caim.prototype.createPreloaderView = function() {
+    var _ref;
+    if (((_ref = app.config.required.preloader) != null ? _ref.content : void 0) != null) {
       _preloaderView.content = app.config.required.preloader.content;
     }
     wrapper.appendChild(_preloaderView.element);
