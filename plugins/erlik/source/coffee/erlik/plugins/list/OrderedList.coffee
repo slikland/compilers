@@ -5,6 +5,7 @@ class OrderedList extends slikland.erlik.plugins.Plugin
 	_toolbar: {
 		icon: 'fa-list-ol'
 		toggle: true
+		tooltip: 'Lista numeral'
 	}
 
 	# _styleValidation: 'value > 500 || value == \'bold\''

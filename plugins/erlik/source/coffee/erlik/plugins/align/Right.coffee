@@ -5,6 +5,7 @@ class Right extends slikland.erlik.plugins.Plugin
 	_toolbar: {
 		icon: 'fa-align-right'
 		toggle: true
+		tooltip: 'alinhar à\ndireita'
 	}
 
 	_styleValidation: 'right'

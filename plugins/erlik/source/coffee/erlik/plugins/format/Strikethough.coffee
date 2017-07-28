@@ -5,6 +5,7 @@ class Strikethrough extends slikland.erlik.plugins.Plugin
 	_toolbar: {
 		icon: 'fa-strikethrough'
 		toggle: true
+		tooltip: 'traçar'
 	}
 
 	_styleValidation: 'line-through'

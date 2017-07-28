@@ -4,7 +4,8 @@
 class Center extends slikland.erlik.plugins.Plugin
 	_toolbar: {
 		icon: 'fa-align-center'
-		toggle: true
+		toggle: true,
+		tooltip: 'Centralizar'
 	}
 
 	_styleValidation: 'center'

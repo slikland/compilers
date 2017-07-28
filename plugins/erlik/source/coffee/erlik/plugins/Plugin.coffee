@@ -52,8 +52,9 @@ class Plugin extends EventDispatcher
 	# selector: null
 
 
-	constructor:(editor)->
+	constructor:(controller, editor)->
 		Plugin.PLUGIN_NAME
+		@_controller = controller
 		@_editor = editor
 		@_editor.on(slikland.Erlik.EDIT_PLUGIN, @_editPlugin)
 
@@ -79,21 +80,25 @@ class Plugin extends EventDispatcher
 		return @_value
 
 	update:(styles, nodes)->
-		@_validate(styles)
-	_validate:(styles)->
-		if !@_styleValidation
-			return
-		valid = false
-		for style in styles
-			value = style[@_style]
-			if /[\&\|\=|\!|+]/.test(@_styleValidation)
-				valid = eval(@_styleValidation)
-			else
-				valid = (value == @_styleValidation)
+		@_validate(styles, nodes)
+	_validate:(styles, nodes)->
+		@selectedTag = null
+		if @_styleValidation
+			valid = false
+			for style in styles
+				value = style[@_style]
+				if /[\&\|\=|\!|+]/.test(@_styleValidation)
+					valid = eval(@_styleValidation)
+				else
+					valid = (value == @_styleValidation)
+				if valid
+					break
+				if !@_validateParentStyles
+					break
+		else if @_tag
+			valid = nodes[0]?.matches(@_tag)
 			if valid
-				break
-			if !@_validateParentStyles
-				break
+				@selectedTag = nodes[0]
 		@_toolbarUI?.value = valid
 
 	_buildToolbarUI:()=>

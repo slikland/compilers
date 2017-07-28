@@ -438,10 +438,10 @@ class Cropper extends BaseDOM
 			@_thumbContainer.appendChild(@_thumbImage)
 			@appendChild(@_thumbContainer)
 
-			x = data.x || 0
-			y = data.y || 0
-			w = data.w || 1
-			h = data.h || 1
+			x = data.x || data.bounds?.x || 0
+			y = data.y || data.bounds?.y || 0
+			w = data.w || data.bounds?.w || 1
+			h = data.h || data.bounds?.h || 1
 			@_aspectRatio = data.size[0] / data.size[1]
 
 			if @_aspectRatio > 1

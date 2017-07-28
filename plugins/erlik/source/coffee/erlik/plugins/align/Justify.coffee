@@ -5,6 +5,7 @@ class Justify extends slikland.erlik.plugins.Plugin
 	_toolbar: {
 		icon: 'fa-align-justify'
 		toggle: true
+		tooltip: 'justificar'
 	}
 
 	_styleValidation: 'justify'

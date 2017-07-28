@@ -5,6 +5,7 @@ class Color extends slikland.erlik.plugins.Plugin
 	_toolbar: {
 		icon: 'fa-font'
 		toggle: false
+		tooltip: 'cor'
 	}
 
 	_style: 'color'

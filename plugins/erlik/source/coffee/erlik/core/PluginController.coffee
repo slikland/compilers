@@ -69,13 +69,14 @@ class PluginController extends EventDispatcher
 
 
 	_getPlugin:(name)=>
+		name = name.toLowerCase()
 		for p in @_plugins
 			if p.name == name
 				return p
 		p = @constructor._plugins[name]
 		if !p
 			return null
-		p = new p(@)
+		p = new p(@, @_editor)
 		p.on(p.constructor.CHANGE, @_pluginChange)
 		@_plugins.push(p)
 		return p
@@ -98,9 +99,10 @@ class PluginController extends EventDispatcher
 				newItems.push(@_getPlugin(item))
 		return newItems
 	_setupPlugins:(items)->
-		for item in items
-			@_getPlugin(item)
-
+		for name, item of items
+			if inst = @_getPlugin(name, false)
+				console.log(inst)
+				inst.setup?(item)
 
 	_pluginChange:(e, data)=>
 		@_editor.focus()
@@ -117,9 +119,59 @@ class PluginController extends EventDispatcher
 						element.on('focus', @_pluginFocus)
 						range.deleteContents()
 						range.insertNode(element.element)
+				when 'wrapElement'
+					if plugin.selectedTag
+						@_removeTag(range, plugin.selectedTag)
+					else
+						@_wrapRange(range, plugin._tag)
+				when 'multiple'
+					if plugin.selectedTag
+						@_removeTag(range, plugin.selectedTag)
+					if data.tag
+						console.log(data.tag)
+						if data.tag && data.tag.length > 0
+							@_wrapRange(range, data.tag)
 				else
 					@_editor.execCommand(plugin.command, null, plugin.value)
 		@_editor.update()
+	_wrapRange:(range, tagData)->
+
+		tagParts = /^([^\#\.\s]*?)([\#\.].*?)?$/.exec(tagData)
+		console.log(tagParts, tagData)
+		if !tagParts
+			return
+		tagName = tagParts[1] || 'div'
+
+		tag = document.createElement(tagName)
+		if tagParts[2]
+			partRE = /([\#\.])([^\#\.\s]+|$)/g
+			while o = partRE.exec(tagParts[2])
+				console.log(o)
+				if o[1] == '#'
+					id = tag.id || ''
+					id = id.split(' ')
+					id.push(o[2])
+					tag.id = id.join(' ')
+				else
+					className = tag.className || ''
+					className = className.split(' ')
+					className.push(o[2])
+					tag.className = className.join(' ')
+
+
+		range.surroundContents(tag)
+
+	_removeTag:(range, tag)->
+		nodes = tag.childNodes
+		newNodes = []
+		i = nodes.length
+		while i-- > 0
+			newNodes[i] = nodes[i].cloneNode(true)
+		range.selectNode(tag)
+		range.deleteContents()
+		i = newNodes.length
+		while i-- > 0
+			range.insertNode(newNodes[i])
 	_pluginFocus:(e)=>
 		@_editor.blur()
 

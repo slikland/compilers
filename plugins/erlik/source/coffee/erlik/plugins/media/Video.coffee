@@ -5,6 +5,7 @@ class Video extends slikland.erlik.plugins.Plugin
 	_toolbar: {
 		icon: 'fa-film'
 		toggle: false
+		tooltip: 'vídeo'
 	}
 
 	_command: 'insertElement'

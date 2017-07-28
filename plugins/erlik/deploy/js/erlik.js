@@ -1101,6 +1101,7 @@ slikland.erlik.core.PluginController = (function(_super) {
   };
   PluginController.prototype._getPlugin = function(name) {
     var p, _i, _len, _ref;
+    name = name.toLowerCase();
     _ref = this._plugins;
     for (_i = 0, _len = _ref.length; _i < _len; _i++) {
       p = _ref[_i];
@@ -1112,7 +1113,7 @@ slikland.erlik.core.PluginController = (function(_super) {
     if (!p) {
       return null;
     }
-    p = new p(this);
+    p = new p(this, this._editor);
     p.on(p.constructor.CHANGE, this._pluginChange);
     this._plugins.push(p);
     return p;
@@ -1142,11 +1143,16 @@ slikland.erlik.core.PluginController = (function(_super) {
     return newItems;
   };
   PluginController.prototype._setupPlugins = function(items) {
-    var item, _i, _len, _results;
+    var inst, item, name, _results;
     _results = [];
-    for (_i = 0, _len = items.length; _i < _len; _i++) {
-      item = items[_i];
-      _results.push(this._getPlugin(item));
+    for (name in items) {
+      item = items[name];
+      if (inst = this._getPlugin(name, false)) {
+        console.log(inst);
+        _results.push(typeof inst.setup === "function" ? inst.setup(item) : void 0);
+      } else {
+        _results.push(void 0);
+      }
     }
     return _results;
   };
@@ -1169,11 +1175,74 @@ slikland.erlik.core.PluginController = (function(_super) {
             range.insertNode(element.element);
           }
           break;
+        case 'wrapElement':
+          if (plugin.selectedTag) {
+            this._removeTag(range, plugin.selectedTag);
+          } else {
+            this._wrapRange(range, plugin._tag);
+          }
+          break;
+        case 'multiple':
+          if (plugin.selectedTag) {
+            this._removeTag(range, plugin.selectedTag);
+          }
+          if (data.tag) {
+            console.log(data.tag);
+            if (data.tag && data.tag.length > 0) {
+              this._wrapRange(range, data.tag);
+            }
+          }
+          break;
         default:
           this._editor.execCommand(plugin.command, null, plugin.value);
       }
     }
     return this._editor.update();
+  };
+  PluginController.prototype._wrapRange = function(range, tagData) {
+    var className, id, o, partRE, tag, tagName, tagParts;
+    tagParts = /^([^\#\.\s]*?)([\#\.].*?)?$/.exec(tagData);
+    console.log(tagParts, tagData);
+    if (!tagParts) {
+      return;
+    }
+    tagName = tagParts[1] || 'div';
+    tag = document.createElement(tagName);
+    if (tagParts[2]) {
+      partRE = /([\#\.])([^\#\.\s]+|$)/g;
+      while (o = partRE.exec(tagParts[2])) {
+        console.log(o);
+        if (o[1] === '#') {
+          id = tag.id || '';
+          id = id.split(' ');
+          id.push(o[2]);
+          tag.id = id.join(' ');
+        } else {
+          className = tag.className || '';
+          className = className.split(' ');
+          className.push(o[2]);
+          tag.className = className.join(' ');
+        }
+      }
+    }
+    return range.surroundContents(tag);
+  };
+  PluginController.prototype._removeTag = function(range, tag) {
+    var i, newNodes, nodes, _results;
+    nodes = tag.childNodes;
+    newNodes = [];
+    i = nodes.length;
+    while (i-- > 0) {
+      newNodes[i] = nodes[i].cloneNode(true);
+    }
+    range.selectNode(tag);
+    range.deleteContents();
+    i = newNodes.length;
+    _results = [];
+    while (i-- > 0) {
+      _results.push(range.insertNode(newNodes[i]));
+    }
+    return _results;
   };
   PluginController.prototype._pluginFocus = function(e) {
     return this._editor.blur();
@@ -1236,12 +1305,13 @@ slikland.erlik.plugins.Plugin = (function(_super) {
   Plugin.prototype._validateParentTags = false;
   Plugin.prototype._command = null;
   Plugin.prototype._value = null;
-  function Plugin(editor) {
+  function Plugin(controller, editor) {
     this._editPlugin = __bind(this._editPlugin, this);
     this._toolbarClick = __bind(this._toolbarClick, this);
     this._change = __bind(this._change, this);
     this._buildToolbarUI = __bind(this._buildToolbarUI, this);
     Plugin.PLUGIN_NAME;
+    this._controller = controller;
     this._editor = editor;
     this._editor.on(slikland.Erlik.EDIT_PLUGIN, this._editPlugin);
     if (this.constructor === slikland.erlik.plugins.Plugin) {
@@ -1276,30 +1346,35 @@ slikland.erlik.plugins.Plugin = (function(_super) {
     }
   });
   Plugin.prototype.update = function(styles, nodes) {
-    return this._validate(styles);
+    return this._validate(styles, nodes);
   };
-  Plugin.prototype._validate = function(styles) {
-    var style, valid, value, _i, _len, _ref;
-    if (!this._styleValidation) {
-      return;
-    }
-    valid = false;
-    for (_i = 0, _len = styles.length; _i < _len; _i++) {
-      style = styles[_i];
-      value = style[this._style];
-      if (/[\&\|\=|\!|+]/.test(this._styleValidation)) {
-        valid = eval(this._styleValidation);
-      } else {
-        valid = value === this._styleValidation;
+  Plugin.prototype._validate = function(styles, nodes) {
+    var style, valid, value, _i, _len, _ref, _ref1;
+    this.selectedTag = null;
+    if (this._styleValidation) {
+      valid = false;
+      for (_i = 0, _len = styles.length; _i < _len; _i++) {
+        style = styles[_i];
+        value = style[this._style];
+        if (/[\&\|\=|\!|+]/.test(this._styleValidation)) {
+          valid = eval(this._styleValidation);
+        } else {
+          valid = value === this._styleValidation;
+        }
+        if (valid) {
+          break;
+        }
+        if (!this._validateParentStyles) {
+          break;
+        }
       }
+    } else if (this._tag) {
+      valid = (_ref = nodes[0]) != null ? _ref.matches(this._tag) : void 0;
       if (valid) {
-        break;
-      }
-      if (!this._validateParentStyles) {
-        break;
+        this.selectedTag = nodes[0];
       }
     }
-    return (_ref = this._toolbarUI) != null ? _ref.value = valid : void 0;
+    return (_ref1 = this._toolbarUI) != null ? _ref1.value = valid : void 0;
   };
   Plugin.prototype._buildToolbarUI = function() {
     if (this._toolbar) {
@@ -1877,7 +1952,7 @@ slikland.erlik.ui.image.Cropper = (function(_super) {
     __extends(Thumb, _super1);
     function Thumb(data) {
       this._click = __bind(this._click, this);
-      var ah, aw, cx, cy, h, w, x, y;
+      var ah, aw, cx, cy, h, w, x, y, _ref, _ref1, _ref2, _ref3;
       this._data = data;
       this._selected = false;
       Thumb.__super__.constructor.call(this, {
@@ -1895,10 +1970,10 @@ slikland.erlik.ui.image.Cropper = (function(_super) {
       this._thumbImage = new BaseDOM({});
       this._thumbContainer.appendChild(this._thumbImage);
       this.appendChild(this._thumbContainer);
-      x = data.x || 0;
-      y = data.y || 0;
-      w = data.w || 1;
-      h = data.h || 1;
+      x = data.x || ((_ref = data.bounds) != null ? _ref.x : void 0) || 0;
+      y = data.y || ((_ref1 = data.bounds) != null ? _ref1.y : void 0) || 0;
+      w = data.w || ((_ref2 = data.bounds) != null ? _ref2.w : void 0) || 1;
+      h = data.h || ((_ref3 = data.bounds) != null ? _ref3.h : void 0) || 1;
       this._aspectRatio = data.size[0] / data.size[1];
       if (this._aspectRatio > 1) {
         aw = 1;
@@ -2017,7 +2092,8 @@ slikland.erlik.plugins.align.Right = (function(_super) {
   }
   Right.prototype._toolbar = {
     icon: 'fa-align-right',
-    toggle: true
+    toggle: true,
+    tooltip: 'alinhar à\ndireita'
   };
   Right.prototype._styleValidation = 'right';
   Right.prototype._style = 'text-align';
@@ -2032,7 +2108,8 @@ slikland.erlik.plugins.list.Outdent = (function(_super) {
   }
   Outdent.prototype._toolbar = {
     icon: 'fa-outdent',
-    toggle: false
+    toggle: false,
+    tooltip: 'remover tabulação'
   };
   Outdent.prototype._command = 'outdent';
   return Outdent;
@@ -2045,7 +2122,8 @@ slikland.erlik.plugins.align.Left = (function(_super) {
   }
   Left.prototype._toolbar = {
     icon: 'fa-align-left',
-    toggle: true
+    toggle: true,
+    tooltip: 'Alinhar à\nesquerda'
   };
   Left.prototype._styleValidation = 'value == "left" || value == "start"';
   Left.prototype._style = 'text-align';
@@ -2060,7 +2138,8 @@ slikland.erlik.plugins.align.Justify = (function(_super) {
   }
   Justify.prototype._toolbar = {
     icon: 'fa-align-justify',
-    toggle: true
+    toggle: true,
+    tooltip: 'justificar'
   };
   Justify.prototype._styleValidation = 'justify';
   Justify.prototype._style = 'text-align';
@@ -2075,7 +2154,8 @@ slikland.erlik.plugins.align.Indent = (function(_super) {
   }
   Indent.prototype._toolbar = {
     icon: 'fa-indent',
-    toggle: false
+    toggle: false,
+    tooltip: 'Adicionar tabulação'
   };
   Indent.prototype._command = 'indent';
   return Indent;
@@ -2088,12 +2168,41 @@ slikland.erlik.plugins.align.Center = (function(_super) {
   }
   Center.prototype._toolbar = {
     icon: 'fa-align-center',
-    toggle: true
+    toggle: true,
+    tooltip: 'Centralizar'
   };
   Center.prototype._styleValidation = 'center';
   Center.prototype._style = 'text-align';
   Center.prototype._command = 'justifyCenter';
   return Center;
+})(slikland.erlik.plugins.Plugin);
+var __hasProp = {}.hasOwnProperty;
+slikland.erlik.plugins.format.Undo = (function(_super) {
+  __extends(Undo, _super);
+  function Undo() {
+    return Undo.__super__.constructor.apply(this, arguments);
+  }
+  Undo.prototype._toolbar = {
+    icon: 'fa-rotate-left',
+    toggle: true,
+    tooltip: 'desfazer'
+  };
+  Undo.prototype._command = 'undo';
+  return Undo;
+})(slikland.erlik.plugins.Plugin);
+var __hasProp = {}.hasOwnProperty;
+slikland.erlik.plugins.format.Redo = (function(_super) {
+  __extends(Redo, _super);
+  function Redo() {
+    return Redo.__super__.constructor.apply(this, arguments);
+  }
+  Redo.prototype._toolbar = {
+    icon: 'fa-rotate-right',
+    toggle: true,
+    tooltip: 'Refazer'
+  };
+  Redo.prototype._command = 'redo';
+  return Redo;
 })(slikland.erlik.plugins.Plugin);
 var __hasProp = {}.hasOwnProperty;
 slikland.erlik.plugins.format.Underline = (function(_super) {
@@ -2103,13 +2212,48 @@ slikland.erlik.plugins.format.Underline = (function(_super) {
   }
   Underline.prototype._toolbar = {
     icon: 'fa-underline',
-    toggle: true
+    toggle: true,
+    tooltip: 'sublinhar'
   };
   Underline.prototype._styleValidation = 'underline';
   Underline.prototype._style = 'text-decoration';
   Underline.prototype._validateParentStyles = true;
   Underline.prototype._command = 'underline';
   return Underline;
+})(slikland.erlik.plugins.Plugin);
+var __hasProp = {}.hasOwnProperty;
+slikland.erlik.plugins.format.Superscript = (function(_super) {
+  __extends(Superscript, _super);
+  function Superscript() {
+    return Superscript.__super__.constructor.apply(this, arguments);
+  }
+  Superscript.prototype._toolbar = {
+    icon: 'fa-superscript',
+    toggle: true,
+    tooltip: 'superscrito'
+  };
+  Superscript.prototype._tag = 'sup';
+  Superscript.prototype._style = 'text-decoration';
+  Superscript.prototype._validateParentStyles = true;
+  Superscript.prototype._command = 'wrapElement';
+  return Superscript;
+})(slikland.erlik.plugins.Plugin);
+var __hasProp = {}.hasOwnProperty;
+slikland.erlik.plugins.format.Subscript = (function(_super) {
+  __extends(Subscript, _super);
+  function Subscript() {
+    return Subscript.__super__.constructor.apply(this, arguments);
+  }
+  Subscript.prototype._toolbar = {
+    icon: 'fa-subscript',
+    toggle: true,
+    tooltip: 'subscrito'
+  };
+  Subscript.prototype._tag = 'sub';
+  Subscript.prototype._style = 'text-decoration';
+  Subscript.prototype._validateParentStyles = true;
+  Subscript.prototype._command = 'wrapElement';
+  return Subscript;
 })(slikland.erlik.plugins.Plugin);
 var __hasProp = {}.hasOwnProperty;
 slikland.erlik.plugins.format.Strikethrough = (function(_super) {
@@ -2119,7 +2263,8 @@ slikland.erlik.plugins.format.Strikethrough = (function(_super) {
   }
   Strikethrough.prototype._toolbar = {
     icon: 'fa-strikethrough',
-    toggle: true
+    toggle: true,
+    tooltip: 'traçar'
   };
   Strikethrough.prototype._styleValidation = 'line-through';
   Strikethrough.prototype._style = 'text-decoration';
@@ -2135,7 +2280,8 @@ slikland.erlik.plugins.format.Italic = (function(_super) {
   }
   Italic.prototype._toolbar = {
     icon: 'fa-italic',
-    toggle: true
+    toggle: true,
+    tooltip: 'itálico'
   };
   Italic.prototype._styleValidation = 'italic';
   Italic.prototype._style = 'font-style';
@@ -2161,7 +2307,8 @@ slikland.erlik.plugins.format.Color = (function(_super) {
   __extends(Color, _super);
   Color.prototype._toolbar = {
     icon: 'fa-font',
-    toggle: false
+    toggle: false,
+    tooltip: 'cor'
   };
   Color.prototype._style = 'color';
   Color.prototype._command = 'foreColor';
@@ -2221,7 +2368,8 @@ slikland.erlik.plugins.format.Bold = (function(_super) {
   }
   Bold.prototype._toolbar = {
     icon: 'fa-bold',
-    toggle: true
+    toggle: true,
+    tooltip: 'negrito'
   };
   Bold.prototype._styleValidation = 'value > 500 || value == \'bold\'';
   Bold.prototype._style = 'font-weight';
@@ -2236,7 +2384,8 @@ slikland.erlik.plugins.list.UnorderedList = (function(_super) {
   }
   UnorderedList.prototype._toolbar = {
     icon: 'fa-list-ul',
-    toggle: true
+    toggle: true,
+    tooltip: 'lista'
   };
   UnorderedList.prototype._command = 'insertUnorderedList';
   return UnorderedList;
@@ -2249,7 +2398,8 @@ slikland.erlik.plugins.list.OrderedList = (function(_super) {
   }
   OrderedList.prototype._toolbar = {
     icon: 'fa-list-ol',
-    toggle: true
+    toggle: true,
+    tooltip: 'Lista numeral'
   };
   OrderedList.prototype._command = 'insertOrderedList';
   return OrderedList;
@@ -2259,7 +2409,8 @@ slikland.erlik.plugins.media.Video = (function(_super) {
   __extends(Video, _super);
   Video.prototype._toolbar = {
     icon: 'fa-film',
-    toggle: false
+    toggle: false,
+    tooltip: 'vídeo'
   };
   Video.prototype._command = 'insertElement';
   function Video() {
@@ -2462,7 +2613,8 @@ slikland.erlik.plugins.media.Image = (function(_super) {
   Image.elementSelector = 'image';
   Image.prototype._toolbar = {
     icon: 'fa-image',
-    toggle: false
+    toggle: false,
+    tooltip: 'imagem'
   };
   Image.prototype._command = 'insertElement';
   function Image() {
@@ -2489,15 +2641,32 @@ slikland.erlik.plugins.media.Image = (function(_super) {
     this._form.appendChild(this._browser);
     document.body.appendChild(this._form);
   }
-  Image.prototype._toolbarClick = function() {
+  Image.prototype._resetValues = function() {
     this._cropData = null;
     this._currentElement = null;
-    this._browser.value = null;
+    return this._browser.value = null;
+  };
+  Image.prototype._toolbarClick = function() {
+    this._resetValues();
     return this._browser.click();
   };
-  Image.prototype._showLightbox = function(data) {
-    var _ref;
-    this._lightboxContent = new this.constructor.Lightbox(this._browser.files[0], (_ref = this._editor.config.image) != null ? _ref.types : void 0);
+  Image.prototype._showLightbox = function(data, sizes) {
+    var i, size, _ref, _ref1, _ref2;
+    if (sizes == null) {
+      sizes = null;
+    }
+    if (sizes) {
+      i = sizes.length;
+      while (i-- > 0) {
+        size = (_ref = this._controller.config.image) != null ? _ref.types[i] : void 0;
+        if (size) {
+          sizes[i].name = size.name;
+        }
+      }
+    } else {
+      sizes = (_ref1 = this._controller.config.image) != null ? _ref1.types : void 0;
+    }
+    this._lightboxContent = new this.constructor.Lightbox(data, sizes || ((_ref2 = this._controller.config.image) != null ? _ref2.types : void 0));
     this._lightboxContent.on(this._lightboxContent.constructor.COMMIT, this._lightboxCommit);
     this._lightboxContent.on(this._lightboxContent.constructor.CANCEL, this._lightboxCancel);
     this._lightbox = slikland.erlik.ui.Lightbox.open({
@@ -2527,7 +2696,9 @@ slikland.erlik.plugins.media.Image = (function(_super) {
   Image.prototype._browserChange = function() {
     var _ref;
     if (!this._browser.files || ((_ref = this._browser.files) != null ? _ref.length : void 0) === 0) {
+      return;
     }
+    return this._showLightbox(this._browser.files[0]);
   };
   Image.prototype._lightboxCancel = function() {};
   Image.prototype._lightboxCommit = function(e, data) {
@@ -2535,6 +2706,7 @@ slikland.erlik.plugins.media.Image = (function(_super) {
     if (this._browser.value) {
       this._uploadImage();
     } else {
+      this._cropData.image = this._currentElement.data.image;
       this._cropImage();
     }
     return this._lightbox.close();
@@ -2568,6 +2740,7 @@ slikland.erlik.plugins.media.Image = (function(_super) {
     if (this._uploadProgress == null) {
       this._uploadProgress = new slikland.erlik.ui.ProgressBlocker();
     }
+    this._uploadProgress.open();
     this._uploadProgress.progress = Number.NaN;
     this._uploadProgress.title = "Cropping image";
     this._uploadProgress.text = '';
@@ -2576,10 +2749,15 @@ slikland.erlik.plugins.media.Image = (function(_super) {
     return api.load();
   };
   Image.prototype._cropCompleteHandler = function(e, data) {
+    console.log("CROPPED!");
     this._uploadProgress.close();
+    console.log(this._currentElement);
     if (!this._currentElement) {
-      this._currentElement = new this.constructor.Element(data, this._editor);
+      this._currentElement = new this.constructor.Element(data);
       this._registerElement(this._currentElement);
+    } else {
+      console.log(this._currentElement);
+      this._currentElement.update(data);
     }
     return this._triggerChange({
       element: this._currentElement
@@ -2603,8 +2781,10 @@ slikland.erlik.plugins.media.Image = (function(_super) {
     element.editor = this._editor;
     return this._elements[target] = element;
   };
-  Image.prototype.edit = function() {
-    return console.log("LALAAL");
+  Image.prototype.edit = function(element) {
+    this._resetValues();
+    this._currentElement = element;
+    return this._showLightbox(element.image.src, element.data.sizes);
   };
   Image.prototype.parseElement = function(dom) {
     var children, classNames, i, item, items, _results;
@@ -2628,6 +2808,7 @@ slikland.erlik.plugins.media.Image = (function(_super) {
       this._dblClick = __bind(this._dblClick, this);
       this._focus = __bind(this._focus, this);
       this._click = __bind(this._click, this);
+      this._imageLoaded = __bind(this._imageLoaded, this);
       if (data instanceof HTMLElement) {
         target = data;
       }
@@ -2650,9 +2831,40 @@ slikland.erlik.plugins.media.Image = (function(_super) {
         this._buildFromObject(data);
       }
     }
-    Element.prototype._buildFromElement = function(element) {};
+    Element.get({
+      image: function() {
+        return this._image;
+      }
+    });
+    Element.get({
+      data: function() {
+        return this._data;
+      }
+    });
+    Element.prototype.update = function(data) {
+      this._reset();
+      return this._buildFromObject(data);
+    };
+    Element.prototype._reset = function() {
+      return this.removeAll();
+    };
+    Element.prototype._loadImage = function(src) {
+      this._image = document.createElement('img');
+      this._image.loaded = false;
+      this._image.onload = this._imageLoaded;
+      return this._image.src = src;
+    };
+    Element.prototype._buildFromElement = function(element) {
+      this._data = JSON.parse(decodeURIComponent(this.attr('data')));
+      this._loadImage(this._data.image);
+    };
+    Element.prototype._imageLoaded = function(e) {
+      return this._image.loaded = true;
+    };
     Element.prototype._buildFromObject = function(data) {
       var img, size, _i, _len, _ref, _results;
+      this._data = data;
+      this._loadImage(this._data.image);
       this.attr('data', encodeURIComponent(JSON.stringify(data)));
       _ref = data.sizes;
       _results = [];
@@ -2660,7 +2872,7 @@ slikland.erlik.plugins.media.Image = (function(_super) {
         size = _ref[_i];
         img = document.createElement('img');
         img.className = 'item';
-        img.src = size.url;
+        img.src = size.url + '?r=' + new Date().now + '_' + Math.random();
         _results.push(this.appendChild(img));
       }
       return _results;
@@ -2686,7 +2898,10 @@ slikland.erlik.plugins.media.Image = (function(_super) {
         element: 'div'
       });
       this._cropper = new slikland.erlik.ui.image.Cropper();
-      this._cropper.setImage(URL.createObjectURL(file));
+      if (typeof file !== 'string') {
+        file = URL.createObjectURL(file);
+      }
+      this._cropper.setImage(file);
       if (sizes) {
         this._cropper.setSizes(sizes);
       }
@@ -2720,7 +2935,8 @@ slikland.erlik.plugins.media.Gallery = (function(_super) {
   __extends(Gallery, _super);
   Gallery.prototype._toolbar = {
     icon: 'fa-th-large',
-    toggle: false
+    toggle: false,
+    tooltip: 'Galeria'
   };
   Gallery.prototype._command = 'insertElement';
   function Gallery() {
@@ -3056,7 +3272,7 @@ slikland.erlik.ui.Button = (function(_super) {
     }
     if (data.label != null) {
       this._label = new BaseDOM({
-        element: 'spane',
+        element: 'span',
         className: 'label'
       });
       this._label.html = data.label;
@@ -3064,9 +3280,13 @@ slikland.erlik.ui.Button = (function(_super) {
     }
     this._data = data;
     this.toggle = data.toggle || false;
+    if (this._data.tooltip != null) {
+      this.attr('tooltip', this._data.tooltip);
+    }
     this.element.on('click', this._click);
   }
-  Button.prototype._click = function() {
+  Button.prototype._click = function(e) {
+    e.preventDefault();
     this.selected = !this.selected;
     return this.trigger(this.constructor.CLICK);
   };
@@ -3098,6 +3318,9 @@ slikland.erlik.ui.Button = (function(_super) {
   });
   Button.set({
     selected: function(value) {
+      if (!this._toggle) {
+        return;
+      }
       if (this._selected === value) {
         return;
       }
@@ -3376,10 +3599,1210 @@ slikland.erlik.Editor = (function(_super) {
   return Editor;
 })(BaseDOM);
 var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
+slikland.erlik.ui.Select = (function(_super) {
+  __extends(Select, _super);
+  Select.CLICK = 'click';
+  Select.ITEM_CLICK = 'item_click';
+  function Select(data) {
+    this._redraw = __bind(this._redraw, this);
+    this._mouseUp = __bind(this._mouseUp, this);
+    this._click = __bind(this._click, this);
+    this._itemClick = __bind(this._itemClick, this);
+    this._toggle = false;
+    this._opened = false;
+    Select.__super__.constructor.call(this, {
+      element: 'div',
+      className: 'erlik_select'
+    });
+    this._labelContainer = new BaseDOM({
+      element: 'div',
+      className: 'label-container'
+    });
+    this._label = new BaseDOM({
+      element: 'span',
+      className: 'label'
+    });
+    this._icon = new BaseDOM({
+      element: 'i',
+      className: 'icon fa fa-caret-down'
+    });
+    this._labelContainer.appendChild(this._label);
+    this._labelContainer.appendChild(this._icon);
+    this.appendChild(this._labelContainer);
+    this._container = new BaseDOM({
+      element: 'div',
+      className: 'container'
+    });
+    this.appendChild(this._container);
+    this._data = data;
+    if (this._data.tooltip != null) {
+      this.attr('tooltip', this._data.tooltip);
+    }
+    this._labelContainer.element.on('click', this._click);
+  }
+  Select.prototype.setup = function(data) {
+    var button, item, tw, w, _i, _len, _ref;
+    this._data = data;
+    this._items = [];
+    w = 0;
+    _ref = data.items;
+    for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+      item = _ref[_i];
+      button = new slikland.erlik.ui.Button(item);
+      button.element.on(slikland.erlik.ui.Button.CLICK, this._itemClick);
+      item.button = button;
+      this._container.appendChild(button);
+      this._items.push(item);
+      this.label = item.label;
+      tw = this._labelContainer.width;
+      if (tw > w) {
+        w = tw;
+      }
+    }
+    this.css('width', w + 'px');
+    return this.select(0);
+  };
+  Select.prototype.select = function(data) {
+    var item, _i, _len, _ref, _results;
+    if (data == null) {
+      data = null;
+    }
+    if (!isNaN(Number(data))) {
+      if (!this._items[data]) {
+        data = 0;
+      }
+      return this.label = this._items[data].label;
+    } else if (typeof data === 'string') {
+    } else {
+      _ref = this._items;
+      _results = [];
+      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+        item = _ref[_i];
+        if (item === data) {
+          _results.push(this.label = item.label);
+        } else {
+          _results.push(void 0);
+        }
+      }
+      return _results;
+    }
+  };
+  Select.prototype._itemClick = function(e) {
+    var i;
+    this._selectedItem = null;
+    i = this._items.length;
+    while (i-- > 0) {
+      if (this._items[i].button.element === e.currentTarget) {
+        this._selectedItem = this._items[i];
+        break;
+      }
+    }
+    this.select(this._selectedItem);
+    return this.trigger(this.constructor.ITEM_CLICK);
+  };
+  Select.prototype._click = function() {
+    this.opened = !this.opened;
+    return this.trigger(this.constructor.CLICK);
+  };
+  Select.get({
+    data: function() {
+      return this._data;
+    }
+  });
+  Select.get({
+    label: function() {
+      return this._label.html;
+    }
+  });
+  Select.get({
+    items: function() {
+      return this._items;
+    }
+  });
+  Select.get({
+    selectedItem: function() {
+      return this._selectedItem;
+    }
+  });
+  Select.set({
+    label: function(value) {
+      return this._label.html = value;
+    }
+  });
+  Select.get({
+    opened: function() {
+      return this._opened;
+    }
+  });
+  Select.set({
+    opened: function(value) {
+      if (this._opened === value) {
+        return;
+      }
+      this._opened = value;
+      this.toggleClass('opened', this._opened);
+      if (this._opened) {
+        return window.addEventListener('mouseup', this._mouseUp);
+      } else {
+        return window.removeEventListener('mouseup', this._mouseUp);
+      }
+    }
+  });
+  Select.get({
+    value: function() {
+      return this.opened;
+    }
+  });
+  Select.set({
+    value: function(value) {
+      return this.opened = value;
+    }
+  });
+  Select.set({
+    _dirty: function(value) {
+      if (!value) {
+        return;
+      }
+      clearTimeout(this._dirtyCallback);
+      return this._dirtyCallback = setTimeout(this._redraw, 0);
+    }
+  });
+  Select.prototype._mouseUp = function(e) {
+    return this.opened = false;
+  };
+  Select.prototype._redraw = function() {};
+  return Select;
+})(BaseDOM);
+var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
+slikland.erlik.plugins.format.CustomFormat = (function(_super) {
+  __extends(CustomFormat, _super);
+  CustomFormat.prototype._toolbar = {
+    toggle: false
+  };
+  CustomFormat.prototype._command = 'multiple';
+  CustomFormat.prototype._value = '#000000';
+  function CustomFormat() {
+    this._buildToolbarUI = __bind(this._buildToolbarUI, this);
+    this._itemClick = __bind(this._itemClick, this);
+    CustomFormat.__super__.constructor.apply(this, arguments);
+  }
+  CustomFormat.prototype.setup = function(data) {
+    var _base;
+    if (this._toolbarUI) {
+      return typeof (_base = this._toolbarUI).setup === "function" ? _base.setup(data) : void 0;
+    }
+  };
+  CustomFormat.prototype.update = function(styles, nodes) {
+    var i, item, items, j, node, selectedItem;
+    i = nodes.length;
+    items = this._toolbarUI.items;
+    selectedItem = null;
+    this.selectedTag = null;
+    while (i-- > 0) {
+      j = items.length;
+      node = nodes[i];
+      while (j-- > 0) {
+        item = items[j];
+        if (!item.tag || item.tag.length === 0) {
+          continue;
+        }
+        if (node.matches(item.tag)) {
+          this.selectedTag = node;
+          selectedItem = item;
+          break;
+        }
+      }
+      if (selectedItem) {
+        break;
+      }
+    }
+    return this._toolbarUI.select(selectedItem);
+  };
+  CustomFormat.prototype._itemClick = function(e) {
+    return this._triggerChange(this._toolbarUI.selectedItem);
+  };
+  CustomFormat.prototype._buildToolbarUI = function() {
+    if (this._toolbar) {
+      this._toolbarUI = new slikland.erlik.ui.Select(this._toolbar);
+      return this._toolbarUI.on(slikland.erlik.ui.Select.ITEM_CLICK, this._itemClick);
+    }
+  };
+  return CustomFormat;
+})(slikland.erlik.plugins.Plugin);
+var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
+slikland.erlik.plugins.media.ReadMore = (function(_super) {
+  __extends(ReadMore, _super);
+  ReadMore.PLUGIN_NAME = 'readmore';
+  ReadMore.prototype._toolbar = {
+    icon: 'fa-plus-square-o',
+    toggle: false,
+    tooltip: 'Leia mais'
+  };
+  ReadMore.prototype._command = 'insertElement';
+  function ReadMore() {
+    this._cropCompleteHandler = __bind(this._cropCompleteHandler, this);
+    this._cropImage = __bind(this._cropImage, this);
+    this._uploadCompleteHandler = __bind(this._uploadCompleteHandler, this);
+    this._uploadProgressHandler = __bind(this._uploadProgressHandler, this);
+    this._lightboxCommit = __bind(this._lightboxCommit, this);
+    this._lightboxCancel = __bind(this._lightboxCancel, this);
+    this._browserChange = __bind(this._browserChange, this);
+    this._toolbarClick = __bind(this._toolbarClick, this);
+    ReadMore.__super__.constructor.apply(this, arguments);
+    this._elements = {};
+    this._form = document.createElement('form');
+    this._form.enctype = 'multipart/form-data';
+    this._form.style['position'] = 'absolute';
+    this._form.style['left'] = '-100000px';
+    this._form.style['opacity'] = 0;
+    this._browser = document.createElement('input');
+    this._browser.setAttribute('type', 'file');
+    this._browser.setAttribute('accept', 'image/*');
+    this._browser.on('change', this._browserChange);
+    this._browser.name = 'image';
+    this._form.appendChild(this._browser);
+    document.body.appendChild(this._form);
+  }
+  ReadMore.prototype._resetValues = function() {
+    this._cropData = null;
+    this._currentElement = null;
+    return this._browser.value = null;
+  };
+  ReadMore.prototype._toolbarClick = function() {
+    this._resetValues();
+    return this._browser.click();
+  };
+  ReadMore.prototype._showLightbox = function(data, sizes) {
+    var i, size, _ref, _ref1, _ref2;
+    if (sizes == null) {
+      sizes = null;
+    }
+    if (sizes) {
+      i = sizes.length;
+      while (i-- > 0) {
+        size = (_ref = this._controller.config.image) != null ? _ref.types[i] : void 0;
+        if (size) {
+          sizes[i].name = size.name;
+        }
+      }
+    } else {
+      sizes = (_ref1 = this._controller.config.image) != null ? _ref1.types : void 0;
+    }
+    this._lightboxContent = new this.constructor.Lightbox(data, sizes || ((_ref2 = this._controller.config.image) != null ? _ref2.types : void 0));
+    this._lightboxContent.on(this._lightboxContent.constructor.COMMIT, this._lightboxCommit);
+    this._lightboxContent.on(this._lightboxContent.constructor.CANCEL, this._lightboxCancel);
+    this._lightbox = slikland.erlik.ui.Lightbox.open({
+      title: 'Image',
+      content: this._lightboxContent
+    });
+    return this._lightbox.on(slikland.erlik.ui.Lightbox.CLOSE, this._lightboxCancel);
+  };
+  ReadMore.prototype._closeLightbox = function() {
+    var _ref, _ref1, _ref2, _ref3, _ref4;
+    if ((_ref = this._lightboxContent) != null) {
+      _ref.off(this._lightboxContent.constructor.COMMIT, this._lightboxCommit);
+    }
+    if ((_ref1 = this._lightboxContent) != null) {
+      _ref1.off(this._lightboxContent.constructor.CANCEL, this._lightboxCancel);
+    }
+    if ((_ref2 = this._lightbox) != null) {
+      _ref2.off(slikland.erlik.ui.Lightbox.CLOSE, this._lightboxCancel);
+    }
+    if ((_ref3 = this._lightboxContent) != null) {
+      if (typeof _ref3.destroy === "function") {
+        _ref3.destroy();
+      }
+    }
+    return (_ref4 = this._lightbox) != null ? typeof _ref4.destroy === "function" ? _ref4.destroy() : void 0 : void 0;
+  };
+  ReadMore.prototype._browserChange = function() {
+    var _ref;
+    if (!this._browser.files || ((_ref = this._browser.files) != null ? _ref.length : void 0) === 0) {
+      return;
+    }
+    return this._showLightbox(this._browser.files[0]);
+  };
+  ReadMore.prototype._lightboxCancel = function() {};
+  ReadMore.prototype._lightboxCommit = function(e, data) {
+    this._cropData = data;
+    if (this._browser.value) {
+      this._uploadImage();
+    } else {
+      this._cropData.image = this._currentElement.data.image;
+      this._cropImage();
+    }
+    return this._lightbox.close();
+  };
+  ReadMore.prototype._uploadImage = function() {
+    var api, fd;
+    this._uploadProgress = new slikland.erlik.ui.ProgressBlocker();
+    this._uploadProgress.progress = 0;
+    this._uploadProgress.title = "Uploading image";
+    this._uploadProgress.open();
+    fd = new FormData(this._form);
+    api = new API('api/image/upload', fd);
+    api.on(API.PROGRESS, this._uploadProgressHandler);
+    api.on(API.COMPLETE, this._uploadCompleteHandler);
+    return api.load();
+  };
+  ReadMore.prototype._uploadProgressHandler = function(e, data) {
+    var p;
+    p = data.loaded / data.total;
+    this._uploadProgress.progress = p;
+    p = Math.round(p * 100);
+    return this._uploadProgress.text = p + '%';
+  };
+  ReadMore.prototype._uploadCompleteHandler = function(e, data) {
+    this._uploadProgress.progress = 1;
+    this._cropData.image = data.url;
+    return this._cropImage();
+  };
+  ReadMore.prototype._cropImage = function() {
+    var api;
+    if (this._uploadProgress == null) {
+      this._uploadProgress = new slikland.erlik.ui.ProgressBlocker();
+    }
+    this._uploadProgress.open();
+    this._uploadProgress.progress = Number.NaN;
+    this._uploadProgress.title = "Cropping image";
+    this._uploadProgress.text = '';
+    api = new API('api/image/crop', this._cropData);
+    api.on(API.COMPLETE, this._cropCompleteHandler);
+    return api.load();
+  };
+  ReadMore.prototype._cropCompleteHandler = function(e, data) {
+    console.log("CROPPED!");
+    this._uploadProgress.close();
+    console.log(this._currentElement);
+    if (!this._currentElement) {
+      this._currentElement = new this.constructor.Element(data);
+      this._registerElement(this._currentElement);
+    } else {
+      console.log(this._currentElement);
+      this._currentElement.update(data);
+    }
+    return this._triggerChange({
+      element: this._currentElement
+    });
+  };
+  ReadMore.prototype._registerElement = function(element) {
+    var target;
+    if (element instanceof this.constructor.Element) {
+      target = element.element;
+    } else {
+      target = element;
+      if (this._elements[target]) {
+        element = this._elements[target];
+      } else {
+        element = new this.constructor.Element(target);
+      }
+    }
+    if (this._elements[target]) {
+      return;
+    }
+    element.editor = this._editor;
+    return this._elements[target] = element;
+  };
+  ReadMore.prototype.edit = function(element) {
+    this._resetValues();
+    this._currentElement = element;
+    return this._showLightbox(element.image.src, element.data.sizes);
+  };
+  ReadMore.prototype.parseElement = function(dom) {
+    var children, classNames, i, item, items, _results;
+    children = dom.childNodes;
+    classNames = this.constructor.PLUGIN_NAME.replace(/(^|\s)*([^\s]+)/g, '.$2');
+    items = dom.querySelectorAll(classNames);
+    i = items.length;
+    _results = [];
+    while (i-- > 0) {
+      item = items[i];
+      _results.push(this._registerElement(item));
+    }
+    return _results;
+  };
+  ReadMore.Element = (function(_super1) {
+    __extends(Element, _super1);
+    function Element(data, target) {
+      if (target == null) {
+        target = null;
+      }
+      this._dblClick = __bind(this._dblClick, this);
+      this._focus = __bind(this._focus, this);
+      this._click = __bind(this._click, this);
+      this._imageLoaded = __bind(this._imageLoaded, this);
+      if (data instanceof HTMLElement) {
+        target = data;
+      }
+      if (!target) {
+        target = 'div';
+      }
+      Element.__super__.constructor.call(this, {
+        element: target
+      });
+      this.addClass(Image.PLUGIN_NAME);
+      this.element.contentEditable = false;
+      this.attr('tabindex', 0);
+      this.addClass('media-item');
+      this.element.on('click', this._click);
+      this.element.on('focus', this._focus);
+      this.element.on('dblclick', this._dblClick);
+      if (data instanceof HTMLElement) {
+        this._buildFromElement(data);
+      } else {
+        this._buildFromObject(data);
+      }
+    }
+    Element.get({
+      image: function() {
+        return this._image;
+      }
+    });
+    Element.get({
+      data: function() {
+        return this._data;
+      }
+    });
+    Element.prototype.update = function(data) {
+      this._reset();
+      return this._buildFromObject(data);
+    };
+    Element.prototype._reset = function() {
+      return this.removeAll();
+    };
+    Element.prototype._loadImage = function(src) {
+      this._image = document.createElement('img');
+      this._image.loaded = false;
+      this._image.onload = this._imageLoaded;
+      return this._image.src = src;
+    };
+    Element.prototype._buildFromElement = function(element) {
+      this._data = JSON.parse(decodeURIComponent(this.attr('data')));
+      this._loadImage(this._data.image);
+    };
+    Element.prototype._imageLoaded = function(e) {
+      return this._image.loaded = true;
+    };
+    Element.prototype._buildFromObject = function(data) {
+      var img, size, _i, _len, _ref, _results;
+      this._data = data;
+      this._loadImage(this._data.image);
+      this.attr('data', encodeURIComponent(JSON.stringify(data)));
+      _ref = data.sizes;
+      _results = [];
+      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+        size = _ref[_i];
+        img = document.createElement('img');
+        img.className = 'item';
+        img.src = size.url + '?r=' + new Date().now + '_' + Math.random();
+        _results.push(this.appendChild(img));
+      }
+      return _results;
+    };
+    Element.prototype._click = function() {
+      return this._element.focus();
+    };
+    Element.prototype._focus = function() {
+      return this.trigger('focus');
+    };
+    Element.prototype._dblClick = function() {
+      return this.editor.trigger(slikland.Erlik.EDIT_PLUGIN, this);
+    };
+    return Element;
+  })(BaseDOM);
+  ReadMore.Lightbox = (function(_super1) {
+    __extends(Lightbox, _super1);
+    Lightbox.COMMIT = 'commit';
+    Lightbox.CANCEL = 'cancel';
+    function Lightbox(file, sizes) {
+      this._okClick = __bind(this._okClick, this);
+      Lightbox.__super__.constructor.call(this, {
+        element: 'div'
+      });
+      this._cropper = new slikland.erlik.ui.image.Cropper();
+      if (typeof file !== 'string') {
+        file = URL.createObjectURL(file);
+      }
+      this._cropper.setImage(file);
+      if (sizes) {
+        this._cropper.setSizes(sizes);
+      }
+      this.appendChild(this._cropper);
+      this._buttonContainer = new BaseDOM({});
+      this._buttonContainer.css({
+        'display': 'block',
+        width: '100%',
+        'text-align': 'right'
+      });
+      this._okButton = new slikland.erlik.ui.Button({
+        label: 'OK'
+      });
+      this._okButton.on(slikland.erlik.ui.Button.CLICK, this._okClick);
+      this._buttonContainer.appendChild(this._okButton);
+      this.appendChild(this._buttonContainer);
+    }
+    Lightbox.prototype._okClick = function(e) {
+      var o;
+      o = {
+        sizes: JSON.stringify(this._cropper.getData())
+      };
+      return this.trigger(this.constructor.COMMIT, o);
+    };
+    return Lightbox;
+  })(BaseDOM);
+  return ReadMore;
+})(slikland.erlik.plugins.Plugin);
+var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
+slikland.erlik.plugins.media.Topics = (function(_super) {
+  __extends(Topics, _super);
+  Topics.PLUGIN_NAME = 'Topics';
+  Topics.prototype._toolbar = {
+    icon: 'fa-th-list',
+    toggle: false,
+    tooltip: 'Tópicos'
+  };
+  Topics.prototype._command = 'insertElement';
+  function Topics() {
+    this._cropCompleteHandler = __bind(this._cropCompleteHandler, this);
+    this._cropImage = __bind(this._cropImage, this);
+    this._uploadCompleteHandler = __bind(this._uploadCompleteHandler, this);
+    this._uploadProgressHandler = __bind(this._uploadProgressHandler, this);
+    this._lightboxCommit = __bind(this._lightboxCommit, this);
+    this._lightboxCancel = __bind(this._lightboxCancel, this);
+    this._browserChange = __bind(this._browserChange, this);
+    this._toolbarClick = __bind(this._toolbarClick, this);
+    Topics.__super__.constructor.apply(this, arguments);
+    this._elements = {};
+    this._form = document.createElement('form');
+    this._form.enctype = 'multipart/form-data';
+    this._form.style['position'] = 'absolute';
+    this._form.style['left'] = '-100000px';
+    this._form.style['opacity'] = 0;
+    this._browser = document.createElement('input');
+    this._browser.setAttribute('type', 'file');
+    this._browser.setAttribute('accept', 'image/*');
+    this._browser.on('change', this._browserChange);
+    this._browser.name = 'image';
+    this._form.appendChild(this._browser);
+    document.body.appendChild(this._form);
+  }
+  Topics.prototype._resetValues = function() {
+    this._cropData = null;
+    this._currentElement = null;
+    return this._browser.value = null;
+  };
+  Topics.prototype._toolbarClick = function() {
+    this._resetValues();
+    return this._browser.click();
+  };
+  Topics.prototype._showLightbox = function(data, sizes) {
+    var i, size, _ref, _ref1, _ref2;
+    if (sizes == null) {
+      sizes = null;
+    }
+    if (sizes) {
+      i = sizes.length;
+      while (i-- > 0) {
+        size = (_ref = this._controller.config.image) != null ? _ref.types[i] : void 0;
+        if (size) {
+          sizes[i].name = size.name;
+        }
+      }
+    } else {
+      sizes = (_ref1 = this._controller.config.image) != null ? _ref1.types : void 0;
+    }
+    this._lightboxContent = new this.constructor.Lightbox(data, sizes || ((_ref2 = this._controller.config.image) != null ? _ref2.types : void 0));
+    this._lightboxContent.on(this._lightboxContent.constructor.COMMIT, this._lightboxCommit);
+    this._lightboxContent.on(this._lightboxContent.constructor.CANCEL, this._lightboxCancel);
+    this._lightbox = slikland.erlik.ui.Lightbox.open({
+      title: 'Image',
+      content: this._lightboxContent
+    });
+    return this._lightbox.on(slikland.erlik.ui.Lightbox.CLOSE, this._lightboxCancel);
+  };
+  Topics.prototype._closeLightbox = function() {
+    var _ref, _ref1, _ref2, _ref3, _ref4;
+    if ((_ref = this._lightboxContent) != null) {
+      _ref.off(this._lightboxContent.constructor.COMMIT, this._lightboxCommit);
+    }
+    if ((_ref1 = this._lightboxContent) != null) {
+      _ref1.off(this._lightboxContent.constructor.CANCEL, this._lightboxCancel);
+    }
+    if ((_ref2 = this._lightbox) != null) {
+      _ref2.off(slikland.erlik.ui.Lightbox.CLOSE, this._lightboxCancel);
+    }
+    if ((_ref3 = this._lightboxContent) != null) {
+      if (typeof _ref3.destroy === "function") {
+        _ref3.destroy();
+      }
+    }
+    return (_ref4 = this._lightbox) != null ? typeof _ref4.destroy === "function" ? _ref4.destroy() : void 0 : void 0;
+  };
+  Topics.prototype._browserChange = function() {
+    var _ref;
+    if (!this._browser.files || ((_ref = this._browser.files) != null ? _ref.length : void 0) === 0) {
+      return;
+    }
+    return this._showLightbox(this._browser.files[0]);
+  };
+  Topics.prototype._lightboxCancel = function() {};
+  Topics.prototype._lightboxCommit = function(e, data) {
+    this._cropData = data;
+    if (this._browser.value) {
+      this._uploadImage();
+    } else {
+      this._cropData.image = this._currentElement.data.image;
+      this._cropImage();
+    }
+    return this._lightbox.close();
+  };
+  Topics.prototype._uploadImage = function() {
+    var api, fd;
+    this._uploadProgress = new slikland.erlik.ui.ProgressBlocker();
+    this._uploadProgress.progress = 0;
+    this._uploadProgress.title = "Uploading image";
+    this._uploadProgress.open();
+    fd = new FormData(this._form);
+    api = new API('api/image/upload', fd);
+    api.on(API.PROGRESS, this._uploadProgressHandler);
+    api.on(API.COMPLETE, this._uploadCompleteHandler);
+    return api.load();
+  };
+  Topics.prototype._uploadProgressHandler = function(e, data) {
+    var p;
+    p = data.loaded / data.total;
+    this._uploadProgress.progress = p;
+    p = Math.round(p * 100);
+    return this._uploadProgress.text = p + '%';
+  };
+  Topics.prototype._uploadCompleteHandler = function(e, data) {
+    this._uploadProgress.progress = 1;
+    this._cropData.image = data.url;
+    return this._cropImage();
+  };
+  Topics.prototype._cropImage = function() {
+    var api;
+    if (this._uploadProgress == null) {
+      this._uploadProgress = new slikland.erlik.ui.ProgressBlocker();
+    }
+    this._uploadProgress.open();
+    this._uploadProgress.progress = Number.NaN;
+    this._uploadProgress.title = "Cropping image";
+    this._uploadProgress.text = '';
+    api = new API('api/image/crop', this._cropData);
+    api.on(API.COMPLETE, this._cropCompleteHandler);
+    return api.load();
+  };
+  Topics.prototype._cropCompleteHandler = function(e, data) {
+    console.log("CROPPED!");
+    this._uploadProgress.close();
+    console.log(this._currentElement);
+    if (!this._currentElement) {
+      this._currentElement = new this.constructor.Element(data);
+      this._registerElement(this._currentElement);
+    } else {
+      console.log(this._currentElement);
+      this._currentElement.update(data);
+    }
+    return this._triggerChange({
+      element: this._currentElement
+    });
+  };
+  Topics.prototype._registerElement = function(element) {
+    var target;
+    if (element instanceof this.constructor.Element) {
+      target = element.element;
+    } else {
+      target = element;
+      if (this._elements[target]) {
+        element = this._elements[target];
+      } else {
+        element = new this.constructor.Element(target);
+      }
+    }
+    if (this._elements[target]) {
+      return;
+    }
+    element.editor = this._editor;
+    return this._elements[target] = element;
+  };
+  Topics.prototype.edit = function(element) {
+    this._resetValues();
+    this._currentElement = element;
+    return this._showLightbox(element.image.src, element.data.sizes);
+  };
+  Topics.prototype.parseElement = function(dom) {
+    var children, classNames, i, item, items, _results;
+    children = dom.childNodes;
+    classNames = this.constructor.PLUGIN_NAME.replace(/(^|\s)*([^\s]+)/g, '.$2');
+    items = dom.querySelectorAll(classNames);
+    i = items.length;
+    _results = [];
+    while (i-- > 0) {
+      item = items[i];
+      _results.push(this._registerElement(item));
+    }
+    return _results;
+  };
+  Topics.Element = (function(_super1) {
+    __extends(Element, _super1);
+    function Element(data, target) {
+      if (target == null) {
+        target = null;
+      }
+      this._dblClick = __bind(this._dblClick, this);
+      this._focus = __bind(this._focus, this);
+      this._click = __bind(this._click, this);
+      this._imageLoaded = __bind(this._imageLoaded, this);
+      if (data instanceof HTMLElement) {
+        target = data;
+      }
+      if (!target) {
+        target = 'div';
+      }
+      Element.__super__.constructor.call(this, {
+        element: target
+      });
+      this.addClass(Image.PLUGIN_NAME);
+      this.element.contentEditable = false;
+      this.attr('tabindex', 0);
+      this.addClass('media-item');
+      this.element.on('click', this._click);
+      this.element.on('focus', this._focus);
+      this.element.on('dblclick', this._dblClick);
+      if (data instanceof HTMLElement) {
+        this._buildFromElement(data);
+      } else {
+        this._buildFromObject(data);
+      }
+    }
+    Element.get({
+      image: function() {
+        return this._image;
+      }
+    });
+    Element.get({
+      data: function() {
+        return this._data;
+      }
+    });
+    Element.prototype.update = function(data) {
+      this._reset();
+      return this._buildFromObject(data);
+    };
+    Element.prototype._reset = function() {
+      return this.removeAll();
+    };
+    Element.prototype._loadImage = function(src) {
+      this._image = document.createElement('img');
+      this._image.loaded = false;
+      this._image.onload = this._imageLoaded;
+      return this._image.src = src;
+    };
+    Element.prototype._buildFromElement = function(element) {
+      this._data = JSON.parse(decodeURIComponent(this.attr('data')));
+      this._loadImage(this._data.image);
+    };
+    Element.prototype._imageLoaded = function(e) {
+      return this._image.loaded = true;
+    };
+    Element.prototype._buildFromObject = function(data) {
+      var img, size, _i, _len, _ref, _results;
+      this._data = data;
+      this._loadImage(this._data.image);
+      this.attr('data', encodeURIComponent(JSON.stringify(data)));
+      _ref = data.sizes;
+      _results = [];
+      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+        size = _ref[_i];
+        img = document.createElement('img');
+        img.className = 'item';
+        img.src = size.url + '?r=' + new Date().now + '_' + Math.random();
+        _results.push(this.appendChild(img));
+      }
+      return _results;
+    };
+    Element.prototype._click = function() {
+      return this._element.focus();
+    };
+    Element.prototype._focus = function() {
+      return this.trigger('focus');
+    };
+    Element.prototype._dblClick = function() {
+      return this.editor.trigger(slikland.Erlik.EDIT_PLUGIN, this);
+    };
+    return Element;
+  })(BaseDOM);
+  Topics.Lightbox = (function(_super1) {
+    __extends(Lightbox, _super1);
+    Lightbox.COMMIT = 'commit';
+    Lightbox.CANCEL = 'cancel';
+    function Lightbox(file, sizes) {
+      this._okClick = __bind(this._okClick, this);
+      Lightbox.__super__.constructor.call(this, {
+        element: 'div'
+      });
+      this._cropper = new slikland.erlik.ui.image.Cropper();
+      if (typeof file !== 'string') {
+        file = URL.createObjectURL(file);
+      }
+      this._cropper.setImage(file);
+      if (sizes) {
+        this._cropper.setSizes(sizes);
+      }
+      this.appendChild(this._cropper);
+      this._buttonContainer = new BaseDOM({});
+      this._buttonContainer.css({
+        'display': 'block',
+        width: '100%',
+        'text-align': 'right'
+      });
+      this._okButton = new slikland.erlik.ui.Button({
+        label: 'OK'
+      });
+      this._okButton.on(slikland.erlik.ui.Button.CLICK, this._okClick);
+      this._buttonContainer.appendChild(this._okButton);
+      this.appendChild(this._buttonContainer);
+    }
+    Lightbox.prototype._okClick = function(e) {
+      var o;
+      o = {
+        sizes: JSON.stringify(this._cropper.getData())
+      };
+      return this.trigger(this.constructor.COMMIT, o);
+    };
+    return Lightbox;
+  })(BaseDOM);
+  return Topics;
+})(slikland.erlik.plugins.Plugin);
+var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
+slikland.erlik.plugins.media.BlockContent = (function(_super) {
+  __extends(BlockContent, _super);
+  BlockContent.PLUGIN_NAME = 'blockcontent';
+  BlockContent.prototype._toolbar = {
+    icon: 'fa-columns',
+    toggle: false,
+    tooltip: 'Colunas de destaque'
+  };
+  BlockContent.prototype._command = 'insertElement';
+  function BlockContent() {
+    this._cropCompleteHandler = __bind(this._cropCompleteHandler, this);
+    this._cropImage = __bind(this._cropImage, this);
+    this._uploadCompleteHandler = __bind(this._uploadCompleteHandler, this);
+    this._uploadProgressHandler = __bind(this._uploadProgressHandler, this);
+    this._lightboxCommit = __bind(this._lightboxCommit, this);
+    this._lightboxCancel = __bind(this._lightboxCancel, this);
+    this._browserChange = __bind(this._browserChange, this);
+    this._toolbarClick = __bind(this._toolbarClick, this);
+    BlockContent.__super__.constructor.apply(this, arguments);
+    this._elements = {};
+    this._form = document.createElement('form');
+    this._form.enctype = 'multipart/form-data';
+    this._form.style['position'] = 'absolute';
+    this._form.style['left'] = '-100000px';
+    this._form.style['opacity'] = 0;
+    this._browser = document.createElement('input');
+    this._browser.setAttribute('type', 'file');
+    this._browser.setAttribute('accept', 'image/*');
+    this._browser.on('change', this._browserChange);
+    this._browser.name = 'image';
+    this._form.appendChild(this._browser);
+    document.body.appendChild(this._form);
+  }
+  BlockContent.prototype._resetValues = function() {
+    this._cropData = null;
+    this._currentElement = null;
+    return this._browser.value = null;
+  };
+  BlockContent.prototype._toolbarClick = function() {
+    this._resetValues();
+    return this._browser.click();
+  };
+  BlockContent.prototype._showLightbox = function(data, sizes) {
+    var i, size, _ref, _ref1, _ref2;
+    if (sizes == null) {
+      sizes = null;
+    }
+    if (sizes) {
+      i = sizes.length;
+      while (i-- > 0) {
+        size = (_ref = this._controller.config.image) != null ? _ref.types[i] : void 0;
+        if (size) {
+          sizes[i].name = size.name;
+        }
+      }
+    } else {
+      sizes = (_ref1 = this._controller.config.image) != null ? _ref1.types : void 0;
+    }
+    this._lightboxContent = new this.constructor.Lightbox(data, sizes || ((_ref2 = this._controller.config.image) != null ? _ref2.types : void 0));
+    this._lightboxContent.on(this._lightboxContent.constructor.COMMIT, this._lightboxCommit);
+    this._lightboxContent.on(this._lightboxContent.constructor.CANCEL, this._lightboxCancel);
+    this._lightbox = slikland.erlik.ui.Lightbox.open({
+      title: 'Image',
+      content: this._lightboxContent
+    });
+    return this._lightbox.on(slikland.erlik.ui.Lightbox.CLOSE, this._lightboxCancel);
+  };
+  BlockContent.prototype._closeLightbox = function() {
+    var _ref, _ref1, _ref2, _ref3, _ref4;
+    if ((_ref = this._lightboxContent) != null) {
+      _ref.off(this._lightboxContent.constructor.COMMIT, this._lightboxCommit);
+    }
+    if ((_ref1 = this._lightboxContent) != null) {
+      _ref1.off(this._lightboxContent.constructor.CANCEL, this._lightboxCancel);
+    }
+    if ((_ref2 = this._lightbox) != null) {
+      _ref2.off(slikland.erlik.ui.Lightbox.CLOSE, this._lightboxCancel);
+    }
+    if ((_ref3 = this._lightboxContent) != null) {
+      if (typeof _ref3.destroy === "function") {
+        _ref3.destroy();
+      }
+    }
+    return (_ref4 = this._lightbox) != null ? typeof _ref4.destroy === "function" ? _ref4.destroy() : void 0 : void 0;
+  };
+  BlockContent.prototype._browserChange = function() {
+    var _ref;
+    if (!this._browser.files || ((_ref = this._browser.files) != null ? _ref.length : void 0) === 0) {
+      return;
+    }
+    return this._showLightbox(this._browser.files[0]);
+  };
+  BlockContent.prototype._lightboxCancel = function() {};
+  BlockContent.prototype._lightboxCommit = function(e, data) {
+    this._cropData = data;
+    if (this._browser.value) {
+      this._uploadImage();
+    } else {
+      this._cropData.image = this._currentElement.data.image;
+      this._cropImage();
+    }
+    return this._lightbox.close();
+  };
+  BlockContent.prototype._uploadImage = function() {
+    var api, fd;
+    this._uploadProgress = new slikland.erlik.ui.ProgressBlocker();
+    this._uploadProgress.progress = 0;
+    this._uploadProgress.title = "Uploading image";
+    this._uploadProgress.open();
+    fd = new FormData(this._form);
+    api = new API('api/image/upload', fd);
+    api.on(API.PROGRESS, this._uploadProgressHandler);
+    api.on(API.COMPLETE, this._uploadCompleteHandler);
+    return api.load();
+  };
+  BlockContent.prototype._uploadProgressHandler = function(e, data) {
+    var p;
+    p = data.loaded / data.total;
+    this._uploadProgress.progress = p;
+    p = Math.round(p * 100);
+    return this._uploadProgress.text = p + '%';
+  };
+  BlockContent.prototype._uploadCompleteHandler = function(e, data) {
+    this._uploadProgress.progress = 1;
+    this._cropData.image = data.url;
+    return this._cropImage();
+  };
+  BlockContent.prototype._cropImage = function() {
+    var api;
+    if (this._uploadProgress == null) {
+      this._uploadProgress = new slikland.erlik.ui.ProgressBlocker();
+    }
+    this._uploadProgress.open();
+    this._uploadProgress.progress = Number.NaN;
+    this._uploadProgress.title = "Cropping image";
+    this._uploadProgress.text = '';
+    api = new API('api/image/crop', this._cropData);
+    api.on(API.COMPLETE, this._cropCompleteHandler);
+    return api.load();
+  };
+  BlockContent.prototype._cropCompleteHandler = function(e, data) {
+    console.log("CROPPED!");
+    this._uploadProgress.close();
+    console.log(this._currentElement);
+    if (!this._currentElement) {
+      this._currentElement = new this.constructor.Element(data);
+      this._registerElement(this._currentElement);
+    } else {
+      console.log(this._currentElement);
+      this._currentElement.update(data);
+    }
+    return this._triggerChange({
+      element: this._currentElement
+    });
+  };
+  BlockContent.prototype._registerElement = function(element) {
+    var target;
+    if (element instanceof this.constructor.Element) {
+      target = element.element;
+    } else {
+      target = element;
+      if (this._elements[target]) {
+        element = this._elements[target];
+      } else {
+        element = new this.constructor.Element(target);
+      }
+    }
+    if (this._elements[target]) {
+      return;
+    }
+    element.editor = this._editor;
+    return this._elements[target] = element;
+  };
+  BlockContent.prototype.edit = function(element) {
+    this._resetValues();
+    this._currentElement = element;
+    return this._showLightbox(element.image.src, element.data.sizes);
+  };
+  BlockContent.prototype.parseElement = function(dom) {
+    var children, classNames, i, item, items, _results;
+    children = dom.childNodes;
+    classNames = this.constructor.PLUGIN_NAME.replace(/(^|\s)*([^\s]+)/g, '.$2');
+    items = dom.querySelectorAll(classNames);
+    i = items.length;
+    _results = [];
+    while (i-- > 0) {
+      item = items[i];
+      _results.push(this._registerElement(item));
+    }
+    return _results;
+  };
+  BlockContent.Element = (function(_super1) {
+    __extends(Element, _super1);
+    function Element(data, target) {
+      if (target == null) {
+        target = null;
+      }
+      this._dblClick = __bind(this._dblClick, this);
+      this._focus = __bind(this._focus, this);
+      this._click = __bind(this._click, this);
+      this._imageLoaded = __bind(this._imageLoaded, this);
+      if (data instanceof HTMLElement) {
+        target = data;
+      }
+      if (!target) {
+        target = 'div';
+      }
+      Element.__super__.constructor.call(this, {
+        element: target
+      });
+      this.addClass(Image.PLUGIN_NAME);
+      this.element.contentEditable = false;
+      this.attr('tabindex', 0);
+      this.addClass('media-item');
+      this.element.on('click', this._click);
+      this.element.on('focus', this._focus);
+      this.element.on('dblclick', this._dblClick);
+      if (data instanceof HTMLElement) {
+        this._buildFromElement(data);
+      } else {
+        this._buildFromObject(data);
+      }
+    }
+    Element.get({
+      image: function() {
+        return this._image;
+      }
+    });
+    Element.get({
+      data: function() {
+        return this._data;
+      }
+    });
+    Element.prototype.update = function(data) {
+      this._reset();
+      return this._buildFromObject(data);
+    };
+    Element.prototype._reset = function() {
+      return this.removeAll();
+    };
+    Element.prototype._loadImage = function(src) {
+      this._image = document.createElement('img');
+      this._image.loaded = false;
+      this._image.onload = this._imageLoaded;
+      return this._image.src = src;
+    };
+    Element.prototype._buildFromElement = function(element) {
+      this._data = JSON.parse(decodeURIComponent(this.attr('data')));
+      this._loadImage(this._data.image);
+    };
+    Element.prototype._imageLoaded = function(e) {
+      return this._image.loaded = true;
+    };
+    Element.prototype._buildFromObject = function(data) {
+      var img, size, _i, _len, _ref, _results;
+      this._data = data;
+      this._loadImage(this._data.image);
+      this.attr('data', encodeURIComponent(JSON.stringify(data)));
+      _ref = data.sizes;
+      _results = [];
+      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+        size = _ref[_i];
+        img = document.createElement('img');
+        img.className = 'item';
+        img.src = size.url + '?r=' + new Date().now + '_' + Math.random();
+        _results.push(this.appendChild(img));
+      }
+      return _results;
+    };
+    Element.prototype._click = function() {
+      return this._element.focus();
+    };
+    Element.prototype._focus = function() {
+      return this.trigger('focus');
+    };
+    Element.prototype._dblClick = function() {
+      return this.editor.trigger(slikland.Erlik.EDIT_PLUGIN, this);
+    };
+    return Element;
+  })(BaseDOM);
+  BlockContent.Lightbox = (function(_super1) {
+    __extends(Lightbox, _super1);
+    Lightbox.COMMIT = 'commit';
+    Lightbox.CANCEL = 'cancel';
+    function Lightbox(file, sizes) {
+      this._okClick = __bind(this._okClick, this);
+      Lightbox.__super__.constructor.call(this, {
+        element: 'div'
+      });
+      this._cropper = new slikland.erlik.ui.image.Cropper();
+      if (typeof file !== 'string') {
+        file = URL.createObjectURL(file);
+      }
+      this._cropper.setImage(file);
+      if (sizes) {
+        this._cropper.setSizes(sizes);
+      }
+      this.appendChild(this._cropper);
+      this._buttonContainer = new BaseDOM({});
+      this._buttonContainer.css({
+        'display': 'block',
+        width: '100%',
+        'text-align': 'right'
+      });
+      this._okButton = new slikland.erlik.ui.Button({
+        label: 'OK'
+      });
+      this._okButton.on(slikland.erlik.ui.Button.CLICK, this._okClick);
+      this._buttonContainer.appendChild(this._okButton);
+      this.appendChild(this._buttonContainer);
+    }
+    Lightbox.prototype._okClick = function(e) {
+      var o;
+      o = {
+        sizes: JSON.stringify(this._cropper.getData())
+      };
+      return this.trigger(this.constructor.COMMIT, o);
+    };
+    return Lightbox;
+  })(BaseDOM);
+  return BlockContent;
+})(slikland.erlik.plugins.Plugin);
+var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
 slikland.Erlik = (function(_super) {
   __extends(Erlik, _super);
   Erlik.EDIT_PLUGIN = 'erlik_edit_plugin';
-  Erlik.BASE_CSS = ".erlik .media-gallery{display:block;width:100%;position:relative;border:1px solid #ccc;padding:16px;box-sizing:border-box;}.erlik .media-gallery:hover,.erlik .media-gallery:focus{border-color:#000}.erlik .media-item{display:inline-block;border:1px solid #ccc;}.erlik .media-item:hover,.erlik .media-item:focus{border-color:#000}.erlik .media-item .item{display:none;}.erlik .media-item .item:first-child{display:inline-block}.erlik_blocker{font-family:Tahoma,Geneva,sans-serif;position:fixed;top:0;left:0;bottom:0;right:0;display:block;background-color:rgba(255,255,255,0.7);text-align:center;}.erlik_blocker:before{vertical-align:middle;content:'';display:inline-block;height:100%}.erlik_blocker .erlik_blocker_container{text-align:left;vertical-align:middle;display:inline-block;white-space:nowrap;position:relative;}.erlik_blocker .erlik_blocker_container .title{font-weight:bold}.erlik_blocker .erlik_blocker_container .text{font-size:.8em}.erlik_lightbox{font-family:Tahoma,Geneva,sans-serif;position:fixed;top:0;left:0;bottom:0;right:0;display:block;background-color:rgba(255,255,255,0.7);text-align:center;}.erlik_lightbox:before{vertical-align:middle;content:'';display:inline-block;height:100%}.erlik_lightbox .button,.erlik_lightbox .erlik_button,.erlik_lightbox button{appearance:none;outline:none;cursor:pointer;background-color:transparent;border:0;font-size:24px;}.erlik_lightbox .button:hover,.erlik_lightbox .erlik_button:hover,.erlik_lightbox button:hover{opacity:.6}.erlik_lightbox .close_btn{float:right}.erlik_lightbox .erlik_lightbox_wrapper{text-align:left;vertical-align:middle;display:inline-block;white-space:nowrap;position:relative;border:1px solid #666;border-radius:2px;box-shadow:1px 1px 1px 1px #ccc;background-color:#fff;min-width:400px;min-height:300px;max-height:99%;}.erlik_lightbox .erlik_lightbox_wrapper .erlik_lightbox_header{position:relative;height:2em;border-bottom:1px solid #ccc;}.erlik_lightbox .erlik_lightbox_wrapper .erlik_lightbox_header .erlik_lightbox_title{padding-left:.5em;line-height:2em;font-weight:bold}.erlik_lightbox .erlik_lightbox_wrapper .erlik_lightbox_container{position:absolute;overflow:auto;top:2em;left:0;right:0;bottom:0;}.erlik_lightbox .erlik_lightbox_wrapper .erlik_lightbox_container>*{display:inline-block}.erlik_progressbar{display:inline-block;font-size:10px;border-radius:1em;overflow:hidden;min-width:200px;min-height:1em;position:relative;box-shadow:1px 1px 1px 1px #ccc;}.erlik_progressbar .progress{animation-name:progressbar-pattern-animation;animation-duration:.4s;animation-iteration-count:infinite;animation-timing-function:linear;position:absolute;top:0;left:0;width:100%;height:100%;background-image:url(\"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKBAMAAAB/HNKOAAAAD1BMVEUAAAD5+flubm4BAQHf39/aLetdAAAABXRSTlMaGiMVEbCRADYAAAAoSURBVAjXYxAUMWBgYhB0ZmBQZAAxBRlATEEGEFOEAcQE8oFMA0wmAHYCA/0rayZfAAAAAElFTkSuQmCC\");background-size:10px 100%}@-moz-keyframes progressbar-pattern-animation{0%{background-position:0 0}100%{background-position:9px 0}}@-webkit-keyframes progressbar-pattern-animation{0%{background-position:0 0}100%{background-position:9px 0}}@-o-keyframes progressbar-pattern-animation{0%{background-position:0 0}100%{background-position:9px 0}}@keyframes progressbar-pattern-animation{0%{background-position:0 0}100%{background-position:9px 0}}.cropper .cropper_container{position:relative;}.cropper .cropper_container .cropper_image{position:absolute}.cropper .cropper_container .cropper_mask{position:absolute;top:0;left:0;bottom:0;right:0;}.cropper .cropper_container .cropper_mask .cropper_mask_item{position:absolute;background-color:rgba(128,128,128,0.4)}.cropper .cropper_container .cropper_mask .cropper_mask_dragger{position:absolute;cursor:pointer}.cropper .cropper_container .cropper_mask .cropper_mask_resizer{position:absolute;width:8px;height:8px;margin-top:-5px;margin-left:-5px;background-color:#999;border-top:1px solid #ccc;border-left:1px solid #ccc;border-bottom:1px solid #666;border-right:1px solid #666;}.cropper .cropper_container .cropper_mask .cropper_mask_resizer.tl,.cropper .cropper_container .cropper_mask .cropper_mask_resizer.br{cursor:nwse-resize}.cropper .cropper_container .cropper_mask .cropper_mask_resizer.tr,.cropper .cropper_container .cropper_mask .cropper_mask_resizer.bl{cursor:nesw-resize}.cropper .cropper_gallery .cropper_thumb{opacity:.6;cursor:pointer;padding:6px;vertical-align:top;width:120px;}.cropper .cropper_gallery .cropper_thumb.selected{opacity:1}.cropper .cropper_gallery .cropper_thumb .container{width:120px;height:120px;display:block;border:1px solid #ccc;position:relative}.cropper .cropper_gallery .cropper_thumb.selected .container{border-color:#999}.cropper .cropper_gallery .cropper_thumb .label{text-align:center;font-size:10px;vertical-align:top;max-width:100%;white-space:normal}.align_middle:before{content:'';display:inline-block;vertical-align:middle;height:100%}.align_middle >*{display:inline-block;vertical-align:middle}.align_center{text-align:center;}.align_center >*{display:inline-block}.erlik{font-family:Tahoma,Geneva,sans-serif;border:1px solid #666;border-radius:2px;box-shadow:1px 1px 1px 1px #ccc;min-width:400px;min-height:300px;position:relative;outline:none;}.erlik div{outline:none}.erlik .button,.erlik .erlik_button,.erlik button{appearance:none;outline:none;cursor:pointer;background-color:transparent;border-top:1px solid rgba(0,0,0,0);border-left:1px solid rgba(0,0,0,0.05);border-right:1px solid #ccc;border-bottom:1px solid #666;}.erlik .button:hover,.erlik .erlik_button:hover,.erlik button:hover{background-color:rgba(0,0,0,0.01)}.erlik .button.selected,.erlik .erlik_button.selected,.erlik button.selected,.erlik .button:active,.erlik .erlik_button:active,.erlik button:active{background-color:rgba(0,0,0,0.02);border-right:1px solid rgba(0,0,0,0.05);border-bottom:1px solid rgba(0,0,0,0);border-left:1px solid #ccc;border-top:1px solid #666}.erlik .erlik_toolbar{display:block;position:absolute;width:100%;border-bottom:1px solid #ccc;min-height:1em;font-size:14px;}.erlik .erlik_toolbar .button,.erlik .erlik_toolbar .erlik_button,.erlik .erlik_toolbar button{font-size:1em;text-align:center;width:2em;height:2em;position:relative}.erlik .erlik_toolbar .icon-container{margin-right:.4em;position:relative}.erlik .erlik_editor{padding:8px;position:absolute;display:block;outline:none;overflow:scroll;bottom:0;left:0;right:0}";
+  Erlik.BASE_CSS = ".erlik .media-gallery{display:block;width:100%;position:relative;border:1px solid #ccc;padding:16px;box-sizing:border-box;}.erlik .media-gallery:hover,.erlik .media-gallery:focus{border-color:#000}.erlik .media-item{display:inline-block;border:1px solid #ccc;}.erlik .media-item:hover,.erlik .media-item:focus{border-color:#000}.erlik .media-item .item{display:none;}.erlik .media-item .item:first-child{display:inline-block}.erlik_blocker{font-family:Tahoma,Geneva,sans-serif;position:fixed;top:0;left:0;bottom:0;right:0;display:block;background-color:rgba(255,255,255,0.7);text-align:center;}.erlik_blocker:before{vertical-align:middle;content:'';display:inline-block;height:100%}.erlik_blocker .erlik_blocker_container{text-align:left;vertical-align:middle;display:inline-block;white-space:nowrap;position:relative;}.erlik_blocker .erlik_blocker_container .title{font-weight:bold}.erlik_blocker .erlik_blocker_container .text{font-size:.8em}.erlik_lightbox{font-family:Tahoma,Geneva,sans-serif;position:fixed;top:0;left:0;bottom:0;right:0;display:block;background-color:rgba(255,255,255,0.7);text-align:center;}.erlik_lightbox:before{vertical-align:middle;content:'';display:inline-block;height:100%}.erlik_lightbox .button,.erlik_lightbox .erlik_button,.erlik_lightbox button{appearance:none;outline:none;cursor:pointer;background-color:transparent;border:0;font-size:24px;}.erlik_lightbox .button:hover,.erlik_lightbox .erlik_button:hover,.erlik_lightbox button:hover{opacity:.6}.erlik_lightbox .close_btn{float:right}.erlik_lightbox .erlik_lightbox_wrapper{text-align:left;vertical-align:middle;display:inline-block;white-space:nowrap;position:relative;border:1px solid #666;border-radius:2px;box-shadow:1px 1px 1px 1px #ccc;background-color:#fff;min-width:400px;min-height:300px;max-height:99%;}.erlik_lightbox .erlik_lightbox_wrapper .erlik_lightbox_header{position:relative;height:2em;border-bottom:1px solid #ccc;}.erlik_lightbox .erlik_lightbox_wrapper .erlik_lightbox_header .erlik_lightbox_title{padding-left:.5em;line-height:2em;font-weight:bold}.erlik_lightbox .erlik_lightbox_wrapper .erlik_lightbox_container{position:absolute;overflow:auto;top:2em;left:0;right:0;bottom:0;}.erlik_lightbox .erlik_lightbox_wrapper .erlik_lightbox_container>*{display:inline-block}.erlik_progressbar{display:inline-block;font-size:10px;border-radius:1em;overflow:hidden;min-width:200px;min-height:1em;position:relative;box-shadow:1px 1px 1px 1px #ccc;}.erlik_progressbar .progress{animation-name:progressbar-pattern-animation;animation-duration:.4s;animation-iteration-count:infinite;animation-timing-function:linear;position:absolute;top:0;left:0;width:100%;height:100%;background-image:url(\"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKBAMAAAB/HNKOAAAAD1BMVEUAAAD5+flubm4BAQHf39/aLetdAAAABXRSTlMaGiMVEbCRADYAAAAoSURBVAjXYxAUMWBgYhB0ZmBQZAAxBRlATEEGEFOEAcQE8oFMA0wmAHYCA/0rayZfAAAAAElFTkSuQmCC\");background-size:10px 100%}@-moz-keyframes progressbar-pattern-animation{0%{background-position:0 0}100%{background-position:9px 0}}@-webkit-keyframes progressbar-pattern-animation{0%{background-position:0 0}100%{background-position:9px 0}}@-o-keyframes progressbar-pattern-animation{0%{background-position:0 0}100%{background-position:9px 0}}@keyframes progressbar-pattern-animation{0%{background-position:0 0}100%{background-position:9px 0}}.cropper .cropper_container{position:relative;}.cropper .cropper_container .cropper_image{position:absolute}.cropper .cropper_container .cropper_mask{position:absolute;top:0;left:0;bottom:0;right:0;}.cropper .cropper_container .cropper_mask .cropper_mask_item{position:absolute;background-color:rgba(128,128,128,0.4)}.cropper .cropper_container .cropper_mask .cropper_mask_dragger{position:absolute;cursor:pointer}.cropper .cropper_container .cropper_mask .cropper_mask_resizer{position:absolute;width:8px;height:8px;margin-top:-5px;margin-left:-5px;background-color:#999;border-top:1px solid #ccc;border-left:1px solid #ccc;border-bottom:1px solid #666;border-right:1px solid #666;}.cropper .cropper_container .cropper_mask .cropper_mask_resizer.tl,.cropper .cropper_container .cropper_mask .cropper_mask_resizer.br{cursor:nwse-resize}.cropper .cropper_container .cropper_mask .cropper_mask_resizer.tr,.cropper .cropper_container .cropper_mask .cropper_mask_resizer.bl{cursor:nesw-resize}.cropper .cropper_gallery .cropper_thumb{opacity:.6;cursor:pointer;padding:6px;vertical-align:top;width:120px;}.cropper .cropper_gallery .cropper_thumb.selected{opacity:1}.cropper .cropper_gallery .cropper_thumb .container{width:120px;height:120px;display:block;border:1px solid #ccc;position:relative}.cropper .cropper_gallery .cropper_thumb.selected .container{border-color:#999}.cropper .cropper_gallery .cropper_thumb .label{text-align:center;font-size:10px;vertical-align:top;max-width:100%;white-space:normal}.align_middle:before{content:'';display:inline-block;vertical-align:middle;height:100%}.align_middle >*{display:inline-block;vertical-align:middle}.align_center{text-align:center;}.align_center >*{display:inline-block}.erlik{font-family:Tahoma,Geneva,sans-serif;border:1px solid #666;border-radius:2px;box-shadow:1px 1px 1px 1px #ccc;min-width:400px;min-height:300px;position:relative;outline:none;}.erlik div{outline:none}.erlik .button,.erlik .erlik_button,.erlik button{appearance:none;outline:none;cursor:pointer;background-color:transparent;border-top:1px solid rgba(0,0,0,0);border-left:1px solid rgba(0,0,0,0.05);border-right:1px solid #ccc;border-bottom:1px solid #666;}.erlik .button:hover,.erlik .erlik_button:hover,.erlik button:hover{background-color:rgba(0,0,0,0.01)}.erlik .button.selected,.erlik .erlik_button.selected,.erlik button.selected,.erlik .button:active,.erlik .erlik_button:active,.erlik button:active{background-color:rgba(0,0,0,0.02);border-right:1px solid rgba(0,0,0,0.05);border-bottom:1px solid rgba(0,0,0,0);border-left:1px solid #ccc;border-top:1px solid #666}.erlik .button[tooltip]:hover::after,.erlik .erlik_button[tooltip]:hover::after,.erlik button[tooltip]:hover::after{content:attr(tooltip);display:inline-block;position:absolute;top:100%;background-color:#333;color:#fff;box-sizing:border-box;padding:.4em;border-radius:.2em;text-align:center;margin:0 auto;transform:translate(-50%,0);z-index:2;pointer-events:none;white-space:pre;font-size:.7em;left:50%;text-transform:uppercase}.erlik .erlik_toolbar{display:block;position:absolute;width:100%;border-bottom:1px solid #ccc;min-height:1em;font-size:14px;}.erlik .erlik_toolbar .button,.erlik .erlik_toolbar .erlik_button,.erlik .erlik_toolbar button{font-size:1em;text-align:center;width:2em;height:2em;position:relative}.erlik .erlik_toolbar .icon-container{margin-right:.4em;position:relative;display:inline-block;vertical-align:bottom}.erlik .erlik_editor{padding:8px;position:absolute;display:block;outline:none;overflow:scroll;bottom:0;left:0;right:0}.erlik .erlik_select{appearance:none;outline:none;cursor:pointer;height:2em;line-height:2em;background-color:transparent;border-top:1px solid rgba(0,0,0,0);border-left:1px solid rgba(0,0,0,0.05);border-right:1px solid #ccc;border-bottom:1px solid #666;}.erlik .erlik_select .label-container{cursor:pointer;padding-right:1em;}.erlik .erlik_select .label-container .label{width:auto;padding:0 .3em}.erlik .erlik_select .icon{padding:0 .4em;position:absolute;top:0;right:0;line-height:2em}.erlik .erlik_select .container{z-index:2;position:absolute;top:100%;left:0;display:none;width:100%;max-width:100%;}.erlik .erlik_select .container button{width:100%;text-align:left}.erlik .erlik_select:hover{background-color:rgba(0,0,0,0.01)}.erlik .erlik_select.opened{background-color:rgba(0,0,0,0.02);border-right:1px solid rgba(0,0,0,0.05);border-bottom:1px solid rgba(0,0,0,0);border-left:1px solid #ccc;border-top:1px solid #666;}.erlik .erlik_select.opened .container{display:block;background-color:#fff;border:1px solid;border-right:1px solid rgba(0,0,0,0.05);border-bottom:1px solid rgba(0,0,0,0);border-left:1px solid #ccc;border-top:1px solid #666}.erlik .erlik_select[tooltip]:hover::after{content:attr(tooltip);display:inline-block;position:absolute;top:100%;background-color:#333;color:#fff;box-sizing:border-box;padding:.4em;border-radius:.2em;text-align:center;margin:0 auto;transform:translate(-50%,0);z-index:2;pointer-events:none;white-space:pre;font-size:.7em;left:50%;text-transform:uppercase}";
   Erlik.STYLES = ['display', 'position', 'width', 'height', 'top', 'left', 'bottom', 'right'];
   Erlik._init = function() {
     if (this._inited) {
@@ -3455,28 +4878,11 @@ slikland.Erlik = (function(_super) {
     return container;
   };
   /**
-  	Spritesheet Animation class
-  	This class will animate a spritesheet. It already handles responsiveness.<br>
-  	So If the size of the SpriteSheetAnimation div is set, the animation will fit in the defined size.<br>
-  	If a size is not set, it'll use the size defined in the JSON object.
   	@class Erlik
   	@constructor
   	@extends BaseDOM
   	@param {HTMLElement | String} [target = null] Target textarea element or querySelector.
   	@param {Object} [config = {}] Config object for editor.
-  	The Spritesheet image and json needs to be generated by Adobe Flash.<br>
-  	It also accepts *trim* and *border* parameters set when exporting the Spritesheet from Adobe Flash.
-  	Name |Type|Default|Description
-  	-----|----|:------|-----------
-  	image|Image|null|Image of spritesheet. It can either be a Image Element or PreloadJS image loader, which gives *data.tag* as image.
-  	json|Object|null|JSON object defining the spritesheet. It can either be an Object or PreloadJS json loader, which gives *data.tag* as object.
-  	useBackground|Bool|false|Boolean indicating if the Spritesheet Animation should use as background-image or a image element. Default is **false**. It's safer using an Image element instead of background-image for cross-browser integration.
-  	@example
-  	```
-  	spritesheet = new SpriteSheetAnimation({image: someImage, json: someJson});
-  	document.body.appendChild(spritesheet.element);
-  	sprithesheet.play({repeat: false});
-  	```
    */
   function Erlik(target, config) {
     var _target;
@@ -3492,10 +4898,6 @@ slikland.Erlik = (function(_super) {
     this._domChanged = __bind(this._domChanged, this);
     this._onFocus = __bind(this._onFocus, this);
     this._keyDown = __bind(this._keyDown, this);
-    this._test = __bind(this._test, this);
-    console.log('--');
-    console.log(Plugin.test);
-    console.log('--');
     this.constructor._init();
     this._dirtyCallbacks = {};
     this._fonts = [];
@@ -3511,9 +4913,7 @@ slikland.Erlik = (function(_super) {
       }
     }
     if (!_target) {
-      _target = document.createElement({
-        element: 'textarea'
-      });
+      _target = document.createElement('textarea');
     }
     this._target = _target;
     Erlik.__super__.constructor.call(this, {
@@ -3538,7 +4938,7 @@ slikland.Erlik = (function(_super) {
     this._pluginController = new slikland.erlik.core.PluginController(this, this._editor, this._toolbar, config);
     this.element.on('focus', this._onFocus);
     this.element.on('keyup', this._keyDown);
-    this.on(this.constructor.EDIT_PLUGIN, this._test);
+    this._dirty(1);
   }
   Erlik.get({
     value: function() {
@@ -3563,9 +4963,6 @@ slikland.Erlik = (function(_super) {
       return container;
     }
   });
-  Erlik.prototype._test = function() {
-    return console.log("EDIT");
-  };
   Erlik.prototype._keyDown = function(e) {
     return e.preventDefault();
   };
@@ -3576,11 +4973,13 @@ slikland.Erlik = (function(_super) {
     return this._pluginController.parseDOM(this._editor.element);
   };
   Erlik.prototype._redraw = function() {
+    console.log("REDRAW");
     return this._editor.css({
       top: this._toolbar.height + 'px'
     });
   };
   Erlik.prototype._dirty = function(type) {
+    console.log("DIRTY");
     this._dirtyCallbacks[type] = true;
     clearTimeout(this._dirtyTimeout);
     return this._dirtyTimeout = setTimeout(this._updateDirty, 0);
@@ -3593,6 +4992,7 @@ slikland.Erlik = (function(_super) {
       }
     }
     this._dirtyCallbacks = {};
+    console.log("RE");
     return this._redraw();
   };
   Erlik.prototype._copyCSS = function() {

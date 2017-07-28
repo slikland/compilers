@@ -5,6 +5,7 @@ class Italic extends slikland.erlik.plugins.Plugin
 	_toolbar: {
 		icon: 'fa-italic'
 		toggle: true
+		tooltip: 'itálico'
 	}
 
 	_styleValidation: 'italic'

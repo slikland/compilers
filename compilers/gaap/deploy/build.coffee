@@ -40,6 +40,7 @@ docs:
 	url: "http://slikland.com/"
 	logo: "http://slikland.com/media/images/logo_docs.png"
 	source: "{paths.source}"
+	extension: "coffee"
 	options:
 		paths: ["{paths.source}core/"]
 		output: "../../docs"

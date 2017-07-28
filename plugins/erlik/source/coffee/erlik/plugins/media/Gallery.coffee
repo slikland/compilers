@@ -5,6 +5,7 @@ class Gallery extends slikland.erlik.plugins.Plugin
 	_toolbar: {
 		icon: 'fa-th-large'
 		toggle: false
+		tooltip: 'Galeria'
 	}
 
 	_command: 'insertElement'

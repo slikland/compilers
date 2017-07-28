@@ -5,6 +5,7 @@ class Underline extends slikland.erlik.plugins.Plugin
 	_toolbar: {
 		icon: 'fa-underline'
 		toggle: true
+		tooltip: 'sublinhar'
 	}
 
 	_styleValidation: 'underline'

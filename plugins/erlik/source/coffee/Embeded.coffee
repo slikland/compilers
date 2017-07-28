@@ -14,13 +14,35 @@ class Embeded
 
 		config = {
 			toolbar: [
-				['font']
+				# ['font']
 				['bold', 'italic', 'underline', 'strikethrough', 'color']
+				['undo', 'redo']
 				['left', 'center', 'right', 'justify', 'indent', 'outdent']
+				['superscript', 'subscript']
 				['orderedlist', 'unorderedlist']
 				['image', 'video', 'gallery']
+				['customformat']
+				['readmore', 'topics', 'blockcontent']
 			]
-			plugins: []
+			plugins: {
+				CustomFormat: {
+					label: "Formatação"
+					items: [
+						{
+							'label': "&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;"
+							'tag': ''
+						},
+						{
+							'label': "Titulo"
+							'tag': 'h1'
+						},
+						{
+							'label': "Test"
+							'tag': 'div.test'
+						}
+					]
+				}
+			}
 			fonts: [
 				{
 					name: "Some font"
@@ -65,8 +87,8 @@ class Embeded
 		}
 
 		@_erlik = new slikland.Erlik(textarea, config)
-		@_erlik.addFont('Some font')
-		@_erlik.addFonts([])
+		# @_erlik.addFont('Some font')
+		# @_erlik.addFonts([])
 
 
 app.on('windowLoad', ->

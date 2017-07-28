@@ -4,7 +4,8 @@
 class Indent extends slikland.erlik.plugins.Plugin
 	_toolbar: {
 		icon: 'fa-indent'
-		toggle: false
+		toggle: false,
+		tooltip: 'Adicionar tabulação'
 	}
 
 	# _styleValidation: 'value > 500 || value == \'bold\''

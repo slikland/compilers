@@ -8,14 +8,17 @@ class Button extends BaseDOM
 			@_icon = new BaseDOM({element: 'i', className: 'fa ' + data.icon})
 			@appendChild(@_icon)
 		if data.label?
-			@_label = new BaseDOM({element: 'spane', className: 'label'})
+			@_label = new BaseDOM({element: 'span', className: 'label'})
 			@_label.html = data.label
 			@appendChild(@_label)
 		@_data = data
 		@toggle = data.toggle || false
+		if @_data.tooltip?
+			@attr('tooltip', @_data.tooltip)
 		@element.on('click', @_click)
 
-	_click:()=>
+	_click:(e)=>
+		e.preventDefault()
 		@selected = !@selected
 		@trigger(@constructor.CLICK)
 
@@ -33,6 +36,8 @@ class Button extends BaseDOM
 	@get selected:()->
 		return @_selected
 	@set selected:(value)->
+		if !@_toggle
+			return
 		if @_selected == value
 			return
 		@_selected = value

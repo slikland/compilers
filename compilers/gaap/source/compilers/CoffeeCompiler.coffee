@@ -1,5 +1,5 @@
 class CoffeeCompiler
-	@_ADD_NAMESPACE_FN: 'function __addNamespace(scope, obj){for(k in obj){eval(k + "=" + JSON.stringify(obj[k]));}};'
+	@_ADD_NAMESPACE_FN: 'function __addNamespace(scope, obj){for(k in obj){if(!scope){eval(k + " = {};");scope = eval("(function(){return \'+k+\';})();");__addNamespace(scope, obj[k])}else if(!scope[k]){scope[k] = {};__addNamespace(scope[k], obj[k])};}};'
 
 	@_REWRITE_CS_FUNCTIONS: {
 		__bind: 'function(fn, me){ return function(){ return fn.apply(me, arguments); }; }'

@@ -5,6 +5,7 @@ class Bold extends slikland.erlik.plugins.Plugin
 	_toolbar: {
 		icon: 'fa-bold'
 		toggle: true
+		tooltip: 'negrito'
 	}
 
 	_styleValidation: 'value > 500 || value == \'bold\''

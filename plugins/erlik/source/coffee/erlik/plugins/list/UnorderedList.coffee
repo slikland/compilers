@@ -5,6 +5,7 @@ class UnorderedList extends slikland.erlik.plugins.Plugin
 	_toolbar: {
 		icon: 'fa-list-ul'
 		toggle: true
+		tooltip: 'lista'
 	}
 
 	# _styleValidation: 'value > 500 || value == \'bold\''

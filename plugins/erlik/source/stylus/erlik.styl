@@ -42,6 +42,27 @@
 			border-bottom: 1px solid rgba(0, 0, 0, 0)
 			border-left: 1px solid #CCCCCC
 			border-top: 1px solid #666666
+		&[tooltip]
+			&:hover
+				&::after
+					content: attr(tooltip)
+					display: inline-block
+					position: absolute
+					top: 100%
+					background-color: #333333
+					color: #FFFFFF
+					box-sizing: border-box
+					padding: 0.4em
+					border-radius: 0.2em
+					text-align: center
+					margin: 0 auto
+					transform: translate(-50%, 0)
+					z-index: 2
+					pointer-events: none
+					white-space: pre
+					font-size: 0.7em
+					left: 50%
+					text-transform: uppercase
 		
 	.erlik_toolbar
 		display: block
@@ -59,6 +80,8 @@
 		.icon-container
 			margin-right: 0.4em
 			position: relative
+			display: inline-block
+			vertical-align: bottom
 	.erlik_editor
 		padding: 8px
 		position: absolute
@@ -68,4 +91,76 @@
 		bottom: 0px
 		left: 0px
 		right: 0px
+		
+	.erlik_select
+		appearance: none
+		outline: none
+		cursor: pointer
+		height: 2em
+		line-height: 2em
+		background-color: transparent
+		border-top: 1px solid rgba(0, 0, 0, 0)
+		border-left: 1px solid rgba(0, 0, 0, 0.05)
+		border-right: 1px solid #CCCCCC
+		border-bottom: 1px solid #666666
+		.label-container
+			cursor: pointer
+			padding-right: 1em
+			.label
+				width: auto
+				padding: 0 0.3em
+		.icon
+			padding: 0 0.4em
+			position: absolute
+			top: 0px
+			right: 0px
+			line-height: 2em
+		.container
+			z-index: 2
+			position: absolute
+			top: 100%
+			left: 0
+			display: none
+			width: 100%
+			max-width: 100%
+			button
+				width: 100%
+				text-align: left
+		&:hover
+			background-color: rgba(0, 0, 0, 0.01)
+		&.opened
+			background-color: rgba(0, 0, 0, 0.02)
+			border-right: 1px solid rgba(0, 0, 0, 0.05)
+			border-bottom: 1px solid rgba(0, 0, 0, 0)
+			border-left: 1px solid #CCCCCC
+			border-top: 1px solid #666666
+			.container
+				display: block
+				background-color: #FFFFFF
+				border: 1px solid 
+				border-right: 1px solid rgba(0, 0, 0, 0.05)
+				border-bottom: 1px solid rgba(0, 0, 0, 0)
+				border-left: 1px solid #CCCCCC
+				border-top: 1px solid #666666
+		&[tooltip]
+			&:hover
+				&::after
+					content: attr(tooltip)
+					display: inline-block
+					position: absolute
+					top: 100%
+					background-color: #333333
+					color: #FFFFFF
+					box-sizing: border-box
+					padding: 0.4em
+					border-radius: 0.2em
+					text-align: center
+					margin: 0 auto
+					transform: translate(-50%, 0)
+					z-index: 2
+					pointer-events: none
+					white-space: pre
+					font-size: 0.7em
+					left: 50%
+					text-transform: uppercase
 			

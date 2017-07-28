@@ -11,6 +11,7 @@ class Image extends slikland.erlik.plugins.Plugin
 	_toolbar: {
 		icon: 'fa-image'
 		toggle: false
+		tooltip: 'imagem'
 	}
 
 	_command: 'insertElement'
@@ -33,15 +34,26 @@ class Image extends slikland.erlik.plugins.Plugin
 		@_form.appendChild(@_browser)
 		document.body.appendChild(@_form)
 
-	_toolbarClick:()=>
-		# super
+	_resetValues:()->
 		@_cropData = null
 		@_currentElement = null
 		@_browser.value = null
+
+	_toolbarClick:()=>
+		# super
+		@_resetValues()
 		@_browser.click()
 
-	_showLightbox:(data)->
-		@_lightboxContent = new @constructor.Lightbox(@_browser.files[0], @_editor.config.image?.types)
+	_showLightbox:(data, sizes = null)->
+		if sizes
+			i = sizes.length
+			while i-- > 0
+				size = @_controller.config.image?.types[i]
+				if size
+					sizes[i].name = size.name
+		else
+			sizes = @_controller.config.image?.types
+		@_lightboxContent = new @constructor.Lightbox(data, sizes || @_controller.config.image?.types)
 		@_lightboxContent.on(@_lightboxContent.constructor.COMMIT, @_lightboxCommit)
 		@_lightboxContent.on(@_lightboxContent.constructor.CANCEL, @_lightboxCancel)
 		@_lightbox = slikland.erlik.ui.Lightbox.open({
@@ -62,6 +74,8 @@ class Image extends slikland.erlik.plugins.Plugin
 	_browserChange:()=>
 		if !@_browser.files || @_browser.files?.length == 0
 			return
+		@_showLightbox(@_browser.files[0])
+
 
 	_lightboxCancel:()=>
 
@@ -70,6 +84,7 @@ class Image extends slikland.erlik.plugins.Plugin
 		if @_browser.value
 			@_uploadImage()
 		else
+			@_cropData.image = @_currentElement.data.image
 			@_cropImage()
 		@_lightbox.close()
 
@@ -100,6 +115,7 @@ class Image extends slikland.erlik.plugins.Plugin
 
 	_cropImage:()=>
 		@_uploadProgress ?= new slikland.erlik.ui.ProgressBlocker()
+		@_uploadProgress.open()
 		@_uploadProgress.progress = Number.NaN
 		@_uploadProgress.title = "Cropping image"
 		@_uploadProgress.text = ''
@@ -108,10 +124,16 @@ class Image extends slikland.erlik.plugins.Plugin
 		api.on(API.COMPLETE, @_cropCompleteHandler)
 		api.load()
 	_cropCompleteHandler:(e, data)=>
+		console.log("CROPPED!")
 		@_uploadProgress.close()
+		console.log(@_currentElement)
 		if !@_currentElement
-			@_currentElement = new @constructor.Element(data, @_editor)
+			@_currentElement = new @constructor.Element(data)
 			@_registerElement(@_currentElement)
+		else
+			console.log(@_currentElement)
+			@_currentElement.update(data)
+
 		@_triggerChange({element: @_currentElement})
 
 	_registerElement:(element)->
@@ -127,8 +149,10 @@ class Image extends slikland.erlik.plugins.Plugin
 			return
 		element.editor = @_editor
 		@_elements[target] = element
-	edit:()->
-		console.log("LALAAL")
+	edit:(element)->
+		@_resetValues()
+		@_currentElement = element
+		@_showLightbox(element.image.src, element.data.sizes)
 	parseElement:(dom)->
 		children = dom.childNodes
 		classNames = @constructor.PLUGIN_NAME.replace(/(^|\s)*([^\s]+)/g, '.$2')
@@ -145,6 +169,7 @@ class Image extends slikland.erlik.plugins.Plugin
 			if !target
 				target = 'div'
 			super({element: target})
+
 			@addClass(Image.PLUGIN_NAME)
 
 			@element.contentEditable = false
@@ -159,15 +184,40 @@ class Image extends slikland.erlik.plugins.Plugin
 			else
 				@_buildFromObject(data)
 
+		@get image:()->
+			return @_image
+		@get data:()->
+			return @_data
+
+		update:(data)->
+			@_reset()
+			@_buildFromObject(data)
+
+		_reset:()->
+			@removeAll()
+
+		_loadImage:(src)->
+			@_image = document.createElement('img')
+			@_image.loaded = false
+			@_image.onload = @_imageLoaded
+			@_image.src = src
+
 		_buildFromElement:(element)->
+			@_data = JSON.parse(decodeURIComponent(@attr('data')))
+			@_loadImage(@_data.image)
 			return
+		_imageLoaded:(e)=>
+			@_image.loaded = true
+
 		_buildFromObject:(data)->
+			@_data = data
+			@_loadImage(@_data.image)
 			@attr('data', encodeURIComponent(JSON.stringify(data)))
 
 			for size in data.sizes
 				img = document.createElement('img')
 				img.className = 'item'
-				img.src = size.url
+				img.src = size.url + '?r=' + new Date().now + '_' + Math.random()
 				@appendChild(img)
 
 		_click:()=>
@@ -185,7 +235,9 @@ class Image extends slikland.erlik.plugins.Plugin
 		constructor:(file, sizes)->
 			super({element: 'div'})
 			@_cropper = new slikland.erlik.ui.image.Cropper()
-			@_cropper.setImage(URL.createObjectURL(file))
+			if typeof(file) != 'string'
+				file = URL.createObjectURL(file)
+			@_cropper.setImage(file)
 			if sizes
 				@_cropper.setSizes(sizes)
 			@appendChild(@_cropper)
@@ -205,34 +257,3 @@ class Image extends slikland.erlik.plugins.Plugin
 		_okClick:(e)=>
 			o = {sizes: JSON.stringify(@_cropper.getData())}
 			@trigger(@constructor.COMMIT, o)
-
-
-
-
-	# _toolbarClick:()=>
-	# 	@_browser.click()
-
-
-
-	# update:(styles)->
-	# 	for style in styles
-	# 		value = style[@_style]
-	# 		break
-	# 	@_setValue(value)
-	# _toolbarClick:()=>
-	# 	@_picker.click()
-
-	# _pickerChange:()=>
-	# 	@_value = @_picker.value
-	# 	@_triggerChange()
-
-	# _setValue:(color)->
-	# 	rgbFormat = /rgba?\(([\d\.]+),.*?([\d\.]+),.*?([\d\.]+).*?\)/
-	# 	if rgbFormat.test(color)
-	# 		o = rgbFormat.exec(color)
-	# 		r = Number(o[1]).toString(16).padLeft(2, '0')
-	# 		g = Number(o[2]).toString(16).padLeft(2, '0')
-	# 		b = Number(o[3]).toString(16).padLeft(2, '0')
-	# 		color = '#' + r + g + b
-	# 	@_picker.value = @_value = color
-	# 	@_toolbarUI?.css?('color', color)
