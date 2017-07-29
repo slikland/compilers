@@ -233,6 +233,15 @@ class MediaCanvas extends BaseDOM
 
 		@draw(false)
 
+	@get frameImage:()->
+		return @canvas.element.toDataURL()
+
+	@get naturalWidth:()->
+		return @canvas.element.width
+
+	@get naturalHeight:()->
+		return @canvas.element.height
+
 	startRender:(evt=null)=>
 		@renderID = window.requestAnimationFrame(@draw)
 
