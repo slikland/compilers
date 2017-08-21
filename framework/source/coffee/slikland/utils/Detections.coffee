@@ -59,8 +59,8 @@ class Detections
 				validVersion = Number(o[1]) >= versionToCheck
 		@iosInlineVideo = (@os == "ios" && validVersion)
 
-		console.log @os
-		@orientation = Resizer.getInstance().orientation
+	@get orientation:()->
+		return Resizer.getInstance().orientation
 		
 	test:(value)->
 		if !@matched
@@ -90,6 +90,10 @@ class Detections
 				else if @versionArr[i] < v[i]
 					return -1
 		return result
+
+	getFirstMatch=(re, val)->
+		m = val.match(re)
+		return (m && m.length > 1 && m[1]) || null
 
 	getBrowser:()->
 		for m in @matches
@@ -141,7 +145,3 @@ class Detections
 			return !!window.CanvasRenderingContext2D && Boolean(document.createElement("canvas").getContext('2d'))
 		catch err
 			return false
-
-	getFirstMatch=(re, val)->
-		m = val.match(re)
-		return (m && m.length > 1 && m[1]) || null
