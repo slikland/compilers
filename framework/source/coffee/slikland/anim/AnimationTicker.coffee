@@ -1,3 +1,5 @@
+# import slikland.utils.Prototypes
+
 ###*
 Class to controll animation. It calls a callback method every requestAnimation frame.<br>
 In case of Internet Explorer 9, it uses a setTimeout with 16 ms.
@@ -76,6 +78,8 @@ class AnimationTicker
 		i = -1
 		while ++i < l
 			item = items[i]
+			if !item?
+				continue
 			data = item.data
 			dt = t - data.initTime - data.delayMs
 			if dt <= 0

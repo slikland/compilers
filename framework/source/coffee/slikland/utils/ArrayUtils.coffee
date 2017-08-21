@@ -1,3 +1,4 @@
+#import slikland.utils.Prototypes
 #import slikland.utils.NumberUtils
 
 ###*

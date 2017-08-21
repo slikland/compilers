@@ -1,3 +1,5 @@
+#import slikland.utils.Prototypes
+
 # Public: Bunch of utilities methods for {Number}
 class NumberUtils
 

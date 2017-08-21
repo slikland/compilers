@@ -5,10 +5,10 @@ class Tracking extends EventDispatcher
 	@getInstance:()=>
 		@_instance ?= new @(arguments...)
 
+	_inited:false
 	_data:null
 	_ga:null
 	_hasGA:null
-	_inited:null
 	_lastPagePath:null
 
 	# Initialize {Tracking}
@@ -16,6 +16,8 @@ class Tracking extends EventDispatcher
 	# tag - {String} to tag from `_data`
 	# data - {Object} to data
 	init:(p_data)->
+		return if !navigator.onLine
+		
 		@_data = p_data
 		if @_inited then throw new Error('Tracking::track Tracking is already inited')
 		@_inited = true
@@ -30,12 +32,14 @@ class Tracking extends EventDispatcher
 
 		@_lastPagePath = null
 
+		console.log 'Tracking::INITIALIZE'
+
 	# Track
 	#
 	# tag - {String} to tag from `_data`
 	# data - {Object} to data
 	track:(p_tag, p_data=null)->
-		if !@_inited then throw new Error('Tracking::track You must initialize Tracking class')
+		return if !navigator.onLine or !@_inited or !@tags
 
 		if @tags[p_tag] then p_tag = @tags[p_tag]
 		else throw new Error('Tracking::track Tag not triggered, it is not registered in `_data`')
@@ -50,13 +54,13 @@ class Tracking extends EventDispatcher
 	##############
 	_initGTM:()->
 		if !@_inited then throw new Error('Tracking::track You must initialize Tracking class')
-		@_gtm = window.dataLayer = window.dataLayer || []
-		if !@_gtm? then throw new Error('Tracking::track GTM not found')
+		if !@scope['gtm']?['id']? then throw new Error('Tracking::track The ID for GTM is null')
+		@_gtm = new GTM(@scope['gtm']?['id'])
 		@_hasGTM = @_gtm?
+		
 
 	# Initialize Google Analytics
 	_initGA:()->
-		
 		if !@_inited then throw new Error('Tracking::track You must initialize Tracking class')
 		if !@scope['ga']?['id']? then throw new Error('Tracking::track The ID for Google Analytics is null')
 		@_hasGA = true
@@ -96,7 +100,7 @@ class Tracking extends EventDispatcher
 	# tag - {String} to tag from `_data`
 	# data - {Object} to data
 	_trackGTM:(p_tag, p_data)->
-		vals = @scope['values'] || ['category', 'action', 'label', 'value']
+		vals = @scope['gtm']['values'] || ['category', 'action', 'label', 'value']
 		params = {}
 
 		for v, i in vals
@@ -110,10 +114,4 @@ class Tracking extends EventDispatcher
 					)
 			params[v] = tagParam if tagParam? and !!tagParam.length
 
-		switch p_tag.event
-			when 'ga.pageview'
-				@_gtm.push params
-			when 'ga.event'
-				@_gtm.push params
-			else 
-				throw new Error('Tracking::_trackGTM There is a tag with no type (ga.event / ga.pageview)')
+		@_gtm.track params

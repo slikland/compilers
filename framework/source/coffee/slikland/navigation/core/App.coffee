@@ -7,6 +7,7 @@ class App extends EventDispatcher
 
 	@WINDOW_ACTIVE:"windowActive"
 	@WINDOW_INACTIVE:"windowInactive"
+	@NETWORK_UPDATE:'networkUpdate'
 	
 	# @TODO
 	# IMPLEMENT THIS
@@ -27,6 +28,7 @@ class App extends EventDispatcher
 	constructor:()->
 		super
 		@_checkWindowActivity()
+		@_checkNetworkStatus()
 
 	@get info:()->
 		info = {}
@@ -79,6 +81,9 @@ class App extends EventDispatcher
 	@get detections:()->
 		return _detections
 
+	@get online:()->
+		return window?.navigator?.online
+
 	@get windowHidden:()->
 		prop = null
 		if 'hidden' of document
@@ -108,6 +113,13 @@ class App extends EventDispatcher
 			when 'focus', 'pageshow'
 				evtType = App.WINDOW_ACTIVE
 		@trigger(evtType)
+
+	_checkNetworkStatus:()->
+		window.addEventListener "online",  @_updateNetworkStatus
+		window.addEventListener "offline", @_updateNetworkStatus
+
+	_updateNetworkStatus:()=>
+		@trigger App.NETWORK_UPDATE
 
 if !app
 	app = new App()

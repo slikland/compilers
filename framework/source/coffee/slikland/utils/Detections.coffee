@@ -1,3 +1,5 @@
+#import slikland.utils.Resizer
+
 ###*
 Detections Class
 @class Detections
@@ -10,13 +12,13 @@ class Detections
 		{name: 'Edge', nick: /edge|edgehtml/i, test: /edge|msapphost|edgehtml/i, version: /(?:edge|edgehtml)\/(\d+(\.\d+)*)/i},
 		{name: 'Internet Explorer', nick: /explorer|internetexplorer|ie/i, test: /msie|trident/i, version: /(?:msie |rv:)(\d+(\.\d+)*)/i},
 		{name: 'Chrome', nick: /Chrome/i, test: /chrome|crios|crmo/i, version: /(?:chrome|crios|crmo)\/(\d+(\.\d+)*)/i},
-		{name: 'iPod', nick: /iPod/i, test: /ipod/i},
-		{name: 'iPhone', nick: /iPhone/i, test: /iphone/i},
-		{name: 'iPad', nick: /iPad/i, test: /ipad/i},
-		{name: 'FirefoxOS', nick: /FirefoxOS|ffos/i, test: /\((mobile|tablet);[^\)]*rv:[\d\.]+\)firefox|iceweasel/i, version: /(?:firefox|iceweasel)[ \/](\d+(\.\d+)?)/i},
+		# {name: 'iPod', nick: /iPod/i, test: /ipod/i},
+		# {name: 'iPhone', nick: /iPhone/i, test: /iphone/i},
+		# {name: 'iPad', nick: /iPad/i, test: /ipad/i},
+		# {name: 'FirefoxOS', nick: /FirefoxOS|ffos/i, test: /\((mobile|tablet);[^\)]*rv:[\d\.]+\)firefox|iceweasel/i, version: /(?:firefox|iceweasel)[ \/](\d+(\.\d+)?)/i},
 		{name: 'Firefox', nick: /Firefox|ff/i, test: /firefox|iceweasel/i, version: /(?:firefox|iceweasel)[ \/](\d+(\.\d+)?)/i},
-		{name: 'Android', nick: /Android/i, test: /android/i},
-		{name: 'BlackBerry', nick: /BlackBerry/i, test: /(blackberry)|(\bbb)|(rim\stablet)\d+/i, version: /blackberry[\d]+\/(\d+(\.\d+)?)/i},
+		# {name: 'Android', nick: /Android/i, test: /android/i},
+		# {name: 'BlackBerry', nick: /BlackBerry/i, test: /(blackberry)|(\bbb)|(rim\stablet)\d+/i, version: /blackberry[\d]+\/(\d+(\.\d+)?)/i},
 		{name: 'WebOS', nick: /WebOS/i, test: /(web|hpw)os/i, version: /w(?:eb)?osbrowser\/(\d+(\.\d+)?)/i},
 		{name: 'Safari', nick: /safari/i, test: /safari/i},
 	]
@@ -29,22 +31,36 @@ class Detections
 		@ua = navigator?.userAgent || ''
 		@platform = navigator?.platform || ''
 		@version = getFirstMatch(/version\/(\d+(\.\d+)*)/i, @ua)
+		@vibrate = (navigator.vibrate || navigator.webkitVibrate || navigator.mozVibrate || navigator.msVibrate)
+		@standalone = window?.navigator.standalone || window?.matchMedia('(display-mode: standalone)').matches
+		@retina = @testRetinaDisplay()
 		
 		@getBrowser()
 		@versionArr = if !@version? then [] else @version.split('.')
 		for k, v of @versionArr
 			@versionArr[k] = Number(v)
 		
-		@orientation = if window?.innerWidth > window?.innerHeight then 'landscape' else 'portrait'
 		@touch = Boolean('ontouchstart' of window) || Boolean(navigator.maxTouchPoints > 0) || Boolean(navigator.msMaxTouchPoints > 0)
-		@tablet = /(ipad.*|tablet.*|(android.*?chrome((?!mobi).)*))$/i.test(@ua)
+		@tablet = /(ipad.*|tablet(?!\s+pc).*|(android.*?chrome((?!mobi).)*))$/i.test(@ua)
 		@mobile = !@tablet && Boolean(getFirstMatch(/(ipod|iphone|ipad)/i, @ua) || /[^-]mobi/i.test(@ua))
 		@desktop = !@mobile && !@tablet
 
 		@os = getOS()
-		@cache = ('serviceWorker' of navigator)
+		@cache = @serviceWorker = ('serviceWorker' of navigator)
 		@canvas = testCanvas()
 		@webgl = testWebGL()
+
+		versionToCheck = 10
+		validVersion = false
+		if @version
+			validVersion = @versionArr[0] >= versionToCheck
+		else
+			if o = /\(iP(?:hone|ad|od).*? OS (\d+)_(\d+)/i.exec(@ua)
+				validVersion = Number(o[1]) >= versionToCheck
+		@iosInlineVideo = (@os == "ios" && validVersion)
+
+		console.log @os
+		@orientation = Resizer.getInstance().orientation
 		
 	test:(value)->
 		if !@matched
@@ -74,7 +90,6 @@ class Detections
 				else if @versionArr[i] < v[i]
 					return -1
 		return result
-
 
 	getBrowser:()->
 		for m in @matches
@@ -107,6 +122,13 @@ class Detections
 		else if (/win\d{2}/i.test(navigator?.platform))
 			result = 'windows'
 		return result
+
+	testRetinaDisplay:()=>
+		if window?.matchMedia
+			mq = window.matchMedia('only screen and (min--moz-device-pixel-ratio: 1.3), only screen and (-o-min-device-pixel-ratio: 2.6/2), only screen and (-webkit-min-device-pixel-ratio: 1.3), only screen  and (min-device-pixel-ratio: 1.3), only screen and (min-resolution: 1.3dppx)')
+			return mq and mq.matches or window?.devicePixelRatio > 1
+
+		return false
 
 	testWebGL=()->
 		try

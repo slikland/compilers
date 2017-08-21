@@ -65,6 +65,7 @@ class KTween
 		else
 			@numQueued++
 			@queued.push(ko)
+		return ko
 	@populateEasing:(transition)->
 		if (f = KTween[transition])
 			values = []
