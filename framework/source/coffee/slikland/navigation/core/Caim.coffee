@@ -49,7 +49,7 @@ class Caim extends EventDispatcher
 		loader.on(NavigationLoader.CONFIG_LOADED, @configLoaded)
 		loader.on(NavigationLoader.GROUP_ASSETS_LOADED, @groupLoaded)
 
-		# loader.on(NavigationLoader.LOAD_START, @createPreloaderView)
+		loader.on(NavigationLoader.LOAD_START, @createPreloaderView)
 		loader.on(NavigationLoader.LOAD_PROGRESS, @progress)
 		loader.on(NavigationLoader.LOAD_COMPLETE, @hidePreloderView)
 

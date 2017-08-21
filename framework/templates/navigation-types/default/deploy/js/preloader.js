@@ -1417,9 +1417,12 @@ Detections = (function() {
       }
     }
     this.iosInlineVideo = this.os === "ios" && validVersion;
-    console.log(this.os);
-    this.orientation = Resizer.getInstance().orientation;
   }
+  Detections.get({
+    orientation: function() {
+      return Resizer.getInstance().orientation;
+    }
+  });
   Detections.prototype.test = function(value) {
     var i, l, m, result, v, _i, _ref;
     if (!this.matched) {
@@ -1458,6 +1461,11 @@ Detections = (function() {
       }
     }
     return result;
+  };
+  getFirstMatch = function(re, val) {
+    var m;
+    m = val.match(re);
+    return (m && m.length > 1 && m[1]) || null;
   };
   Detections.prototype.getBrowser = function() {
     var m, _i, _len, _ref;
@@ -1540,11 +1548,6 @@ Detections = (function() {
       return false;
     }
   };
-  getFirstMatch = function(re, val) {
-    var m;
-    m = val.match(re);
-    return (m && m.length > 1 && m[1]) || null;
-  };
   return Detections;
 })();
 /**
@@ -1561,7 +1564,94 @@ createjs.EventDispatcher.prototype.on = function() {
     return this.___on.apply(this, arguments);
   }
 };
-undefined
+var NumberUtils;
+NumberUtils = (function() {
+  function NumberUtils() {}
+  NumberUtils.isEven = function(p_value) {
+    if (p_value % 2 === 0) {
+      return true;
+    } else {
+      return false;
+    }
+  };
+  NumberUtils.isZero = function(p_value) {
+    return Math.abs(p_value) < 0.00001;
+  };
+  NumberUtils.toPercent = function(p_value, p_min, p_max) {
+    return ((p_value - p_min) / (p_max - p_min)) * 100;
+  };
+  NumberUtils.percentToValue = function(p_percent, p_min, p_max) {
+    return ((p_max - p_min) * p_percent) + p_min;
+  };
+  NumberUtils.getBytesAsMegabytes = function(p_bytes) {
+    return (Math.floor((p_bytes / 1024 / 1024) * 100) / 100) + " MB";
+  };
+  NumberUtils.bytesTo = function(p_bytes) {
+    if (p_bytes >= 1000000000) {
+      return (p_bytes / 1000000000).toFixed(2) + ' GB';
+    } else if (p_bytes >= 1000000) {
+      return (p_bytes / 1000000).toFixed(2) + ' MB';
+    } else if (p_bytes >= 1000) {
+      return (p_bytes / 1000).toFixed(2) + ' KB';
+    } else if (p_bytes > 1) {
+      return p_bytes + ' bytes';
+    } else if (p_bytes === 1) {
+      return p_bytes + ' byte';
+    } else {
+      return '0 byte';
+    }
+  };
+  NumberUtils.rangeRandom = function(p_low, p_high, p_rounded) {
+    if (p_rounded == null) {
+      p_rounded = false;
+    }
+    if (!p_rounded) {
+      return (Math.random() * (p_high - p_low)) + p_low;
+    } else {
+      return Math.round(Math.round(Math.random() * (p_high - p_low)) + p_low);
+    }
+  };
+  NumberUtils.distanceBetweenCoordinates = function(p_from, p_to, p_units) {
+    var a, c, dLatitude, dLongitude, radius;
+    if (p_units == null) {
+      p_units = "km";
+    }
+    radius;
+    switch (p_units) {
+      case "km":
+        radius = 6371;
+        break;
+      case "meters":
+        radius = 6378000;
+        break;
+      case "feet":
+        radius = 20925525;
+        break;
+      case "miles":
+        radius = 3963;
+    }
+    dLatitude = (p_to.x - p_from.x) * Math.PI / 180;
+    dLongitude = (p_to.y - p_from.y) * Math.PI / 180;
+    a = Math.sin(dLatitude / 2) * Math.sin(dLatitude / 2) + Math.sin(dLongitude / 2) * Math.sin(dLongitude / 2) * Math.cos(p_from.x * Math.PI / 180) * Math.cos(p_to.x * Math.PI / 180);
+    c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+    return radius * c;
+  };
+  NumberUtils.getShortRotation = function(p_start, p_end, p_useRadians) {
+    var cap, diff, _ref;
+    if (p_useRadians == null) {
+      p_useRadians = false;
+    }
+    cap = p_useRadians ? Math.PI * 2 : 360;
+    diff = (p_end - p_start) % cap;
+    if (diff !== diff % (cap / 2)) {
+      diff = (_ref = diff < 0) != null ? _ref : diff + {
+        cap: diff - cap
+      };
+    }
+    return p_start + diff;
+  };
+  return NumberUtils;
+})();
 /**
 Bunch of utilities methods for Array
 @class ArrayUtils
@@ -5441,6 +5531,9 @@ NavigationLoader = (function(_super) {
   var config, currentStep, lang, loaderRatio, loaderStep, loaderSteps, paths, removeParam, totalContentsLoaded;
   __extends(NavigationLoader, _super);
   NavigationLoader["const"]({
+    PREPARSER_DATA: "pre_parser_data"
+  });
+  NavigationLoader["const"]({
     LANGUAGE_DATA_LOADED: "language_data_loaded"
   });
   NavigationLoader["const"]({
@@ -5569,6 +5662,7 @@ NavigationLoader = (function(_super) {
   	@private
    */
   NavigationLoader.prototype.parseConfig = function(p_data) {
+    this.trigger(NavigationLoader.PREPARSER_DATA, p_data);
     paths = PathsData.getInstance(p_data.paths);
     p_data = paths.translate(p_data);
     config = new ParseConfig(p_data);
@@ -5915,6 +6009,8 @@ Caim = (function(_super) {
     if (p_wrapper == null) {
       p_wrapper = null;
     }
+    this.ready = __bind(this.ready, this);
+    this.preParser = __bind(this.preParser, this);
     this.mainAssetsLoaded = __bind(this.mainAssetsLoaded, this);
     this.preloaderAssetsLoaded = __bind(this.preloaderAssetsLoaded, this);
     this.coreAssetsLoaded = __bind(this.coreAssetsLoaded, this);
@@ -5927,6 +6023,7 @@ Caim = (function(_super) {
     this.groupLoaded = __bind(this.groupLoaded, this);
     this.progress = __bind(this.progress, this);
     this.configLoaded = __bind(this.configLoaded, this);
+    this.preParserState = __bind(this.preParserState, this);
     if (!(p_preloaderView instanceof BaseView)) {
       throw new Error('The param p_preloaderView is null or the instance of param p_preloaderView is not either BaseView class');
     } else {
@@ -5937,12 +6034,30 @@ Caim = (function(_super) {
     app.loader = AssetLoader.getInstance();
     app.detections = Detections.getInstance();
     loader = new NavigationLoader(app.root != null ? app.root + p_configPath : p_configPath);
+    loader.on(NavigationLoader.PREPARSER_DATA, this.preParserState);
     loader.on(NavigationLoader.CONFIG_LOADED, this.configLoaded);
     loader.on(NavigationLoader.GROUP_ASSETS_LOADED, this.groupLoaded);
+    loader.on(NavigationLoader.LOAD_START, this.createPreloaderView);
     loader.on(NavigationLoader.LOAD_PROGRESS, this.progress);
     loader.on(NavigationLoader.LOAD_COMPLETE, this.hidePreloderView);
     false;
   }
+  /**
+  	@method preParserState
+  	@param {Event} evt
+  	@private
+   */
+  Caim.prototype.preParserState = function(evt, data) {
+    var _ref;
+    if (evt != null) {
+      if ((_ref = evt.currentTarget) != null) {
+        if (typeof _ref.off === "function") {
+          _ref.off(NavigationLoader.PREPARSER_DATA, this.preParserState);
+        }
+      }
+    }
+    return typeof this.preParser === "function" ? this.preParser(data) : void 0;
+  };
   /**
   	@method configLoaded
   	@param {Event} evt
@@ -5960,6 +6075,9 @@ Caim = (function(_super) {
     app.config = evt.data;
     app.conditions = app.config.conditions != null ? ConditionsValidation.getInstance(app.config.conditions) : null;
     app.languages = app.config.languages != null ? LanguageData.getInstance() : null;
+    if (typeof this.ready === "function") {
+      this.ready();
+    }
     return false;
   };
   /**
@@ -6137,6 +6255,12 @@ Caim = (function(_super) {
     if (evt == null) {
       evt = null;
     }
+    return false;
+  };
+  Caim.prototype.preParser = function(p_data) {
+    return false;
+  };
+  Caim.prototype.ready = function() {
     return false;
   };
   return Caim;

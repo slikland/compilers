@@ -112,7 +112,9 @@ class NavigationLoader extends EventDispatcher
 	@private
 	###
 	parseConfig:(p_data)=>
-		@trigger NavigationLoader.PREPARSER_DATA, p_data)
+		
+		@trigger(NavigationLoader.PREPARSER_DATA, p_data)
+
 		paths = PathsData.getInstance(p_data.paths)
 		p_data = paths.translate(p_data)
 
