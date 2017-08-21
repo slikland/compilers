@@ -108,7 +108,6 @@ class NumberUtils
 	@getShortRotation:(p_start, p_end, p_useRadians = false)->
 		cap = if p_useRadians then Math.PI * 2 else 360
 		diff = (p_end - p_start) % cap;
-		if (diff !== diff % (cap / 2)) {
-			diff = (diff < 0) ? diff + cap : diff - cap;
-		}
+		if (diff isnt diff % (cap / 2))
+			diff = (diff < 0) ? diff + cap : diff - cap
 		return p_start + diff
