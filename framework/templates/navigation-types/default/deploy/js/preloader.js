@@ -6037,6 +6037,7 @@ Caim = (function(_super) {
     loader.on(NavigationLoader.PREPARSER_DATA, this.preParserState);
     loader.on(NavigationLoader.CONFIG_LOADED, this.configLoaded);
     loader.on(NavigationLoader.GROUP_ASSETS_LOADED, this.groupLoaded);
+    loader.on(NavigationLoader.LOAD_START, this.createPreloaderView);
     loader.on(NavigationLoader.LOAD_PROGRESS, this.progress);
     loader.on(NavigationLoader.LOAD_COMPLETE, this.hidePreloderView);
     false;
