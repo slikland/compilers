@@ -16,6 +16,7 @@ Base class to setup the configuration file and start loading of dependencies.
 ###
 class NavigationLoader extends EventDispatcher
 
+	@const PREPARSER_DATA : "pre_parser_data"
 	@const LANGUAGE_DATA_LOADED : "language_data_loaded"
 	@const CONFIG_LOADED : "config_loaded"
 	@const GROUP_ASSETS_LOADED : "group_assets_loaded"
@@ -111,6 +112,7 @@ class NavigationLoader extends EventDispatcher
 	@private
 	###
 	parseConfig:(p_data)=>
+		@trigger NavigationLoader.PREPARSER_DATA, p_data)
 		paths = PathsData.getInstance(p_data.paths)
 		p_data = paths.translate(p_data)
 

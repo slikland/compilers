@@ -185,14 +185,33 @@ if (!("bind" in Function.prototype)) {
     }
   };
 }
-if (!("trim" in String.prototype)) {
-  String.prototype.trim = function(char) {
-    if (char == null) {
-      char = null;
-    }
-    return this.ltrim(char).rtrim(char);
+String.prototype.url = function() {
+  var a, hash, host, hostname, origin, pathname, port, protocol, search;
+  a = document.createElement('a');
+  a.href = this;
+  origin = a.protocol + '//' + a.hostname;
+  if (a.port.length > 0) {
+    origin = "" + origin + ":" + a.port;
+  }
+  host = a.host, hostname = a.hostname, pathname = a.pathname, port = a.port, protocol = a.protocol, search = a.search, hash = a.hash;
+  a = null;
+  return {
+    origin: origin,
+    host: host,
+    hostname: hostname,
+    pathname: pathname,
+    port: port,
+    protocol: protocol,
+    search: search,
+    hash: hash
   };
-}
+};
+String.prototype.trim = function(char) {
+  if (char == null) {
+    char = null;
+  }
+  return this.ltrim(char).rtrim(char);
+};
 String.prototype.ltrim = function(char) {
   var re;
   if (char == null) {
@@ -370,12 +389,13 @@ if (!("some" in Array.prototype)) {
 }
 Node.prototype.on = Node.prototype.addEventListener;
 Node.prototype.off = Node.prototype.removeEventListener;
+Element.prototype.matches = Element.prototype.matches || Element.prototype.webkitMatchesSelector || Element.prototype.mozMatchesSelector || Element.prototype.msMatchesSelector || Element.prototype.oMatchesSelector;
 if (navigator.mediaDevices == null) {
   navigator.mediaDevices = {};
 }
 navigator.getUserMedia = navigator.mediaDevices.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia;
 window.requestAnimationFrame = window.requestAnimationFrame || window.mozRequestAnimationFrame || window.webkitRequestAnimationFrame || window.msRequestAnimationFrame || function(f) {
-  return setTimeout(f, 1000 / 60);
+  return setTimeout(f, 16.6666666667);
 };
 window.cancelAnimationFrame = window.cancelAnimationFrame || window.mozCancelAnimationFrame || function(requestID) {
   clearTimeout(requestID);
@@ -541,13 +561,16 @@ EventDispatcher = (function() {
   		//`event.target` will be window, and event.currentTarget will be the `ev` instance.
   		ed.trigger('someEvent', {someData: true}, window);
    */
-  EventDispatcher.prototype.trigger = function(evt, data, target) {
-    var e, events, i, k, v, _i, _len, _results;
+  EventDispatcher.prototype.trigger = function(evt, data, target, sourceEvent) {
+    var e, events, i, k, v, _i, _len;
     if (data == null) {
       data = null;
     }
     if (target == null) {
       target = null;
+    }
+    if (sourceEvent == null) {
+      sourceEvent = null;
     }
     if (Array.isArray(evt)) {
       for (_i = 0, _len = evt.length; _i < _len; _i++) {
@@ -566,10 +589,29 @@ EventDispatcher = (function() {
     if (!target) {
       target = this;
     }
+    if (sourceEvent instanceof Event || sourceEvent instanceof CustomEvent) {
+      if (data == null) {
+        data = {};
+      }
+      data.sourceEvent = sourceEvent;
+    }
     e = {
       type: evt,
       target: target,
-      currentTarget: this
+      currentTarget: this,
+      defaultPrevented: false,
+      sourceEvent: sourceEvent || (data != null ? data.sourceEvent : void 0)
+    };
+    e.preventDefault = function() {
+      var _ref;
+      this.defaultPrevented = true;
+      return (_ref = this.sourceEvent) != null ? typeof _ref.preventDefault === "function" ? _ref.preventDefault() : void 0 : void 0;
+    };
+    e.stopPropagation = function() {
+      return sourceEvent != null ? typeof sourceEvent.stopPropagation === "function" ? sourceEvent.stopPropagation() : void 0 : void 0;
+    };
+    e.stopImmediatePropagation = function() {
+      return sourceEvent != null ? typeof sourceEvent.stopImmediatePropagation === "function" ? sourceEvent.stopImmediatePropagation() : void 0 : void 0;
     };
     if (typeof data === 'object') {
       for (k in data) {
@@ -580,11 +622,12 @@ EventDispatcher = (function() {
       }
     }
     i = events.length;
-    _results = [];
     while (i-- > 0) {
-      _results.push(typeof events[i] === "function" ? events[i](e, data) : void 0);
+      if (typeof events[i] === "function") {
+        events[i](e, data);
+      }
     }
-    return _results;
+    return e;
   };
   /**
   	Check if a event handler is already set.
@@ -668,6 +711,7 @@ App = (function(_super) {
   App.project_date_raw = "SL_PROJECT_DATE:1489513136190";
   App.WINDOW_ACTIVE = "windowActive";
   App.WINDOW_INACTIVE = "windowInactive";
+  App.NETWORK_UPDATE = 'networkUpdate';
   framework_version = "3.2.0";
   _root = null;
   _loader = null;
@@ -677,9 +721,11 @@ App = (function(_super) {
   _conditions = null;
   _detections = null;
   function App() {
+    this._updateNetworkStatus = __bind(this._updateNetworkStatus, this);
     this._windowVisibilityChange = __bind(this._windowVisibilityChange, this);
     App.__super__.constructor.apply(this, arguments);
     this._checkWindowActivity();
+    this._checkNetworkStatus();
   }
   App.get({
     info: function() {
@@ -768,6 +814,12 @@ App = (function(_super) {
     }
   });
   App.get({
+    online: function() {
+      var _ref;
+      return typeof window !== "undefined" && window !== null ? (_ref = window.navigator) != null ? _ref.online : void 0 : void 0;
+    }
+  });
+  App.get({
     windowHidden: function() {
       var i, prefixes, prop;
       prop = null;
@@ -808,6 +860,13 @@ App = (function(_super) {
         evtType = App.WINDOW_ACTIVE;
     }
     return this.trigger(evtType);
+  };
+  App.prototype._checkNetworkStatus = function() {
+    window.addEventListener("online", this._updateNetworkStatus);
+    return window.addEventListener("offline", this._updateNetworkStatus);
+  };
+  App.prototype._updateNetworkStatus = function() {
+    return this.trigger(App.NETWORK_UPDATE);
   };
   return App;
 })(EventDispatcher);
@@ -1074,6 +1133,198 @@ if (!window.atob) {
 }
 window.Debug = Debug;
 Debug.init();
+var Resizer;
+Resizer = (function(_super) {
+  var _body, _bounds;
+  __extends(Resizer, _super);
+  Resizer.RESIZE = 'resize_resizer';
+  Resizer.ORIENTATION_CHANGE = 'orientation_change_resizer';
+  Resizer.BREAKPOINT_CHANGE = 'breakpoint_changed_resizer';
+  _bounds = null;
+  _body = null;
+  Resizer.getInstance = function(p_start) {
+    if (p_start == null) {
+      p_start = true;
+    }
+    return Resizer._instance != null ? Resizer._instance : Resizer._instance = new Resizer(p_start);
+  };
+  function Resizer(p_start) {
+    if (p_start == null) {
+      p_start = true;
+    }
+    this.change = __bind(this.change, this);
+    this.stop = __bind(this.stop, this);
+    this.start = __bind(this.start, this);
+    _body = document.querySelector("body");
+    _bounds = {
+      "top": 0,
+      "bottom": 0,
+      "left": 0,
+      "right": 0
+    };
+    this._currentOrientation = this.orientation;
+    if (p_start != null) {
+      this.start();
+    }
+  }
+  Resizer.get({
+    width: function() {
+      return window.innerWidth;
+    }
+  });
+  Resizer.get({
+    height: function() {
+      return window.innerHeight;
+    }
+  });
+  Resizer.get({
+    orientation: function() {
+      var ratio;
+      ratio = screen.width / screen.height;
+      if (window.innerWidth > window.innerHeight && ratio > 1.3) {
+        return 'landscape';
+      } else {
+        return 'portrait';
+      }
+    }
+  });
+  Resizer.get({
+    bounds: function() {
+      return _bounds;
+    }
+  });
+  Resizer.set({
+    bounds: function(p_value) {
+      return _bounds = p_value;
+    }
+  });
+  Resizer.prototype.start = function() {
+    window.addEventListener('resize', this.change);
+    window.addEventListener('orientationchange', this.change);
+    return this.change(null, true);
+  };
+  Resizer.prototype.stop = function() {
+    window.removeEventListener('resize', this.change);
+    return window.removeEventListener('orientationchange', this.change);
+  };
+  Resizer.prototype.change = function(evt, allKinds) {
+    var k, v, _data, _ref, _ref1, _results;
+    if (allKinds == null) {
+      allKinds = false;
+    }
+    if (evt != null) {
+      evt.preventDefault();
+    }
+    if (evt != null) {
+      evt.stopImmediatePropagation();
+    }
+    _data = {
+      "width": this.width,
+      "height": this.height,
+      "bounds": this.bounds,
+      "orientation": this.orientation
+    };
+    if ((evt != null ? evt.type : void 0) === "resize") {
+      this.trigger(Resizer.RESIZE, _data);
+    }
+    if (this._currentOrientation !== this.orientation) {
+      this.trigger(Resizer.ORIENTATION_CHANGE, _data);
+      this._currentOrientation = this.orientation;
+    }
+    if (app.conditions != null) {
+      _ref = app.conditions.list;
+      for (k in _ref) {
+        v = _ref[k];
+        if ((v['size'] != null) || (v['orientation'] != null) || !!allKinds) {
+          if (app.conditions.test(k)) {
+            if (!this.hasClass(k)) {
+              this.addClass(k);
+            }
+          } else {
+            if (this.hasClass(k)) {
+              this.removeClass(k);
+            }
+          }
+        }
+      }
+      _ref1 = app.conditions.list;
+      _results = [];
+      for (k in _ref1) {
+        v = _ref1[k];
+        if ((v['size'] != null) || (v['orientation'] != null) || !!allKinds) {
+          if (app.conditions.test(k)) {
+            _data['breakpoint'] = {
+              key: k,
+              values: v
+            };
+            if (this.latestKey !== k) {
+              this.latestKey = k;
+              this.trigger(Resizer.BREAKPOINT_CHANGE, _data);
+            }
+            break;
+          } else {
+            _results.push(void 0);
+          }
+        } else {
+          _results.push(void 0);
+        }
+      }
+      return _results;
+    }
+  };
+  Resizer.prototype.addClass = function(className) {
+    var classNames, i, p;
+    if (typeof className === 'string') {
+      className = className.replace(/\s+/ig, ' ').split(' ');
+    } else if (typeof className !== 'Array') {
+      return;
+    }
+    classNames = _body.className.replace(/\s+/ig, ' ').split(' ');
+    p = classNames.length;
+    i = className.length;
+    while (i-- > 0) {
+      if (classNames.indexOf(className[i]) >= 0) {
+        continue;
+      }
+      classNames[p++] = className[i];
+    }
+    _body.className = classNames.join(' ');
+    return false;
+  };
+  Resizer.prototype.removeClass = function(className) {
+    var classNames, i, p;
+    if (typeof className === 'string') {
+      className = className.replace(/\s+/ig, ' ').split(' ');
+    } else if (typeof className !== 'Array') {
+      return;
+    }
+    classNames = _body.className.replace(/\s+/ig, ' ').split(' ');
+    i = className.length;
+    while (i-- > 0) {
+      if ((p = classNames.indexOf(className[i])) >= 0) {
+        classNames.splice(p, 1);
+      }
+    }
+    _body.className = classNames.join(' ');
+    return false;
+  };
+  Resizer.prototype.hasClass = function(className) {
+    var classNames, hasClass, i;
+    if (typeof className === 'string') {
+      className = className.replace(/\s+/ig, ' ').split(' ');
+    } else if (typeof className !== 'Array') {
+      return;
+    }
+    classNames = _body.className.replace(/\s+/ig, ' ').split(' ');
+    i = className.length;
+    hasClass = true;
+    while (i-- > 0) {
+      hasClass &= classNames.indexOf(className[i]) >= 0;
+    }
+    return hasClass;
+  };
+  return Resizer;
+})(EventDispatcher);
 /**
 Detections Class
 @class Detections
@@ -1109,36 +1360,10 @@ Detections = (function() {
       test: /chrome|crios|crmo/i,
       version: /(?:chrome|crios|crmo)\/(\d+(\.\d+)*)/i
     }, {
-      name: 'iPod',
-      nick: /iPod/i,
-      test: /ipod/i
-    }, {
-      name: 'iPhone',
-      nick: /iPhone/i,
-      test: /iphone/i
-    }, {
-      name: 'iPad',
-      nick: /iPad/i,
-      test: /ipad/i
-    }, {
-      name: 'FirefoxOS',
-      nick: /FirefoxOS|ffos/i,
-      test: /\((mobile|tablet);[^\)]*rv:[\d\.]+\)firefox|iceweasel/i,
-      version: /(?:firefox|iceweasel)[ \/](\d+(\.\d+)?)/i
-    }, {
       name: 'Firefox',
       nick: /Firefox|ff/i,
       test: /firefox|iceweasel/i,
       version: /(?:firefox|iceweasel)[ \/](\d+(\.\d+)?)/i
-    }, {
-      name: 'Android',
-      nick: /Android/i,
-      test: /android/i
-    }, {
-      name: 'BlackBerry',
-      nick: /BlackBerry/i,
-      test: /(blackberry)|(\bbb)|(rim\stablet)\d+/i,
-      version: /blackberry[\d]+\/(\d+(\.\d+)?)/i
     }, {
       name: 'WebOS',
       nick: /WebOS/i,
@@ -1158,11 +1383,15 @@ Detections = (function() {
     })(Detections, arguments, function(){});
   };
   function Detections() {
-    var k, v, _ref;
+    this.testRetinaDisplay = __bind(this.testRetinaDisplay, this);
+    var k, o, v, validVersion, versionToCheck, _ref;
     this.matched = null;
     this.ua = (typeof navigator !== "undefined" && navigator !== null ? navigator.userAgent : void 0) || '';
     this.platform = (typeof navigator !== "undefined" && navigator !== null ? navigator.platform : void 0) || '';
     this.version = getFirstMatch(/version\/(\d+(\.\d+)*)/i, this.ua);
+    this.vibrate = navigator.vibrate || navigator.webkitVibrate || navigator.mozVibrate || navigator.msVibrate;
+    this.standalone = (typeof window !== "undefined" && window !== null ? window.navigator.standalone : void 0) || (typeof window !== "undefined" && window !== null ? window.matchMedia('(display-mode: standalone)').matches : void 0);
+    this.retina = this.testRetinaDisplay();
     this.getBrowser();
     this.versionArr = this.version == null ? [] : this.version.split('.');
     _ref = this.versionArr;
@@ -1170,15 +1399,26 @@ Detections = (function() {
       v = _ref[k];
       this.versionArr[k] = Number(v);
     }
-    this.orientation = (typeof window !== "undefined" && window !== null ? window.innerWidth : void 0) > (typeof window !== "undefined" && window !== null ? window.innerHeight : void 0) ? 'landscape' : 'portrait';
     this.touch = Boolean('ontouchstart' in window) || Boolean(navigator.maxTouchPoints > 0) || Boolean(navigator.msMaxTouchPoints > 0);
-    this.tablet = /(ipad.*|tablet.*|(android.*?chrome((?!mobi).)*))$/i.test(this.ua);
+    this.tablet = /(ipad.*|tablet(?!\s+pc).*|(android.*?chrome((?!mobi).)*))$/i.test(this.ua);
     this.mobile = !this.tablet && Boolean(getFirstMatch(/(ipod|iphone|ipad)/i, this.ua) || /[^-]mobi/i.test(this.ua));
     this.desktop = !this.mobile && !this.tablet;
     this.os = getOS();
-    this.cache = 'serviceWorker' in navigator;
+    this.cache = this.serviceWorker = 'serviceWorker' in navigator;
     this.canvas = testCanvas();
     this.webgl = testWebGL();
+    versionToCheck = 10;
+    validVersion = false;
+    if (this.version) {
+      validVersion = this.versionArr[0] >= versionToCheck;
+    } else {
+      if (o = /\(iP(?:hone|ad|od).*? OS (\d+)_(\d+)/i.exec(this.ua)) {
+        validVersion = Number(o[1]) >= versionToCheck;
+      }
+    }
+    this.iosInlineVideo = this.os === "ios" && validVersion;
+    console.log(this.os);
+    this.orientation = Resizer.getInstance().orientation;
   }
   Detections.prototype.test = function(value) {
     var i, l, m, result, v, _i, _ref;
@@ -1274,6 +1514,14 @@ Detections = (function() {
     }
     return result;
   };
+  Detections.prototype.testRetinaDisplay = function() {
+    var mq;
+    if (typeof window !== "undefined" && window !== null ? window.matchMedia : void 0) {
+      mq = window.matchMedia('only screen and (min--moz-device-pixel-ratio: 1.3), only screen and (-o-min-device-pixel-ratio: 2.6/2), only screen and (-webkit-min-device-pixel-ratio: 1.3), only screen  and (min-device-pixel-ratio: 1.3), only screen and (min-resolution: 1.3dppx)');
+      return mq && mq.matches || (typeof window !== "undefined" && window !== null ? window.devicePixelRatio : void 0) > 1;
+    }
+    return false;
+  };
   testWebGL = function() {
     var err;
     try {
@@ -1313,80 +1561,7 @@ createjs.EventDispatcher.prototype.on = function() {
     return this.___on.apply(this, arguments);
   }
 };
-var NumberUtils;
-NumberUtils = (function() {
-  function NumberUtils() {}
-  NumberUtils.isEven = function(p_value) {
-    if (p_value % 2 === 0) {
-      return true;
-    } else {
-      return false;
-    }
-  };
-  NumberUtils.isZero = function(p_value) {
-    return Math.abs(p_value) < 0.00001;
-  };
-  NumberUtils.toPercent = function(p_value, p_min, p_max) {
-    return ((p_value - p_min) / (p_max - p_min)) * 100;
-  };
-  NumberUtils.percentToValue = function(p_percent, p_min, p_max) {
-    return ((p_max - p_min) * p_percent) + p_min;
-  };
-  NumberUtils.getBytesAsMegabytes = function(p_bytes) {
-    return (Math.floor((p_bytes / 1024 / 1024) * 100) / 100) + " MB";
-  };
-  NumberUtils.bytesTo = function(p_bytes) {
-    if (p_bytes >= 1000000000) {
-      return (p_bytes / 1000000000).toFixed(2) + ' GB';
-    } else if (p_bytes >= 1000000) {
-      return (p_bytes / 1000000).toFixed(2) + ' MB';
-    } else if (p_bytes >= 1000) {
-      return (p_bytes / 1000).toFixed(2) + ' KB';
-    } else if (p_bytes > 1) {
-      return p_bytes + ' bytes';
-    } else if (p_bytes === 1) {
-      return p_bytes + ' byte';
-    } else {
-      return '0 byte';
-    }
-  };
-  NumberUtils.rangeRandom = function(p_low, p_high, p_rounded) {
-    if (p_rounded == null) {
-      p_rounded = false;
-    }
-    if (!p_rounded) {
-      return (Math.random() * (p_high - p_low)) + p_low;
-    } else {
-      return Math.round(Math.round(Math.random() * (p_high - p_low)) + p_low);
-    }
-  };
-  NumberUtils.distanceBetweenCoordinates = function(p_from, p_to, p_units) {
-    var a, c, dLatitude, dLongitude, radius;
-    if (p_units == null) {
-      p_units = "km";
-    }
-    radius;
-    switch (p_units) {
-      case "km":
-        radius = 6371;
-        break;
-      case "meters":
-        radius = 6378000;
-        break;
-      case "feet":
-        radius = 20925525;
-        break;
-      case "miles":
-        radius = 3963;
-    }
-    dLatitude = (p_to.x - p_from.x) * Math.PI / 180;
-    dLongitude = (p_to.y - p_from.y) * Math.PI / 180;
-    a = Math.sin(dLatitude / 2) * Math.sin(dLatitude / 2) + Math.sin(dLongitude / 2) * Math.sin(dLongitude / 2) * Math.cos(p_from.x * Math.PI / 180) * Math.cos(p_to.x * Math.PI / 180);
-    c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-    return radius * c;
-  };
-  return NumberUtils;
-})();
+undefined
 /**
 Bunch of utilities methods for Array
 @class ArrayUtils
@@ -2509,7 +2684,8 @@ AssetLoader = (function(_super) {
   };
   return AssetLoader;
 })(EventDispatcher);
-var ObjectUtils;
+var ObjectUtils,
+  __slice = [].slice;
 ObjectUtils = (function() {
   function ObjectUtils() {}
   /**
@@ -2541,12 +2717,23 @@ ObjectUtils = (function() {
     }
     return result;
   };
+  ObjectUtils.mixin = function() {
+    var mixins, superclass;
+    superclass = arguments[0], mixins = 2 <= arguments.length ? __slice.call(arguments, 1) : [];
+    return false;
+  };
   ObjectUtils.merge = function(a, b) {
     var k;
-    if (typeof a === 'object' && typeof b === 'object') {
+    if (isPlainObject(a) && isPlainObject(b)) {
       for (k in b) {
         if (!a.hasOwnProperty(k)) {
-          a[k] = b[k];
+          if (isPlainObject(b[k])) {
+            a[k] = ObjectUtils.clone(b[k]);
+          } else {
+            a[k] = b[k];
+          }
+        } else {
+          a[k] = ObjectUtils.merge(a[k], b[k]);
         }
       }
     }
@@ -2634,8 +2821,34 @@ ObjectUtils = (function() {
     }
     return ret;
   };
+  ObjectUtils.getClassName = function(p_source) {
+    var description, matches;
+    if (typeof p_source === 'undefined') {
+      return 'undefined';
+    }
+    if (p_source === null) {
+      return 'null';
+    }
+    if (p_source.constructor != null) {
+      if (p_source.constructor.name != null) {
+        return p_source.constructor.name;
+      } else {
+        description = p_source.constructor.toString();
+        if (description[0] === '[') {
+          matches = description.match(/\[\w+\s*(\w+)\]/);
+        } else {
+          matches = description.match(/function\s*(\w+)/);
+        }
+        if ((matches != null) && matches.length === 2) {
+          return matches[1];
+        }
+      }
+    }
+    return 'undefined';
+  };
   return ObjectUtils;
 })();
+!function(e){if("object"==typeof exports&&"undefined"!=typeof module)module.exports=e();else if("function"==typeof define&&define.amd)define([],e);else{var t;t="undefined"!=typeof window?window:"undefined"!=typeof global?global:"undefined"!=typeof self?self:this,t.isPlainObject=e()}}(function(){return function e(t,r,n){function o(f,u){if(!r[f]){if(!t[f]){var c="function"==typeof require&&require;if(!u&&c)return c(f,!0);if(i)return i(f,!0);var p=new Error("Cannot find module '"+f+"'");throw p.code="MODULE_NOT_FOUND",p}var s=r[f]={exports:{}};t[f][0].call(s.exports,function(e){var r=t[f][1][e];return o(r?r:e)},s,s.exports,e,t,r,n)}return r[f].exports}for(var i="function"==typeof require&&require,f=0;f<n.length;f++)o(n[f]);return o}({1:[function(e,t,r){"use strict";function n(e){return o(e)===!0&&"[object Object]"===Object.prototype.toString.call(e)}var o=e("isobject");t.exports=function(e){var t,r;return n(e)===!1?!1:(t=e.constructor,"function"!=typeof t?!1:(r=t.prototype,n(r)===!1?!1:r.hasOwnProperty("isPrototypeOf")===!1?!1:!0))}},{isobject:2}],2:[function(e,t,r){"use strict";t.exports=function(e){return null!=e&&"object"==typeof e&&!Array.isArray(e)}},{}]},{},[1])(1)});;
 /**
 Singleton ConditionsValidation class
 @class ConditionsValidation
@@ -2916,45 +3129,104 @@ ConditionsValidation = (function() {
 })();
 var BaseDOM,
   __slice = [].slice;
-Node.prototype.__appendChild__ = Node.prototype.appendChild;
-Node.prototype.appendChild = function(node) {
-  var el;
-  el = node;
-  if (node instanceof BaseDOM) {
-    el = node.element;
-    node.parent = this;
-  }
-  Node.prototype.__appendChild__.call(this, el);
-  return node;
-};
-Node.prototype.__removeChild__ = Node.prototype.removeChild;
-Node.prototype.removeChild = function(node) {
-  var el;
-  el = node;
-  if (node instanceof BaseDOM) {
-    el = node.element;
-    node._parent = null;
-  }
-  Node.prototype.__removeChild__.call(this, el);
-  return node;
-};
-Element.prototype.matches = Element.prototype.matches || Element.prototype.webkitMatchesSelector || Element.prototype.mozMatchesSelector || Element.prototype.msMatchesSelector || Element.prototype.oMatchesSelector;
-Node.prototype.findParents = function(query) {
-  if (this.parentNode != null) {
-    if (this.parentNode.matches(query)) {
-      return this.parentNode;
-    } else {
-      return this.parentNode.findParents(query);
+if (!("findParents" in Node.prototype)) {
+  Node.prototype.findParents = function(query) {
+    if ((this.parentNode != null) && this.parentNode !== document) {
+      if (this.parentNode.matches(query)) {
+        return this.parentNode;
+      } else {
+        return this.parentNode.findParents(query);
+      }
     }
+    return null;
+  };
+}
+if (!("contains" in Node.prototype)) {
+  Node.prototype.contains = function(node) {
+    var v, _i, _len, _ref;
+    _ref = this.childNodes;
+    for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+      v = _ref[_i];
+      if (v === (node.element || node)) {
+        return true;
+        break;
+      }
+    }
+    return false;
+  };
+} else {
+  if (!("__contains__" in Node.prototype)) {
+    Node.prototype.__contains__ = Node.prototype.contains;
+    Node.prototype.contains = function(node) {
+      return this.__contains__(node.element || node);
+    };
   }
-  return null;
-};
+}
+if (!("__appendChild__" in Node.prototype)) {
+  Node.prototype.__appendChild__ = Node.prototype.appendChild;
+  Node.prototype.appendChild = function(node) {
+    var el;
+    el = node.element || node;
+    if (el != null) {
+      this.__appendChild__(el);
+    }
+    if (node instanceof BaseDOM) {
+      node.parent = this.__instance__ || this;
+    }
+    return node;
+  };
+}
+if (!("__removeChild__" in Node.prototype)) {
+  Node.prototype.__removeChild__ = Node.prototype.removeChild;
+  Node.prototype.removeChild = function(node) {
+    var el;
+    el = node.element || node;
+    if (el != null) {
+      this.__removeChild__(el);
+    }
+    if (node instanceof BaseDOM) {
+      node.parent = null;
+    }
+    return node;
+  };
+}
+if (!("__replaceChild__" in Node.prototype)) {
+  Node.prototype.__replaceChild__ = Node.prototype.replaceChild;
+  Node.prototype.replaceChild = function(newNode, oldNode) {
+    var el1, el2, node;
+    el1 = newNode;
+    el2 = oldNode;
+    if (newNode instanceof BaseDOM) {
+      el1 = newNode.element;
+    }
+    if (oldNode instanceof BaseDOM) {
+      el2 = oldNode.element;
+    }
+    if ((el1 != null) && (el2 != null)) {
+      node = Node.prototype.__replaceChild__.call(this, el1, el2);
+    }
+    if (newNode instanceof BaseDOM) {
+      newNode.parent = this.__instance__ || this;
+    }
+    if (oldNode instanceof BaseDOM) {
+      oldNode.parent = null;
+    }
+    return node;
+  };
+}
 /**
 Base DOM manipulation class
 @class BaseDOM
  */
 BaseDOM = (function(_super) {
   __extends(BaseDOM, _super);
+  BaseDOM.isElement = function(p_target) {
+    if (typeof HTMLElement === 'object') {
+      return p_target instanceof HTMLElement || p_target instanceof BaseDOM;
+    } else {
+      return typeof p_target === 'object' && (p_target != null ? p_target.nodeType : void 0) === 1 && typeof (p_target != null ? p_target.nodeName : void 0) === 'string';
+    }
+  };
   function BaseDOM() {
     var className, element, i, namespace, option, p_options;
     p_options = 1 <= arguments.length ? __slice.call(arguments, 0) : [];
@@ -2962,7 +3234,7 @@ BaseDOM = (function(_super) {
     element = 'div';
     className = null;
     namespace = null;
-    if (typeof p_options[0] === 'string' || p_options[0] instanceof HTMLElement) {
+    if (typeof p_options[0] === 'string' || p_options[0] instanceof Element) {
       element = p_options[0];
     } else {
       i = p_options.length;
@@ -2986,8 +3258,13 @@ BaseDOM = (function(_super) {
       } else {
         this._element = document.createElement(element);
       }
-    } else if (element instanceof HTMLElement) {
+    } else {
       this._element = element;
+    }
+    if ((this._element.parentElement != null) && (this._parent == null)) {
+      this._parent = this._element.parentElement.__instance__ || new BaseDOM({
+        element: this._element.parentElement
+      });
     }
     if (className) {
       this.addClass(className);
@@ -3020,6 +3297,22 @@ BaseDOM = (function(_super) {
     }
   });
   BaseDOM.get({
+    outerWidth: function() {
+      var space, w;
+      w = this.width;
+      space = this.numberStyle('margin-left') + this.numberStyle('margin-right');
+      return w + space;
+    }
+  });
+  BaseDOM.get({
+    outerHeight: function() {
+      var h, space;
+      h = this.height;
+      space = this.numberStyle('margin-top') + this.numberStyle('margin-bottom');
+      return h + space;
+    }
+  });
+  BaseDOM.get({
     left: function() {
       return this.getBounds().left;
     }
@@ -3040,16 +3333,49 @@ BaseDOM = (function(_super) {
     }
   });
   BaseDOM.get({
-    parent: function() {
-      return this._parent;
+    windowScroll: function() {
+      var isCSS1Compat, supportPageOffset, x, y;
+      supportPageOffset = window.pageXOffset !== void 0;
+      isCSS1Compat = (document.compatMode || "") === "CSS1Compat";
+      x = supportPageOffset ? window.pageXOffset : isCSS1Compat ? document.documentElement.scrollLeft : document.body.scrollLeft;
+      y = supportPageOffset ? window.pageYOffset : isCSS1Compat ? document.documentElement.scrollTop : document.body.scrollTop;
+      return {
+        x: x,
+        y: y
+      };
+    }
+  });
+  BaseDOM.get({
+    scrollPosition: function() {
+      return {
+        y: this.element.offsetTop,
+        x: this.element.offsetLeft
+      };
     }
   });
   BaseDOM.set({
-    parent: function(value) {
-      if (!(value instanceof BaseDOM) && !(value instanceof Node)) {
-        throw new Error('Parent instance is not either Node or BaseDOM');
-      }
-      return this._parent = value;
+    scrollY: function(p_value) {
+      return this.element.scrollTop = p_value;
+    }
+  });
+  BaseDOM.get({
+    scrollY: function() {
+      return this.element.scrollTop;
+    }
+  });
+  BaseDOM.set({
+    scrollX: function(p_value) {
+      return this.element.scrollLeft = p_value;
+    }
+  });
+  BaseDOM.get({
+    scrollX: function() {
+      return this.element.scrollLeft;
+    }
+  });
+  BaseDOM.get({
+    attributes: function() {
+      return this.element.attributes;
     }
   });
   BaseDOM.get({
@@ -3083,13 +3409,34 @@ BaseDOM = (function(_super) {
     }
   });
   BaseDOM.get({
-    isAttached: function() {
-      return (typeof document.contains === "function" ? document.contains(this.element) : void 0) || document.body.contains(this.element);
+    parent: function() {
+      return this._parent;
+    }
+  });
+  BaseDOM.set({
+    parent: function(value) {
+      if (value == null) {
+        value = null;
+      }
+      if (value != null) {
+        if (!(value instanceof BaseDOM) && !(value instanceof Node)) {
+          throw new Error('Parent instance is not either Node or BaseDOM');
+        }
+        return this._parent = value;
+      } else {
+        return this._parent = null;
+      }
     }
   });
   BaseDOM.get({
-    attributes: function() {
-      return this.element.attributes;
+    isAttached: function(p_container) {
+      if (p_container == null) {
+        p_container = null;
+      }
+      if (((p_container != null ? p_container.contains : void 0) != null) && typeof p_container.contains === 'function') {
+        return p_container.contains(this.element);
+      }
+      return (typeof document.contains === "function" ? document.contains(this.element) : void 0) || document.body.contains(this.element);
     }
   });
   BaseDOM.prototype.appendChild = function(child) {
@@ -3110,41 +3457,80 @@ BaseDOM = (function(_super) {
       this.element.insertBefore(el, this.childNodes[index]);
     }
     if (child instanceof BaseDOM) {
-      child.parent = this;
+      child.parent = this.__instance__ || this;
     }
     return child;
+  };
+  BaseDOM.prototype.replaceChild = function(replaceElement, oldElement) {
+    var el1, el2;
+    el1 = replaceElement;
+    el2 = oldElement;
+    if (replaceElement instanceof BaseDOM) {
+      el1 = replaceElement.element;
+    }
+    if (oldElement instanceof BaseDOM) {
+      el2 = oldElement.element;
+    }
+    this.element.replaceChild(el1, el2);
+    if (replaceElement instanceof BaseDOM) {
+      replaceElement.parent = this.__instance__ || this;
+    }
+    if (oldElement instanceof BaseDOM) {
+      oldElement.parent = null;
+    }
+    return replaceElement;
   };
   BaseDOM.prototype.remove = function() {
     var _ref;
     return (_ref = this.parent) != null ? typeof _ref.removeChild === "function" ? _ref.removeChild(this) : void 0 : void 0;
   };
-  BaseDOM.prototype.removeChild = function(child) {
-    var el, _ref;
-    el = child;
-    if (child instanceof BaseDOM) {
-      el = child != null ? child.element : void 0;
+  BaseDOM.prototype.removeChild = function(child, destroy) {
+    if (destroy == null) {
+      destroy = false;
     }
-    try {
-      return (_ref = this.element) != null ? typeof _ref.removeChild === "function" ? _ref.removeChild(el) : void 0 : void 0;
-    } catch (_error) {}
+    if (!child) {
+      return;
+    }
+    if (child instanceof BaseDOM) {
+      if (!!destroy) {
+        child.removeAll(true);
+        child.destroy();
+        return child;
+      }
+    }
+    if (this.contains(child)) {
+      return this.element.removeChild(child);
+    }
   };
   BaseDOM.prototype.removeChildAt = function(index) {
     if (index == null) {
       index = -1;
     }
     if (index < this.childNodes.length) {
-      return typeof this.removeChild === "function" ? this.removeChild(this.childNodes[i]) : void 0;
+      return this.removeChild(this.childNodes[i]);
     }
   };
-  BaseDOM.prototype.removeAll = function() {
-    var childs, i, _results;
+  BaseDOM.prototype.removeAll = function(destroy) {
+    var child, childs, domInstance, i, _results;
+    if (destroy == null) {
+      destroy = false;
+    }
     childs = this.childNodes;
     i = childs.length;
     _results = [];
     while (i-- > 0) {
-      _results.push(this.removeChild(childs[i]));
+      domInstance = childs[i].__instance__;
+      child = domInstance || childs[i];
+      if (child != null) {
+        _results.push(this.removeChild(child, !!domInstance && !!destroy));
+      } else {
+        _results.push(void 0);
+      }
     }
     return _results;
+  };
+  BaseDOM.prototype.contains = function(child) {
+    return this.element.contains(child);
   };
   BaseDOM.prototype.matches = function(query) {
     return this.element.matches(query);
@@ -3184,13 +3570,39 @@ BaseDOM = (function(_super) {
     }
     return elements;
   };
+  BaseDOM.prototype.removeAttr = function(name, namespace) {
+    var key, methodArgs, methodSuffix, _i, _len, _ref, _ref1, _results;
+    if (namespace == null) {
+      namespace = null;
+    }
+    if (namespace === true) {
+      namespace = this.namespace;
+    }
+    methodArgs = [name];
+    methodSuffix = "Attribute";
+    if (namespace != null) {
+      methodSuffix += "NS";
+      methodArgs.unshift(namespace);
+    }
+    if (typeof name === 'string') {
+      return (_ref = this.element) != null ? _ref["remove" + methodSuffix].apply(this.element, methodArgs) : void 0;
+    } else if (Array.isArray(name)) {
+      _results = [];
+      for (_i = 0, _len = name.length; _i < _len; _i++) {
+        key = name[_i];
+        methodArgs.splice(-1, 1, key);
+        _results.push((_ref1 = this.element) != null ? _ref1["remove" + methodSuffix].apply(this.element, methodArgs) : void 0);
+      }
+      return _results;
+    }
+  };
   BaseDOM.prototype.attr = function(name, value, namespace) {
     var k, v, _results;
     if (value == null) {
-      value = 'nonenonenone';
+      value = null;
     }
     if (namespace == null) {
-      namespace = false;
+      namespace = null;
     }
     if (typeof name === 'string') {
       return this._attr(name, value, namespace);
@@ -3204,52 +3616,115 @@ BaseDOM = (function(_super) {
     }
   };
   BaseDOM.prototype._attr = function(name, value, namespace) {
-    if (value == null) {
-      value = 'nonenonenone';
-    }
-    if (namespace == null) {
-      namespace = false;
-    }
-    if (namespace === false) {
-      namespace = this.namespace;
-    }
-    if (value !== 'nonenonenone') {
-      if (namespace) {
-        this.element.setAttributeNS(namespace, name, value);
-      } else {
-        this.element.setAttribute(name, value);
-      }
-    }
-    if (namespace) {
-      return this.element.getAttributeNS(namespace, name);
-    } else {
-      return this.element.getAttribute(name);
-    }
-  };
-  BaseDOM.prototype._css = function(name, value) {
+    var methodArgs, methodSuffix, _ref, _ref1;
     if (value == null) {
       value = null;
+    }
+    if (namespace == null) {
+      namespace = null;
+    }
+    if (namespace === true) {
+      namespace = this.namespace;
+    }
+    methodArgs = [name, value];
+    methodSuffix = "Attribute";
+    if (namespace != null) {
+      methodSuffix += "NS";
+      methodArgs.unshift(namespace);
+    }
+    if (value != null) {
+      if ((_ref = this.element) != null) {
+        _ref["set" + methodSuffix].apply(this.element, methodArgs);
+      }
+    }
+    return (_ref1 = this.element) != null ? _ref1["get" + methodSuffix].apply(this.element, methodArgs) : void 0;
+  };
+  BaseDOM.prototype._css = function(name, value, p_number) {
+    if (value == null) {
+      value = null;
+    }
+    if (p_number == null) {
+      p_number = false;
     }
     if (value !== null) {
       this.element.style[name] = value;
     }
-    return this.element.style[name];
+    if (p_number) {
+      return this.numberStyle(name);
+    } else {
+      return this.style(name);
+    }
   };
-  BaseDOM.prototype.css = function(name, value) {
+  BaseDOM.prototype.css = function(name, value, p_number) {
     var k, v, _results;
     if (value == null) {
       value = null;
     }
+    if (p_number == null) {
+      p_number = false;
+    }
     if (typeof name === 'string') {
-      return this._css(name, value);
+      return this._css(name, value, p_number);
     } else if (typeof name === 'object') {
       _results = [];
       for (k in name) {
         v = name[k];
-        _results.push(this._css(k, v));
+        _results.push(this._css(k, v, p_number));
       }
       return _results;
     }
+  };
+  BaseDOM.prototype.style = function(styleProp, el) {
+    var source;
+    if (styleProp == null) {
+      styleProp = null;
+    }
+    if (el == null) {
+      el = this.element;
+    }
+    if (el instanceof BaseDOM) {
+      el = el.element;
+    }
+    source = null;
+    if (window.getComputedStyle != null) {
+      source = window.getComputedStyle(el);
+    } else if (el.currentStyle) {
+      source = el.currentStyle;
+    } else if (document.defaultView && document.defaultView.getComputedStyle) {
+      source = document.defaultView.getComputedStyle(el, null);
+    } else {
+      source = this.element.style;
+    }
+    if (styleProp != null) {
+      return source[styleProp];
+    } else {
+      return source;
+    }
+  };
+  BaseDOM.prototype.numberStyle = function(styleProp, el) {
+    var k, result, source, v;
+    if (styleProp == null) {
+      styleProp = null;
+    }
+    if (el == null) {
+      el = this.element;
+    }
+    if (styleProp != null) {
+      return parseFloat(this.style(styleProp, el) || '0');
+    } else {
+      source = this.style(null, el);
+    }
+    result = {};
+    for (k in source) {
+      v = source[k];
+      if (isNaN(parseInt(k))) {
+        result[k] = v;
+        if (!isNaN(parseFloat(v))) {
+          result[k] = parseFloat(v);
+        }
+      }
+    }
+    return result;
   };
   BaseDOM.prototype.addClass = function(className) {
     var classNames, i, p;
@@ -3361,7 +3836,14 @@ BaseDOM = (function(_super) {
     if (typeof this.off === "function") {
       this.off();
     }
-    return typeof this.removeAll === "function" ? this.removeAll() : void 0;
+    if (typeof this.removeAll === "function") {
+      this.removeAll(true);
+    }
+    if (typeof this.remove === "function") {
+      this.remove();
+    }
+    this._element.__instance__ = null;
+    return delete this._element.__instance__;
   };
   return BaseDOM;
 })(EventDispatcher);

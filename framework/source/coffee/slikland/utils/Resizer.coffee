@@ -15,6 +15,7 @@ class Resizer extends EventDispatcher
 	constructor:(p_start=true)->
 		_body = document.querySelector("body")
 		_bounds = {"top":0, "bottom":0, "left":0, "right":0}
+		@_currentOrientation = @orientation
 		if p_start? then @start()
 		
 	@get width:->
@@ -24,7 +25,8 @@ class Resizer extends EventDispatcher
 		return window.innerHeight
 
 	@get orientation:->
-		return if window.innerWidth > window.innerHeight then 'landscape' else 'portrait'
+		ratio = screen.width/screen.height
+		if window.innerWidth > window.innerHeight and ratio > 1.3 then 'landscape' else 'portrait'
 
 	@get bounds:->
 		return _bounds
@@ -35,13 +37,13 @@ class Resizer extends EventDispatcher
 	start:()=>
 		window.addEventListener 'resize', @change
 		window.addEventListener 'orientationchange', @change
-		@change()
+		@change(null, true)
 
 	stop:()=>
 		window.removeEventListener 'resize', @change
 		window.removeEventListener 'orientationchange', @change
 
-	change:(evt)=>
+	change:(evt, allKinds = false)=>
 		evt?.preventDefault()
 		evt?.stopImmediatePropagation()
 		
@@ -53,17 +55,19 @@ class Resizer extends EventDispatcher
 		}
 
 		if evt?.type == "resize" then @trigger Resizer.RESIZE, _data
-		if evt?.type == "orientationchange" then @trigger Resizer.ORIENTATION_CHANGE, _data
+		if @_currentOrientation != @orientation
+			@trigger Resizer.ORIENTATION_CHANGE, _data
+			@_currentOrientation = @orientation
 		if app.conditions?
 			for k, v of app.conditions.list
-				if v['size']? || v['orientation']?
+				if v['size']? || v['orientation']? || !!allKinds
 					if app.conditions.test(k)
 						if !@hasClass(k) then @addClass(k)
 					else
 						if @hasClass(k) then @removeClass(k)
-			
+
 			for k, v of app.conditions.list
-				if v['size']? || v['orientation']?
+				if v['size']? || v['orientation']? || !!allKinds
 					if app.conditions.test(k)
 						_data['breakpoint'] = {key:k, values:v}
 						if @latestKey != k

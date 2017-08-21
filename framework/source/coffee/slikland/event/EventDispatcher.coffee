@@ -79,7 +79,7 @@ class EventDispatcher
 		//`event.target` will be window, and event.currentTarget will be the `ev` instance.
 		ed.trigger('someEvent', {someData: true}, window);
 	###
-	trigger:(evt, data = null, target = null)=>
+	trigger:(evt, data = null, target = null, sourceEvent = null)=>
 		if Array.isArray(evt)
 			for e in evt
 				@trigger(evt, data)
@@ -91,7 +91,19 @@ class EventDispatcher
 			return
 		if !target
 			target = @
-		e = {type: evt, target: target, currentTarget: @}
+
+		if sourceEvent instanceof Event or sourceEvent instanceof CustomEvent
+			data ?= {}
+			data.sourceEvent = sourceEvent
+
+		e = {type: evt, target: target, currentTarget: @, defaultPrevented: false, sourceEvent: sourceEvent || data?.sourceEvent}
+		e.preventDefault = ()->
+			@defaultPrevented = true
+			@sourceEvent?.preventDefault?()
+		e.stopPropagation = ()->
+			sourceEvent?.stopPropagation?()
+		e.stopImmediatePropagation = ()->
+			sourceEvent?.stopImmediatePropagation?()
 
 		if typeof(data) == 'object'
 			for k, v of data
@@ -100,6 +112,7 @@ class EventDispatcher
 		i = events.length
 		while i-- > 0
 			events[i]?(e, data)
+		return e
 
 	###*
 	Check if a event handler is already set.

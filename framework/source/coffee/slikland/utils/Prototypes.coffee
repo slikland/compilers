@@ -190,9 +190,19 @@ unless "bind" of Function::
 #
 # Add ECMA262-5 string trim if not supported natively
 #
-unless "trim" of String::
-	String::trim=(char = null)->
-		return @ltrim(char).rtrim(char)
+
+String::url = ()->
+	a = document.createElement('a')
+	a.href = @
+	origin = a.protocol + '//' + a.hostname
+	if a.port.length > 0
+		origin = "#{origin}:#{a.port}"
+	{host, hostname, pathname, port, protocol, search, hash} = a
+	a = null
+	return {origin, host, hostname, pathname, port, protocol, search, hash}
+
+String::trim=(char = null)->
+	return @ltrim(char).rtrim(char)
 
 String::ltrim=(char = null)->
 	if !char
@@ -313,6 +323,8 @@ unless "some" of Array::
 Node::on = Node::addEventListener
 Node::off = Node::removeEventListener
 
+Element::matches = Element::matches || Element::webkitMatchesSelector || Element::mozMatchesSelector || Element::msMatchesSelector || Element::oMatchesSelector
+
 ##------------------------------------------------------------------------------
 #
 # ADDED OLDER BROWSERS SUPPORT
@@ -322,7 +334,7 @@ navigator.getUserMedia = navigator.mediaDevices.getUserMedia = navigator.getUser
 
 window.requestAnimationFrame = window.requestAnimationFrame || window.mozRequestAnimationFrame || window.webkitRequestAnimationFrame || window.msRequestAnimationFrame || (f) ->
   #simulate calling code 60 
-  setTimeout f, 1000 / 60
+  setTimeout f, 16.6666666667
 
 window.cancelAnimationFrame = window.cancelAnimationFrame || window.mozCancelAnimationFrame || (requestID) ->
   clearTimeout requestID

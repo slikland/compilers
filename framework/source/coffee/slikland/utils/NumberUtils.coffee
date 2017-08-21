@@ -1,3 +1,5 @@
+#import slikland.utils.Prototypes
+
 # Public: Bunch of utilities methods for {Number}
 class NumberUtils
 
@@ -102,3 +104,11 @@ class NumberUtils
 		c  = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a))
 
 		return radius * c
+
+	@getShortRotation:(p_start, p_end, p_useRadians = false)->
+		cap = if p_useRadians then Math.PI * 2 else 360
+		diff = (p_end - p_start) % cap;
+		if (diff !== diff % (cap / 2)) {
+			diff = (diff < 0) ? diff + cap : diff - cap;
+		}
+		return p_start + diff
