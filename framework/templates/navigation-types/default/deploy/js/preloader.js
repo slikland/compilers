@@ -21,8 +21,8 @@ if (isIE() === 8) {
   __scopeIE8 = document.createElement("IE8_" + Math.random());
 }
 /**
-This method is a decorator to create constant variable to a class.  
-A extending class cannot override this constant either can't be reassigned.  
+This method is a decorator to create constant variable to a class.
+A extending class cannot override this constant either can't be reassigned.
 * Please ignore de backslash on \\\@ as the code formatter doesn't escape atmarks.
 @method @const
 @example
@@ -53,7 +53,7 @@ Function.prototype["const"] = function(p_prop) {
 };
 /**
 EXPERIMENTAL
-This method is a decorator to protect a property of a class instance removing the property name from enumerable list.  
+This method is a decorator to protect a property of a class instance removing the property name from enumerable list.
 * Please ignore de backslash on \\\@ as the code formatter doesn't escape atmarks.
 @method @protectProperties
 @example
@@ -86,9 +86,9 @@ Function.prototype.protectProperties = function(p_props) {
   return null;
 };
 /**
-Getter decorator for a class instance.  
-With this decorator you're able to assign a getter method to a variable.  
-Also for a special case, you can assign a scope to the getter so you can create static getter to a class.  
+Getter decorator for a class instance.
+With this decorator you're able to assign a getter method to a variable.
+Also for a special case, you can assign a scope to the getter so you can create static getter to a class.
 * Please ignore de backslash on \\\@ as the code formatter doesn't escape atmarks.
 @method @get
 @example
@@ -125,9 +125,9 @@ Function.prototype.get = function(scope, p_prop) {
   return null;
 };
 /**
-Setter decorator for a class instance.  
-With this decorator you're able to assign a setter method to a variable.  
-Also for a special case, you can assign a scope to the setter so you can create static setter to a class.  
+Setter decorator for a class instance.
+With this decorator you're able to assign a setter method to a variable.
+Also for a special case, you can assign a scope to the setter so you can create static setter to a class.
 * Please ignore de backslash on \\\@ as the code formatter doesn't escape atmarks.
 @method @set
 @example
@@ -169,6 +169,9 @@ Function.prototype.set = function(scope, p_prop) {
   }
   return null;
 };
+Function.isCallable = function(fn) {
+  return typeof fn === 'function' || Object.prototype.toString.call(fn) === '[object Function]';
+};
 if (!("bind" in Function.prototype)) {
   Function.prototype.bind = function(owner) {
     var args, that;
@@ -185,6 +188,23 @@ if (!("bind" in Function.prototype)) {
     }
   };
 }
+Number.MaxSafeInteger = Math.pow(2, 53) - 1;
+Number.toInteger = function(value) {
+  var number;
+  number = Number(value);
+  if (isNaN(number)) {
+    return 0;
+  }
+  if (number === 0 || !isFinite(number)) {
+    return number;
+  }
+  return (number > 0 ? 1 : -1) * Math.floor(Math.abs(number));
+};
+Number.toLength = function(value) {
+  var len;
+  len = this.toInteger(value);
+  return Math.min(Math.max(len, 0), Number.MaxSafeInteger);
+};
 String.prototype.url = function() {
   var a, hash, host, hostname, origin, pathname, port, protocol, search;
   a = document.createElement('a');
@@ -269,6 +289,48 @@ String.prototype.padRight = function(length, char) {
 if (!("isArray" in Array.prototype)) {
   Array.isArray = function(arg) {
     return Object.prototype.toString.call(arg) === '[object Array]';
+  };
+}
+if (!("of" in Array.prototype)) {
+  Array.of = function() {
+    return Array.prototype.slice.call(arguments);
+  };
+}
+if (!("from" in Array.prototype)) {
+  Array.from = function() {
+    return function(arrayLike) {
+      var A, C, T, items, k, kValue, len, mapFn;
+      C = this;
+      items = Object(arrayLike);
+      if (arrayLike === null) {
+        throw new TypeError('Array.from requires an array-like object - not null or undefined');
+      }
+      mapFn = arguments.length > 1 ? arguments[1] : void 0;
+      T = void 0;
+      if (typeof mapFn !== 'undefined') {
+        if (!Function.isCallable(mapFn)) {
+          throw new TypeError('Array.from: when provided, the second argument must be a function');
+        }
+        if (arguments.length > 2) {
+          T = arguments[2];
+        }
+      }
+      len = Number.toLength(items.length);
+      A = Function.isCallable(C) ? Object(new C(len)) : new Array(len);
+      k = 0;
+      kValue = void 0;
+      while (k < len) {
+        kValue = items[k];
+        if (mapFn) {
+          A[k] = typeof T === 'undefined' ? mapFn(kValue, k) : mapFn.call(T, kValue, k);
+        } else {
+          A[k] = kValue;
+        }
+        k += 1;
+      }
+      A.length = len;
+      return A;
+    };
   };
 }
 if (!("indexOf" in Array.prototype)) {
@@ -390,17 +452,86 @@ if (!("some" in Array.prototype)) {
 Node.prototype.on = Node.prototype.addEventListener;
 Node.prototype.off = Node.prototype.removeEventListener;
 Element.prototype.matches = Element.prototype.matches || Element.prototype.webkitMatchesSelector || Element.prototype.mozMatchesSelector || Element.prototype.msMatchesSelector || Element.prototype.oMatchesSelector;
+Element.prototype.isElement = function(p_target) {
+  if (typeof HTMLElement === 'object') {
+    return p_target instanceof HTMLElement || p_target instanceof BaseDOM;
+  } else {
+    return typeof p_target === 'object' && (p_target != null ? p_target.nodeType : void 0) === 1 && typeof (p_target != null ? p_target.nodeName : void 0) === 'string';
+  }
+};
 if (navigator.mediaDevices == null) {
   navigator.mediaDevices = {};
 }
 navigator.getUserMedia = navigator.mediaDevices.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia;
-window.requestAnimationFrame = window.requestAnimationFrame || window.mozRequestAnimationFrame || window.webkitRequestAnimationFrame || window.msRequestAnimationFrame || function(f) {
-  return setTimeout(f, 16.6666666667);
-};
-window.cancelAnimationFrame = window.cancelAnimationFrame || window.mozCancelAnimationFrame || function(requestID) {
-  clearTimeout(requestID);
-  return false;
-};
+(function() {
+  var browserRaf, canceled, lastTime, nowOffset, vendor, w, _i, _len, _ref;
+  w = window;
+  _ref = ['ms', 'moz', 'webkit', 'o'];
+  for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+    vendor = _ref[_i];
+    if (w.requestAnimationFrame) {
+      break;
+    }
+    w.requestAnimationFrame = w["" + vendor + "RequestAnimationFrame"];
+    w.cancelAnimationFrame = w["" + vendor + "CancelAnimationFrame"] || w["" + vendor + "CancelRequestAnimationFrame"];
+  }
+  if (!('performance' in window)) {
+    window.performance = {};
+  }
+  if (!Date.now) {
+    Date.now = (function(_this) {
+      return function() {
+        return new Date().getTime();
+      };
+    })(this);
+  }
+  if (!('now' in window.performance)) {
+    nowOffset = Date.now();
+    if (performance.timing && performance.timing.navigationStart) {
+      nowOffset = performance.timing.navigationStart;
+    }
+    window.performance.now = (function(_this) {
+      return function() {
+        return Date.now() - nowOffset;
+      };
+    })(this);
+  }
+  if (w.requestAnimationFrame) {
+    if (w.cancelAnimationFrame) {
+      return;
+    }
+    browserRaf = w.requestAnimationFrame;
+    canceled = {};
+    w.requestAnimationFrame = function(callback) {
+      var id;
+      return id = browserRaf(function(time) {
+        if (id in canceled) {
+          return delete canceled[id];
+        } else {
+          return callback(time);
+        }
+      });
+    };
+    return w.cancelAnimationFrame = function(id) {
+      return canceled[id] = true;
+    };
+  } else {
+    lastTime = 0;
+    w.requestAnimationFrame = function(callback) {
+      var currTime, id, timeToCall;
+      currTime = Date.now();
+      timeToCall = Math.max(0, 16 - (currTime - lastTime));
+      id = window.setTimeout(function() {
+        return callback(currTime + timeToCall);
+      }, timeToCall);
+      lastTime = currTime + timeToCall;
+      return id;
+    };
+    return w.cancelAnimationFrame = function(id) {
+      return clearTimeout(id);
+    };
+  }
+})();
 if (typeof Cache !== "undefined" && Cache !== null) {
   if (!("add" in Cache.prototype)) {
     Cache.prototype.add = function(request) {
@@ -1133,6 +1264,259 @@ if (!window.atob) {
 }
 window.Debug = Debug;
 Debug.init();
+var DOMUtils;
+DOMUtils = (function() {
+  function DOMUtils() {}
+  DOMUtils.addCSSClass = function(el, className) {
+    var classNames, i, p;
+    if (!(el instanceof Element)) {
+      return;
+    }
+    if (typeof className === 'string') {
+      className = className.replace(/\s+/ig, ' ').split(' ');
+    } else if (typeof className !== 'Array') {
+      return;
+    }
+    classNames = el.className.replace(/\s+/ig, ' ').split(' ');
+    p = classNames.length;
+    i = className.length;
+    while (i-- > 0) {
+      if (classNames.indexOf(className[i]) >= 0) {
+        continue;
+      }
+      classNames[p++] = className[i];
+    }
+    return el.className = classNames.join(' ');
+  };
+  DOMUtils.removeCSSClass = function(el, className) {
+    var classNames, i, p;
+    if (!(el instanceof Element)) {
+      return;
+    }
+    if (typeof className === 'string') {
+      className = className.replace(/\s+/ig, ' ').split(' ');
+    } else if (typeof className !== 'Array') {
+      return;
+    }
+    classNames = el.className.replace(/\s+/ig, ' ').split(' ');
+    i = className.length;
+    while (i-- > 0) {
+      if ((p = classNames.indexOf(className[i])) >= 0) {
+        classNames.splice(p, 1);
+      }
+    }
+    return el.className = classNames.join(' ');
+  };
+  DOMUtils.hasCSSClass = function(el, className) {
+    var classNames, hasClass, i;
+    if (!(el instanceof Element)) {
+      return;
+    }
+    if (typeof className === 'string') {
+      className = className.replace(/\s+/ig, ' ').split(' ');
+    } else if (typeof className !== 'Array') {
+      return;
+    }
+    classNames = el.className.replace(/\s+/ig, ' ').split(' ');
+    i = className.length;
+    hasClass = true;
+    while (i-- > 0) {
+      hasClass &= classNames.indexOf(className[i]) >= 0;
+    }
+    return hasClass;
+  };
+  DOMUtils.toggleCSSClass = function(el, name, toggle) {
+    var has;
+    if (toggle == null) {
+      toggle = null;
+    }
+    if (!el) {
+      return;
+    }
+    has = this.hasCSSClass(el, name);
+    if (toggle === null) {
+      toggle = !has;
+    }
+    if (toggle) {
+      return this.addCSSClass(el, name);
+    } else {
+      return this.removeCSSClass(el, name);
+    }
+  };
+  DOMUtils.findParentQuerySelector = function(target, selector) {
+    var i, items;
+    if (!target.parentNode || target.parentNode === target) {
+      return false;
+    }
+    items = target.parentNode.querySelectorAll(selector);
+    i = items.length;
+    while (i-- > 0) {
+      if (items[i] === target) {
+        return target;
+      }
+    }
+    return this.findParentQuerySelector(target.parentNode, selector);
+  };
+  DOMUtils.removeAllChildren = function(target) {
+    var _results;
+    _results = [];
+    while (target.childNodes.length) {
+      _results.push(target.removeChild(target.firstChild));
+    }
+    return _results;
+  };
+  return DOMUtils;
+})();
+var Resizer;
+Resizer = (function(_super) {
+  var _body, _bounds;
+  __extends(Resizer, _super);
+  Resizer.RESIZE = 'resize_resizer';
+  Resizer.ORIENTATION_CHANGE = 'orientation_change_resizer';
+  Resizer.BREAKPOINT_CHANGE = 'breakpoint_changed_resizer';
+  _bounds = null;
+  _body = null;
+  Resizer.getInstance = function(p_start) {
+    if (p_start == null) {
+      p_start = true;
+    }
+    return Resizer._instance != null ? Resizer._instance : Resizer._instance = new Resizer(p_start);
+  };
+  function Resizer(p_start) {
+    if (p_start == null) {
+      p_start = true;
+    }
+    this.change = __bind(this.change, this);
+    this.stop = __bind(this.stop, this);
+    this.start = __bind(this.start, this);
+    _body = document.querySelector("body");
+    _bounds = {
+      "top": 0,
+      "bottom": 0,
+      "left": 0,
+      "right": 0
+    };
+    this._currentOrientation = this.orientation;
+    if (p_start != null) {
+      this.start();
+    }
+  }
+  Resizer.get({
+    width: function() {
+      return window.innerWidth;
+    }
+  });
+  Resizer.get({
+    height: function() {
+      return window.innerHeight;
+    }
+  });
+  Resizer.get({
+    orientation: function() {
+      var ratio;
+      ratio = screen.width / screen.height;
+      if (window.innerWidth > window.innerHeight && ratio > 1.3) {
+        return 'landscape';
+      } else {
+        return 'portrait';
+      }
+    }
+  });
+  Resizer.get({
+    bounds: function() {
+      return _bounds;
+    }
+  });
+  Resizer.set({
+    bounds: function(p_value) {
+      return _bounds = p_value;
+    }
+  });
+  Resizer.prototype.start = function() {
+    window.addEventListener('resize', this.change);
+    window.addEventListener('orientationchange', this.change);
+    return this.change(null, true);
+  };
+  Resizer.prototype.stop = function() {
+    window.removeEventListener('resize', this.change);
+    return window.removeEventListener('orientationchange', this.change);
+  };
+  Resizer.prototype.change = function(evt, allKinds) {
+    var k, v, _data, _ref, _ref1, _results;
+    if (allKinds == null) {
+      allKinds = false;
+    }
+    if (evt != null) {
+      evt.preventDefault();
+    }
+    if (evt != null) {
+      evt.stopImmediatePropagation();
+    }
+    _data = {
+      "width": this.width,
+      "height": this.height,
+      "bounds": this.bounds,
+      "orientation": this.orientation
+    };
+    if ((evt != null ? evt.type : void 0) === "resize") {
+      this.trigger(Resizer.RESIZE, _data);
+    }
+    if (this._currentOrientation !== this.orientation) {
+      this.trigger(Resizer.ORIENTATION_CHANGE, _data);
+      this._currentOrientation = this.orientation;
+    }
+    if (app.conditions != null) {
+      _ref = app.conditions.list;
+      for (k in _ref) {
+        v = _ref[k];
+        if ((v['size'] != null) || (v['orientation'] != null) || !!allKinds) {
+          if (app.conditions.test(k)) {
+            if (!this.hasClass(k)) {
+              this.addClass(k);
+            }
+          } else {
+            if (this.hasClass(k)) {
+              this.removeClass(k);
+            }
+          }
+        }
+      }
+      _ref1 = app.conditions.list;
+      _results = [];
+      for (k in _ref1) {
+        v = _ref1[k];
+        if ((v['size'] != null) || (v['orientation'] != null) || !!allKinds) {
+          if (app.conditions.test(k)) {
+            _data['breakpoint'] = {
+              key: k,
+              values: v
+            };
+            if (this.latestKey !== k) {
+              this.latestKey = k;
+              this.trigger(Resizer.BREAKPOINT_CHANGE, _data);
+            }
+            break;
+          } else {
+            _results.push(void 0);
+          }
+        } else {
+          _results.push(void 0);
+        }
+      }
+      return _results;
+    }
+  };
+  Resizer.prototype.addClass = function(className) {
+    return DOMUtils.addCSSClass(_body, className);
+  };
+  Resizer.prototype.removeClass = function(className) {
+    return DOMUtils.removeCSSClass(_body, className);
+  };
+  Resizer.prototype.hasClass = function(className) {
+    return DOMUtils.hasCSSClass(_body, className);
+  };
+  return Resizer;
+})(EventDispatcher);
 /**
 Detections Class
 @class Detections
@@ -1254,13 +1638,7 @@ Detections = (function() {
   }
   Detections.get({
     orientation: function() {
-      var ratio;
-      ratio = screen.width / screen.height;
-      if (window.innerWidth > window.innerHeight && ratio > 1.3) {
-        return 'landscape';
-      } else {
-        return 'portrait';
-      }
+      return Resizer.getInstance().orientation;
     }
   });
   Detections.prototype.test = function(value) {
@@ -3157,16 +3535,17 @@ Base DOM manipulation class
  */
 BaseDOM = (function(_super) {
   __extends(BaseDOM, _super);
+  BaseDOM.ADDED_TO_DOCUMENT = 'added_to_document';
+  BaseDOM.REMOVED_FROM_DOCUMENT = 'removed_from_document';
   BaseDOM.isElement = function(p_target) {
-    if (typeof HTMLElement === 'object') {
-      return p_target instanceof HTMLElement || p_target instanceof BaseDOM;
-    } else {
-      return typeof p_target === 'object' && (p_target != null ? p_target.nodeType : void 0) === 1 && typeof (p_target != null ? p_target.nodeName : void 0) === 'string';
-    }
+    return Element.isElement(p_target);
   };
   function BaseDOM() {
     var className, element, i, namespace, option, p_options;
     p_options = 1 <= arguments.length ? __slice.call(arguments, 0) : [];
+    this._removedFromDOM = __bind(this._removedFromDOM, this);
+    this._addedToDOM = __bind(this._addedToDOM, this);
+    this._mutations = __bind(this._mutations, this);
     BaseDOM.__super__.constructor.apply(this, arguments);
     element = 'div';
     className = null;
@@ -3198,15 +3577,22 @@ BaseDOM = (function(_super) {
     } else {
       this._element = element;
     }
-    if ((this._element.parentElement != null) && (this._parent == null)) {
-      this._parent = this._element.parentElement.__instance__ || new BaseDOM({
-        element: this._element.parentElement
-      });
+    if ((this.element.parentElement != null) && (this._parent == null)) {
+      this.parent = this.element.parentElement.__instance__ || this.element.parentElement;
     }
     if (className) {
       this.addClass(className);
     }
-    this._element.__instance__ = this;
+    if (typeof MutationObserver !== "undefined" && MutationObserver !== null) {
+      this._observer = new MutationObserver(this._mutations);
+      this._observer.observe(this.element, {
+        childList: true
+      });
+    } else {
+      this.element.on('DOMNodeInsertedIntoDocument', this._addedToDOM);
+      this.element.on('DOMNodeRemovedFromDocument', this._removedFromDOM);
+    }
+    this.element.__instance__ = this;
   }
   BaseDOM.get({
     element: function() {
@@ -3327,12 +3713,12 @@ BaseDOM = (function(_super) {
   });
   BaseDOM.get({
     text: function() {
-      return this.html;
+      return this.element.textContent;
     }
   });
   BaseDOM.set({
     text: function(value) {
-      return this.html = value;
+      return this.element.textContent = value;
     }
   });
   BaseDOM.get({
@@ -3352,6 +3738,7 @@ BaseDOM = (function(_super) {
   });
   BaseDOM.set({
     parent: function(value) {
+      var _ref;
       if (value == null) {
         value = null;
       }
@@ -3361,7 +3748,12 @@ BaseDOM = (function(_super) {
         }
         return this._parent = value;
       } else {
-        return this._parent = null;
+        this._parent = null;
+        if ((_ref = this._observer) != null) {
+          _ref.disconnect();
+        }
+        this._observer = null;
+        return delete this._observer;
       }
     }
   });
@@ -3370,7 +3762,7 @@ BaseDOM = (function(_super) {
       if (p_container == null) {
         p_container = null;
       }
-      if (((p_container != null ? p_container.contains : void 0) != null) && typeof p_container.contains === 'function') {
+      if (typeof p_container.contains === 'function') {
         return p_container.contains(this.element);
       }
       return (typeof document.contains === "function" ? document.contains(this.element) : void 0) || document.body.contains(this.element);
@@ -3664,11 +4056,19 @@ BaseDOM = (function(_super) {
     return result;
   };
   BaseDOM.prototype.addClass = function(className) {
-    var classNames, i, p;
+    var action, classNames, i, p;
     if (typeof className === 'string') {
       className = className.replace(/\s+/ig, ' ').split(' ');
-    } else if (typeof className !== 'Array') {
+    } else if (!Array.isArray(className)) {
       return;
+    }
+    if (this.element.classList != null) {
+      className = !Array.isArray(className) ? [className] : className;
+      className.forEach(action = function(value) {
+        return this.classList.add(value);
+      }, this.element);
+      action = null;
+      return this.className;
     }
     classNames = this.className.replace(/\s+/ig, ' ').split(' ');
     p = classNames.length;
@@ -3682,11 +4082,19 @@ BaseDOM = (function(_super) {
     return this.className = classNames.join(' ');
   };
   BaseDOM.prototype.removeClass = function(className) {
-    var classNames, i, p;
+    var action, classNames, i, p;
     if (typeof className === 'string') {
       className = className.replace(/\s+/ig, ' ').split(' ');
-    } else if (typeof className !== 'Array') {
+    } else if (!Array.isArray(className)) {
       return;
+    }
+    if (this.element.classList != null) {
+      className = !Array.isArray(className) ? [className] : className;
+      className.forEach(action = function(value) {
+        return this.classList.remove(value);
+      }, this.element);
+      action = null;
+      return this.className;
     }
     classNames = this.className.replace(/\s+/ig, ' ').split(' ');
     i = className.length;
@@ -3741,6 +4149,43 @@ BaseDOM = (function(_super) {
     }
     return hasClass;
   };
+  BaseDOM.prototype._mutations = function(mutations) {
+    var added, i, length, nodes, removed, _ref, _ref1;
+    i = mutations.length;
+    while (i--) {
+      added = 0;
+      nodes = mutations[i].addedNodes;
+      length = mutations[i].addedNodes.length;
+      while (length--) {
+        if ((_ref = nodes[added].__instance__) != null) {
+          _ref._addedToDOM({
+            target: nodes[added]
+          });
+        }
+        added++;
+      }
+      removed = 0;
+      length = mutations[i].removedNodes.length;
+      nodes = mutations[i].removedNodes;
+      while (length--) {
+        if ((_ref1 = nodes[removed].__instance__) != null) {
+          _ref1._removedFromDOM({
+            target: nodes[removed]
+          });
+        }
+        removed++;
+      }
+    }
+    return void 0;
+  };
+  BaseDOM.prototype._addedToDOM = function(evt) {
+    this.trigger(BaseDOM.ADDED_TO_DOCUMENT, this._parent);
+    return typeof this.added === "function" ? this.added() : void 0;
+  };
+  BaseDOM.prototype._removedFromDOM = function(evt) {
+    this.trigger(BaseDOM.REMOVED_FROM_DOCUMENT, this._parent);
+    return typeof this.removed === "function" ? this.removed() : void 0;
+  };
   BaseDOM.prototype.getBounds = function(target) {
     var bounds, boundsObj, k, tbounds, v;
     if (target == null) {
@@ -3770,6 +4215,9 @@ BaseDOM = (function(_super) {
     return boundsObj;
   };
   BaseDOM.prototype.destroy = function() {
+    var _ref;
+    this.element.off('DOMNodeInsertedIntoDocument', this._addedToDOM);
+    this.element.off('DOMNodeRemovedIntoDocument', this._removedFromDOM);
     if (typeof this.off === "function") {
       this.off();
     }
@@ -3779,8 +4227,18 @@ BaseDOM = (function(_super) {
     if (typeof this.remove === "function") {
       this.remove();
     }
+    if ((_ref = this._observer) != null) {
+      _ref.disconnect();
+    }
+    this._observer = null;
+    this._namespace = null;
+    this._parent = null;
     this._element.__instance__ = null;
-    return delete this._element.__instance__;
+    delete this._observer;
+    delete this._namespace;
+    delete this._parent;
+    delete this._element.__instance__;
+    return void 0;
   };
   return BaseDOM;
 })(EventDispatcher);
@@ -5879,6 +6337,11 @@ Caim = (function(_super) {
       _preloaderView = p_preloaderView;
     }
     wrapper = p_wrapper == null ? document.body : p_wrapper;
+    if (wrapper.__instance__ == null) {
+      new BaseDOM({
+        element: wrapper
+      });
+    }
     app.root = ((_ref = document.querySelector("base")) != null ? _ref.href : void 0) || ((_ref1 = document.getElementsByTagName("base")[0]) != null ? _ref1.href : void 0);
     app.loader = AssetLoader.getInstance();
     app.detections = Detections.getInstance();

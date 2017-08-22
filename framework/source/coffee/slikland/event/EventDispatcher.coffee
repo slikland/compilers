@@ -1,3 +1,4 @@
+#import slikland.utils.Prototypes
 ###*
 EventDispatcher class for handling and triggering events.
 @class EventDispatcher

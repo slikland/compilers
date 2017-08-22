@@ -393,6 +393,12 @@ Node::off = Node::removeEventListener
 
 Element::matches = Element::matches || Element::webkitMatchesSelector || Element::mozMatchesSelector || Element::msMatchesSelector || Element::oMatchesSelector
 
+Element::isElement = (p_target)->
+	if typeof HTMLElement is 'object'
+		return p_target instanceof HTMLElement or p_target instanceof BaseDOM
+	else
+		return typeof p_target is 'object' && p_target?.nodeType is 1 && typeof p_target?.nodeName is 'string'
+
 ##------------------------------------------------------------------------------
 #
 # ADDED OLDER BROWSERS SUPPORT
@@ -400,13 +406,57 @@ Element::matches = Element::matches || Element::webkitMatchesSelector || Element
 navigator.mediaDevices ?= {}
 navigator.getUserMedia = navigator.mediaDevices.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia
 
-window.requestAnimationFrame = window.requestAnimationFrame || window.mozRequestAnimationFrame || window.webkitRequestAnimationFrame || window.msRequestAnimationFrame || (f) ->
-  #simulate calling code 60
-  setTimeout f, 16.6666666667
+##------------------------------------------------------------------------------
+#
+# rAF, Date.now, window.performance
+#
+do ->
+	w = window
+	for vendor in ['ms', 'moz', 'webkit', 'o']
+		break if w.requestAnimationFrame
+		w.requestAnimationFrame = w["#{vendor}RequestAnimationFrame"]
+		w.cancelAnimationFrame = (w["#{vendor}CancelAnimationFrame"] or
+								  w["#{vendor}CancelRequestAnimationFrame"])
 
-window.cancelAnimationFrame = window.cancelAnimationFrame || window.mozCancelAnimationFrame || (requestID) ->
-  clearTimeout requestID
-  return false
+	if !('performance' of window)
+		window.performance = {}
+
+	if !Date.now
+		Date.now = () => new Date().getTime()
+
+	if !('now' of window.performance)
+		nowOffset = Date.now()
+
+		if performance.timing && performance.timing.navigationStart
+			nowOffset = performance.timing.navigationStart
+
+		window.performance.now = () => Date.now() - nowOffset
+
+	# deal with the case where rAF is built in but cAF is not.
+	if w.requestAnimationFrame
+		return if w.cancelAnimationFrame
+		browserRaf = w.requestAnimationFrame
+		canceled = {}
+		w.requestAnimationFrame = (callback) ->
+			id = browserRaf (time) ->
+				if id of canceled then delete canceled[id]
+				else callback time
+		w.cancelAnimationFrame = (id) -> canceled[id] = true
+
+	# handle legacy browsers which don’t implement rAF
+	else
+		lastTime = 0
+		w.requestAnimationFrame = (callback) ->
+			currTime = Date.now()
+			timeToCall = Math.max(0, 16 - (currTime - lastTime))
+			id = window.setTimeout(()->
+				callback(currTime + timeToCall)
+			, timeToCall)
+
+			lastTime = currTime + timeToCall
+			return id
+
+		w.cancelAnimationFrame = (id) -> clearTimeout id
 
 ##------------------------------------------------------------------------------
 #

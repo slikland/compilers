@@ -10,18 +10,6 @@ class AnimationTicker
 	@_callbacks = []
 
 	@_init:()->
-		if !window.requestAnimationFrame
-			if window.mozRequestAnimationFrame
-				window.requestAnimationFrame = window.mozRequestAnimationFrame
-				window.cancelAnimationFrame = window.mozCancelAnimationFrame || window.mozCancelRequestAnimationFrame
-			else if window.webkitRequestAnimationFrame
-				window.requestAnimationFrame = window.webkitRequestAnimationFrame
-				window.cancelAnimationFrame = window.webkitCancelAnimationFrame || window.webkitCancelRequestAnimationFrame
-			else
-				window.requestAnimationFrame = (callback, element) ->
-					return setTimeout(callback, 16)
-				window.cancelAnimationFrame = (id) ->
-					clearTimeout(id)
 		@_update()
 
 	###*

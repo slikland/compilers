@@ -82,10 +82,7 @@ class BaseDOM extends EventDispatcher
 	@REMOVED_FROM_DOCUMENT: 'removed_from_document'
 
 	@isElement:(p_target)->
-		if typeof HTMLElement is 'object'
-			return p_target instanceof HTMLElement or p_target instanceof BaseDOM
-		else
-			return typeof p_target is 'object' && p_target?.nodeType is 1 && typeof p_target?.nodeName is 'string'
+		return Element.isElement(p_target)
 
 	#
 	# Deprecated params: constructor:(element = 'div', className = null, namespace = null)->
@@ -462,12 +459,16 @@ class BaseDOM extends EventDispatcher
 	addClass:(className)->
 		if typeof(className) is 'string'
 			className = className.replace(/\s+/ig, ' ').split(' ')
-		else if typeof(className) isnt 'Array'
+		else if !Array.isArray(className)
 			return
 
-		if @classList?
-			className = if Array.isArray(className) then className.join(' ') else className
-			return @classList.add(className)
+		if @element.classList?
+			className = if !Array.isArray(className) then [className] else className
+			className.forEach(action = (value)->
+				@classList.add(value)
+			, @element)
+			action = null
+			return @className
 
 		classNames = @className.replace(/\s+/ig, ' ').split(' ')
 		p = classNames.length
@@ -482,12 +483,16 @@ class BaseDOM extends EventDispatcher
 	removeClass:(className)->
 		if typeof(className) is 'string'
 			className = className.replace(/\s+/ig, ' ').split(' ')
-		else if typeof(className) isnt 'Array'
+		else if !Array.isArray(className)
 			return
 
-		if @classList?
-			className = if Array.isArray(className) then className.join(' ') else className
-			return @classList.remove(className)
+		if @element.classList?
+			className = if !Array.isArray(className) then [className] else className
+			className.forEach(action = (value)->
+				@classList.remove(value)
+			, @element)
+			action = null
+			return @className
 
 		classNames = @className.replace(/\s+/ig, ' ').split(' ')
 		i = className.length
@@ -545,6 +550,7 @@ class BaseDOM extends EventDispatcher
 			while length--
 				nodes[removed].__instance__?._removedFromDOM({target:nodes[removed]})
 				removed++
+		undefined
 
 	_addedToDOM:(evt)=>
 		@trigger BaseDOM.ADDED_TO_DOCUMENT, @_parent
@@ -593,3 +599,4 @@ class BaseDOM extends EventDispatcher
 		delete @_namespace
 		delete @_parent
 		delete @_element.__instance__
+		undefined
