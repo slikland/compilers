@@ -3,6 +3,15 @@
 # Public: Bunch of utilities methods for {Number}
 class NumberUtils
 
+	# Public: Checks whether the {Number} is an odd number.
+	#
+	# value - The {Number} to check.
+	#
+	# Returns
+	#    The resulting {Boolean} object.
+	@isOdd:(p_value)->
+		return if Math.abs(p_value % 2) == 1 then true else false
+
 	# Public: Checks whether the {Number} is an even number.
 	#
 	# value - The {Number} to check.

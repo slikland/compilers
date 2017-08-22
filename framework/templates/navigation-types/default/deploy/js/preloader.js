@@ -712,7 +712,7 @@ App = (function(_super) {
   App.WINDOW_ACTIVE = "windowActive";
   App.WINDOW_INACTIVE = "windowInactive";
   App.NETWORK_UPDATE = 'networkUpdate';
-  framework_version = "3.2.0";
+  framework_version = "3.3.1";
   _root = null;
   _loader = null;
   _config = null;
@@ -1133,198 +1133,6 @@ if (!window.atob) {
 }
 window.Debug = Debug;
 Debug.init();
-var Resizer;
-Resizer = (function(_super) {
-  var _body, _bounds;
-  __extends(Resizer, _super);
-  Resizer.RESIZE = 'resize_resizer';
-  Resizer.ORIENTATION_CHANGE = 'orientation_change_resizer';
-  Resizer.BREAKPOINT_CHANGE = 'breakpoint_changed_resizer';
-  _bounds = null;
-  _body = null;
-  Resizer.getInstance = function(p_start) {
-    if (p_start == null) {
-      p_start = true;
-    }
-    return Resizer._instance != null ? Resizer._instance : Resizer._instance = new Resizer(p_start);
-  };
-  function Resizer(p_start) {
-    if (p_start == null) {
-      p_start = true;
-    }
-    this.change = __bind(this.change, this);
-    this.stop = __bind(this.stop, this);
-    this.start = __bind(this.start, this);
-    _body = document.querySelector("body");
-    _bounds = {
-      "top": 0,
-      "bottom": 0,
-      "left": 0,
-      "right": 0
-    };
-    this._currentOrientation = this.orientation;
-    if (p_start != null) {
-      this.start();
-    }
-  }
-  Resizer.get({
-    width: function() {
-      return window.innerWidth;
-    }
-  });
-  Resizer.get({
-    height: function() {
-      return window.innerHeight;
-    }
-  });
-  Resizer.get({
-    orientation: function() {
-      var ratio;
-      ratio = screen.width / screen.height;
-      if (window.innerWidth > window.innerHeight && ratio > 1.3) {
-        return 'landscape';
-      } else {
-        return 'portrait';
-      }
-    }
-  });
-  Resizer.get({
-    bounds: function() {
-      return _bounds;
-    }
-  });
-  Resizer.set({
-    bounds: function(p_value) {
-      return _bounds = p_value;
-    }
-  });
-  Resizer.prototype.start = function() {
-    window.addEventListener('resize', this.change);
-    window.addEventListener('orientationchange', this.change);
-    return this.change(null, true);
-  };
-  Resizer.prototype.stop = function() {
-    window.removeEventListener('resize', this.change);
-    return window.removeEventListener('orientationchange', this.change);
-  };
-  Resizer.prototype.change = function(evt, allKinds) {
-    var k, v, _data, _ref, _ref1, _results;
-    if (allKinds == null) {
-      allKinds = false;
-    }
-    if (evt != null) {
-      evt.preventDefault();
-    }
-    if (evt != null) {
-      evt.stopImmediatePropagation();
-    }
-    _data = {
-      "width": this.width,
-      "height": this.height,
-      "bounds": this.bounds,
-      "orientation": this.orientation
-    };
-    if ((evt != null ? evt.type : void 0) === "resize") {
-      this.trigger(Resizer.RESIZE, _data);
-    }
-    if (this._currentOrientation !== this.orientation) {
-      this.trigger(Resizer.ORIENTATION_CHANGE, _data);
-      this._currentOrientation = this.orientation;
-    }
-    if (app.conditions != null) {
-      _ref = app.conditions.list;
-      for (k in _ref) {
-        v = _ref[k];
-        if ((v['size'] != null) || (v['orientation'] != null) || !!allKinds) {
-          if (app.conditions.test(k)) {
-            if (!this.hasClass(k)) {
-              this.addClass(k);
-            }
-          } else {
-            if (this.hasClass(k)) {
-              this.removeClass(k);
-            }
-          }
-        }
-      }
-      _ref1 = app.conditions.list;
-      _results = [];
-      for (k in _ref1) {
-        v = _ref1[k];
-        if ((v['size'] != null) || (v['orientation'] != null) || !!allKinds) {
-          if (app.conditions.test(k)) {
-            _data['breakpoint'] = {
-              key: k,
-              values: v
-            };
-            if (this.latestKey !== k) {
-              this.latestKey = k;
-              this.trigger(Resizer.BREAKPOINT_CHANGE, _data);
-            }
-            break;
-          } else {
-            _results.push(void 0);
-          }
-        } else {
-          _results.push(void 0);
-        }
-      }
-      return _results;
-    }
-  };
-  Resizer.prototype.addClass = function(className) {
-    var classNames, i, p;
-    if (typeof className === 'string') {
-      className = className.replace(/\s+/ig, ' ').split(' ');
-    } else if (typeof className !== 'Array') {
-      return;
-    }
-    classNames = _body.className.replace(/\s+/ig, ' ').split(' ');
-    p = classNames.length;
-    i = className.length;
-    while (i-- > 0) {
-      if (classNames.indexOf(className[i]) >= 0) {
-        continue;
-      }
-      classNames[p++] = className[i];
-    }
-    _body.className = classNames.join(' ');
-    return false;
-  };
-  Resizer.prototype.removeClass = function(className) {
-    var classNames, i, p;
-    if (typeof className === 'string') {
-      className = className.replace(/\s+/ig, ' ').split(' ');
-    } else if (typeof className !== 'Array') {
-      return;
-    }
-    classNames = _body.className.replace(/\s+/ig, ' ').split(' ');
-    i = className.length;
-    while (i-- > 0) {
-      if ((p = classNames.indexOf(className[i])) >= 0) {
-        classNames.splice(p, 1);
-      }
-    }
-    _body.className = classNames.join(' ');
-    return false;
-  };
-  Resizer.prototype.hasClass = function(className) {
-    var classNames, hasClass, i;
-    if (typeof className === 'string') {
-      className = className.replace(/\s+/ig, ' ').split(' ');
-    } else if (typeof className !== 'Array') {
-      return;
-    }
-    classNames = _body.className.replace(/\s+/ig, ' ').split(' ');
-    i = className.length;
-    hasClass = true;
-    while (i-- > 0) {
-      hasClass &= classNames.indexOf(className[i]) >= 0;
-    }
-    return hasClass;
-  };
-  return Resizer;
-})(EventDispatcher);
 /**
 Detections Class
 @class Detections
@@ -1360,10 +1168,36 @@ Detections = (function() {
       test: /chrome|crios|crmo/i,
       version: /(?:chrome|crios|crmo)\/(\d+(\.\d+)*)/i
     }, {
+      name: 'iPod',
+      nick: /iPod/i,
+      test: /ipod/i
+    }, {
+      name: 'iPhone',
+      nick: /iPhone/i,
+      test: /iphone/i
+    }, {
+      name: 'iPad',
+      nick: /iPad/i,
+      test: /ipad/i
+    }, {
+      name: 'FirefoxOS',
+      nick: /FirefoxOS|ffos/i,
+      test: /\((mobile|tablet);[^\)]*rv:[\d\.]+\)firefox|iceweasel/i,
+      version: /(?:firefox|iceweasel)[ \/](\d+(\.\d+)?)/i
+    }, {
       name: 'Firefox',
       nick: /Firefox|ff/i,
       test: /firefox|iceweasel/i,
       version: /(?:firefox|iceweasel)[ \/](\d+(\.\d+)?)/i
+    }, {
+      name: 'Android',
+      nick: /Android/i,
+      test: /android/i
+    }, {
+      name: 'BlackBerry',
+      nick: /BlackBerry/i,
+      test: /(blackberry)|(\bbb)|(rim\stablet)\d+/i,
+      version: /blackberry[\d]+\/(\d+(\.\d+)?)/i
     }, {
       name: 'WebOS',
       nick: /WebOS/i,
@@ -1420,7 +1254,13 @@ Detections = (function() {
   }
   Detections.get({
     orientation: function() {
-      return Resizer.getInstance().orientation;
+      var ratio;
+      ratio = screen.width / screen.height;
+      if (window.innerWidth > window.innerHeight && ratio > 1.3) {
+        return 'landscape';
+      } else {
+        return 'portrait';
+      }
     }
   });
   Detections.prototype.test = function(value) {
@@ -1567,6 +1407,13 @@ createjs.EventDispatcher.prototype.on = function() {
 var NumberUtils;
 NumberUtils = (function() {
   function NumberUtils() {}
+  NumberUtils.isOdd = function(p_value) {
+    if (Math.abs(p_value % 2) === 1) {
+      return true;
+    } else {
+      return false;
+    }
+  };
   NumberUtils.isEven = function(p_value) {
     if (p_value % 2 === 0) {
       return true;
@@ -5120,8 +4967,10 @@ LanguageData = (function(_super) {
         }
       }
       if (!this["default"]) {
-        p_value[0]["default"] = true;
-        this["default"] = p_value[0];
+        if (p_value != null) {
+          p_value[0]["default"] = true;
+        }
+        this["default"] = p_value != null ? p_value[0] : void 0;
       }
       return false;
     }

@@ -37,8 +37,8 @@ class Main extends NavigationContainer
 
 		# console.log LanguageData.getInstance()
 
-		# console.log "main content:", @content
-		# console.log app.detections.os
+		console.log "main content:", @content
+		console.log app.detections.os
 		super
 
 	change:(evt)->

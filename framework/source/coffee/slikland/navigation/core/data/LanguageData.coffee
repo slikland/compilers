@@ -54,8 +54,8 @@ class LanguageData extends EventDispatcher
 			if !v['data-path'] || v['data-path'] && v['data-path'] == "" then throw new Error('Please sets the "data-path" object in languages object of config file.')
 			if v.default? then @default = v
 		if !@default
-			p_value[0].default = true
-			@default = p_value[0]
+			p_value?[0].default = true
+			@default = p_value?[0]
 		false
 
 	@get current:()->

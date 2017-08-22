@@ -1,5 +1,3 @@
-#import slikland.utils.Resizer
-
 ###*
 Detections Class
 @class Detections
@@ -12,13 +10,13 @@ class Detections
 		{name: 'Edge', nick: /edge|edgehtml/i, test: /edge|msapphost|edgehtml/i, version: /(?:edge|edgehtml)\/(\d+(\.\d+)*)/i},
 		{name: 'Internet Explorer', nick: /explorer|internetexplorer|ie/i, test: /msie|trident/i, version: /(?:msie |rv:)(\d+(\.\d+)*)/i},
 		{name: 'Chrome', nick: /Chrome/i, test: /chrome|crios|crmo/i, version: /(?:chrome|crios|crmo)\/(\d+(\.\d+)*)/i},
-		# {name: 'iPod', nick: /iPod/i, test: /ipod/i},
-		# {name: 'iPhone', nick: /iPhone/i, test: /iphone/i},
-		# {name: 'iPad', nick: /iPad/i, test: /ipad/i},
-		# {name: 'FirefoxOS', nick: /FirefoxOS|ffos/i, test: /\((mobile|tablet);[^\)]*rv:[\d\.]+\)firefox|iceweasel/i, version: /(?:firefox|iceweasel)[ \/](\d+(\.\d+)?)/i},
+		{name: 'iPod', nick: /iPod/i, test: /ipod/i},
+		{name: 'iPhone', nick: /iPhone/i, test: /iphone/i},
+		{name: 'iPad', nick: /iPad/i, test: /ipad/i},
+		{name: 'FirefoxOS', nick: /FirefoxOS|ffos/i, test: /\((mobile|tablet);[^\)]*rv:[\d\.]+\)firefox|iceweasel/i, version: /(?:firefox|iceweasel)[ \/](\d+(\.\d+)?)/i},
 		{name: 'Firefox', nick: /Firefox|ff/i, test: /firefox|iceweasel/i, version: /(?:firefox|iceweasel)[ \/](\d+(\.\d+)?)/i},
-		# {name: 'Android', nick: /Android/i, test: /android/i},
-		# {name: 'BlackBerry', nick: /BlackBerry/i, test: /(blackberry)|(\bbb)|(rim\stablet)\d+/i, version: /blackberry[\d]+\/(\d+(\.\d+)?)/i},
+		{name: 'Android', nick: /Android/i, test: /android/i},
+		{name: 'BlackBerry', nick: /BlackBerry/i, test: /(blackberry)|(\bbb)|(rim\stablet)\d+/i, version: /blackberry[\d]+\/(\d+(\.\d+)?)/i},
 		{name: 'WebOS', nick: /WebOS/i, test: /(web|hpw)os/i, version: /w(?:eb)?osbrowser\/(\d+(\.\d+)?)/i},
 		{name: 'Safari', nick: /safari/i, test: /safari/i},
 	]
@@ -59,8 +57,9 @@ class Detections
 				validVersion = Number(o[1]) >= versionToCheck
 		@iosInlineVideo = (@os == "ios" && validVersion)
 
-	@get orientation:()->
-		return Resizer.getInstance().orientation
+	@get orientation:->
+		ratio = screen.width/screen.height
+		if window.innerWidth > window.innerHeight and ratio > 1.3 then 'landscape' else 'portrait'
 		
 	test:(value)->
 		if !@matched
@@ -131,7 +130,6 @@ class Detections
 		if window?.matchMedia
 			mq = window.matchMedia('only screen and (min--moz-device-pixel-ratio: 1.3), only screen and (-o-min-device-pixel-ratio: 2.6/2), only screen and (-webkit-min-device-pixel-ratio: 1.3), only screen  and (min-device-pixel-ratio: 1.3), only screen and (min-resolution: 1.3dppx)')
 			return mq and mq.matches or window?.devicePixelRatio > 1
-
 		return false
 
 	testWebGL=()->

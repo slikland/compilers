@@ -280,11 +280,8 @@ class NavigationLoader extends EventDispatcher
 		
 		switch evt.item.ext
 			when 'js'
-				# data = evt.result
 				# if currentStep.id == 'main' && evt.item.id.search(/main/i) != -1
-				# 	# result = evt.item.result = eval(data)
-					window.main ?= {}
-				# 	window.main['view'] = result
+				window.main ?= {}
 			else
 				result = evt.item
 
