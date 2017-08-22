@@ -1,4 +1,5 @@
 #import slikland.event.EventDispatcher
+#import slikland.utils.DOMUtils
 
 class Resizer extends EventDispatcher
 
@@ -77,46 +78,10 @@ class Resizer extends EventDispatcher
 
 				
 	addClass:(className)->
-		if typeof(className) is 'string'
-			className = className.replace(/\s+/ig, ' ').split(' ')
-		else if typeof(className) isnt 'Array'
-			return
-		classNames = _body.className.replace(/\s+/ig, ' ').split(' ')
-		p = classNames.length
-		i = className.length
-		while i-- > 0
-			if classNames.indexOf(className[i]) >= 0
-				continue
-			classNames[p++] = className[i]
-		_body.className = classNames.join(' ')
-		false
+		return DOMUtils.addCSSClass(_body, className)
 
 	removeClass:(className)->
-		if typeof(className) is 'string'
-			className = className.replace(/\s+/ig, ' ').split(' ')
-		else if typeof(className) isnt 'Array'
-			return
-
-		classNames = _body.className.replace(/\s+/ig, ' ').split(' ')
-		i = className.length
-		while i-- > 0
-			if (p = classNames.indexOf(className[i])) >= 0
-				classNames.splice(p, 1)
-		_body.className = classNames.join(' ')
-		false
+		return DOMUtils.removeCSSClass(_body, className)
 
 	hasClass:(className)->
-		if typeof(className) is 'string'
-			className = className.replace(/\s+/ig, ' ').split(' ')
-		else if typeof(className) isnt 'Array'
-			return
-
-		classNames = _body.className.replace(/\s+/ig, ' ').split(' ')
-		i = className.length
-
-		hasClass = true
-
-		while i-- > 0
-			hasClass &= (classNames.indexOf(className[i]) >= 0)
-		return hasClass
-	
+		return DOMUtils.hasCSSClass(_body, className)

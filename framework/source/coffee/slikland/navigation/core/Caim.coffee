@@ -39,6 +39,8 @@ class Caim extends EventDispatcher
 			_preloaderView = p_preloaderView
 
 		wrapper = if !(p_wrapper)? then document.body else p_wrapper
+		if !wrapper.__instance__?
+			new BaseDOM({element:wrapper})
 
 		app.root = document.querySelector("base")?.href || document.getElementsByTagName("base")[0]?.href
 		app.loader = AssetLoader.getInstance()

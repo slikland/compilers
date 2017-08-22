@@ -1,3 +1,4 @@
+#import slikland.utils.Resizer
 ###*
 Detections Class
 @class Detections
@@ -58,8 +59,7 @@ class Detections
 		@iosInlineVideo = (@os == "ios" && validVersion)
 
 	@get orientation:->
-		ratio = screen.width/screen.height
-		if window.innerWidth > window.innerHeight and ratio > 1.3 then 'landscape' else 'portrait'
+		return Resizer.getInstance().orientation
 		
 	test:(value)->
 		if !@matched

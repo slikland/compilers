@@ -4,7 +4,6 @@ This is actually not a Class. It's a bunch of helper methods adding prototype me
 @class Prototypes
 ###
 
-
 ##--------------------------------------
 ##	Getter / Setter
 ##	@example
@@ -16,8 +15,8 @@ This is actually not a Class. It's a bunch of helper methods adding prototype me
 ##		@set a:(value)->
 ##			return @_a = value
 ##--------------------------------------
-# TODO: Fix/Add override 
-# 
+# TODO: Fix/Add override
+#
 isIE= ->
 	nav = navigator.userAgent.toLowerCase()
 	return if (nav.indexOf('msie') != -1) then parseInt(nav.split('msie')[1]) else false
@@ -26,9 +25,9 @@ if isIE() == 8
 	__scopeIE8 = document.createElement("IE8_" + Math.random())
 
 ###*
-This method is a decorator to create constant variable to a class.  
-A extending class cannot override this constant either can't be reassigned.  
-  
+This method is a decorator to create constant variable to a class.
+A extending class cannot override this constant either can't be reassigned.
+
 * Please ignore de backslash on \\\@ as the code formatter doesn't escape atmarks.
 
 @method @const
@@ -55,8 +54,8 @@ Function::const = (p_prop) ->
 
 ###*
 EXPERIMENTAL
-This method is a decorator to protect a property of a class instance removing the property name from enumerable list.  
-  
+This method is a decorator to protect a property of a class instance removing the property name from enumerable list.
+
 * Please ignore de backslash on \\\@ as the code formatter doesn't escape atmarks.
 
 @method @protectProperties
@@ -85,11 +84,11 @@ Function::protectProperties = (p_props) ->
 
 
 ###*
-Getter decorator for a class instance.  
-With this decorator you're able to assign a getter method to a variable.  
-  
-Also for a special case, you can assign a scope to the getter so you can create static getter to a class.  
-  
+Getter decorator for a class instance.
+With this decorator you're able to assign a getter method to a variable.
+
+Also for a special case, you can assign a scope to the getter so you can create static getter to a class.
+
 * Please ignore de backslash on \\\@ as the code formatter doesn't escape atmarks.
 
 @method @get
@@ -121,11 +120,11 @@ Function::get = (scope, p_prop) ->
 	null
 
 ###*
-Setter decorator for a class instance.  
-With this decorator you're able to assign a setter method to a variable.  
-  
-Also for a special case, you can assign a scope to the setter so you can create static setter to a class.  
-  
+Setter decorator for a class instance.
+With this decorator you're able to assign a setter method to a variable.
+
+Also for a special case, you can assign a scope to the setter so you can create static setter to a class.
+
 * Please ignore de backslash on \\\@ as the code formatter doesn't escape atmarks.
 
 @method @set
@@ -171,6 +170,10 @@ Function::set = (scope, p_prop) ->
 #
 # Add ECMA262-5 method binding if not supported natively
 #
+
+Function.isCallable = (fn) ->
+	typeof fn == 'function' or Object::toString.call(fn) == '[object Function]'
+
 unless "bind" of Function::
 	Function::bind = (owner) ->
 		that = this
@@ -181,6 +184,20 @@ unless "bind" of Function::
 			args = Array::slice.call(arguments_, 1)
 			->
 				that.apply owner, (if arguments_.length is 0 then args else args.concat(Array::slice.call(arguments_)))
+
+
+Number.MaxSafeInteger = 2 ** 53 - 1
+Number.toInteger = (value) ->
+	number = Number(value)
+	if isNaN(number)
+		return 0
+	if number == 0 or !isFinite(number)
+		return number
+	(if number > 0 then 1 else -1) * Math.floor(Math.abs(number))
+
+Number.toLength = (value) ->
+	len = @toInteger(value)
+	Math.min Math.max(len, 0), Number.MaxSafeInteger
 
 ##------------------------------------------------------------------------------
 ##
@@ -233,7 +250,7 @@ String::padRight = (length, char = ' ') ->
 	text = @
 	while text.length < length
 		text += char
-	return text	
+	return text
 
 ##------------------------------------------------------------------------------
 ##
@@ -243,9 +260,60 @@ String::padRight = (length, char = ' ') ->
 #
 # Add ECMA262-5 Array methods if not supported natively
 #
+
 unless "isArray" of Array::
 	Array.isArray = (arg) ->
 		Object::toString.call(arg) == '[object Array]'
+
+unless "of" of Array::
+	Array.of = ()->
+		return Array::slice.call(arguments)
+
+unless "from" of Array::
+	Array.from = ()->
+		# The length property of the from method is 1.
+		(arrayLike) ->
+			# 1. Let C be the this value.
+			C = this
+			# 2. Let items be ToObject(arrayLike).
+			items = Object(arrayLike)
+			# 3. ReturnIfAbrupt(items).
+			if arrayLike == null
+				throw new TypeError('Array.from requires an array-like object - not null or undefined')
+			# 4. If mapfn is undefined, then let mapping be false.
+			mapFn = if arguments.length > 1 then arguments[1] else undefined
+			T = undefined
+			if typeof mapFn != 'undefined'
+				# 5. else
+				# 5. a If IsCallable(mapfn) is false, throw a TypeError exception.
+				if !Function.isCallable(mapFn)
+					throw new TypeError('Array.from: when provided, the second argument must be a function')
+				# 5. b. If thisArg was supplied, let T be thisArg; else let T be undefined.
+				if arguments.length > 2
+					T = arguments[2]
+			# 10. Let lenValue be Get(items, "length").
+			# 11. Let len be ToLength(lenValue).
+			len = Number.toLength(items.length)
+			# 13. If IsConstructor(C) is true, then
+			# 13. a. Let A be the result of calling the [[Construct]] internal method
+			# of C with an argument list containing the single item len.
+			# 14. a. Else, Let A be ArrayCreate(len).
+			A = if Function.isCallable(C) then Object(new C(len)) else new Array(len)
+			# 16. Let k be 0.
+			k = 0
+			# 17. Repeat, while k < len… (also steps a - h)
+			kValue = undefined
+			while k < len
+				kValue = items[k]
+				if mapFn
+					A[k] = if typeof T == 'undefined' then mapFn(kValue, k) else mapFn.call(T, kValue, k)
+				else
+					A[k] = kValue
+				k += 1
+			# 18. Let putStatus be Put(A, "length", len, true).
+			A.length = len
+			# 20. Return A.
+			A
 
 unless "indexOf" of Array::
 	Array::indexOf = (find, i) -> #opt
@@ -319,7 +387,7 @@ unless "some" of Array::
 #
 # ADDED IE9+ SUPPORT
 # TODO: FIX IE8
-# 
+#
 Node::on = Node::addEventListener
 Node::off = Node::removeEventListener
 
@@ -328,12 +396,12 @@ Element::matches = Element::matches || Element::webkitMatchesSelector || Element
 ##------------------------------------------------------------------------------
 #
 # ADDED OLDER BROWSERS SUPPORT
-# 
+#
 navigator.mediaDevices ?= {}
 navigator.getUserMedia = navigator.mediaDevices.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia
 
 window.requestAnimationFrame = window.requestAnimationFrame || window.mozRequestAnimationFrame || window.webkitRequestAnimationFrame || window.msRequestAnimationFrame || (f) ->
-  #simulate calling code 60 
+  #simulate calling code 60
   setTimeout f, 16.6666666667
 
 window.cancelAnimationFrame = window.cancelAnimationFrame || window.mozCancelAnimationFrame || (requestID) ->
@@ -343,7 +411,7 @@ window.cancelAnimationFrame = window.cancelAnimationFrame || window.mozCancelAni
 ##------------------------------------------------------------------------------
 #
 # CACHES POLYFILL BECAUSE IT IS NOT ADDED TO NATIVE YET!
-# 
+#
 if Cache?
 	unless "add" of Cache::
 		Cache::add = (request) ->

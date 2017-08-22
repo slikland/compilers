@@ -1,39 +1,64 @@
 class DOMUtils
-	@addCSSClass:(el, name)->
-		if !el
+	
+	@addCSSClass:(el, className)->
+		if !(el instanceof Element)
 			return
-		clss = el.className.split(' ')
-		if @hasCSSClass(el, name)
+		if typeof(className) is 'string'
+			className = className.replace(/\s+/ig, ' ').split(' ')
+		else if typeof(className) isnt 'Array'
 			return
-		clss.push(name)
-		el.className = clss.join(' ')
-	@removeCSSClass:(el, name)->
-		if !el
+		classNames = el.className.replace(/\s+/ig, ' ').split(' ')
+		p = classNames.length
+		i = className.length
+		while i-- > 0
+			if classNames.indexOf(className[i]) >= 0
+				continue
+			classNames[p++] = className[i]
+		el.className = classNames.join(' ')
+
+	@removeCSSClass:(el, className)->
+		if !(el instanceof Element)
 			return
-		clss = el.className.split(' ')
-		while (i = clss.indexOf(name)) >= 0
-			clss.splice(i, 1)
-		el.className = clss.join(' ')
+		if typeof(className) is 'string'
+			className = className.replace(/\s+/ig, ' ').split(' ')
+		else if typeof(className) isnt 'Array'
+			return
+
+		classNames = el.className.replace(/\s+/ig, ' ').split(' ')
+		i = className.length
+		while i-- > 0
+			if (p = classNames.indexOf(className[i])) >= 0
+				classNames.splice(p, 1)
+		el.className = classNames.join(' ')
+	
+	@hasCSSClass:(el, className)->
+		if !(el instanceof Element)
+			return
+
+		if typeof(className) is 'string'
+			className = className.replace(/\s+/ig, ' ').split(' ')
+		else if typeof(className) isnt 'Array'
+			return
+
+		classNames = el.className.replace(/\s+/ig, ' ').split(' ')
+		i = className.length
+
+		hasClass = true
+
+		while i-- > 0
+			hasClass &= (classNames.indexOf(className[i]) >= 0)
+		return hasClass
 	
 	@toggleCSSClass:(el, name, toggle = null)->
 		if !el
 			return
 		has = @hasCSSClass(el, name)
 		if toggle is null
-			toggle= !has
+			toggle = !has
 		if toggle
 			@addCSSClass(el, name)
 		else
 			@removeCSSClass(el, name)
-	
-	@hasCSSClass:(el, name)->
-		if !el
-			return
-		name = name.replace('.', '')
-		clss = el.className.split(' ')
-		if clss.indexOf(name) >= 0
-			return true
-		return false
 
 
 	@findParentQuerySelector:(target, selector)->

@@ -78,6 +78,9 @@ Base DOM manipulation class
 
 class BaseDOM extends EventDispatcher
 
+	@ADDED_TO_DOCUMENT: 'added_to_document'
+	@REMOVED_FROM_DOCUMENT: 'removed_from_document'
+
 	@isElement:(p_target)->
 		if typeof HTMLElement is 'object'
 			return p_target instanceof HTMLElement or p_target instanceof BaseDOM
@@ -115,12 +118,20 @@ class BaseDOM extends EventDispatcher
 		else
 			@_element = element
 
-		if @_element.parentElement? and !@_parent?
-			@_parent = @_element.parentElement.__instance__ || new BaseDOM {element: @_element.parentElement}
+		if @element.parentElement? and !@_parent?
+			@parent = @element.parentElement.__instance__ || @element.parentElement
+
 		if className
 			@addClass(className)
-		@_element.__instance__ = @
 
+		if MutationObserver?
+			@_observer = new MutationObserver(@_mutations)
+			@_observer.observe(@element, { childList: true })
+		else
+			@element.on 'DOMNodeInsertedIntoDocument', @_addedToDOM
+			@element.on 'DOMNodeRemovedFromDocument', @_removedFromDOM
+
+		@element.__instance__ = @
 
 	##------------------------------------------------------------------------------
 	##
@@ -216,10 +227,10 @@ class BaseDOM extends EventDispatcher
 		@element.className = value.trim()
 
 	@get text:()->
-		return @html
+		return @element.textContent
 
 	@set text:(value)->
-		@html = value
+		@element.textContent = value
 
 	##--------------------------------------
 	##	InnerHTML
@@ -242,9 +253,12 @@ class BaseDOM extends EventDispatcher
 			@_parent = value
 		else
 			@_parent = null
+			@_observer?.disconnect()
+			@_observer = null
+			delete @_observer
 
 	@get isAttached:(p_container = null)->
-		if p_container?.contains? and typeof (p_container.contains) is 'function'
+		if typeof (p_container.contains) is 'function'
 			return p_container.contains(@element)
 		return document.contains?(@element) || document.body.contains(@element)
 
@@ -451,6 +465,10 @@ class BaseDOM extends EventDispatcher
 		else if typeof(className) isnt 'Array'
 			return
 
+		if @classList?
+			className = if Array.isArray(className) then className.join(' ') else className
+			return @classList.add(className)
+
 		classNames = @className.replace(/\s+/ig, ' ').split(' ')
 		p = classNames.length
 		i = className.length
@@ -466,6 +484,10 @@ class BaseDOM extends EventDispatcher
 			className = className.replace(/\s+/ig, ' ').split(' ')
 		else if typeof(className) isnt 'Array'
 			return
+
+		if @classList?
+			className = if Array.isArray(className) then className.join(' ') else className
+			return @classList.remove(className)
 
 		classNames = @className.replace(/\s+/ig, ' ').split(' ')
 		i = className.length
@@ -507,6 +529,31 @@ class BaseDOM extends EventDispatcher
 			hasClass &= (classNames.indexOf(className[i]) >= 0)
 		return hasClass
 
+	_mutations:(mutations)=>
+		i = mutations.length
+		while i--
+			added = 0
+			nodes = mutations[i].addedNodes
+			length = mutations[i].addedNodes.length
+			while length--
+				nodes[added].__instance__?._addedToDOM({target:nodes[added]})
+				added++
+
+			removed = 0
+			length = mutations[i].removedNodes.length
+			nodes = mutations[i].removedNodes
+			while length--
+				nodes[removed].__instance__?._removedFromDOM({target:nodes[removed]})
+				removed++
+
+	_addedToDOM:(evt)=>
+		@trigger BaseDOM.ADDED_TO_DOCUMENT, @_parent
+		@added?()
+
+	_removedFromDOM:(evt)=>
+		@trigger BaseDOM.REMOVED_FROM_DOCUMENT, @_parent
+		@removed?()
+
 	##--------------------------------------
 	##	Get elements bounds as rectangle.
 	##	{top, left, bottom, right, width, height}
@@ -532,8 +579,17 @@ class BaseDOM extends EventDispatcher
 		return boundsObj
 
 	destroy:()->
+		@element.off 'DOMNodeInsertedIntoDocument', @_addedToDOM
+		@element.off 'DOMNodeRemovedIntoDocument', @_removedFromDOM
 		@off?()
 		@removeAll?(true)
 		@remove?()
+		@_observer?.disconnect()
+		@_observer = null
+		@_namespace = null
+		@_parent = null
 		@_element.__instance__ = null
+		delete @_observer
+		delete @_namespace
+		delete @_parent
 		delete @_element.__instance__
