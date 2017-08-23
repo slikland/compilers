@@ -6,11 +6,9 @@ class VideoSubtitle extends BaseDOM
 		@source = p_subtitles
 		super {
 			element: 'div'
-			className: 'video-captions'
 		}
 		@_caption = new BaseDOM
 			element: 'span'
-			className: 'caption'
 		@appendChild @_caption
 
 	@get source:()->

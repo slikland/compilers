@@ -1,3 +1,7 @@
+#import slikland.media.MediaDOM
+#import slikland.media.video.VideoCanvas
+#import slikland.media.video.VideoSubtitle
+
 class TemplateHomeView extends BaseView
 	# Change the default css class
 	constructor: (p_data=null, p_className=null) ->
@@ -5,25 +9,35 @@ class TemplateHomeView extends BaseView
 
 	createStart:(evt=null)=>
 		@background = new BaseDOM('div')
-		@appendChild(@background)
+		
+		# console.log @content.test666.deep.deep1.deep2.deep3.deep4
+		# console.log @content.image, @loader.getResult(@content.image.src)
+
+		@image = new BaseDOM({element:@content.image.tag})
+		@background.appendChild(@image)
+
 		@background.className = 'background'
 		@background.css({
 			# 'opacity': 0
 			'height': '100%'
 			'background-color': '#'+Math.floor(Math.random()*16777215).toString(16)
 		})
-		
-		# console.log @content.test666.deep.deep1.deep2.deep3.deep4
-		# console.log @content.image, @loader.getResult(@content.image.src)
-		@image = new BaseDOM({element:@content.image.tag})
-		@background.appendChild(@image)
-
+		@appendChild(@background)
 		@background.element.on 'click', @click
-
 		super
 	
 	click:(evt=null)=>
-		@loader.loadFile(@content.imageTest, true)
+		@video = new VideoCanvas(@content.video.src, 0, true)
+		# @video = new MediaDOM(@content.video.src, 0, true)
+		@video.on VideoCanvas.RUNNING, @test
+		@background.appendChild(@video)
+
+		@sub = new VideoSubtitle(@content.subtitle.result)
+		@background.appendChild @sub
+
+
+	test:(evt=null)=>
+		@sub?.seek(evt.position)
 
 	create:(evt=null)=>
 		super

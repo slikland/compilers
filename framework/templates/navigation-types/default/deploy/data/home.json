@@ -4,7 +4,26 @@
 		"cache": true,
 		"loadWithView": true
 	},
-
+	"video":{
+		"loadWithView":false,
+		"src":[
+				{
+					"condition":"desktop",
+					"file":"{videos}SampleVideo_1280x720_1mb.mp4"
+				}
+			],
+		"cache": true
+	},
+	"subtitle":{
+		"loadWithView":true,
+		"src":[
+				{
+					"condition":"desktop",
+					"file":"{videos}subtitle.srt"
+				}
+			],
+		"cache": true
+	},
 	"test666":{
 		"id": "666",
 		"deep":{

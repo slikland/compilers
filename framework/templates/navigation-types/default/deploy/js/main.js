@@ -1491,6 +1491,986 @@ NavigationContainer = (function(_super) {
   });
   return NavigationContainer;
 })(BaseView);
+var MediaDOM;
+MediaDOM = (function(_super) {
+  __extends(MediaDOM, _super);
+  MediaDOM["const"]({
+    PAUSE: 'pause'
+  });
+  MediaDOM["const"]({
+    RESUME: 'resume'
+  });
+  MediaDOM["const"]({
+    STOP: 'stop'
+  });
+  MediaDOM["const"]({
+    PLAY: 'play'
+  });
+  MediaDOM["const"]({
+    CANSTART: 'canstart'
+  });
+  MediaDOM["const"]({
+    RUNNING: 'running'
+  });
+  MediaDOM["const"]({
+    LOADING: 'loading'
+  });
+  MediaDOM["const"]({
+    SEEKING_START: 'seekingstart'
+  });
+  MediaDOM["const"]({
+    SEEKING_COMPLETE: 'seekingcomplete'
+  });
+  MediaDOM["const"]({
+    COMPLETE: 'complete'
+  });
+  MediaDOM["const"]({
+    ERROR: 'error'
+  });
+  function MediaDOM(p_src, p_startFrom, p_autoplay) {
+    if (p_startFrom == null) {
+      p_startFrom = 0;
+    }
+    if (p_autoplay == null) {
+      p_autoplay = false;
+    }
+    this.destroy = __bind(this.destroy, this);
+    this.stop = __bind(this.stop, this);
+    this.play = __bind(this.play, this);
+    this.resume = __bind(this.resume, this);
+    this.pause = __bind(this.pause, this);
+    this.togglePlay = __bind(this.togglePlay, this);
+    this.windowActive = __bind(this.windowActive, this);
+    this.windowInactive = __bind(this.windowInactive, this);
+    this.complete = __bind(this.complete, this);
+    this.loading = __bind(this.loading, this);
+    this.running = __bind(this.running, this);
+    this.seekingComplete = __bind(this.seekingComplete, this);
+    this.seekingStart = __bind(this.seekingStart, this);
+    this.error = __bind(this.error, this);
+    this.ready = __bind(this.ready, this);
+    this.blockContextMenu = __bind(this.blockContextMenu, this);
+    if (!p_src) {
+      throw new Error('The param p_src is null');
+    }
+    this._type = p_src.replace(/^.*\./i, '') === 'mp4' ? 'video' : 'audio';
+    MediaDOM.__super__.constructor.call(this, {
+      element: this._type
+    });
+    this.element.on('contextmenu', this.blockContextMenu);
+    this.element.on('durationchange', this.ready);
+    this.attr('src', p_src);
+    this.attr('preload', 'metadata');
+    app.on(App.WINDOW_ACTIVE, this.windowActive);
+    app.on(App.WINDOW_INACTIVE, this.windowInactive);
+    this.startFrom = p_startFrom;
+    this.autoplay = p_autoplay;
+  }
+  MediaDOM.prototype.blockContextMenu = function(evt) {
+    evt.preventDefault();
+    return false;
+  };
+  MediaDOM.prototype.ready = function(evt) {
+    if (evt == null) {
+      evt = null;
+    }
+    this.element.off('durationchange', this.ready);
+    this.element.on('seeking', this.seekingStart);
+    this.element.on('seeked', this.seekingComplete);
+    this.element.on('timeupdate', this.running);
+    this.element.on('progress', this.loading);
+    this.element.on('stalled', this.error);
+    this.element.on('ended', this.complete);
+    this.element.on('error', this.error);
+    this.seek = this.startFrom;
+    if (document.hasFocus() && this.autoplay) {
+      this.play();
+    }
+    this.trigger(MediaDOM.CANSTART, {
+      'duration': this.duration
+    });
+    return false;
+  };
+  MediaDOM.prototype.error = function(evt) {
+    var _ref;
+    if (evt == null) {
+      evt = null;
+    }
+    if (((_ref = this.element.error) != null ? _ref.message : void 0) != null) {
+      this.trigger(MediaDOM.ERROR, {
+        'error': this.element.error,
+        'message': this.element.error.message
+      });
+    } else if ((evt.message != null) && (evt.code != null)) {
+      this.trigger(MediaDOM.ERROR, {
+        'error': evt.code,
+        'message': evt.message
+      });
+    } else {
+      this.trigger(MediaDOM.ERROR);
+    }
+    return false;
+  };
+  MediaDOM.prototype.seekingStart = function(evt) {
+    if (evt == null) {
+      evt = null;
+    }
+    this.trigger(MediaDOM.SEEKING_START, {
+      'position': this.seek
+    });
+    return false;
+  };
+  MediaDOM.prototype.seekingComplete = function(evt) {
+    if (evt == null) {
+      evt = null;
+    }
+    this.trigger(MediaDOM.SEEKING_COMPLETE, {
+      'position': this.seek
+    });
+    return false;
+  };
+  MediaDOM.prototype.running = function(evt) {
+    if (evt == null) {
+      evt = null;
+    }
+    if (this.startFrom) {
+      this.seek = this.startFrom;
+      this.startFrom = null;
+    }
+    this.trigger(MediaDOM.RUNNING, {
+      'position': this.seek,
+      'duration': this.duration
+    });
+    return false;
+  };
+  MediaDOM.prototype.loading = function(evt) {
+    var i, items;
+    if (evt == null) {
+      evt = null;
+    }
+    i = this.element.buffered.length;
+    items = [];
+    while (i--) {
+      items.push({
+        'start': this.element.buffered.start(i),
+        'end': this.element.buffered.end(i)
+      });
+    }
+    this.trigger(MediaDOM.LOADING, {
+      'buffer': items
+    });
+    return false;
+  };
+  MediaDOM.prototype.complete = function(evt) {
+    if (evt == null) {
+      evt = null;
+    }
+    this.trigger(MediaDOM.COMPLETE);
+    return false;
+  };
+  MediaDOM.prototype.windowInactive = function(evt) {
+    if (evt == null) {
+      evt = null;
+    }
+    if (this.hasPlayed) {
+      this.pause();
+    }
+    return false;
+  };
+  MediaDOM.prototype.windowActive = function(evt) {
+    if (evt == null) {
+      evt = null;
+    }
+    if (this.hasPlayed) {
+      this.resume();
+    }
+    return false;
+  };
+  MediaDOM.prototype.togglePlay = function(evt) {
+    if (evt == null) {
+      evt = null;
+    }
+    if (!this.isPaused) {
+      this.hasPlayed = false;
+      this.pause();
+    } else {
+      this.hasPlayed = true;
+      this.resume();
+    }
+    return false;
+  };
+  MediaDOM.prototype.pause = function(evt) {
+    if (evt == null) {
+      evt = null;
+    }
+    if (!this.isPaused) {
+      this.element.pause();
+      this.trigger(MediaDOM.PAUSE);
+    }
+    return false;
+  };
+  MediaDOM.prototype.resume = function(evt) {
+    if (evt == null) {
+      evt = null;
+    }
+    if (this.isPaused) {
+      this.element.play();
+      this.trigger(MediaDOM.RESUME);
+    }
+    return false;
+  };
+  MediaDOM.prototype.play = function(evt) {
+    if (evt == null) {
+      evt = null;
+    }
+    if (this.isPaused) {
+      this.element.play();
+      this.hasPlayed = true;
+      this.trigger(MediaDOM.PLAY);
+    }
+    return false;
+  };
+  MediaDOM.prototype.stop = function(evt) {
+    if (evt == null) {
+      evt = null;
+    }
+    if (!this.isPaused) {
+      this.element.pause();
+    }
+    this.element.currentTime = 0;
+    this.hasPlayed = false;
+    this.trigger(MediaDOM.STOP);
+    return false;
+  };
+  MediaDOM.get({
+    type: function() {
+      return this._type;
+    }
+  });
+  MediaDOM.get({
+    isPaused: function() {
+      return this.element.paused;
+    }
+  });
+  MediaDOM.get({
+    hasPlayed: function() {
+      return this._hasPlayed;
+    }
+  });
+  MediaDOM.set({
+    hasPlayed: function(p_value) {
+      return this._hasPlayed = p_value;
+    }
+  });
+  MediaDOM.get({
+    loop: function() {
+      return this.element.loop;
+    }
+  });
+  MediaDOM.set({
+    loop: function(p_value) {
+      return this.element.loop = p_value;
+    }
+  });
+  MediaDOM.get({
+    mute: function() {
+      return this.element.muted;
+    }
+  });
+  MediaDOM.set({
+    mute: function(p_value) {
+      return this.element.muted = p_value;
+    }
+  });
+  MediaDOM.get({
+    volume: function() {
+      return this.element.volume;
+    }
+  });
+  MediaDOM.set({
+    volume: function(p_value) {
+      if (p_value > 1) {
+        p_value = 1;
+      } else if (p_value < 0) {
+        p_value = 0;
+      }
+      return this.element.volume = p_value;
+    }
+  });
+  MediaDOM.get({
+    duration: function() {
+      return this.element.duration;
+    }
+  });
+  MediaDOM.get({
+    seek: function() {
+      return this.element.currentTime;
+    }
+  });
+  MediaDOM.set({
+    seek: function(p_value) {
+      if (p_value > this.element.duration) {
+        p_value = this.element.duration;
+      } else if (p_value < 0) {
+        p_value = 0;
+      }
+      return this.element.currentTime = p_value;
+    }
+  });
+  MediaDOM.prototype.destroy = function() {
+    this.element.off('contextmenu', this.blockContextMenu);
+    this.element.off('durationchange', this.ready);
+    this.element.off('seeking', this.seekingStart);
+    this.element.off('seeked', this.seekingComplete);
+    this.element.off('timeupdate', this.running);
+    this.element.off('progress', this.loading);
+    this.element.off('ended', this.complete);
+    app.off(App.WINDOW_ACTIVE, this.windowActive);
+    app.off(App.WINDOW_INACTIVE, this.windowInactive);
+    this.stop();
+    return MediaDOM.__super__.destroy.apply(this, arguments);
+  };
+  return MediaDOM;
+})(BaseDOM);
+var VideoCanvas;
+VideoCanvas = (function(_super) {
+  __extends(VideoCanvas, _super);
+  VideoCanvas["const"]({
+    PAUSE: 'pause'
+  });
+  VideoCanvas["const"]({
+    RESUME: 'resume'
+  });
+  VideoCanvas["const"]({
+    STOP: 'stop'
+  });
+  VideoCanvas["const"]({
+    PLAY: 'play'
+  });
+  VideoCanvas["const"]({
+    CANSTART: 'canstart'
+  });
+  VideoCanvas["const"]({
+    RUNNING: 'running'
+  });
+  VideoCanvas["const"]({
+    LOADING: 'loading'
+  });
+  VideoCanvas["const"]({
+    SEEKING_START: 'seekingstart'
+  });
+  VideoCanvas["const"]({
+    SEEKING_COMPLETE: 'seekingcomplete'
+  });
+  VideoCanvas["const"]({
+    COMPLETE: 'complete'
+  });
+  VideoCanvas["const"]({
+    ERROR: 'error'
+  });
+  function VideoCanvas(p_srcVideo, p_startFrom, p_autoplay, p_srcAudio) {
+    if (p_startFrom == null) {
+      p_startFrom = 0;
+    }
+    if (p_autoplay == null) {
+      p_autoplay = false;
+    }
+    if (p_srcAudio == null) {
+      p_srcAudio = null;
+    }
+    this.destroy = __bind(this.destroy, this);
+    this.draw = __bind(this.draw, this);
+    this.stopRender = __bind(this.stopRender, this);
+    this.startRender = __bind(this.startRender, this);
+    this.stop = __bind(this.stop, this);
+    this.play = __bind(this.play, this);
+    this.resume = __bind(this.resume, this);
+    this.pause = __bind(this.pause, this);
+    this.windowActive = __bind(this.windowActive, this);
+    this.windowInactive = __bind(this.windowInactive, this);
+    this.togglePlay = __bind(this.togglePlay, this);
+    this.complete = __bind(this.complete, this);
+    this.loading = __bind(this.loading, this);
+    this.running = __bind(this.running, this);
+    this.seekingComplete = __bind(this.seekingComplete, this);
+    this.seekingStart = __bind(this.seekingStart, this);
+    this.error = __bind(this.error, this);
+    this.ready = __bind(this.ready, this);
+    this.blockContextMenu = __bind(this.blockContextMenu, this);
+    if (!p_srcVideo) {
+      throw new Error('The param p_srcVideo is null');
+    }
+    VideoCanvas.__super__.constructor.call(this);
+    if (app.detections.os === 'ios') {
+      p_srcAudio = !p_srcAudio ? p_srcVideo : p_srcAudio;
+      this.audio = new BaseDOM({
+        'element': 'audio'
+      });
+      this.audio.element.on('durationchange', this.ready);
+      this.audio.element.on('contextmenu', this.blockContextMenu);
+      this.audio.attr('src', p_srcAudio);
+    }
+    this.video = new BaseDOM({
+      'element': 'video'
+    });
+    this.canvas = new BaseDOM({
+      'element': 'canvas'
+    });
+    this.appendChild(this.canvas);
+    this.context = this.canvas.element.getContext('2d');
+    this.video.element.on('durationchange', this.ready);
+    this.video.element.on('contextmenu', this.blockContextMenu);
+    this.video.attr('src', p_srcVideo);
+    this.video.attr('preload', 'metadata');
+    app.on(App.WINDOW_ACTIVE, this.windowActive);
+    app.on(App.WINDOW_INACTIVE, this.windowInactive);
+    this.autoplay = p_autoplay;
+    this.startFrom = p_startFrom;
+  }
+  VideoCanvas.prototype.blockContextMenu = function(evt) {
+    evt.preventDefault();
+    return false;
+  };
+  VideoCanvas.prototype.ready = function(evt) {
+    if (evt == null) {
+      evt = null;
+    }
+    evt.currentTarget.off('durationchange', this.ready);
+    if (this.audio) {
+      if (!this.audio.element.duration || this.audio.element.duration === NaN || !this.video.element.duration || this.video.element.duration === NaN) {
+        return;
+      }
+    }
+    this.canvas.attr('width', this.video.element.videoWidth);
+    this.canvas.attr('height', this.video.element.videoHeight);
+    if (this.audio) {
+      this.audio.element.on('seeking', this.seekingStart);
+      this.audio.element.on('seeked', this.seekingComplete);
+      this.audio.element.on('timeupdate', this.running);
+      this.audio.element.on('progress', this.loading);
+      this.audio.element.on('stalled', this.error);
+      this.audio.element.on('ended', this.complete);
+      this.audio.element.on('error', this.error);
+    } else {
+      this.video.element.on('seeking', this.seekingStart);
+      this.video.element.on('seeked', this.seekingComplete);
+      this.video.element.on('timeupdate', this.running);
+      this.video.element.on('progress', this.loading);
+      this.video.element.on('stalled', this.error);
+      this.video.element.on('ended', this.complete);
+      this.video.element.on('error', this.error);
+    }
+    this.seek = this.startFrom;
+    if (document.hasFocus() && this.autoplay) {
+      this.play();
+    }
+    this.trigger(VideoCanvas.CANSTART, {
+      'duration': this.duration
+    });
+    return false;
+  };
+  VideoCanvas.prototype.error = function(evt) {
+    var _ref, _ref1, _ref2, _ref3, _ref4, _ref5;
+    if (evt == null) {
+      evt = null;
+    }
+    if ((this.audio && (((_ref = this.audio) != null ? (_ref1 = _ref.element) != null ? (_ref2 = _ref1.error) != null ? _ref2.message : void 0 : void 0 : void 0) != null)) || (((_ref3 = this.video) != null ? (_ref4 = _ref3.element) != null ? (_ref5 = _ref4.error) != null ? _ref5.message : void 0 : void 0 : void 0) != null)) {
+      this.trigger(MediaMobile.ERROR, {
+        'error': this.audio.element.error || this.video.element.error,
+        'message': this.audio.element.error.message || this.video.element.error.message
+      });
+    } else if ((evt.message != null) && (evt.code != null)) {
+      this.trigger(VideoCanvas.ERROR, {
+        'error': evt.code,
+        'message': evt.message
+      });
+    } else {
+      this.trigger(VideoCanvas.ERROR);
+    }
+    return false;
+  };
+  VideoCanvas.prototype.seekingStart = function(evt) {
+    if (evt == null) {
+      evt = null;
+    }
+    this.trigger(VideoCanvas.SEEKING_START, {
+      'position': this.seek
+    });
+    return false;
+  };
+  VideoCanvas.prototype.seekingComplete = function(evt) {
+    if (evt == null) {
+      evt = null;
+    }
+    this.trigger(VideoCanvas.SEEKING_COMPLETE, {
+      'position': this.seek
+    });
+    return false;
+  };
+  VideoCanvas.prototype.running = function(evt) {
+    if (evt == null) {
+      evt = null;
+    }
+    if (this.startFrom) {
+      this.seek = this.startFrom;
+      this.startFrom = null;
+    }
+    if (this.audio) {
+      this.video.element.currentTime = this.audio.element.currentTime;
+      this.draw(false);
+    }
+    this.trigger(VideoCanvas.RUNNING, {
+      'position': this.seek,
+      'duration': this.duration
+    });
+    return false;
+  };
+  VideoCanvas.prototype.loading = function(evt) {
+    var i, items;
+    if (evt == null) {
+      evt = null;
+    }
+    i = this.video.element.buffered.length;
+    items = [];
+    while (i--) {
+      items.push({
+        'start': this.video.element.buffered.start(i),
+        'end': this.video.element.buffered.end(i)
+      });
+    }
+    this.trigger(VideoCanvas.LOADING, {
+      'buffer': items
+    });
+    return false;
+  };
+  VideoCanvas.prototype.complete = function(evt) {
+    if (evt == null) {
+      evt = null;
+    }
+    this.trigger(VideoCanvas.COMPLETE);
+    return false;
+  };
+  VideoCanvas.prototype.togglePlay = function(evt) {
+    if (evt == null) {
+      evt = null;
+    }
+    if (!this.isPaused) {
+      this.hasPlayed = false;
+      this.pause();
+    } else {
+      this.hasPlayed = true;
+      this.resume();
+    }
+    return false;
+  };
+  VideoCanvas.prototype.windowInactive = function(evt) {
+    if (evt == null) {
+      evt = null;
+    }
+    if (this.hasPlayed) {
+      this.pause();
+    }
+    return false;
+  };
+  VideoCanvas.prototype.windowActive = function(evt) {
+    if (evt == null) {
+      evt = null;
+    }
+    if (this.hasPlayed) {
+      this.resume();
+    }
+    return false;
+  };
+  VideoCanvas.prototype.pause = function(evt) {
+    if (evt == null) {
+      evt = null;
+    }
+    if (!this.isPaused) {
+      if (this.audio) {
+        this.audio.element.pause();
+      } else {
+        this.video.element.pause();
+        this.stopRender();
+      }
+      this.trigger(VideoCanvas.PAUSE);
+    }
+    return false;
+  };
+  VideoCanvas.prototype.resume = function(evt) {
+    if (evt == null) {
+      evt = null;
+    }
+    if (this.isPaused) {
+      if (this.audio) {
+        this.audio.element.play();
+      } else {
+        this.video.element.play();
+        this.startRender();
+      }
+      this.trigger(VideoCanvas.RESUME);
+    }
+    return false;
+  };
+  VideoCanvas.prototype.play = function(evt) {
+    if (evt == null) {
+      evt = null;
+    }
+    if (this.isPaused) {
+      if (this.audio) {
+        this.audio.element.play();
+      } else {
+        this.video.element.play();
+        this.startRender();
+      }
+      this.hasPlayed = true;
+      this.trigger(VideoCanvas.PLAY);
+    }
+    return false;
+  };
+  VideoCanvas.prototype.stop = function(evt) {
+    if (evt == null) {
+      evt = null;
+    }
+    if (!this.isPaused) {
+      if (this.audio) {
+        this.audio.element.pause();
+      } else {
+        this.video.element.pause();
+      }
+    }
+    if (this.audio) {
+      this.audio.element.currentTime = 0;
+    } else {
+      this.video.element.currentTime = 0;
+      this.stopRender();
+    }
+    this.hasPlayed = false;
+    this.trigger(VideoCanvas.STOP);
+    return false;
+  };
+  VideoCanvas.get({
+    isPaused: function() {
+      if (this.audio) {
+        return this.audio.element.paused;
+      } else {
+        return this.video.element.paused;
+      }
+    }
+  });
+  VideoCanvas.get({
+    hasPlayed: function() {
+      return this._hasPlayed;
+    }
+  });
+  VideoCanvas.set({
+    hasPlayed: function(p_value) {
+      return this._hasPlayed = p_value;
+    }
+  });
+  VideoCanvas.get({
+    loop: function() {
+      if (this.audio) {
+        return this.audio.element.loop;
+      } else {
+        return this.video.element.loop;
+      }
+    }
+  });
+  VideoCanvas.set({
+    loop: function(p_value) {
+      if (this.audio) {
+        return this.audio.element.loop = p_value;
+      } else {
+        return this.video.element.loop = p_value;
+      }
+    }
+  });
+  VideoCanvas.get({
+    mute: function() {
+      if (this.audio) {
+        return this.audio.element.muted;
+      } else {
+        return this.video.element.muted;
+      }
+    }
+  });
+  VideoCanvas.set({
+    mute: function(p_value) {
+      if (this.audio) {
+        return this.audio.element.muted = p_value;
+      } else {
+        return this.video.element.muted = p_value;
+      }
+    }
+  });
+  VideoCanvas.get({
+    volume: function() {
+      if (this.audio) {
+        return this.audio.element.volume;
+      } else {
+        return this.video.element.volume;
+      }
+    }
+  });
+  VideoCanvas.set({
+    volume: function(p_value) {
+      if (p_value > 1) {
+        p_value = 1;
+      } else if (p_value < 0) {
+        p_value = 0;
+      }
+      return this.video.element.volume = p_value;
+    }
+  });
+  VideoCanvas.get({
+    duration: function() {
+      return this.video.element.duration;
+    }
+  });
+  VideoCanvas.get({
+    seek: function() {
+      return this.video.element.currentTime;
+    }
+  });
+  VideoCanvas.set({
+    seek: function(p_value) {
+      if (p_value > this.video.element.duration) {
+        p_value = this.video.element.duration;
+      } else if (p_value < 0) {
+        p_value = 0;
+      }
+      if (this.audio) {
+        this.audio.element.currentTime = p_value;
+      } else {
+        this.video.element.currentTime = p_value;
+      }
+      return this.draw(false);
+    }
+  });
+  VideoCanvas.get({
+    frameImage: function() {
+      return this.canvas.element.toDataURL();
+    }
+  });
+  VideoCanvas.get({
+    naturalWidth: function() {
+      return this.canvas.element.width;
+    }
+  });
+  VideoCanvas.get({
+    naturalHeight: function() {
+      return this.canvas.element.height;
+    }
+  });
+  VideoCanvas.prototype.startRender = function(evt) {
+    if (evt == null) {
+      evt = null;
+    }
+    return this.renderID = window.requestAnimationFrame(this.draw);
+  };
+  VideoCanvas.prototype.stopRender = function(evt) {
+    if (evt == null) {
+      evt = null;
+    }
+    return window.cancelAnimationFrame(this.renderID);
+  };
+  VideoCanvas.prototype.draw = function(p_render) {
+    if (p_render == null) {
+      p_render = true;
+    }
+    this.context.clearRect(0, 0, this.video.element.videoWidth, this.video.element.videoHeight);
+    this.context.drawImage(this.video.element, 0, 0);
+    if (p_render) {
+      return this.renderID = window.requestAnimationFrame(this.draw);
+    }
+  };
+  VideoCanvas.prototype.destroy = function() {
+    this.stop();
+    this.video.element.off('contextmenu', this.blockContextMenu);
+    this.video.element.off('durationchange', this.ready);
+    this.video.element.off('seeking', this.seekingStart);
+    this.video.element.off('seeked', this.seekingComplete);
+    this.video.element.off('timeupdate', this.running);
+    this.video.element.off('progress', this.loading);
+    this.video.element.off('ended', this.complete);
+    app.off(App.WINDOW_ACTIVE, this.windowActive);
+    app.off(App.WINDOW_INACTIVE, this.windowInactive);
+    if (this.audio) {
+      this.video.element.off('contextmenu', this.blockContextMenu);
+      this.video.element.off('durationchange', this.ready);
+      this.video.element.off('seeking', this.seekingStart);
+      this.video.element.off('seeked', this.seekingComplete);
+      this.video.element.off('timeupdate', this.running);
+      this.video.element.off('progress', this.loading);
+      this.video.element.off('ended', this.complete);
+      this.audio.destroy();
+      this.audio = null;
+    }
+    this.video.destroy();
+    this.video = null;
+    this.canvas.destroy();
+    this.removeChild(this.canvas);
+    this.canvas = null;
+    return VideoCanvas.__super__.destroy.apply(this, arguments);
+  };
+  return VideoCanvas;
+})(BaseDOM);
+var SRTParser;
+SRTParser = (function() {
+  function SRTParser() {}
+  SRTParser.fromString = function(p_string, p_milliseconds) {
+    var data, i, item, items, regex, useMs, _ref;
+    if (p_string == null) {
+      p_string = null;
+    }
+    if (p_milliseconds == null) {
+      p_milliseconds = false;
+    }
+    useMs = p_milliseconds ? true : false;
+    data = p_string.replace(/\r/g, '');
+    regex = /(?:(\d+)\n)?(\d{2}:\d{2}:\d{2},\d{3}) --> (\d{2}:\d{2}:\d{2},\d{3}).*?\n([\s\S]*?)(?:\n{2}|\n*$)/g;
+    items = [];
+    i = 0;
+    while (item = regex.exec(data)) {
+      items.push({
+        id: (_ref = item[1]) != null ? _ref.trim() : void 0,
+        startTime: useMs ? this._timeToMilliseconds(item[2].trim()) : item[2].trim(),
+        endTime: useMs ? this._timeToMilliseconds(item[3].trim()) : item[3].trim(),
+        text: item[4].trim()
+      });
+      i += 4;
+    }
+    return items;
+  };
+  SRTParser.toString = function(p_object) {
+    var i, response, s;
+    if (p_object == null) {
+      p_object = null;
+    }
+    if (!p_object instanceof Array) {
+      return '';
+    }
+    response = '';
+    i = 0;
+    while (i < p_object.length) {
+      s = p_object[i];
+      if (!isNaN(s.startTime) && !isNaN(s.endTime)) {
+        s.startTime = this._millisecondsToTime(parseInt(s.startTime, 10));
+        s.endTime = this._millisecondsToTime(parseInt(s.endTime, 10));
+      }
+      response += s.id + '\u000d\n';
+      response += s.startTime + ' --> ' + s.endTime + '\u000d\n';
+      response += s.text.replace('\n', '\u000d\n') + '\u000d\n\u000d\n';
+      i++;
+    }
+    return response;
+  };
+  SRTParser._timeToMilliseconds = function(p_value) {
+    var i, parts, regex;
+    regex = /(\d+):(\d{2}):(\d{2}),(\d{3})/;
+    parts = regex.exec(p_value);
+    if (parts === null) {
+      return 0;
+    }
+    i = 1;
+    while (i < 5) {
+      parts[i] = parseInt(parts[i], 10);
+      if (isNaN(parts[i])) {
+        parts[i] = 0;
+      }
+      i++;
+    }
+    return parts[1] * 3600000 + parts[2] * 60000 + parts[3] * 1000 + parts[4];
+  };
+  SRTParser._millisecondsToTime = function(p_value) {
+    var i, measures, ms, response, time;
+    measures = [3600000, 60000, 1000];
+    time = [];
+    for (i in measures) {
+      response = (p_value / measures[i] >> 0).toString();
+      if (response.length < 2) {
+        response = '0' + response;
+      }
+      p_value %= measures[i];
+      time.push(response);
+    }
+    ms = p_value.toString();
+    if (ms.length < 3) {
+      i = 0;
+      while (i <= 3 - ms.length) {
+        ms = '0' + ms;
+        i++;
+      }
+    }
+    return time.join(':') + ',' + ms;
+  };
+  return SRTParser;
+})();
+var VideoSubtitle;
+VideoSubtitle = (function(_super) {
+  __extends(VideoSubtitle, _super);
+  function VideoSubtitle(p_subtitles) {
+    if (p_subtitles == null) {
+      p_subtitles = null;
+    }
+    this.source = p_subtitles;
+    VideoSubtitle.__super__.constructor.call(this, {
+      element: 'div'
+    });
+    this._caption = new BaseDOM({
+      element: 'span'
+    });
+    this.appendChild(this._caption);
+  }
+  VideoSubtitle.get({
+    source: function() {
+      return this._source;
+    }
+  });
+  VideoSubtitle.set({
+    source: function(p_value) {
+      if (p_value == null) {
+        p_value = null;
+      }
+      if (typeof p_value === 'string') {
+        return this._source = SRTParser.fromString(p_value, true);
+      } else if (p_value instanceof Array) {
+        return this._source = p_value;
+      }
+    }
+  });
+  VideoSubtitle.prototype.seek = function(p_seek) {
+    var caption, end, idx, length, start, _results;
+    if (p_seek == null) {
+      p_seek = 0;
+    }
+    if ((this._source == null) || (this._caption.time != null) && p_seek >= this._caption.time.start && p_seek < this._caption.time.end) {
+      return;
+    }
+    length = this._source.length;
+    idx = 0;
+    _results = [];
+    while (length--) {
+      caption = this._source[idx];
+      start = caption.startTime / 1000;
+      end = caption.endTime / 1000;
+      if (p_seek >= start && p_seek < end) {
+        this._caption.text = caption.text;
+        this._caption.time = {
+          start: start,
+          end: end
+        };
+        break;
+      } else {
+        this._caption.text = '';
+        this._caption.time = null;
+      }
+      _results.push(idx++);
+    }
+    return _results;
+  };
+  return VideoSubtitle;
+})(BaseDOM);
 var TemplateHomeView;
 TemplateHomeView = (function(_super) {
   __extends(TemplateHomeView, _super);
@@ -1510,6 +2490,7 @@ TemplateHomeView = (function(_super) {
     this.showStart = __bind(this.showStart, this);
     this.createComplete = __bind(this.createComplete, this);
     this.create = __bind(this.create, this);
+    this.test = __bind(this.test, this);
     this.click = __bind(this.click, this);
     this.createStart = __bind(this.createStart, this);
     TemplateHomeView.__super__.constructor.call(this, p_data, 'views');
@@ -1519,16 +2500,16 @@ TemplateHomeView = (function(_super) {
       evt = null;
     }
     this.background = new BaseDOM('div');
-    this.appendChild(this.background);
+    this.image = new BaseDOM({
+      element: this.content.image.tag
+    });
+    this.background.appendChild(this.image);
     this.background.className = 'background';
     this.background.css({
       'height': '100%',
       'background-color': '#' + Math.floor(Math.random() * 16777215).toString(16)
     });
-    this.image = new BaseDOM({
-      element: this.content.image.tag
-    });
-    this.background.appendChild(this.image);
+    this.appendChild(this.background);
     this.background.element.on('click', this.click);
     return TemplateHomeView.__super__.createStart.apply(this, arguments);
   };
@@ -1536,7 +2517,18 @@ TemplateHomeView = (function(_super) {
     if (evt == null) {
       evt = null;
     }
-    return this.loader.loadFile(this.content.imageTest, true);
+    this.video = new VideoCanvas(this.content.video.src, 0, true);
+    this.video.on(VideoCanvas.RUNNING, this.test);
+    this.background.appendChild(this.video);
+    this.sub = new VideoSubtitle(this.content.subtitle.result);
+    return this.background.appendChild(this.sub);
+  };
+  TemplateHomeView.prototype.test = function(evt) {
+    var _ref;
+    if (evt == null) {
+      evt = null;
+    }
+    return (_ref = this.sub) != null ? _ref.seek(evt.position) : void 0;
   };
   TemplateHomeView.prototype.create = function(evt) {
     if (evt == null) {

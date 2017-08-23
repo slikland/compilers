@@ -6316,7 +6316,6 @@ Caim = (function(_super) {
     if (p_wrapper == null) {
       p_wrapper = null;
     }
-    this.ready = __bind(this.ready, this);
     this.preParser = __bind(this.preParser, this);
     this.mainAssetsLoaded = __bind(this.mainAssetsLoaded, this);
     this.preloaderAssetsLoaded = __bind(this.preloaderAssetsLoaded, this);
@@ -6352,11 +6351,12 @@ Caim = (function(_super) {
     loader.on(NavigationLoader.LOAD_START, this.createPreloaderView);
     loader.on(NavigationLoader.LOAD_PROGRESS, this.progress);
     loader.on(NavigationLoader.LOAD_COMPLETE, this.hidePreloderView);
-    false;
+    Caim.__super__.constructor.apply(this, arguments);
   }
   /**
   	@method preParserState
   	@param {Event} evt
+  	@param {Object} data
   	@private
    */
   Caim.prototype.preParserState = function(evt, data) {
@@ -6368,7 +6368,10 @@ Caim = (function(_super) {
         }
       }
     }
-    return typeof this.preParser === "function" ? this.preParser(data) : void 0;
+    if (typeof this.preParser === "function") {
+      this.preParser(data);
+    }
+    return false;
   };
   /**
   	@method configLoaded
@@ -6387,9 +6390,6 @@ Caim = (function(_super) {
     app.config = evt.data;
     app.conditions = app.config.conditions != null ? ConditionsValidation.getInstance(app.config.conditions) : null;
     app.languages = app.config.languages != null ? LanguageData.getInstance() : null;
-    if (typeof this.ready === "function") {
-      this.ready();
-    }
     return false;
   };
   /**
@@ -6432,6 +6432,7 @@ Caim = (function(_super) {
         this.createPreloaderView();
         break;
     }
+    return false;
   };
   /**
   	@method createPreloaderView
@@ -6570,9 +6571,6 @@ Caim = (function(_super) {
     return false;
   };
   Caim.prototype.preParser = function(p_data) {
-    return false;
-  };
-  Caim.prototype.ready = function() {
     return false;
   };
   return Caim;
