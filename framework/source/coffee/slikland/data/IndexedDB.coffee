@@ -14,6 +14,7 @@ class IndexedDB extends EventDispatcher
 
 		request.onsuccess = @_onConnected
 		request.onupgradeneeded = @_onUpgradeNeeded
+		super
 
 	put:(id, value, callback = null)=>
 		@_tx = @_DB.transaction(@_prefix+'Store', 'readwrite')

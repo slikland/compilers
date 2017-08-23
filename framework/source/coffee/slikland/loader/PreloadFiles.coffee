@@ -4,7 +4,7 @@ See more info on <a href="http://www.createjs.com/docs/preloadjs/" target="_blan
 @class PreloadFiles
 ###
 
-# WARNING!!!
+# WARNING!1!!
 # The preloadJS was modified to not use revokeObjectURL.
 # Beware when overwriting this class.
 

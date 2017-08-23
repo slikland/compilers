@@ -33,3 +33,7 @@ class ColorUtils
 			return "#" + (g | (b << 8) | (r << 16)).toString(16)
 		else 
 			return (g | (b << 8) | (r << 16)).toString(16)
+
+	@hexToInt:(hex)->
+		hex = hex.substr(4, 2) + hex.substr(2, 2) + hex.substr(0, 2);
+		return parseInt(hex, 16)

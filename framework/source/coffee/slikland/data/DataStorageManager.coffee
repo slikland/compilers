@@ -11,6 +11,7 @@ class DataStorageManager extends EventDispatcher
 		if app.detections.os != "ios" && !app.detections.standalone
 			app.indexedDB = IndexedDB.getInstance(prefix)
 			app.indexedDB.on IndexedDB.ON_CONNECTED, @_onIndexedDBConnected
+		super
 		
 	set:(id, value, callback)=>
 		if app.indexedDB
