@@ -107,7 +107,6 @@ This is actually not a Class. It&#x27;s a bunch of helper methods adding prototy
 @class Prototypes
 ###
 
-
 ##--------------------------------------
 ##	Getter / Setter
 ##	@example
@@ -119,8 +118,8 @@ This is actually not a Class. It&#x27;s a bunch of helper methods adding prototy
 ##		@set a:(value)-&gt;
 ##			return @_a = value
 ##--------------------------------------
-# TODO: Fix/Add override 
-# 
+# TODO: Fix/Add override
+#
 isIE= -&gt;
 	nav = navigator.userAgent.toLowerCase()
 	return if (nav.indexOf(&#x27;msie&#x27;) != -1) then parseInt(nav.split(&#x27;msie&#x27;)[1]) else false
@@ -129,9 +128,9 @@ if isIE() == 8
 	__scopeIE8 = document.createElement(&quot;IE8_&quot; + Math.random())
 
 ###*
-This method is a decorator to create constant variable to a class.  
-A extending class cannot override this constant either can&#x27;t be reassigned.  
-  
+This method is a decorator to create constant variable to a class.
+A extending class cannot override this constant either can&#x27;t be reassigned.
+
 * Please ignore de backslash on \\\@ as the code formatter doesn&#x27;t escape atmarks.
 
 @method @const
@@ -157,11 +156,42 @@ Function::const = (p_prop) -&gt;
 	null
 
 ###*
-Getter decorator for a class instance.  
-With this decorator you&#x27;re able to assign a getter method to a variable.  
-  
-Also for a special case, you can assign a scope to the getter so you can create static getter to a class.  
-  
+EXPERIMENTAL
+This method is a decorator to protect a property of a class instance removing the property name from enumerable list.
+
+* Please ignore de backslash on \\\@ as the code formatter doesn&#x27;t escape atmarks.
+
+@method @protectProperties
+@example
+	class A
+		@protectProperties [&quot;_a&quot;, &quot;_b&quot;]
+		constructor:()-&gt;
+			@_a = 1
+	console.log(new A()) // Will not list _a either _b as enumerable
+###
+Function::protectProperties = (p_props) -&gt;
+	console.warn(&#x27;@protectProperties is an experimental feature. Use with caution.&#x27;)
+	p_props = [].concat(p_props)
+	@::[&#x27;___&#x27;] ?= {}
+	__scope = if __scopeIE8 then __scopeIE8 else @::
+	for name in p_props
+		o = {}
+		o[&#x27;get&#x27;] = ()-&gt;
+			return @___[name]
+		o[&#x27;set&#x27;] = (value)-&gt;
+			@___[name] = value
+		o.enumerable = false
+		# o.writable = false
+		Object.defineProperty __scope, name, o
+	null
+
+
+###*
+Getter decorator for a class instance.
+With this decorator you&#x27;re able to assign a getter method to a variable.
+
+Also for a special case, you can assign a scope to the getter so you can create static getter to a class.
+
 * Please ignore de backslash on \\\@ as the code formatter doesn&#x27;t escape atmarks.
 
 @method @get
@@ -193,11 +223,11 @@ Function::get = (scope, p_prop) -&gt;
 	null
 
 ###*
-Setter decorator for a class instance.  
-With this decorator you&#x27;re able to assign a setter method to a variable.  
-  
-Also for a special case, you can assign a scope to the setter so you can create static setter to a class.  
-  
+Setter decorator for a class instance.
+With this decorator you&#x27;re able to assign a setter method to a variable.
+
+Also for a special case, you can assign a scope to the setter so you can create static setter to a class.
+
 * Please ignore de backslash on \\\@ as the code formatter doesn&#x27;t escape atmarks.
 
 @method @set
@@ -243,6 +273,10 @@ Function::set = (scope, p_prop) -&gt;
 #
 # Add ECMA262-5 method binding if not supported natively
 #
+
+Function.isCallable = (fn) -&gt;
+	typeof fn == &#x27;function&#x27; or Object::toString.call(fn) == &#x27;[object Function]&#x27;
+
 unless &quot;bind&quot; of Function::
 	Function::bind = (owner) -&gt;
 		that = this
@@ -254,6 +288,20 @@ unless &quot;bind&quot; of Function::
 			-&gt;
 				that.apply owner, (if arguments_.length is 0 then args else args.concat(Array::slice.call(arguments_)))
 
+
+Number.MaxSafeInteger = 2 ** 53 - 1
+Number.toInteger = (value) -&gt;
+	number = Number(value)
+	if isNaN(number)
+		return 0
+	if number == 0 or !isFinite(number)
+		return number
+	(if number &gt; 0 then 1 else -1) * Math.floor(Math.abs(number))
+
+Number.toLength = (value) -&gt;
+	len = @toInteger(value)
+	Math.min Math.max(len, 0), Number.MaxSafeInteger
+
 ##------------------------------------------------------------------------------
 ##
 ##	STRING PROTOTYPE
@@ -262,9 +310,19 @@ unless &quot;bind&quot; of Function::
 #
 # Add ECMA262-5 string trim if not supported natively
 #
-unless &quot;trim&quot; of String::
-	String::trim=(char = null)-&gt;
-		return @ltrim(char).rtrim(char)
+
+String::url = ()-&gt;
+	a = document.createElement(&#x27;a&#x27;)
+	a.href = @
+	origin = a.protocol + &#x27;//&#x27; + a.hostname
+	if a.port.length &gt; 0
+		origin = &quot;#{origin}:#{a.port}&quot;
+	{host, hostname, pathname, port, protocol, search, hash} = a
+	a = null
+	return {origin, host, hostname, pathname, port, protocol, search, hash}
+
+String::trim=(char = null)-&gt;
+	return @ltrim(char).rtrim(char)
 
 String::ltrim=(char = null)-&gt;
 	if !char
@@ -295,7 +353,7 @@ String::padRight = (length, char = &#x27; &#x27;) -&gt;
 	text = @
 	while text.length &lt; length
 		text += char
-	return text	
+	return text
 
 ##------------------------------------------------------------------------------
 ##
@@ -305,9 +363,60 @@ String::padRight = (length, char = &#x27; &#x27;) -&gt;
 #
 # Add ECMA262-5 Array methods if not supported natively
 #
+
 unless &quot;isArray&quot; of Array::
 	Array.isArray = (arg) -&gt;
 		Object::toString.call(arg) == &#x27;[object Array]&#x27;
+
+unless &quot;of&quot; of Array::
+	Array.of = ()-&gt;
+		return Array::slice.call(arguments)
+
+unless &quot;from&quot; of Array::
+	Array.from = ()-&gt;
+		# The length property of the from method is 1.
+		(arrayLike) -&gt;
+			# 1. Let C be the this value.
+			C = this
+			# 2. Let items be ToObject(arrayLike).
+			items = Object(arrayLike)
+			# 3. ReturnIfAbrupt(items).
+			if arrayLike == null
+				throw new TypeError(&#x27;Array.from requires an array-like object - not null or undefined&#x27;)
+			# 4. If mapfn is undefined, then let mapping be false.
+			mapFn = if arguments.length &gt; 1 then arguments[1] else undefined
+			T = undefined
+			if typeof mapFn != &#x27;undefined&#x27;
+				# 5. else
+				# 5. a If IsCallable(mapfn) is false, throw a TypeError exception.
+				if !Function.isCallable(mapFn)
+					throw new TypeError(&#x27;Array.from: when provided, the second argument must be a function&#x27;)
+				# 5. b. If thisArg was supplied, let T be thisArg; else let T be undefined.
+				if arguments.length &gt; 2
+					T = arguments[2]
+			# 10. Let lenValue be Get(items, &quot;length&quot;).
+			# 11. Let len be ToLength(lenValue).
+			len = Number.toLength(items.length)
+			# 13. If IsConstructor(C) is true, then
+			# 13. a. Let A be the result of calling the [[Construct]] internal method
+			# of C with an argument list containing the single item len.
+			# 14. a. Else, Let A be ArrayCreate(len).
+			A = if Function.isCallable(C) then Object(new C(len)) else new Array(len)
+			# 16. Let k be 0.
+			k = 0
+			# 17. Repeat, while k &lt; len… (also steps a - h)
+			kValue = undefined
+			while k &lt; len
+				kValue = items[k]
+				if mapFn
+					A[k] = if typeof T == &#x27;undefined&#x27; then mapFn(kValue, k) else mapFn.call(T, kValue, k)
+				else
+					A[k] = kValue
+				k += 1
+			# 18. Let putStatus be Put(A, &quot;length&quot;, len, true).
+			A.length = len
+			# 20. Return A.
+			A
 
 unless &quot;indexOf&quot; of Array::
 	Array::indexOf = (find, i) -&gt; #opt
@@ -381,17 +490,142 @@ unless &quot;some&quot; of Array::
 #
 # ADDED IE9+ SUPPORT
 # TODO: FIX IE8
-# 
+#
 Node::on = Node::addEventListener
 Node::off = Node::removeEventListener
+
+Element::matches = Element::matches || Element::webkitMatchesSelector || Element::mozMatchesSelector || Element::msMatchesSelector || Element::oMatchesSelector
+
+Element::isElement = (p_target)-&gt;
+	if typeof HTMLElement is &#x27;object&#x27;
+		return p_target instanceof HTMLElement or p_target instanceof BaseDOM
+	else
+		return typeof p_target is &#x27;object&#x27; &amp;&amp; p_target?.nodeType is 1 &amp;&amp; typeof p_target?.nodeName is &#x27;string&#x27;
 
 ##------------------------------------------------------------------------------
 #
 # ADDED OLDER BROWSERS SUPPORT
-# 
+#
 navigator.mediaDevices ?= {}
 navigator.getUserMedia = navigator.mediaDevices.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia
 
+##------------------------------------------------------------------------------
+#
+# rAF, Date.now, window.performance
+#
+do -&gt;
+	w = window
+	for vendor in [&#x27;ms&#x27;, &#x27;moz&#x27;, &#x27;webkit&#x27;, &#x27;o&#x27;]
+		break if w.requestAnimationFrame
+		w.requestAnimationFrame = w[&quot;#{vendor}RequestAnimationFrame&quot;]
+		w.cancelAnimationFrame = (w[&quot;#{vendor}CancelAnimationFrame&quot;] or
+								  w[&quot;#{vendor}CancelRequestAnimationFrame&quot;])
+
+	if !(&#x27;performance&#x27; of window)
+		window.performance = {}
+
+	if !Date.now
+		Date.now = () =&gt; new Date().getTime()
+
+	if !(&#x27;now&#x27; of window.performance)
+		nowOffset = Date.now()
+
+		if performance.timing &amp;&amp; performance.timing.navigationStart
+			nowOffset = performance.timing.navigationStart
+
+		window.performance.now = () =&gt; Date.now() - nowOffset
+
+	# deal with the case where rAF is built in but cAF is not.
+	if w.requestAnimationFrame
+		return if w.cancelAnimationFrame
+		browserRaf = w.requestAnimationFrame
+		canceled = {}
+		w.requestAnimationFrame = (callback) -&gt;
+			id = browserRaf (time) -&gt;
+				if id of canceled then delete canceled[id]
+				else callback time
+		w.cancelAnimationFrame = (id) -&gt; canceled[id] = true
+
+	# handle legacy browsers which don’t implement rAF
+	else
+		lastTime = 0
+		w.requestAnimationFrame = (callback) -&gt;
+			currTime = Date.now()
+			timeToCall = Math.max(0, 16 - (currTime - lastTime))
+			id = window.setTimeout(()-&gt;
+				callback(currTime + timeToCall)
+			, timeToCall)
+
+			lastTime = currTime + timeToCall
+			return id
+
+		w.cancelAnimationFrame = (id) -&gt; clearTimeout id
+
+##------------------------------------------------------------------------------
+#
+# CACHES POLYFILL BECAUSE IT IS NOT ADDED TO NATIVE YET!
+#
+if Cache?
+	unless &quot;add&quot; of Cache::
+		Cache::add = (request) -&gt;
+			@addAll [ request ]
+
+	unless &quot;addAll&quot; of Cache::
+		Cache::addAll = (requests) -&gt;
+			cache = @
+
+		# Since DOMExceptions are not constructable:
+		NetworkError = (message) -&gt;
+			@name = &#x27;NetworkError&#x27;
+			@code = 19
+			@message = message
+			return
+
+		NetworkError:: = Object.create Error::
+		Promise.resolve().then(-&gt;
+			if arguments.length &lt; 1 then throw new TypeError
+			# Simulate sequence&lt;(Request or USVString)&gt; binding:
+			sequence = []
+			requests = requests.map((request) -&gt;
+				if request instanceof Request
+					request
+				else
+					String request
+					# may throw TypeError
+			)
+			Promise.all requests.map((request) -&gt;
+				if typeof request == &#x27;string&#x27;
+					request = new Request(request)
+				scheme = new URL(request.url).protocol
+				if scheme != &#x27;http:&#x27; and scheme != &#x27;https:&#x27;
+					throw new NetworkError(&#x27;Invalid scheme&#x27;)
+				fetch request.clone()
+			)
+		).then((responses) -&gt;
+			# TODO: check that requests don&#x27;t overwrite one another
+			# (don&#x27;t think this is possible to polyfill due to opaque responses)
+			Promise.all responses.map((response, i) -&gt;
+				cache.put requests[i], response
+			)
+		).then -&gt;
+			return undefined
+
+if CacheStorage?
+	unless &quot;match&quot; of CacheStorage::
+		# This is probably vulnerable to race conditions (removing caches etc)
+		CacheStorage::match = (request, opts) -&gt;
+			caches = @
+			@keys().then (cacheNames) -&gt;
+				match = undefined
+				cacheNames.reduce ((chain, cacheName) -&gt;
+				chain.then -&gt;
+					match or caches.open(cacheName).then((cache) -&gt;
+						cache.match request, opts
+						).then((response) -&gt;
+							match = response
+							match
+						)
+				), Promise.resolve()
 
     </pre>
 </div>

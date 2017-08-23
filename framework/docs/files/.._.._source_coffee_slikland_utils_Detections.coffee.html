@@ -101,6 +101,7 @@
 
 <div class="file">
     <pre class="code prettyprint linenums">
+#import slikland.utils.Resizer
 ###*
 Detections Class
 @class Detections
@@ -130,22 +131,38 @@ class Detections
 	constructor:()-&gt;
 		@matched = null
 		@ua = navigator?.userAgent || &#x27;&#x27;
-		@platform = @os = navigator?.platform || &#x27;&#x27;
+		@platform = navigator?.platform || &#x27;&#x27;
 		@version = getFirstMatch(/version\/(\d+(\.\d+)*)/i, @ua)
+		@vibrate = (navigator.vibrate || navigator.webkitVibrate || navigator.mozVibrate || navigator.msVibrate)
+		@standalone = window?.navigator.standalone || window?.matchMedia(&#x27;(display-mode: standalone)&#x27;).matches
+		@retina = @testRetinaDisplay()
 		
 		@getBrowser()
 		@versionArr = if !@version? then [] else @version.split(&#x27;.&#x27;)
 		for k, v of @versionArr
 			@versionArr[k] = Number(v)
 		
-		@orientation = if window?.innerWidth &gt; window?.innerHeight then &#x27;landscape&#x27; else &#x27;portrait&#x27;
-		@touch = (&#x27;ontouchstart&#x27; in window) || (navigator.maxTouchPoints &gt; 0) || (navigator.msMaxTouchPoints &gt; 0)
-		@tablet = /(ipad.*|tablet.*|(android.*?chrome((?!mobi).)*))$/i.test(@ua)
+		@touch = Boolean(&#x27;ontouchstart&#x27; of window) || Boolean(navigator.maxTouchPoints &gt; 0) || Boolean(navigator.msMaxTouchPoints &gt; 0)
+		@tablet = /(ipad.*|tablet(?!\s+pc).*|(android.*?chrome((?!mobi).)*))$/i.test(@ua)
 		@mobile = !@tablet &amp;&amp; Boolean(getFirstMatch(/(ipod|iphone|ipad)/i, @ua) || /[^-]mobi/i.test(@ua))
 		@desktop = !@mobile &amp;&amp; !@tablet
 
+		@os = getOS()
+		@cache = @serviceWorker = (&#x27;serviceWorker&#x27; of navigator)
 		@canvas = testCanvas()
 		@webgl = testWebGL()
+
+		versionToCheck = 10
+		validVersion = false
+		if @version
+			validVersion = @versionArr[0] &gt;= versionToCheck
+		else
+			if o = /\(iP(?:hone|ad|od).*? OS (\d+)_(\d+)/i.exec(@ua)
+				validVersion = Number(o[1]) &gt;= versionToCheck
+		@iosInlineVideo = (@os == &quot;ios&quot; &amp;&amp; validVersion)
+
+	@get orientation:-&gt;
+		return Resizer.getInstance().orientation
 		
 	test:(value)-&gt;
 		if !@matched
@@ -176,6 +193,9 @@ class Detections
 					return -1
 		return result
 
+	getFirstMatch=(re, val)-&gt;
+		m = val.match(re)
+		return (m &amp;&amp; m.length &gt; 1 &amp;&amp; m[1]) || null
 
 	getBrowser:()-&gt;
 		for m in @matches
@@ -186,6 +206,35 @@ class Detections
 				break
 		return [@name, @version]
 		
+	getOS=()-&gt;
+		result = undefined
+		
+		switch navigator?.platform.toLowerCase()
+			when &#x27;iphone&#x27;, &#x27;ipod&#x27;, &#x27;ipad&#x27;, &#x27;iphone simulator&#x27;, &#x27;ipod simulator&#x27;, &#x27;ipad simulator&#x27;, &#x27;Pike v7.6 release 92&#x27;, &#x27;Pike v7.8 release 517&#x27;
+				result = &#x27;ios&#x27;
+			when &#x27;macintosh&#x27;, &#x27;macintel&#x27;, &#x27;macppc&#x27;, &#x27;mac68k&#x27;
+				result = &#x27;osx&#x27;
+			when &#x27;android&#x27;
+				result = &#x27;android&#x27;
+			when &#x27;os/2&#x27;, &#x27;wince&#x27;, &#x27;pocket pc&#x27;, &#x27;windows&#x27;
+				result = &#x27;windows&#x27;
+			when &#x27;blackberry&#x27;
+				result = &#x27;blackberry&#x27;
+
+		if (/linux armv+(\d{1}l)/i.test(navigator?.platform))
+			result = &#x27;android&#x27;
+		else if (/linux+\s?.*?$/im.test(navigator?.platform))
+			result = &#x27;linux&#x27;
+		else if (/win\d{2}/i.test(navigator?.platform))
+			result = &#x27;windows&#x27;
+		return result
+
+	testRetinaDisplay:()=&gt;
+		if window?.matchMedia
+			mq = window.matchMedia(&#x27;only screen and (min--moz-device-pixel-ratio: 1.3), only screen and (-o-min-device-pixel-ratio: 2.6/2), only screen and (-webkit-min-device-pixel-ratio: 1.3), only screen  and (min-device-pixel-ratio: 1.3), only screen and (min-resolution: 1.3dppx)&#x27;)
+			return mq and mq.matches or window?.devicePixelRatio &gt; 1
+		return false
+
 	testWebGL=()-&gt;
 		try
 			return !!window.WebGLRenderingContext &amp;&amp; Boolean(document.createElement(&quot;canvas&quot;).getContext(&#x27;webgl&#x27;)) || Boolean(document.createElement(&quot;canvas&quot;).getContext(&#x27;experimental-webgl&#x27;))
@@ -197,10 +246,6 @@ class Detections
 			return !!window.CanvasRenderingContext2D &amp;&amp; Boolean(document.createElement(&quot;canvas&quot;).getContext(&#x27;2d&#x27;))
 		catch err
 			return false
-
-	getFirstMatch=(re, val)-&gt;
-		m = val.match(re)
-		return (m &amp;&amp; m.length &gt; 1 &amp;&amp; m[1]) || null
 
     </pre>
 </div>

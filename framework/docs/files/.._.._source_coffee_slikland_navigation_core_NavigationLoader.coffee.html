@@ -107,8 +107,8 @@
 #import slikland.utils.JSONUtils
 #import slikland.loader.AssetLoader
 
+#import slikland.navigation.core.data.LanguageData
 #import slikland.navigation.core.data.PathsData
-#import slikland.navigation.core.data.ParseData
 #import slikland.navigation.core.data.ParseConfig
 #import slikland.navigation.core.data.ParseContent
 
@@ -119,9 +119,10 @@ Base class to setup the configuration file and start loading of dependencies.
 ###
 class NavigationLoader extends EventDispatcher
 
-	@const GROUP_ASSETS_LOADED : &quot;group_assets_loaded&quot;
-
+	@const PREPARSER_DATA : &quot;pre_parser_data&quot;
+	@const LANGUAGE_DATA_LOADED : &quot;language_data_loaded&quot;
 	@const CONFIG_LOADED : &quot;config_loaded&quot;
+	@const GROUP_ASSETS_LOADED : &quot;group_assets_loaded&quot;
 
 	@const LOAD_START : &quot;load_start&quot;
 	@const LOAD_PROGRESS : &quot;load_progress&quot;
@@ -130,6 +131,7 @@ class NavigationLoader extends EventDispatcher
 
 	paths = null
 	config = null
+	lang = null
 	totalContentsLoaded = null
 	
 	loaderStep = 0
@@ -149,7 +151,7 @@ class NavigationLoader extends EventDispatcher
 		queue.on(AssetLoader.COMPLETE_FILE, @configLoaded)
 		queue.loadFile 
 			id: &#x27;config&#x27;,
-			cache: false,
+			cache: true,
 			src: p_configPath
 		false
 	
@@ -162,19 +164,65 @@ class NavigationLoader extends EventDispatcher
 		return AssetLoader.getInstance()
 
 	###*
+	@method loaded
+	@return {Boolean}
+	@protected
+	###
+	@get loaded:()-&gt;
+		return @_loaded
+
+	###*
 	@method configLoaded
 	@param {Event} evt
 	@private
 	###
 	configLoaded:(evt)=&gt;
 		evt?.currentTarget?.off(AssetLoader.COMPLETE_FILE, @configLoaded)
-
 		data = evt.result
-		paths = PathsData.getInstance(data.paths)
-		config = new ParseConfig(paths.translate(data))
 
+		if data.languages?
+			@selectLanguage(data)
+		else
+			@parseConfig(data)
+		false
+
+	###*
+	@method selectLanguage
+	@param {Object} p_data
+	@private
+	###
+	selectLanguage:(p_data)=&gt;
+		languages = LanguageData.getInstance(p_data.languages)
+		parts = document.location.href.split(&#x27;/&#x27;)
+		i = parts.length
+		while i--
+			part = parts[i]
+			if languages.hasLanguage(part, &#x27;sufix&#x27;)
+				selected = part
+				break
+		languages.current = selected || languages.default.iso
+		if !p_data.paths
+			p_data[&#x27;paths&#x27;] = {}
+
+		p_data.paths[&#x27;language-data&#x27;] = languages.current[&#x27;data-path&#x27;]
+		
+		@parseConfig(p_data)
+		false
+
+	###*
+	@method parseConfig
+	@param {Object} p_data
+	@private
+	###
+	parseConfig:(p_data)=&gt;
+		
+		@trigger(NavigationLoader.PREPARSER_DATA, p_data)
+
+		paths = PathsData.getInstance(p_data.paths)
+		p_data = paths.translate(p_data)
+
+		config = new ParseConfig(p_data)
 		@trigger(NavigationLoader.CONFIG_LOADED, {data:config.data})
-
 		@loadContents()
 		false 
 
@@ -206,12 +254,12 @@ class NavigationLoader extends EventDispatcher
 	@private
 	###
 	contentLoaded:(evt)=&gt;
-		evt?.currentTarget?.off?(AssetLoader.COMPLETE_FILE, @contentLoaded)
+		evt?.currentTarget?.off(AssetLoader.COMPLETE_FILE, @contentLoaded)
+
 		if evt?.item
 			if config.views[evt.item.id]
 				config.views[evt.item.id].content = paths.translate(evt.item.result)
 			else if config.required[evt.item.group][evt.item.id]
-				# console.log &quot;required contents id:&quot;, evt.item.id
 				config.required[evt.item.group].content = paths.translate(evt.item.result)
 				delete config.required[evt.item.group][evt.item.id]
 		totalContentsLoaded++
@@ -226,8 +274,6 @@ class NavigationLoader extends EventDispatcher
 		# console.log &#x27;views:&#x27;, config.views
 		# console.log &#x27;required:&#x27;, config.required
 		# console.log &#x27;contents:&#x27;, config.contents
-
-		@trigger(NavigationLoader.LOAD_START)
 
 		assets = []
 		loaderSteps = []
@@ -250,11 +296,13 @@ class NavigationLoader extends EventDispatcher
 			for k, v of config.required[id]
 				if v.src
 					v.internal = false
-					if assets[id]
-						assets[id].push v
-					else
-						assets[id] = []
-						assets[id].push v
+					if v.src != config.required[id].content?.src
+						if assets[id]
+							assets[id].push v
+						else
+							assets[id] = []
+							assets[id].push v
+
 		total = ObjectUtils.count(assets)
 		firstIndexes = loaderSteps.length
 		for k, v of assets
@@ -264,7 +312,9 @@ class NavigationLoader extends EventDispatcher
 					firstIndexes++
 				else
 					loaderSteps.push {id:k, data:v, ratio:(1/total)}
-				
+		
+		@trigger(NavigationLoader.LOAD_START)
+
 		currentStep = loaderSteps[0]
 		queue = @addLoader(currentStep.id)
 		@addFiles(currentStep.data, queue)
@@ -308,7 +358,11 @@ class NavigationLoader extends EventDispatcher
 		for f in p_files
 			f.loaded = false
 			if f?.src?
-				if !f.id? || f.id is undefined then f.id = f.src
+				if !f.id? || f.id is undefined
+					src = removeParam(&#x27;noCache&#x27;, f.src)
+					src = removeParam(&#x27;v&#x27;, f.src)
+					f.id = src
+
 				if f.src.indexOf(&#x27;.json&#x27;) != -1
 					f.src = f.src
 				jsRE.lastIndex = 0
@@ -328,44 +382,23 @@ class NavigationLoader extends EventDispatcher
 		evt.item.loaded = true
 		
 		switch evt.item.ext
-			when &#x27;json&#x27;
-				data = paths.translate(evt.result)
-				if typeof(data) isnt &#x27;string&#x27; then data = JSON.stringify(data)
-				JSONUtils.removeComments(data)
-				result = data
 			when &#x27;js&#x27;
-				data = evt.result
-				data = data.replace(/^\/\/.*?(\n|$)/igm, &#x27;&#x27;)
-				if currentStep.id == &#x27;main&#x27;
-					main = result = eval(data)
-				else
-					result = eval(&#x27;(function (){&#x27; + data + &#x27;}).call(self)&#x27;)
-			when &#x27;css&#x27;
-				head = document.querySelector(&quot;head&quot;) || document.getElementsByTagName(&quot;head&quot;)[0]
-				style = document.createElement(&#x27;style&#x27;)
-				style.id = evt.item.id
-				style.type = &quot;text/css&quot;
-				head.appendChild(style)
-				si = head.querySelectorAll(&#x27;style&#x27;).length
-				try
-					style.appendChild(document.createTextNode(evt.result))
-				catch e
-					if document.all
-						document.styleSheets[si].cssText = evt.result
-				result = style
+				# if currentStep.id == &#x27;main&#x27; &amp;&amp; evt.item.id.search(/main/i) != -1
+				window.main ?= {}
 			else
 				result = evt.item
-		
+
 		contents = config.views[currentStep.id]?.content || config.required[currentStep.id]?.content
 		if contents? &amp;&amp; evt.item.internal!=false
 			# @TODO 
 			# Sets the result of the content file to BaseView classes
-			# Praying for a good soul look and fix this shit... =}
+			# Praying for a good soul see this and fix this shit... =}
 			eval(&#x27;contents[&quot;&#x27; + evt.item.___path?.join(&#x27;&quot;][&quot;&#x27;) + &#x27;&quot;] = result&#x27;)
 			#
-			evt.item.src = removeParam(&#x27;noCache&#x27;, evt.item.src)
-			evt.item.src = removeParam(&#x27;v&#x27;, evt.item.src)
-		if main then main.content = contents
+			# evt.item.src = removeParam(&#x27;noCache&#x27;, evt.item.src)
+			# evt.item.src = removeParam(&#x27;v&#x27;, evt.item.src)
+			if window.main
+				window.main[&#x27;content&#x27;] = contents
 		@trigger(NavigationLoader.LOAD_FILE_COMPLETE, {id:evt.item.id, group:currentStep.id, data:evt.item, result:result})
 		false
 
@@ -407,22 +440,25 @@ class NavigationLoader extends EventDispatcher
 	@private
 	###
 	loadComplete:(evt)=&gt;
-		@removeLoader(evt.currentTarget)
+		if evt then @removeLoader(evt.currentTarget)
 
 		step = loaderSteps[loaderStep]
-		@assetsLoaded(step?.id)
+		if step then @assetsLoaded(step.id)
 
-		loaderRatio += step.ratio
+		loaderRatio += step?.ratio
 		loaderStep++
 		
 		if loaderStep &gt;= loaderSteps.length
 			@trigger(NavigationLoader.LOAD_COMPLETE)
+			@_loaded = true
 		else
 			currentStep = loaderSteps[loaderStep]
 			queue = @addLoader(currentStep.id)
 			@addFiles(currentStep.data, queue)
-			queue.load()
-			# if queue._loadQueue.length + queue._currentLoads.length is 0 then @loadComplete()
+			if queue._loadQueue.length + queue._currentLoads.length is 0
+				@loadComplete()
+			else
+				queue.load()
 		false
 
 	###*
@@ -434,6 +470,7 @@ class NavigationLoader extends EventDispatcher
 	assetsLoaded:(p_id)=&gt;
 		return if !p_id?
 		@trigger(NavigationLoader.GROUP_ASSETS_LOADED, {id:p_id, data:@loader.getGroup(p_id)})
+
 		false
 
     </pre>

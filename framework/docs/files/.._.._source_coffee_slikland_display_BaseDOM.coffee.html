@@ -104,36 +104,72 @@
 #import slikland.utils.Prototypes
 #import slikland.event.EventDispatcher
 
-# 
+#
 # Helper for adding BaseDOM into any DOM element
-# 
+#
 # TODO: FIX IE8+
-# 
-Node::__appendChild__ = Node::appendChild
-Node::appendChild = (node) -&gt;
-	el = node
-	if node instanceof BaseDOM
-		el = node.element
-		node.parent = @
-	Node::__appendChild__.call(@, el)
+#
 
-Node::__removeChild__ = Node::removeChild
-Node::removeChild = (node) -&gt;
-	el = node
-	if node instanceof BaseDOM
-		el = node.element
-		node.parent = @
-	Node::__removeChild__.call(@, el)
-Element::matches = Element::matches || Element::webkitMatchesSelector || Element::mozMatchesSelector || Element::msMatchesSelector || Element::oMatchesSelector
-Node::findParents = (query) -&gt;
-	if @parentNode?
-		if @parentNode.matches(query)
-			return @parentNode
-		else
-			return @parentNode.findParents(query)
-	return null
+unless &quot;findParents&quot; of Node::
+	Node::findParents = (query) -&gt;
+		if @parentNode? and @parentNode isnt document
+			if @parentNode.matches(query)
+				return @parentNode
+			else
+				return @parentNode.findParents(query)
+		return null
 
-# 
+unless &quot;contains&quot; of Node::
+	Node::contains = (node)-&gt;
+		for v in @childNodes
+			if v == (node.element || node)
+				return true
+				break
+		return false
+else
+	unless &quot;__contains__&quot; of Node::
+		Node::__contains__ = Node::contains
+		Node::contains = (node)-&gt;
+			return @__contains__(node.element || node)
+
+unless &quot;__appendChild__&quot; of Node::
+	Node::__appendChild__ = Node::appendChild
+	Node::appendChild = (node) -&gt;
+		el = node.element || node
+		@__appendChild__(el) if el?
+		if node instanceof BaseDOM
+			node.parent = @__instance__ || @
+		return node
+
+unless &quot;__removeChild__&quot; of Node::
+	Node::__removeChild__ = Node::removeChild
+	Node::removeChild = (node) -&gt;
+		el = node.element || node
+		@__removeChild__(el) if el?
+		if node instanceof BaseDOM
+			node.parent = null
+		return node
+
+unless &quot;__replaceChild__&quot; of Node::
+	Node::__replaceChild__ = Node::replaceChild
+	Node::replaceChild = (newNode, oldNode) -&gt;
+		el1 = newNode
+		el2 = oldNode
+
+		if newNode instanceof BaseDOM
+			el1 = newNode.element
+		if oldNode instanceof BaseDOM
+			el2 = oldNode.element
+
+		node = Node::__replaceChild__.call(@, el1, el2) if el1? and el2?
+
+		if newNode instanceof BaseDOM
+			newNode.parent = @__instance__ || @
+		if oldNode instanceof BaseDOM
+			oldNode.parent = null
+		return node
+
+#
 # TODO: FIX IE8+
 # Node.get({instance: ()-&gt; return @__instance__})
 
@@ -144,40 +180,58 @@ Base DOM manipulation class
 ###
 
 class BaseDOM extends EventDispatcher
-	# 
+
+	@ADDED_TO_DOCUMENT: &#x27;added_to_document&#x27;
+	@REMOVED_FROM_DOCUMENT: &#x27;removed_from_document&#x27;
+
+	@isElement:(p_target)-&gt;
+		return Element.isElement(p_target)
+
+	#
 	# Deprecated params: constructor:(element = &#x27;div&#x27;, className = null, namespace = null)-&gt;
-	# 
+	#
 	constructor:(p_options...)-&gt;
 		super
-		# 
+		#
 		# Default params:
-		# 
+		#
 		element = &#x27;div&#x27;
 		className = null
 		namespace = null
 
-		if typeof(p_options[0]) == &#x27;string&#x27; || p_options[0] instanceof HTMLElement
+		if typeof(p_options[0]) == &#x27;string&#x27; || p_options[0] instanceof Element
 			element = p_options[0]
 		else
-
 			i = p_options.length
 			while i--
 				option = p_options[i]
 				if option.element? then element = option.element
 				if option.className? then className = option.className
 				if option.namespace? then namespace = option.namespace
+
 		if typeof(element) == &#x27;string&#x27;
 			if namespace
 				@_namespace = namespace
 				@_element = document.createElementNS(@_namespace, element)
 			else
 				@_element = document.createElement(element)
-		else if element instanceof HTMLElement
+		else
 			@_element = element
+
+		if @element.parentElement? and !@_parent?
+			@parent = @element.parentElement.__instance__ || @element.parentElement
+
 		if className
 			@addClass(className)
-		@_element.__instance__ = @
 
+		if MutationObserver?
+			@_observer = new MutationObserver(@_mutations)
+			@_observer.observe(@element, { childList: true })
+		else
+			@element.on &#x27;DOMNodeInsertedIntoDocument&#x27;, @_addedToDOM
+			@element.on &#x27;DOMNodeRemovedFromDocument&#x27;, @_removedFromDOM
+
+		@element.__instance__ = @
 
 	##------------------------------------------------------------------------------
 	##
@@ -207,12 +261,22 @@ class BaseDOM extends EventDispatcher
 	##	Instance bounds. Only getters.
 	##	If changing size, use CSS.
 	##--------------------------------------
-
 	@get width:()-&gt;
 		return @getBounds().width
+
 	@get height:()-&gt;
 		return @getBounds().height
-	
+
+	@get outerWidth:()-&gt;
+		w = @width
+		space = @numberStyle(&#x27;margin-left&#x27;) + @numberStyle(&#x27;margin-right&#x27;)
+		return w + space
+
+	@get outerHeight:()-&gt;
+		h = @height
+		space = @numberStyle(&#x27;margin-top&#x27;) + @numberStyle(&#x27;margin-bottom&#x27;)
+		return h + space
+
 	@get left:()-&gt;
 		return @getBounds().left
 	@get top:()-&gt;
@@ -223,17 +287,35 @@ class BaseDOM extends EventDispatcher
 	@get y:()-&gt;
 		return @getBounds().top
 
+	@get windowScroll:()-&gt;
+		supportPageOffset = window.pageXOffset isnt undefined
+		isCSS1Compat = ((document.compatMode || &quot;&quot;) is &quot;CSS1Compat&quot;)
 
-	##--------------------------------------
-	##	Parent instance. Can be HTMLElement
-	##--------------------------------------
-	@get parent: ()-&gt;
-		return @_parent
+		x = if supportPageOffset then window.pageXOffset else if isCSS1Compat then document.documentElement.scrollLeft else document.body.scrollLeft
+		y = if supportPageOffset then window.pageYOffset else if isCSS1Compat then document.documentElement.scrollTop else document.body.scrollTop
 
-	@set parent: (value)-&gt;
-		if !(value instanceof BaseDOM) &amp;&amp; !(value instanceof Node)
-			throw new Error(&#x27;Parent instance is not either Node or BaseDOM&#x27;)
-		return @_parent = value
+		return {
+			x: x
+			y: y
+		}
+
+	@get scrollPosition:()-&gt;
+		return {y:@element.offsetTop, x:@element.offsetLeft}
+
+	@set scrollY:(p_value)-&gt;
+		@element.scrollTop = p_value
+
+	@get scrollY:()-&gt;
+		return @element.scrollTop
+
+	@set scrollX:(p_value)-&gt;
+		@element.scrollLeft = p_value
+
+	@get scrollX:()-&gt;
+		return @element.scrollLeft
+
+	@get attributes:()-&gt;
+		return @element.attributes
 
 	##--------------------------------------
 	##	CSS Class Name
@@ -245,9 +327,10 @@ class BaseDOM extends EventDispatcher
 		@element.className = value.trim()
 
 	@get text:()-&gt;
-		return @html
+		return @element.textContent
+
 	@set text:(value)-&gt;
-		@html = value
+		@element.textContent = value
 
 	##--------------------------------------
 	##	InnerHTML
@@ -257,17 +340,31 @@ class BaseDOM extends EventDispatcher
 	@set html:(value)-&gt;
 		@element.innerHTML = value
 
+	##--------------------------------------
+	##	Parent instance. Can be HTMLElement
+	##--------------------------------------
+	@get parent: ()-&gt;
+		return @_parent
+
+	@set parent: (value = null)-&gt;
+		if value?
+			if !(value instanceof BaseDOM) &amp;&amp; !(value instanceof Node)
+				throw new Error(&#x27;Parent instance is not either Node or BaseDOM&#x27;)
+			@_parent = value
+		else
+			@_parent = null
+			@_observer?.disconnect()
+			@_observer = null
+			delete @_observer
+
+	@get isAttached:(p_container = null)-&gt;
+		if typeof (p_container.contains) is &#x27;function&#x27;
+			return p_container.contains(@element)
+		return document.contains?(@element) || document.body.contains(@element)
 
 	##--------------------------------------
 	##	DOM Manipulation
 	##--------------------------------------
-
-	@get isAttached:()-&gt;
-		return document.contains?(@element) || document.body.contains(@element)
-
-	@get attributes:()-&gt;
-		return @element.attributes
-
 	appendChild:(child)-&gt;
 		@appendChildAt(child)
 
@@ -280,38 +377,63 @@ class BaseDOM extends EventDispatcher
 		else
 			@element.insertBefore(el, @childNodes[index])
 		if child instanceof BaseDOM
-			child.parent = @
+			child.parent = @__instance__ || @
 		return child
+
+	replaceChild:(replaceElement, oldElement)-&gt;
+		el1 = replaceElement
+		el2 = oldElement
+		if replaceElement instanceof BaseDOM
+			el1 = replaceElement.element
+		if oldElement instanceof BaseDOM
+			el2 = oldElement.element
+		@element.replaceChild el1, el2
+		if replaceElement instanceof BaseDOM
+			replaceElement.parent = @__instance__ || @
+		if oldElement instanceof BaseDOM
+			oldElement.parent = null
+		return replaceElement
 
 	remove:()-&gt;
 		@parent?.removeChild?(@)
 
-	removeChild:(child)-&gt;
-		el = child
+	removeChild:(child, destroy = false)-&gt;
+		return if !child
 		if child instanceof BaseDOM
-			el = child.element
-		try
-			return @element.removeChild(el)
+			if !!destroy
+				child.removeAll(true)
+				child.destroy()
+				return child
+		if @contains(child)
+			return @element.removeChild(child)
 
 	removeChildAt:(index = -1)-&gt;
 		if index &lt; @childNodes.length
 			return @removeChild(@childNodes[i])
 
-	removeAll:()-&gt;
+	removeAll:(destroy = false)-&gt;
 		childs = @childNodes
 		i = childs.length
 		while i-- &gt; 0
-			@removeChild(childs[i])
+			domInstance = childs[i].__instance__
+			child = domInstance || childs[i]
+			if child?
+				@removeChild(child, !!domInstance and !!destroy)
+
+	contains:(child)-&gt;
+		return @element.contains(child)
 
 	##--------------------------------------
 	##	Check if the instance matches a query selector
 	##--------------------------------------
 	matches:(query)-&gt;
 		return @element.matches(query)
+
 	##--------------------------------------
 	##	Find parent nodes for a matching query selector
 	findParents:(query)-&gt;
 		return @element.findParents(query)
+
 	##--------------------------------------
 	##	Query selector
 	##	@onlyInstances: If return only BaseDOM instances
@@ -346,27 +468,44 @@ class BaseDOM extends EventDispatcher
 	##	@example:
 	##	attr({id: 1, name: 2})
 	##--------------------------------------
-	attr:(name, value = &#x27;nonenonenone&#x27;, namespace = false)-&gt;
+
+	removeAttr:(name, namespace = null)-&gt;
+		if namespace is true
+			namespace = @namespace
+
+		methodArgs = [name]
+		methodSuffix = &quot;Attribute&quot;
+		if namespace?
+			methodSuffix += &quot;NS&quot;
+			methodArgs.unshift(namespace)
+
+		if typeof(name) == &#x27;string&#x27;
+			return @element?[&quot;remove#{methodSuffix}&quot;].apply(@element, methodArgs)
+		else if Array.isArray(name)
+			for key in name
+				methodArgs.splice(-1, 1, key)
+				@element?[&quot;remove#{methodSuffix}&quot;].apply(@element, methodArgs)
+
+	attr:(name, value = null, namespace = null)-&gt;
 		if typeof(name) == &#x27;string&#x27;
 			return @_attr(name, value, namespace)
 		else if typeof(name) == &#x27;object&#x27;
 			for k, v of name
 				@_attr(k, v, namespace)
 
-	_attr:(name, value = &#x27;nonenonenone&#x27;, namespace = false)-&gt;
-		if namespace is false
+	_attr:(name, value = null, namespace = null)-&gt;
+		if namespace is true
 			namespace = @namespace
 
-		# Default valus is &#x27;nonenonenone&#x27; because of when setting null or false
-		if value != &#x27;nonenonenone&#x27;
-			if namespace
-				@element.setAttributeNS(namespace, name, value)
-			else
-				@element.setAttribute(name, value)
-		if namespace
-			return @element.getAttributeNS(namespace, name)
-		else
-			return @element.getAttribute(name)
+		methodArgs = [name, value]
+		methodSuffix = &quot;Attribute&quot;
+		if namespace?
+			methodSuffix += &quot;NS&quot;
+			methodArgs.unshift(namespace)
+
+		if value?
+			@element?[&quot;set#{methodSuffix}&quot;].apply(@element, methodArgs)
+		return @element?[&quot;get#{methodSuffix}&quot;].apply(@element, methodArgs)
 
 	##--------------------------------------
 	##	Set / Get element CSS
@@ -374,27 +513,65 @@ class BaseDOM extends EventDispatcher
 	##	@example:
 	##	css({color: 1, width: 2})
 	##--------------------------------------
-	_css:(name, value = null)-&gt;
+	_css:(name, value = null, p_number = false)-&gt;
 		if value isnt null
 			@element.style[name] = value
-		return @element.style[name]
+		return if p_number then @numberStyle(name) else @style(name)
 
-	css:(name, value = null)-&gt;
+	css:(name, value = null, p_number = false)-&gt;
 		if typeof(name) == &#x27;string&#x27;
-			return @_css(name, value)
+			return @_css(name, value, p_number)
 		else if typeof(name) == &#x27;object&#x27;
 			for k, v of name
-				@_css(k, v)
+				@_css(k, v, p_number)
+
+	##--------------------------------------
+	##	Get element ComputedStyle
+	##	@example:
+	##	style(&#x27;minHeight&#x27;)
+	##--------------------------------------
+	style:(styleProp = null, el = @element)-&gt;
+		el = el.element if el instanceof BaseDOM
+		source = null
+		if window.getComputedStyle?
+			source = window.getComputedStyle(el)
+		else if el.currentStyle
+			source = el.currentStyle
+		else if document.defaultView and document.defaultView.getComputedStyle
+			source = document.defaultView.getComputedStyle(el, null)
+		else
+			source = @element.style
+		return if styleProp? then source[styleProp] else source
+
+	numberStyle:(styleProp = null, el = @element)-&gt;
+		if styleProp?
+			return parseFloat(@style(styleProp, el) || &#x27;0&#x27;)
+		else
+			source = @style(null, el)
+		result = {}
+		for k, v of source
+			if isNaN(parseInt(k))
+				result[k] = v
+				if !isNaN(parseFloat(v))
+					result[k] = parseFloat(v)
+		return result
 
 	##--------------------------------------
 	##	CSS Class name manipulation
 	##--------------------------------------
-
 	addClass:(className)-&gt;
 		if typeof(className) is &#x27;string&#x27;
 			className = className.replace(/\s+/ig, &#x27; &#x27;).split(&#x27; &#x27;)
-		else if typeof(className) isnt &#x27;Array&#x27;
+		else if !Array.isArray(className)
 			return
+
+		if @element.classList?
+			className = if !Array.isArray(className) then [className] else className
+			className.forEach(action = (value)-&gt;
+				@classList.add(value)
+			, @element)
+			action = null
+			return @className
 
 		classNames = @className.replace(/\s+/ig, &#x27; &#x27;).split(&#x27; &#x27;)
 		p = classNames.length
@@ -409,8 +586,16 @@ class BaseDOM extends EventDispatcher
 	removeClass:(className)-&gt;
 		if typeof(className) is &#x27;string&#x27;
 			className = className.replace(/\s+/ig, &#x27; &#x27;).split(&#x27; &#x27;)
-		else if typeof(className) isnt &#x27;Array&#x27;
+		else if !Array.isArray(className)
 			return
+
+		if @element.classList?
+			className = if !Array.isArray(className) then [className] else className
+			className.forEach(action = (value)-&gt;
+				@classList.remove(value)
+			, @element)
+			action = null
+			return @className
 
 		classNames = @className.replace(/\s+/ig, &#x27; &#x27;).split(&#x27; &#x27;)
 		i = className.length
@@ -436,6 +621,7 @@ class BaseDOM extends EventDispatcher
 				@removeClass(className[i])
 			else
 				@addClass(className[i])
+
 	hasClass:(className)-&gt;
 		if typeof(className) is &#x27;string&#x27;
 			className = className.replace(/\s+/ig, &#x27; &#x27;).split(&#x27; &#x27;)
@@ -450,7 +636,32 @@ class BaseDOM extends EventDispatcher
 		while i-- &gt; 0
 			hasClass &amp;= (classNames.indexOf(className[i]) &gt;= 0)
 		return hasClass
-		
+
+	_mutations:(mutations)=&gt;
+		i = mutations.length
+		while i--
+			added = 0
+			nodes = mutations[i].addedNodes
+			length = mutations[i].addedNodes.length
+			while length--
+				nodes[added].__instance__?._addedToDOM({target:nodes[added]})
+				added++
+
+			removed = 0
+			length = mutations[i].removedNodes.length
+			nodes = mutations[i].removedNodes
+			while length--
+				nodes[removed].__instance__?._removedFromDOM({target:nodes[removed]})
+				removed++
+		undefined
+
+	_addedToDOM:(evt)=&gt;
+		@trigger BaseDOM.ADDED_TO_DOCUMENT, @_parent
+		@added?()
+
+	_removedFromDOM:(evt)=&gt;
+		@trigger BaseDOM.REMOVED_FROM_DOCUMENT, @_parent
+		@removed?()
 
 	##--------------------------------------
 	##	Get elements bounds as rectangle.
@@ -477,8 +688,21 @@ class BaseDOM extends EventDispatcher
 		return boundsObj
 
 	destroy:()-&gt;
+		@element.off &#x27;DOMNodeInsertedIntoDocument&#x27;, @_addedToDOM
+		@element.off &#x27;DOMNodeRemovedIntoDocument&#x27;, @_removedFromDOM
 		@off?()
+		@removeAll?(true)
 		@remove?()
+		@_observer?.disconnect()
+		@_observer = null
+		@_namespace = null
+		@_parent = null
+		@_element.__instance__ = null
+		delete @_observer
+		delete @_namespace
+		delete @_parent
+		delete @_element.__instance__
+		undefined
 
     </pre>
 </div>

@@ -101,6 +101,8 @@
 
 <div class="file">
     <pre class="code prettyprint linenums">
+# import slikland.utils.Prototypes
+
 ###*
 Class to controll animation. It calls a callback method every requestAnimation frame.&lt;br&gt;
 In case of Internet Explorer 9, it uses a setTimeout with 16 ms.
@@ -111,18 +113,6 @@ class AnimationTicker
 	@_callbacks = []
 
 	@_init:()-&gt;
-		if !window.requestAnimationFrame
-			if window.mozRequestAnimationFrame
-				window.requestAnimationFrame = window.mozRequestAnimationFrame
-				window.cancelAnimationFrame = window.mozCancelAnimationFrame || window.mozCancelRequestAnimationFrame
-			else if window.webkitRequestAnimationFrame
-				window.requestAnimationFrame = window.webkitRequestAnimationFrame
-				window.cancelAnimationFrame = window.webkitCancelAnimationFrame || window.webkitCancelRequestAnimationFrame
-			else
-				window.requestAnimationFrame = (callback, element) -&gt;
-					return setTimeout(callback, 16)
-				window.cancelAnimationFrame = (id) -&gt;
-					clearTimeout(id)
 		@_update()
 
 	###*
@@ -169,7 +159,11 @@ class AnimationTicker
 		while i-- &gt; 0
 			if @_callbacks[i].func == callback
 				@_callbacks.splice(i, 1)
-
+	###*
+	@method _update
+	@private
+	@param {Array} items
+	###
 	@_update:(items = null)=&gt;
 		if !Array.isArray(items)
 			items = @_callbacks
@@ -179,6 +173,8 @@ class AnimationTicker
 		i = -1
 		while ++i &lt; l
 			item = items[i]
+			if !item?
+				continue
 			data = item.data
 			dt = t - data.initTime - data.delayMs
 			if dt &lt;= 0

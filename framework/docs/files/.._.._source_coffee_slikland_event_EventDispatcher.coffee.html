@@ -101,6 +101,7 @@
 
 <div class="file">
     <pre class="code prettyprint linenums">
+#import slikland.utils.Prototypes
 ###*
 EventDispatcher class for handling and triggering events.
 @class EventDispatcher
@@ -182,7 +183,7 @@ class EventDispatcher
 		//&#x60;event.target&#x60; will be window, and event.currentTarget will be the &#x60;ev&#x60; instance.
 		ed.trigger(&#x27;someEvent&#x27;, {someData: true}, window);
 	###
-	trigger:(evt, data = null, target = null)=&gt;
+	trigger:(evt, data = null, target = null, sourceEvent = null)=&gt;
 		if Array.isArray(evt)
 			for e in evt
 				@trigger(evt, data)
@@ -194,7 +195,19 @@ class EventDispatcher
 			return
 		if !target
 			target = @
-		e = {type: evt, target: target, currentTarget: @}
+
+		if sourceEvent instanceof Event or sourceEvent instanceof CustomEvent
+			data ?= {}
+			data.sourceEvent = sourceEvent
+
+		e = {type: evt, target: target, currentTarget: @, defaultPrevented: false, sourceEvent: sourceEvent || data?.sourceEvent}
+		e.preventDefault = ()-&gt;
+			@defaultPrevented = true
+			@sourceEvent?.preventDefault?()
+		e.stopPropagation = ()-&gt;
+			sourceEvent?.stopPropagation?()
+		e.stopImmediatePropagation = ()-&gt;
+			sourceEvent?.stopImmediatePropagation?()
 
 		if typeof(data) == &#x27;object&#x27;
 			for k, v of data
@@ -203,6 +216,7 @@ class EventDispatcher
 		i = events.length
 		while i-- &gt; 0
 			events[i]?(e, data)
+		return e
 
 	###*
 	Check if a event handler is already set.

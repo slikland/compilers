@@ -136,7 +136,11 @@ class ParseConfig extends ParseData
 		for k, v of @data.views
 			v.class = StringUtils.toCamelCase(v.class)
 			if v.content
+				props = @getProperties(v.content)
 				v.content = @getPath(v.content)
+				if props?
+					for p, pv of props
+						v[p] = pv
 				_contents.push @_contentGroup(v)
 			results[v.id] = v
 
@@ -163,14 +167,49 @@ class ParseConfig extends ParseData
 			group = []
 			for k, v of @data.required[id]
 				v.group = id
-				if v.src then v.src = @getPath(v.src)
+				if v.src
+					props = @getProperties(v.src)
+					v.src = @getPath(v.src)
+					if props?
+						for p, pv of props
+							v[p] = pv
 				if v.content
+					props = @getProperties(v.content)
 					v.content = @getPath(v.content)
+					if props?
+						for p, pv of props
+							v[p] = pv
 					_contents.push @_contentGroup(v)
-				v.id = if v.id then v.id else v.src || v.content
+				if !v.id? || v.id is undefined
+					src = v.src || v.content
+					v.id = @removeParam(&#x27;noCache&#x27;, @getPath(src))
+					v.id = @removeParam(&#x27;v&#x27;, @getPath(src))
 				group[v.id] = v
 			results[id] = group
 		@data.required = results
+		return results
+
+	###*
+	@method removeParam
+	@param {String} p_param
+	@param {String} p_url
+	@private
+	###
+	removeParam:(p_param, p_url)-&gt;
+		param = null
+		params = []
+		results = p_url.split(&#x27;?&#x27;)[0]
+		query = if p_url.indexOf(&#x27;?&#x27;) != -1 then p_url.split(&#x27;?&#x27;)[1] else &#x27;&#x27;
+		if query != &#x27;&#x27;
+			params = query.split(&#x27;&amp;&#x27;)
+			i = params.length - 1
+			while i &gt;= 0
+				param = params[i].split(&#x27;=&#x27;)[0]
+				if param == p_param
+					params.splice i, 1
+				i -= 1
+			if params.length &gt; 0
+				results = results + &#x27;?&#x27; + params.join(&#x27;&amp;&#x27;)
 		return results
 
 	###*

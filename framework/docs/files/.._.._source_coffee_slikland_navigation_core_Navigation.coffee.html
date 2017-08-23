@@ -155,11 +155,11 @@ class Navigation extends EventDispatcher
 	###
 	setup:(p_data)=&gt;
 		_controller.on(BaseNavigationController.CHANGE, @_change)
-		_controller.on(BaseNavigationController.CHANGE_VIEW, @_change)
+		_controller.on(BaseNavigationController.CHANGE_VIEW, @_changeView)
 		_controller.setup(p_data)
 
 		_router.on(NavigationRouter.CHANGE, @_change)
-		_router.on(NavigationRouter.CHANGE_ROUTE, @_change)
+		_router.on(NavigationRouter.CHANGE_ROUTE, @_changeRoute)
 		_router.setup(app.root, app.config.navigation?.forceHashBang)
 		
 		for k, v of p_data.views
@@ -182,6 +182,18 @@ class Navigation extends EventDispatcher
 			viewID =  @getViewByRoute(current)
 		else
 			viewID = null
+		
+		if app.languages
+			languages = app.languages
+			if languages.default &amp;&amp; viewID
+				parts = @routeData.raw.split(&#x27;/&#x27;)
+				if !languages.hasLanguage(parts[0], &#x27;sufix&#x27;)
+					if app.config.views[viewID].route
+						route = app.config.views[viewID].route
+					else
+						route = &#x27;/&#x27;
+					@replaceRoute(route)
+
 		_controller.start(viewID)
 		false
 	
@@ -201,9 +213,7 @@ class Navigation extends EventDispatcher
 	@readOnly
 	###
 	@get currentView:-&gt;
-		view = @_currentView || _controller.currentView
-		view.routeData = @routeData
-		return view
+		return @_currentView || _controller.currentView
 
 	###*
 	Returns the previous view
@@ -222,14 +232,17 @@ class Navigation extends EventDispatcher
 	###
 	@get routeData:()-&gt;
 		pathData = _router._parsePath(_router.getCurrentPath())
-		routeData = _router._checkRoutes(pathData.path)
+		routeData =  _router._checkRoutes(pathData.path)
 
 		results = {}
 		if routeData?
-			results.raw = pathData.rawPath
-			results.params = pathData.params
-			results.route = routeData[0]?[0]?.route
-			results.parsed = routeData[1]
+			results[&#x27;raw&#x27;] = pathData.rawPath
+			results[&#x27;params&#x27;] = pathData.params
+			if app.languages
+				results[&#x27;language-iso&#x27;] = app.languages.current.iso
+				results[&#x27;language-sufix&#x27;] = app.languages.current.sufix
+			results[&#x27;route&#x27;] = routeData[0]?[0]?.route
+			results[&#x27;parsed&#x27;] = routeData[1]
 		return results
 
 	###*
@@ -255,12 +268,8 @@ class Navigation extends EventDispatcher
 	@param {String|Object} p_value
 	@deprecated Uses the {{#crossLink &quot;Navigation/gotoRoute:method&quot;}}{{/crossLink}} or {{#crossLink &quot;Navigation/gotoView:method&quot;}}{{/crossLink}}
 	###
-	goto:(p_value)=&gt;
+	goto:(p_value, p_trigger=false)=&gt;
 		throw new Error(&#x27;This method is already deprecated.&#x27;)
-		# if p_value.indexOf(&#x27;/&#x27;) == 0
-		# 	@gotoRoute(p_value)
-		# else
-		# 	@gotoView(p_value)
 		false
 
 	###*
@@ -280,7 +289,10 @@ class Navigation extends EventDispatcher
 	gotoRoute:(p_value, p_trigger=false)=&gt;
 		return if !p_value?
 		if p_value.indexOf(&#x27;/&#x27;) == 0
-			_router.goto(p_value, p_trigger)
+			if app.languages
+				_router.goto(&#x27;/&#x27;+app.languages.current.sufix+p_value, p_trigger)
+			else
+				_router.goto(p_value, p_trigger)
 		else
 			throw new Error(&#x27;The value &quot;&#x27;+p_value+&#x27;&quot; is not a valid format to route (&quot;/example&quot;)&#x27;)
 		false
@@ -293,7 +305,10 @@ class Navigation extends EventDispatcher
 	replaceRoute:(p_value, p_trigger=false)=&gt;
 		return if !p_value?
 		if p_value.indexOf(&#x27;/&#x27;) == 0
-			_router.replace(p_value, p_trigger)
+			if app.languages
+				_router.replace(&#x27;/&#x27;+app.languages.current.sufix+p_value, p_trigger)
+			else
+				_router.replace(p_value, p_trigger)
 		else
 			throw new Error(&#x27;The value &quot;&#x27;+p_value+&#x27;&quot; is not a valid format to route (&quot;/example&quot;)&#x27;)
 		false
@@ -301,21 +316,26 @@ class Navigation extends EventDispatcher
 	###*
 	@method gotoDefault
 	###
-	gotoDefault:(p_trigger=false)=&gt;
+	gotoDefault:(p_trigger=false, p_replace=null)=&gt;
 		if app.config.navigation?.defaultView?
 			view = app.config.navigation.defaultView
-			@gotoRoute(@getRouteByView(view), p_trigger)
+			if app.config.views[view].route
+				@gotoRoute(@getRouteByView(view), p_trigger)
+			else
+				@gotoView(view, p_replace, p_trigger)
 		false
 
 	###*
 	@method gotoView
 	@param {String} p_value
 	###
-	gotoView:(p_value)=&gt;
+	gotoView:(p_value, p_replace=null, p_trigger=false)=&gt;
 		if p_value.indexOf(&#x27;/&#x27;) == 0
 			throw new Error(&#x27;The value &quot;&#x27;+p_value+&#x27;&quot; is not a valid format to viewID (&quot;areaID&quot;)&#x27;)
 		else
 			_controller.goto(p_value)
+			if p_replace?
+				@replaceRoute(p_replace, p_trigger)
 		false
 
 	###*
@@ -343,6 +363,32 @@ class Navigation extends EventDispatcher
 		return null
 
 	###*
+	@method _changeView
+	@param {Event} [evt=null]
+	@private
+	###
+	_changeView:(evt=null)=&gt;
+		@_currentView = evt.data.currentView
+		@_previousView = evt.data.previousView
+		@_visibleViews = evt.data.visibleViews
+		@_currentView.routeData = @routeData
+		
+		@trigger(Navigation.CHANGE_VIEW, {data:evt.data})
+		false
+
+	###*
+	@method _changeRoute
+	@param {Event} [evt=null]
+	@private
+	###
+	_changeRoute:(evt=null)=&gt;
+		data = @routeData
+		if data.route? then @gotoView(@getViewByRoute(data.route))
+		@trigger(Navigation.CHANGE_ROUTE, {data:data})
+		false
+
+
+	###*
 	@method _change
 	@param {Event} [evt=null]
 	@private
@@ -350,21 +396,12 @@ class Navigation extends EventDispatcher
 	_change:(evt=null)=&gt;
 		# TODO: @setRoute(@getRouteByView(@_currentView.id))
 		switch evt.type
-			when BaseNavigationController.CHANGE_VIEW
-				@_currentView = evt.data.currentView
-				@_previousView = evt.data.previousView
-				@_visibleViews = evt.data.visibleViews
-				
-				@trigger(Navigation.CHANGE_VIEW, {data:evt.data})
 			when BaseNavigationController.CHANGE
 				@trigger(Navigation.CHANGE_INTERNAL_VIEW, {view:evt.view, transition:evt.transition})
 			
-			when NavigationRouter.CHANGE_ROUTE
-				@trigger(Navigation.CHANGE_ROUTE, {data:@routeData})
-				if @routeData.route? then @gotoView(@getViewByRoute(@routeData.route))
-			# when NavigationRouter.CHANGE
-			# 	@trigger(Navigation.CHANGE, {data:@routeData})
-
+			when NavigationRouter.CHANGE
+				@trigger(Navigation.CHANGE, {data:@routeData})
+		false
 
     </pre>
 </div>

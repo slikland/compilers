@@ -107,10 +107,6 @@
 #import slikland.debug.Debug
 #import slikland.utils.Prototypes
 
-#import slikland.utils.ArrayUtils
-#import slikland.utils.ObjectUtils
-#import slikland.utils.StringUtils
-#import slikland.utils.JSONUtils
 #import slikland.utils.Detections
 
 #import slikland.loader.AssetLoader
@@ -143,29 +139,36 @@ class Caim extends EventDispatcher
 		if !(p_preloaderView instanceof BaseView)
 			throw new Error(&#x27;The param p_preloaderView is null or the instance of param p_preloaderView is not either BaseView class&#x27;)
 		else
-			_preloaderView = p_preloaderView 
+			_preloaderView = p_preloaderView
 
 		wrapper = if !(p_wrapper)? then document.body else p_wrapper
+		if !wrapper.__instance__?
+			new BaseDOM({element:wrapper})
 
 		app.root = document.querySelector(&quot;base&quot;)?.href || document.getElementsByTagName(&quot;base&quot;)[0]?.href
 		app.loader = AssetLoader.getInstance()
 		app.detections = Detections.getInstance()
 
 		loader = new NavigationLoader(if app.root? then app.root+p_configPath else p_configPath)
+		loader.on(NavigationLoader.PREPARSER_DATA, @preParserState)
 		loader.on(NavigationLoader.CONFIG_LOADED, @configLoaded)
+		loader.on(NavigationLoader.GROUP_ASSETS_LOADED, @groupLoaded)
+
 		loader.on(NavigationLoader.LOAD_START, @createPreloaderView)
 		loader.on(NavigationLoader.LOAD_PROGRESS, @progress)
 		loader.on(NavigationLoader.LOAD_COMPLETE, @hidePreloderView)
-		loader.on(NavigationLoader.LOAD_FILE_COMPLETE, @loadFileComplete)
 
-		loader.on(NavigationLoader.GROUP_ASSETS_LOADED, @groupLoaded)
-
-		# @TODO
-		# if window.location.href.indexOf(&#x27;preview&#x27;) is -1 and !Debug.debug
-		# 	app.sw = ServiceWorkerController.getInstance().init()
-		
 		false
-	
+
+	###*
+	@method preParserState
+	@param {Event} evt
+	@private
+	###
+	preParserState:(evt, data)=&gt;
+		evt?.currentTarget?.off?(NavigationLoader.PREPARSER_DATA, @preParserState)
+		@preParser?(data)
+
 	###*
 	@method configLoaded
 	@param {Event} evt
@@ -175,17 +178,8 @@ class Caim extends EventDispatcher
 		evt?.currentTarget?.off?(NavigationLoader.CONFIG_LOADED, @configLoaded)
 		app.config = evt.data
 		app.conditions = if app.config.conditions? then ConditionsValidation.getInstance(app.config.conditions) else null
-		false 
-
-	###*
-	@method loadFileComplete
-	@param {Event} evt
-	@private
-	###
-	loadFileComplete:(evt)=&gt;
-		data = evt.result
-		if data instanceof BaseView &amp;&amp; data.id == &#x27;main&#x27;
-			_mainView = data
+		app.languages = if app.config.languages? then LanguageData.getInstance() else null
+		@ready?()
 		false
 
 	###*
@@ -208,10 +202,17 @@ class Caim extends EventDispatcher
 				@coreAssetsLoaded()
 				break
 			when &#x27;main&#x27;
+				for k, v of app.config.required.main
+					if v.ext is &#x27;js&#x27; &amp;&amp; v.id.search(/main/i) != -1
+						_mainView = app.config.required.main[v.id].result = eval(app.config.required.main[v.id].result)
+						_mainView.content = window.main[&#x27;content&#x27;]
+						delete window.main[&#x27;content&#x27;]
+						delete window.main
 				@mainAssetsLoaded()
 				break
 			when &#x27;preloader&#x27;
 				@preloaderAssetsLoaded()
+				@createPreloaderView()
 				break
 
 	###*
@@ -219,9 +220,9 @@ class Caim extends EventDispatcher
 	@param {Event} [evt=null]
 	@protected
 	###
-	createPreloaderView:(evt=null)=&gt;
-		evt?.currentTarget?.off?(NavigationLoader.LOAD_START, @createPreloaderView)
-
+	createPreloaderView:()=&gt;
+		if app.config.required.preloader?.content?
+			_preloaderView.content = app.config.required.preloader.content
 		wrapper.appendChild(_preloaderView.element)
 		_preloaderView.on(BaseView.CREATE_COMPLETE, @showPreloaderView)
 		_preloaderView.createStart()
@@ -321,6 +322,12 @@ class Caim extends EventDispatcher
 	@protected
 	###
 	mainAssetsLoaded:(evt=null)=&gt;
+		false
+
+	preParser:(p_data)=&gt;
+		false
+
+	ready:()=&gt;
 		false
 
     </pre>

@@ -102,6 +102,7 @@
 <div class="file">
     <pre class="code prettyprint linenums">
 #import slikland.display.BaseDOM
+#import slikland.utils.ObjectUtils
 #import slikland.navigation.core.meta.MetaController
 
 ###*
@@ -336,7 +337,7 @@ class BaseView extends BaseDOM
 	@get routeData:-&gt;
 		return @_routeData
 	@set routeData:(p_value)-&gt;
-		@_routeData = p_value
+		@_routeData = ObjectUtils.clone(p_value)
 
 	###*
 	Sets/gets the parent view of this view.

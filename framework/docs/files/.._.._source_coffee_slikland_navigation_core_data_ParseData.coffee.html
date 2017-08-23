@@ -141,6 +141,39 @@ class ParseData extends EventDispatcher
 						return clone[i].file
 						break
 		return p_obj
+		
+	###*
+	@method getProperties
+	@param {Object} p_obj
+	@return {String}
+	@static
+	###
+	@getProperties:(p_obj)-&gt;
+		if !p_obj? then throw new Error(&#x27;The param p_obj cannot be null&#x27;)
+		result = {}
+		if typeof(p_obj) == &#x27;object&#x27;
+			clone = ObjectUtils.clone(p_obj)
+			foundItem = null
+			for i in [0...clone.length]
+				if clone[i].condition?
+					if _conditions?.test?(clone[i].condition)
+						foundItem = clone[i]
+				else if !foundItem
+					foundItem = clone[i]
+		for prop, value of foundItem
+			if prop != &#x27;condition&#x27; &amp;&amp; prop != &#x27;file&#x27;
+				result[prop] = value
+
+		return result
+
+	###*
+	@method getProperties
+	@param {Object} p_obj
+	@return {String}
+	@protected
+	###
+	getProperties:(p_obj)-&gt;
+		return ParseData.getProperties(p_obj)
 
 	###*
 	@method getPath

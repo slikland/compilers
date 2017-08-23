@@ -56,7 +56,11 @@ class AnimationTicker
 		while i-- > 0
 			if @_callbacks[i].func == callback
 				@_callbacks.splice(i, 1)
-
+	###*
+	@method _update
+	@private
+	@param {Array} items
+	###
 	@_update:(items = null)=>
 		if !Array.isArray(items)
 			items = @_callbacks

@@ -181,12 +181,9 @@ class NavigationRouter extends EventDispatcher
 	@private
 	###
 	_getPath:()-&gt;
-		rawPath = window.location.href
-		hasSlash = rawPath.substr(rawPath.length-1, rawPath.length) == &#x27;/&#x27;
-		if hasSlash
-			rawPath = rawPath.substr(0, rawPath.length-1)
+		rawPath = window.location.href.replace(/\/*$/g,&#x27;&#x27;)
 
-		if rawPath.indexOf(@_rootPath) == 0
+		if rawPath.indexOf(@_rootPath.replace(/\/*$/g,&#x27;&#x27;)) == 0
 			rawPath = rawPath.substr(@_rootPath.length)
 		rawPath = rawPath.replace(/^(?:#?!?\/*)([^?]*\??.*?)$/, &#x27;$1&#x27;)
 		return rawPath
@@ -198,7 +195,7 @@ class NavigationRouter extends EventDispatcher
 	@private
 	###
 	_parsePath:(p_rawPath)-&gt;
-		pathParts = /^(?:#?!?\/*)([^?]*)\??(.*?)$/.exec(p_rawPath)
+		pathParts = /^(?:#?!?\/*)([^?]*\??.*?)$/.exec(p_rawPath)
 		path = pathParts[1]
 		params = @_parseParams(pathParts[2])
 		return {rawPath: p_rawPath, path: path, params: params}
@@ -225,7 +222,7 @@ class NavigationRouter extends EventDispatcher
 	###
 	_onPathChange:(evt=null)=&gt;
 		@_currentPath = @_getPath()
-
+		
 		if @_trigger
 			@_triggerPath(@_currentPath)
 		@_trigger = true
@@ -273,6 +270,7 @@ class NavigationRouter extends EventDispatcher
 	###
 	goto:(p_path, p_trigger = true)-&gt;
 		p_path = p_path.replace(/^(?:#?!?\/*)([^?]*\??.*?)$/, &#x27;$1&#x27;)
+		# console.log @_getParams()
 		if p_path == @_currentPath
 			return
 		@_currentPath = p_path
@@ -434,6 +432,48 @@ class NavigationRouter extends EventDispatcher
 		if p_a.route &gt; p_b.route
 			return 1
 		return 0
+
+	_getParams:()-&gt;
+		pathData = @_parsePath(@_currentPath)
+		params = pathData[&#x27;params&#x27;]
+		for k, v of params
+			v = decodeURIComponent(v)
+			try
+				decoded = JSON.parse(v)
+				if typeof(decoded) != &#x27;string&#x27;
+					v = decoded
+			params[k] = v
+		return params
+
+	_setParams:(params)-&gt;
+		pathData = @_parsePath(@_currentPath)
+		pArr = []
+		for k, v of params
+			try
+				if typeof(v) != &#x27;string&#x27;
+					v = JSON.stringify(v)
+			pArr.push(k + &#x27;=&#x27; + encodeURIComponent(v))
+			params[k] = v
+
+		path = pathData.path
+		if pArr.length &gt; 0
+			path = path + &#x27;?&#x27; + pArr.join(&#x27;&amp;&#x27;)
+		@replace(path)
+
+	getParam:(name)-&gt;
+		params = @_getParams()
+		return params[name]
+
+	setParam:(name, value)-&gt;
+		params = @_getParams()
+		params[name] = value
+		@_setParams(params)
+
+	removeParam:(name)-&gt;
+		params = @_getParams()
+		params[name] = null
+		delete params[name]
+		@_setParams(params)
 
     </pre>
 </div>

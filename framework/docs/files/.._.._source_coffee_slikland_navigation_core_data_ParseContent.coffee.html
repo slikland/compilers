@@ -127,14 +127,15 @@ class ParseContent extends ParseData
 	@private
 	###
 	_getContents:()-&gt;
-		@_primary = []
-		@_standBy = []
+		@_primary ?= []
+		@_standBy ?= []
 		
 		paths = PathsData.getInstance()
 		assets = JSONUtils.filterObject(paths.translate(@data), &#x27;src&#x27;, null, null, true)
 		for k, v of assets
 			if v.loadWithView || v.loadWithView == undefined
-				@_primary.push v
+				if @data.src != v.src
+					@_primary.push v
 			else if v.loadWithView == false
 				@_standBy.push v
 		false
@@ -147,7 +148,11 @@ class ParseContent extends ParseData
 	_validatePaths:(p_data)-&gt;
 		for k, v of p_data
 			if k == &#x27;src&#x27;
+				props = @getProperties(p_data[k])
 				p_data[k] = @getPath(p_data[k])
+				if props?
+					for p, pv of props
+						p_data[p] = pv
 			if typeof(p_data[k]) == &#x27;object&#x27; || typeof(p_data[k]) == &#x27;array&#x27;
 				@_validatePaths(p_data[k])
 

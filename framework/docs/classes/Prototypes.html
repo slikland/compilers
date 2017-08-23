@@ -139,6 +139,10 @@
 
                             </li>
                             <li class="index-item method">
+                                <a href="#method_@protectProperties">@protectProperties</a>
+
+                            </li>
+                            <li class="index-item method">
                                 <a href="#method_@set">@set</a>
 
                             </li>
@@ -172,7 +176,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._.._source_coffee_slikland_utils_Prototypes.coffee.html#l28"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;utils&#x2F;Prototypes.coffee:28</code></a>
+        <a href="../files/.._.._source_coffee_slikland_utils_Prototypes.coffee.html#l27"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;utils&#x2F;Prototypes.coffee:27</code></a>
         </p>
 
 
@@ -180,7 +184,7 @@
     </div>
 
     <div class="description">
-        <p>This method is a decorator to create constant variable to a class.<br>
+        <p>This method is a decorator to create constant variable to a class.
 A extending class cannot override this constant either can't be reassigned.</p>
 <ul>
 <li>Please ignore de backslash on \@ as the code formatter doesn't escape atmarks.</li>
@@ -220,7 +224,7 @@ console.log(B.PI) // Already thrown error before, but will be 3.14</code></pre>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._.._source_coffee_slikland_utils_Prototypes.coffee.html#l56"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;utils&#x2F;Prototypes.coffee:56</code></a>
+        <a href="../files/.._.._source_coffee_slikland_utils_Prototypes.coffee.html#l86"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;utils&#x2F;Prototypes.coffee:86</code></a>
         </p>
 
 
@@ -228,7 +232,7 @@ console.log(B.PI) // Already thrown error before, but will be 3.14</code></pre>
     </div>
 
     <div class="description">
-        <p>Getter decorator for a class instance.<br>
+        <p>Getter decorator for a class instance.
 With this decorator you're able to assign a getter method to a variable.</p>
 <p>Also for a special case, you can assign a scope to the getter so you can create static getter to a class.</p>
 <ul>
@@ -260,6 +264,49 @@ console.log(A.TEST) // Hello world!</code></pre>
             </div>
         </div>
 </div>
+<div id="method_@protectProperties" class="method item">
+    <h3 class="name"><code>@protectProperties</code></h3>
+
+        <span class="paren">()</span>
+
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._.._source_coffee_slikland_utils_Prototypes.coffee.html#l55"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;utils&#x2F;Prototypes.coffee:55</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>EXPERIMENTAL
+This method is a decorator to protect a property of a class instance removing the property name from enumerable list.</p>
+<ul>
+<li>Please ignore de backslash on \@ as the code formatter doesn't escape atmarks.</li>
+</ul>
+
+    </div>
+
+
+
+
+        <div class="example">
+            <h4>Example:</h4>
+
+            <div class="example-content">
+                <pre class="code prettyprint"><code>class A</code></pre>
+
+            </div>
+        </div>
+</div>
 <div id="method_@set" class="method item">
     <h3 class="name"><code>@set</code></h3>
 
@@ -275,7 +322,7 @@ console.log(A.TEST) // Hello world!</code></pre>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._.._source_coffee_slikland_utils_Prototypes.coffee.html#l92"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;utils&#x2F;Prototypes.coffee:92</code></a>
+        <a href="../files/.._.._source_coffee_slikland_utils_Prototypes.coffee.html#l122"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;utils&#x2F;Prototypes.coffee:122</code></a>
         </p>
 
 
@@ -283,7 +330,7 @@ console.log(A.TEST) // Hello world!</code></pre>
     </div>
 
     <div class="description">
-        <p>Setter decorator for a class instance.<br>
+        <p>Setter decorator for a class instance.
 With this decorator you're able to assign a setter method to a variable.</p>
 <p>Also for a special case, you can assign a scope to the setter so you can create static setter to a class.</p>
 <ul>
