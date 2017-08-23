@@ -76,7 +76,6 @@ class Caim extends EventDispatcher
 		app.config = evt.data
 		app.conditions = if app.config.conditions? then ConditionsValidation.getInstance(app.config.conditions) else null
 		app.languages = if app.config.languages? then LanguageData.getInstance() else null
-		@ready?()
 		false
 
 	###*
@@ -222,7 +221,4 @@ class Caim extends EventDispatcher
 		false
 
 	preParser:(p_data)=>
-		false
-
-	ready:()=>
 		false
