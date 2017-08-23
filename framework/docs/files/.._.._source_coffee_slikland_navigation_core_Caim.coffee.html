@@ -157,17 +157,18 @@ class Caim extends EventDispatcher
 		loader.on(NavigationLoader.LOAD_START, @createPreloaderView)
 		loader.on(NavigationLoader.LOAD_PROGRESS, @progress)
 		loader.on(NavigationLoader.LOAD_COMPLETE, @hidePreloderView)
-
-		false
+		super
 
 	###*
 	@method preParserState
 	@param {Event} evt
+	@param {Object} data
 	@private
 	###
 	preParserState:(evt, data)=&gt;
 		evt?.currentTarget?.off?(NavigationLoader.PREPARSER_DATA, @preParserState)
 		@preParser?(data)
+		false
 
 	###*
 	@method configLoaded
@@ -179,7 +180,6 @@ class Caim extends EventDispatcher
 		app.config = evt.data
 		app.conditions = if app.config.conditions? then ConditionsValidation.getInstance(app.config.conditions) else null
 		app.languages = if app.config.languages? then LanguageData.getInstance() else null
-		@ready?()
 		false
 
 	###*
@@ -214,6 +214,7 @@ class Caim extends EventDispatcher
 				@preloaderAssetsLoaded()
 				@createPreloaderView()
 				break
+		false
 
 	###*
 	@method createPreloaderView
@@ -325,9 +326,6 @@ class Caim extends EventDispatcher
 		false
 
 	preParser:(p_data)=&gt;
-		false
-
-	ready:()=&gt;
 		false
 
     </pre>

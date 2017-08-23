@@ -137,6 +137,10 @@ class ColorUtils
 		else 
 			return (g | (b &lt;&lt; 8) | (r &lt;&lt; 16)).toString(16)
 
+	@hexToInt:(hex)-&gt;
+		hex = hex.substr(4, 2) + hex.substr(2, 2) + hex.substr(0, 2);
+		return parseInt(hex, 16)
+
     </pre>
 </div>
                     </div>

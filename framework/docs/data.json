@@ -1920,7 +1920,7 @@
         },
         {
             "file": "../../source/coffee/slikland/navigation/core/Caim.coffee",
-            "line": 60,
+            "line": 59,
             "itemtype": "method",
             "name": "preParserState",
             "params": [
@@ -1928,6 +1928,11 @@
                     "name": "evt",
                     "description": "",
                     "type": "Event"
+                },
+                {
+                    "name": "data",
+                    "description": "",
+                    "type": "Object"
                 }
             ],
             "access": "private",
@@ -1936,7 +1941,7 @@
         },
         {
             "file": "../../source/coffee/slikland/navigation/core/Caim.coffee",
-            "line": 69,
+            "line": 70,
             "itemtype": "method",
             "name": "configLoaded",
             "params": [
@@ -1984,7 +1989,7 @@
         },
         {
             "file": "../../source/coffee/slikland/navigation/core/Caim.coffee",
-            "line": 115,
+            "line": 116,
             "itemtype": "method",
             "name": "createPreloaderView",
             "params": [
@@ -2002,7 +2007,7 @@
         },
         {
             "file": "../../source/coffee/slikland/navigation/core/Caim.coffee",
-            "line": 128,
+            "line": 129,
             "itemtype": "method",
             "name": "showPreloaderView",
             "params": [
@@ -2020,7 +2025,7 @@
         },
         {
             "file": "../../source/coffee/slikland/navigation/core/Caim.coffee",
-            "line": 138,
+            "line": 139,
             "itemtype": "method",
             "name": "hidePreloderView",
             "params": [
@@ -2038,7 +2043,7 @@
         },
         {
             "file": "../../source/coffee/slikland/navigation/core/Caim.coffee",
-            "line": 149,
+            "line": 150,
             "itemtype": "method",
             "name": "destroyPreloderView",
             "params": [
@@ -2056,7 +2061,7 @@
         },
         {
             "file": "../../source/coffee/slikland/navigation/core/Caim.coffee",
-            "line": 163,
+            "line": 164,
             "itemtype": "method",
             "name": "_createMainView",
             "access": "private",
@@ -2065,7 +2070,7 @@
         },
         {
             "file": "../../source/coffee/slikland/navigation/core/Caim.coffee",
-            "line": 187,
+            "line": 188,
             "itemtype": "method",
             "name": "_showMainView",
             "params": [
@@ -2083,7 +2088,7 @@
         },
         {
             "file": "../../source/coffee/slikland/navigation/core/Caim.coffee",
-            "line": 197,
+            "line": 198,
             "description": "Called only when the core assets is completely loaded.",
             "itemtype": "method",
             "name": "coreAssetsLoaded",
@@ -2102,7 +2107,7 @@
         },
         {
             "file": "../../source/coffee/slikland/navigation/core/Caim.coffee",
-            "line": 206,
+            "line": 207,
             "description": "Called only when the preloader assets is completely loaded.",
             "itemtype": "method",
             "name": "preloaderAssetsLoaded",
@@ -2121,7 +2126,7 @@
         },
         {
             "file": "../../source/coffee/slikland/navigation/core/Caim.coffee",
-            "line": 215,
+            "line": 216,
             "description": "Called only when the main assets is completely loaded.",
             "itemtype": "method",
             "name": "mainAssetsLoaded",
