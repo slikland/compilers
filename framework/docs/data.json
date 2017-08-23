@@ -1,8 +1,8 @@
 {
     "project": {
-        "name": "Slikland Framework",
-        "description": "Slikland Framework",
-        "version": "1.0",
+        "name": "Caim Framework",
+        "description": "Caim Framework",
+        "version": "3.3.1",
         "url": "http://slikland.com/",
         "logo": "http://slikland.com/media/images/logo_docs.png",
         "source": "../../source/",
@@ -3622,9 +3622,8 @@
             "itemtype": "method",
             "name": "@protectProperties",
             "example": [
-                "\n\tclass A"
+                "\n\tclass A\n\t\t\\@protectProperties [\"_a\", \"_b\"]\n\t\tconstructor:()->"
             ],
-            "protectproperties": "[\"_a\", \"_b\"]\n\t\tconstructor:()->",
             "_a": "= 1\n\tconsole.log(new A()) // Will not list _a either _b as enumerable",
             "class": "Prototypes"
         },
@@ -4198,10 +4197,6 @@
         }
     ],
     "warnings": [
-        {
-            "message": "unknown tag: protectproperties",
-            "line": " ../../source/coffee/slikland/utils/Prototypes.coffee:55"
-        },
         {
             "message": "unknown tag: _a",
             "line": " ../../source/coffee/slikland/utils/Prototypes.coffee:55"

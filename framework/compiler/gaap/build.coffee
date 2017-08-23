@@ -6,9 +6,9 @@ paths:
 sourcePaths: []
 
 docs:
-    name: "Slikland Framework"
-    description: "Slikland Framework"
-    version: "1.0"
+    name: "Caim Framework"
+    description: "Caim Framework"
+    version: "3.3.1"
     url: "http://slikland.com/"
     logo: "http://slikland.com/media/images/logo_docs.png"
     source: "{paths.source}"
