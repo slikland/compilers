@@ -1,4 +1,4 @@
-#import slikland.media.subtitle.SRTParser
+#import slikland.media.subtitles.SRTParser
 
 class VideoSubtitle extends BaseDOM
 
