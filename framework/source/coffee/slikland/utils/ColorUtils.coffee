@@ -4,36 +4,51 @@ Bunch of utilities methods for Colors
 @static
 ###
 class ColorUtils
-	@lightenColor:(p_color, p_amount)->
-		usePound = false
-		if p_color[0] == "#"
-			p_color = p_color.slice(1)
-			usePound = true
+	@lightenOrDarken:(p_hex, p_amount)->
+		# validate hex string
+		color = p_hex.replace(/[^0-9a-f]/gi, '')
+		if color.length < 6
+			color = color[0] + color[0] + color[1] + color[1] + color[2] + color[2]
+		p_amount = p_amount or 0
+		# convert to decimal and change amount
+		shade = '#'
+		c = undefined
+		i = undefined
+		black = 0
+		white = 255
+		i = 0
+		while i < 3
+			c = parseInt(color.substr(i * 2, 2), 16)
+			c = Math.round(Math.min(Math.max(black, c + p_amount * white), white)).toString(16)
+			shade += ('00' + c).substr(c.length)
+			i++
+		return shade
 
-		num = parseInt(p_color, 16)
-		r = (num >> 16) + p_amount
-		if r > 255
-			r = 255
-		else if r < 0
-			r = 0
+	@randomHex:()->
+		return '#'+Math.floor(Math.random()*16777215).toString(16)
 
-		b = ((num >> 8) & 0x00FF) + p_amount
-		if b > 255
-			b = 255
-		else if b < 0
-			b = 0
+	@randomRGB:()->
+		return ColorUtils.hexToRGB(ColorUtils.randomHex())
 
-		g = (num & 0x0000FF) + p_amount
-		if g > 255
-			g = 255
-		else if g < 0
-			g = 0
+	@hexToInt:(p_hex)->
+		p_hex = p_hex.substr(4, 2) + p_hex.substr(2, 2) + p_hex.substr(0, 2);
+		return parseInt(p_hex, 16)
+	
+	@RGBToInt:(p_r, p_g=-1, p_b=-1)->
 
-		if usePound
-			return "#" + (g | (b << 8) | (r << 16)).toString(16)
-		else 
-			return (g | (b << 8) | (r << 16)).toString(16)
+		return ColorUtils.hexToInt(ColorUtils.RGBToHex(p_r, p_g, p_b))
 
-	@hexToInt:(hex)->
-		hex = hex.substr(4, 2) + hex.substr(2, 2) + hex.substr(0, 2);
-		return parseInt(hex, 16)
+	@RGBToHex:(p_r, p_g=-1, p_b=-1)->
+		hex = p_r << 16 | p_g << 8 | p_b
+		return "#" + hex.toString(16)
+
+	@hexToRGB:(p_hex) ->
+		hex = 0
+		if p_hex.charAt(0) == '#'
+			if p_hex.length == 4
+				p_hex = '#' + p_hex.charAt(1).repeat(2) + p_hex.charAt(2).repeat(2) + p_hex.charAt(3).repeat(2)
+			hex = parseInt(p_hex.slice(1), 16)
+		r = hex >> 16 & 0xFF
+		g = hex >> 8 & 0xFF
+		b = hex & 0xFF
+		return 'rgb('+r+','+g+','+b+')'
