@@ -95,8 +95,8 @@ class BaseView extends BaseDOM
 
 	###*
 	@class BaseView
-	@constructor	
-	@param {Object} [p_data=null] 
+	@constructor
+	@param {Object} [p_data=null]
 	Data object sets the default and/or custom values of properties of view for navigation controller.<br>
 	If this object it's not null, some default properties are not required explained below:
 	Default Key|Type|Required
@@ -131,10 +131,10 @@ class BaseView extends BaseDOM
 	@param {String} [p_CSSClassName=null]
 	###
 	_meta = null
-	constructor: (p_data=null, p_CSSClassName=null) ->
+	constructor: (p_data=null, p_CSSClassName=null, p_element = 'div') ->
 		@_created = false
 		@_showed = false
-		
+
 		@data = if p_data then p_data else {}
 		@id = if @_data.id? then @_data.id
 		@content = if @_data.content? then @_data.content
@@ -143,9 +143,9 @@ class BaseView extends BaseDOM
 		@parentView = if @_data.parentView? then @_data.parentView
 		@subviews = if @_data.subviews? then @_data.subviews
 		@destroyable = if @_data.destroyable? then @_data.destroyable
-		
+
 		_meta = MetaController.getInstance()
-		super({element:'div', className:p_CSSClassName})
+		super({element: p_element, className:p_CSSClassName})
 
 	###*
 	Returns the loader queue of this specific view.
@@ -389,7 +389,7 @@ class BaseView extends BaseDOM
 		@_created = true
 		@trigger(BaseView.CREATE_COMPLETE, @)
 		false
-		
+
 	###*
 	Usually starts before the showing routine of view calling by the navigation controller.<br>
 	Callback the method {{#crossLink "BaseView/show:method"}}{{/crossLink}} and trigger the event {{#crossLink "BaseView/SHOW_START:event"}}{{/crossLink}} after complete.
@@ -472,7 +472,7 @@ class BaseView extends BaseDOM
 	resume:()=>
 		@trigger(BaseView.RESUME, @)
 		false
-	
+
 	###*
 	Usually starts when the destroying routine of view calling by the navigation controller.<br>
 	Callback the method {{#crossLink "BaseView/destroyComplete:method"}}{{/crossLink}} and trigger the event {{#crossLink "BaseView/DESTROY:event"}}{{/crossLink}} after complete.

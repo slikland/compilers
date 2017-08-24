@@ -12,8 +12,8 @@ class NavigationContainer extends BaseView
 	@class NavigationContainer
 	@constructor
 	###
-	constructor: () ->
-		super null, 'nav-container'
+	constructor: (p_CSSClassName = 'nav-container', p_element = null) ->
+		super null, p_CSSClassName, p_element
 		@_id = 'main'
 
 	###*
