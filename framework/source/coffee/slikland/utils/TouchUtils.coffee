@@ -1,4 +1,15 @@
+###*
+Bunch of utilities methods for TouchUtils
+@class TouchUtils
+
+###
 class TouchUtils
+	###*
+	@method getTouchPositions
+	@static
+	@param {Event} evt
+	@return {Array}
+	###	
 	@getTouchPositions:(evt)->
 		if evt.touches
 			touches = evt.touches

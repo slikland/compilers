@@ -1520,7 +1520,6 @@ Resizer = (function(_super) {
 /**
 Detections Class
 @class Detections
-@extends Class
  */
 var Detections;
 Detections = (function() {
@@ -1835,45 +1834,6 @@ NumberUtils = (function() {
     } else {
       return Math.round(Math.round(Math.random() * (p_high - p_low)) + p_low);
     }
-  };
-  NumberUtils.distanceBetweenCoordinates = function(p_from, p_to, p_units) {
-    var a, c, dLatitude, dLongitude, radius;
-    if (p_units == null) {
-      p_units = "km";
-    }
-    radius;
-    switch (p_units) {
-      case "km":
-        radius = 6371;
-        break;
-      case "meters":
-        radius = 6378000;
-        break;
-      case "feet":
-        radius = 20925525;
-        break;
-      case "miles":
-        radius = 3963;
-    }
-    dLatitude = (p_to.x - p_from.x) * Math.PI / 180;
-    dLongitude = (p_to.y - p_from.y) * Math.PI / 180;
-    a = Math.sin(dLatitude / 2) * Math.sin(dLatitude / 2) + Math.sin(dLongitude / 2) * Math.sin(dLongitude / 2) * Math.cos(p_from.x * Math.PI / 180) * Math.cos(p_to.x * Math.PI / 180);
-    c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-    return radius * c;
-  };
-  NumberUtils.getShortRotation = function(p_start, p_end, p_useRadians) {
-    var cap, diff, _ref;
-    if (p_useRadians == null) {
-      p_useRadians = false;
-    }
-    cap = p_useRadians ? Math.PI * 2 : 360;
-    diff = (p_end - p_start) % cap;
-    if (diff !== diff % (cap / 2)) {
-      diff = (_ref = diff < 0) != null ? _ref : diff + {
-        cap: diff - cap
-      };
-    }
-    return p_start + diff;
   };
   return NumberUtils;
 })();
@@ -2999,6 +2959,11 @@ AssetLoader = (function(_super) {
   };
   return AssetLoader;
 })(EventDispatcher);
+/**
+Bunch of utilities methods for objects
+@class ObjectUtils
+@static
+ */
 var ObjectUtils,
   __slice = [].slice;
 ObjectUtils = (function() {
@@ -4691,8 +4656,8 @@ BaseView = (function(_super) {
   });
   /**
   	@class BaseView
-  	@constructor	
-  	@param {Object} [p_data=null] 
+  	@constructor
+  	@param {Object} [p_data=null]
   	Data object sets the default and/or custom values of properties of view for navigation controller.<br>
   	If this object it's not null, some default properties are not required explained below:
   	Default Key|Type|Required
@@ -4725,14 +4690,18 @@ BaseView = (function(_super) {
   	}
   	```
   	@param {String} [p_CSSClassName=null]
+  	@param {String} [p_element='div'] HTMLElement type
    */
   _meta = null;
-  function BaseView(p_data, p_CSSClassName) {
+  function BaseView(p_data, p_CSSClassName, p_element) {
     if (p_data == null) {
       p_data = null;
     }
     if (p_CSSClassName == null) {
       p_CSSClassName = null;
+    }
+    if (p_element == null) {
+      p_element = 'div';
     }
     this.destroyComplete = __bind(this.destroyComplete, this);
     this.destroy = __bind(this.destroy, this);
@@ -4760,7 +4729,7 @@ BaseView = (function(_super) {
     this.destroyable = this._data.destroyable != null ? this._data.destroyable : void 0;
     _meta = MetaController.getInstance();
     BaseView.__super__.constructor.call(this, {
-      element: 'div',
+      element: p_element,
       className: p_CSSClassName
     });
   }
@@ -5242,6 +5211,11 @@ BaseView = (function(_super) {
   };
   return BaseView;
 })(BaseDOM);
+/**
+Bunch of utilities methods for JSON objects
+@class JSONUtils
+@static
+ */
 var JSONUtils;
 JSONUtils = (function() {
   function JSONUtils() {}

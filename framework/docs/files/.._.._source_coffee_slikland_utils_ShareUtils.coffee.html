@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>../../source/coffee/slikland/utils/ShareUtils.coffee - Caim Framework</title>
+    <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
+    <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
+    <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
+    <link rel="icon" href="../assets/favicon.ico">
+    <script src="http://yui.yahooapis.com/combo?3.9.1/build/yui/yui-min.js"></script>
+</head>
+<body class="yui3-skin-sam">
+
+<div id="doc">
+    <div id="hd" class="yui3-g header">
+        <div class="yui3-u-3-4">
+                <h1><img src="http://slikland.com/media/images/logo_docs.png" title="Caim Framework"></h1>
+        </div>
+        <div class="yui3-u-1-4 version">
+            <em>API Docs for: 3.3.1</em>
+        </div>
+    </div>
+    <div id="bd" class="yui3-g">
+
+        <div class="yui3-u-1-4">
+            <div id="docs-sidebar" class="sidebar apidocs">
+                <div id="api-list">
+                    <h2 class="off-left">APIs</h2>
+                    <div id="api-tabview" class="tabview">
+                        <ul class="tabs">
+                            <li><a href="#api-classes">Classes</a></li>
+                            <li><a href="#api-modules">Modules</a></li>
+                        </ul>
+                
+                        <div id="api-tabview-filter">
+                            <input type="search" id="api-filter" placeholder="Type to filter APIs">
+                        </div>
+                
+                        <div id="api-tabview-panel">
+                            <ul id="api-classes" class="apis classes">
+                                <li><a href="../classes/AnimationTicker.html">AnimationTicker</a></li>
+                                <li><a href="../classes/ArrayUtils.html">ArrayUtils</a></li>
+                                <li><a href="../classes/BaseAnimation.html">BaseAnimation</a></li>
+                                <li><a href="../classes/BaseDOM.html">BaseDOM</a></li>
+                                <li><a href="../classes/BaseNavigationController.html">BaseNavigationController</a></li>
+                                <li><a href="../classes/BaseView.html">BaseView</a></li>
+                                <li><a href="../classes/Caim.html">Caim</a></li>
+                                <li><a href="../classes/ColorUtils.html">ColorUtils</a></li>
+                                <li><a href="../classes/ConditionsValidation.html">ConditionsValidation</a></li>
+                                <li><a href="../classes/Debug.html">Debug</a></li>
+                                <li><a href="../classes/Detections.html">Detections</a></li>
+                                <li><a href="../classes/DOMUtils.html">DOMUtils</a></li>
+                                <li><a href="../classes/EventDispatcher.html">EventDispatcher</a></li>
+                                <li><a href="../classes/FunctionUtils.html">FunctionUtils</a></li>
+                                <li><a href="../classes/JSONUtils.html">JSONUtils</a></li>
+                                <li><a href="../classes/KTween.html">KTween</a></li>
+                                <li><a href="../classes/MathUtils.html">MathUtils</a></li>
+                                <li><a href="../classes/MetaController.html">MetaController</a></li>
+                                <li><a href="../classes/MouseUtils.html">MouseUtils</a></li>
+                                <li><a href="../classes/Navigation.html">Navigation</a></li>
+                                <li><a href="../classes/NavigationContainer.html">NavigationContainer</a></li>
+                                <li><a href="../classes/NavigationLoader.html">NavigationLoader</a></li>
+                                <li><a href="../classes/NavigationRouter.html">NavigationRouter</a></li>
+                                <li><a href="../classes/ObjectUtils.html">ObjectUtils</a></li>
+                                <li><a href="../classes/PreloadFiles.html">PreloadFiles</a></li>
+                                <li><a href="../classes/Prototypes.html">Prototypes</a></li>
+                                <li><a href="../classes/ResizeUtils.html">ResizeUtils</a></li>
+                                <li><a href="../classes/ShareUtils.html">ShareUtils</a></li>
+                                <li><a href="../classes/SplitTextUtils.html">SplitTextUtils</a></li>
+                                <li><a href="../classes/SpriteSheetAnimation.html">SpriteSheetAnimation</a></li>
+                                <li><a href="../classes/StringUtils.html">StringUtils</a></li>
+                                <li><a href="../classes/SunUtils.html">SunUtils</a></li>
+                                <li><a href="../classes/TouchUtils.html">TouchUtils</a></li>
+                                <li><a href="../classes/URLUtils.html">URLUtils</a></li>
+                                <li><a href="../classes/ViewsData.html">ViewsData</a></li>
+                            </ul>
+                
+                
+                            <ul id="api-modules" class="apis modules">
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="yui3-u-3-4">
+                <div id="api-options">
+                    Show:
+                    <label for="api-show-inherited">
+                        <input type="checkbox" id="api-show-inherited" checked>
+                        Inherited
+                    </label>
+            
+                    <label for="api-show-protected">
+                        <input type="checkbox" id="api-show-protected">
+                        Protected
+                    </label>
+            
+                    <label for="api-show-private">
+                        <input type="checkbox" id="api-show-private">
+                        Private
+                    </label>
+                    <label for="api-show-deprecated">
+                        <input type="checkbox" id="api-show-deprecated">
+                        Deprecated
+                    </label>
+            
+                </div>
+            
+            <div class="apidocs">
+                <div id="docs-main">
+                    <div class="content">
+<h1 class="file-heading">File: ../../source/coffee/slikland/utils/ShareUtils.coffee</h1>
+
+<div class="file">
+    <pre class="code prettyprint linenums">
+###*
+Bunch of utilities methods for social networks share 
+@class ShareUtils
+@static
+###
+class ShareUtils
+
+	# Public: Twitter.
+	#
+	# text - {String}
+	# url - {String}
+	# hashtags - {String}
+	#
+	# Examples
+	#     @twitter(&#x27;Slikland&#x27;, &#x27;http://slikland.com&#x27;, &#x27;digital,web,programming&#x27;)
+	@twitter:(p_text, p_url=null, p_hashtags=null, p_trigger=false)-&gt;
+		url = &#x27;https://twitter.com/intent/tweet?&#x27;
+		if p_text    then url += &#x27;&amp;text=&#x27; + encodeURI(p_text)
+		if p_hashtags then url += &#x27;&amp;hashtags=&#x27; + encodeURI(p_hashtags)
+		if p_url     then url += &#x27;&amp;url=&#x27; + encodeURI(p_url)
+		if p_trigger then ShareUtils.open(url)
+		return url
+
+	# Public: Facebook.
+	# OLD METHOD (DIALOG/FEED) IS DEPRECATED
+	# @facebook:(p_url, p_uri, p_title, p_description, p_image, p_appID=null, p_display=null, p_trigger=false)-&gt;
+	# 	url = &#x27;https://www.facebook.com/dialog/feed?&#x27;
+	# 	if p_appID then url += &#x27;&amp;app_id=&#x27; + p_appID
+	# 	if p_image then url += &#x27;&amp;picture=&#x27; + p_image
+	# 	if p_title then url += &#x27;&amp;name=&#x27; + encodeURIComponent(p_title)
+	# 	if p_description then url += &#x27;&amp;description=&#x27; + encodeURIComponent(p_description)
+	# 	url += &#x27;&amp;display=popup&#x27;
+	# 	url += &#x27;&amp;link=&#x27; + encodeURIComponent(p_url)
+	# 	url += &#x27;&amp;redirect_uri=&#x27; + encodeURIComponent(p_uri)
+	# 	if p_trigger then ShareUtils.open(url)
+	# 	return url
+	# 	
+	# Public: Facebook
+	# 
+	# url - {String}
+	# TODO: Test this
+
+	@facebook:(p_url, p_trigger=false)-&gt;
+		url = &#x27;https://www.facebook.com/sharer/sharer.php?u=&#x27; + p_url
+		if p_trigger then ShareUtils.open(url)
+		return url
+
+	# Public: Google Plus
+	#
+	# url - {String}
+	@googleplus:(p_url, p_trigger=false)-&gt;
+		url = &#x27;https://plus.google.com/share?url=&#x27; + encodeURI(p_url)
+		if p_trigger then ShareUtils.open(url)
+		return url
+
+	# Public: LinkedIn.
+	#
+	# url - {String}
+	# title - {String}
+	# summary - {String}
+	# source - {String}
+	@linkedin:(p_url, p_title=null, p_summary=null,p_source=null, p_trigger=false)-&gt;
+		url = &#x27;https://www.linkedin.com/shareArticle?mini=true&#x27;
+		params = []
+		if p_url     then params.push(&#x27;url=&#x27; + encodeURI(p_url))
+		if p_title   then params.push(&#x27;title=&#x27; + encodeURI(p_title))
+		if p_summary then params.push(&#x27;summary=&#x27; + encodeURI(p_summary))
+		if p_source  then params.push(&#x27;url=&#x27; + encodeURI(p_source))
+		url += params.join(&#x27;&amp;&#x27;)
+		if p_trigger then ShareUtils.open(url)
+		return url
+
+	# Public: Pinterest.
+	#
+	# url - {String}
+	# media - {String}
+	# description - {String}
+	@pinterest:(p_url, p_media=null, p_description=null, p_trigger=false)-&gt;
+		url = &#x27;http://www.pinterest.com/pin/create/button/?&#x27;
+		params = []
+		if p_url         then params.push(&#x27;url=&#x27; + encodeURI(p_url))
+		if p_media       then params.push(&#x27;media=&#x27; + encodeURI(p_media))
+		if p_description then params.push(&#x27;description=&#x27; + encodeURI(p_description))
+		url += params.join(&#x27;&amp;&#x27;)
+		if p_trigger then ShareUtils.open(url)
+		return url
+
+	# Public: Email.
+	#
+	# subject - {String}
+	# body - {String}
+	@email:(p_email, p_subject=null, p_body=null, p_trigger=false)-&gt;
+		url = &#x27;mailto:?&#x27;+p_email
+		params = []
+		if p_subject then params.push(&#x27;subject=&#x27; + encodeURI(p_subject))
+		if p_body    then params.push(&#x27;body=&#x27; + encodeURI(p_body))
+		url += params.join(&#x27;&amp;&#x27;)
+		if p_trigger
+			ShareUtils.open(url, &#x27;_blank&#x27;)
+		return url
+
+	# Private: call url.
+	#
+	# url - {string}
+	# name - {string}
+	# style - {string}
+	@open:(p_url, p_name=&#x27;&#x27;,p_style=&#x27;width=640,height=480&#x27;)-&gt;
+		window.open(p_url,p_name,p_style)
+
+	# Private: window location.
+	#
+	# url - {string}
+	@_location:(p_url)-&gt;
+		window.location.href = p_url
+
+    </pre>
+</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="../assets/vendor/prettify/prettify-min.js"></script>
+<script>prettyPrint();</script>
+<script src="../assets/js/yui-prettify.js"></script>
+<script src="../assets/../api.js"></script>
+<script src="../assets/js/api-filter.js"></script>
+<script src="../assets/js/api-list.js"></script>
+<script src="../assets/js/api-search.js"></script>
+<script src="../assets/js/apidocs.js"></script>
+</body>
+</html>

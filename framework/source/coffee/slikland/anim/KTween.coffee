@@ -1,3 +1,8 @@
+###*
+KTween class
+
+@class KTween
+###
 class KTween
 	@tweenTypes = {}
 	@numValues = 100
@@ -8,11 +13,13 @@ class KTween
 	@numItems = 0
 	@index = 0
 	@div = 1 / 0xFFFFFF
+
 	@init:(@timeout = 1000 / 60)->
 		if @inited then return
 		@initTime = new Date().getTime()
 		setInterval @update, @timeout
 		@inited = true
+
 	@update:()=>
 		t = new Date().getTime() - @initTime
 		l = @numQueued
@@ -53,6 +60,7 @@ class KTween
 					if !params
 						params = []
 					ko.onComplete.apply(ko.target, params)
+	
 	@tween:(target, params, transition = "linear", time = 0, delay = 0)->
 		if !@inited then @init()
 		if !@tweenTypes[transition] then @populateEasing(transition)
@@ -66,6 +74,7 @@ class KTween
 			@numQueued++
 			@queued.push(ko)
 		return ko
+	
 	@populateEasing:(transition)->
 		if (f = KTween[transition])
 			values = []
@@ -80,6 +89,7 @@ class KTween
 			diffs[l - 1] = 0xFFFFFF - lp
 			diffs[l] = 0
 			@tweenTypes[transition] = [values, diffs]
+	
 	@tweenSequence:(target, onComplete, sequence, onCompleteParams = null)->
 		if !target then return
 		if !sequence then return
@@ -94,6 +104,7 @@ class KTween
 		d = 0
 		if o['delay'] then d = o['delay']
 		@tween(target, o, tr, t, d, tweenSequence, [target, onComplete, sequence, onCompleteParams])
+	
 	@remove:(target, parameter = null)->
 		l = @numQueued
 		while l-- > 0
@@ -109,6 +120,7 @@ class KTween
 				if q.remove(parameter)
 					@numItems--
 					@items.splice(l, 1)
+	
 	@getByTime:(type, time, duration)->
 		values = @tweenTypes[type]
 		p = (time / duration) * @numValues
@@ -116,6 +128,7 @@ class KTween
 		p1 = values[ap]
 		p2 = values[ap + 1]
 		return (p2 - p1) * (p - ap) + p1
+
 	@getByPosition:(type, position)->
 		if !@inited then @init()
 		if !@tweenTypes[type] then @populateEasing(type)
@@ -245,6 +258,7 @@ class KTween
 			return change/2*((time-=2)*time*(((overshoot*=(1.525))+1)*time + overshoot) + 2) + begin
 
 class KTObject
+	
 	constructor:(@id, @target, @initTime, @duration, params, @transition)->
 		@iDuration = 1 / @duration
 		@params = []
@@ -268,6 +282,7 @@ class KTObject
 				@distances.push(0)
 				@initValues.push(0)
 				@numParams++
+
 	remove:(parameter = null)->
 		disp = true
 		if parameter
@@ -284,6 +299,7 @@ class KTObject
 			@dispose()
 			return true
 		return false
+
 	dispose:()->
 		@target = null
 		@transition = null
@@ -302,6 +318,7 @@ class KTObject
 		delete @endValues
 		delete @distances
 		delete @initValues
+
 	init:()->
 		if @onInit
 			@onInit.apply(@target)

@@ -1,3 +1,8 @@
+###*
+Bunch of utilities methods for JSON objects
+@class JSONUtils
+@static
+###
 class JSONUtils
 	@parseJSON:(json)=>
 		stringfied = false

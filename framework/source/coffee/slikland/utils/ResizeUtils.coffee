@@ -1,5 +1,21 @@
+###*
+Bunch of utilities methods for resize
+@class ResizeUtils
+@static
+###
 class ResizeUtils
 
+	###*
+	@method fitTo
+	@static
+	@param {HTMLElement} itemEl
+	@param {HTMLElement} parentEl
+	@param {Boolean} [cover=true]
+	@param {Boolean} [noScale=true]
+	@param {Boolean} [apply=true]
+	@param {String} [force=null] Valid values: 'width' or 'height'
+	@return {Object} A object with a format {x:0, y:0, width:0, height:0, scale:0}
+	###	
 	@fitTo:(itemEl, parentEl, cover=true, noScale=true, apply=true, force=null)->
 		#normalize values
 		item = ResizeUtils.parseValues(itemEl)
@@ -46,6 +62,12 @@ class ResizeUtils
 		#return result
 		return result
 
+	###*
+	@method parseValues
+	@static
+	@param {HTMLElement|HTMLImageElement} element
+	@return {Object}
+	###	
 	@parseValues:(element)->
 		data = {}
 		element = element.element || element

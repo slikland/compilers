@@ -1,3 +1,8 @@
+###*
+Bunch of utilities methods for social networks share 
+@class ShareUtils
+@static
+###
 class ShareUtils
 
 	# Public: Twitter.
@@ -34,10 +39,12 @@ class ShareUtils
 	# 
 	# url - {String}
 	# TODO: Test this
+
 	@facebook:(p_url, p_trigger=false)->
 		url = 'https://www.facebook.com/sharer/sharer.php?u=' + p_url
 		if p_trigger then ShareUtils.open(url)
 		return url
+
 	# Public: Google Plus
 	#
 	# url - {String}

@@ -33,6 +33,15 @@
             "fors": {},
             "namespaces": {}
         },
+        "../../source/coffee/slikland/anim/KTween.coffee": {
+            "name": "../../source/coffee/slikland/anim/KTween.coffee",
+            "modules": {},
+            "classes": {
+                "KTween": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
         "../../source/coffee/slikland/anim/SpriteSheetAnimation.coffee": {
             "name": "../../source/coffee/slikland/anim/SpriteSheetAnimation.coffee",
             "modules": {},
@@ -214,6 +223,15 @@
             "fors": {},
             "namespaces": {}
         },
+        "../../source/coffee/slikland/utils/DOMUtils.coffee": {
+            "name": "../../source/coffee/slikland/utils/DOMUtils.coffee",
+            "modules": {},
+            "classes": {
+                "DOMUtils": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
         "../../source/coffee/slikland/utils/Detections.coffee": {
             "name": "../../source/coffee/slikland/utils/Detections.coffee",
             "modules": {},
@@ -223,10 +241,48 @@
             "fors": {},
             "namespaces": {}
         },
+        "../../source/coffee/slikland/utils/FunctionUtils.coffee": {
+            "name": "../../source/coffee/slikland/utils/FunctionUtils.coffee",
+            "modules": {},
+            "classes": {
+                "FunctionUtils": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "../../source/coffee/slikland/utils/JSONUtils.coffee": {
+            "name": "../../source/coffee/slikland/utils/JSONUtils.coffee",
+            "modules": {},
+            "classes": {
+                "JSONUtils": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "../../source/coffee/slikland/utils/MathUtils.coffee": {
+            "name": "../../source/coffee/slikland/utils/MathUtils.coffee",
+            "modules": {},
+            "classes": {
+                "MathUtils": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "../../source/coffee/slikland/utils/MouseUtils.coffee": {
+            "name": "../../source/coffee/slikland/utils/MouseUtils.coffee",
+            "modules": {},
+            "classes": {
+                "MouseUtils": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
         "../../source/coffee/slikland/utils/ObjectUtils.coffee": {
             "name": "../../source/coffee/slikland/utils/ObjectUtils.coffee",
             "modules": {},
-            "classes": {},
+            "classes": {
+                "ObjectUtils": 1
+            },
             "fors": {},
             "namespaces": {}
         },
@@ -239,11 +295,65 @@
             "fors": {},
             "namespaces": {}
         },
+        "../../source/coffee/slikland/utils/ResizeUtils.coffee": {
+            "name": "../../source/coffee/slikland/utils/ResizeUtils.coffee",
+            "modules": {},
+            "classes": {
+                "ResizeUtils": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "../../source/coffee/slikland/utils/ShareUtils.coffee": {
+            "name": "../../source/coffee/slikland/utils/ShareUtils.coffee",
+            "modules": {},
+            "classes": {
+                "ShareUtils": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "../../source/coffee/slikland/utils/SplitTextUtils.coffee": {
+            "name": "../../source/coffee/slikland/utils/SplitTextUtils.coffee",
+            "modules": {},
+            "classes": {
+                "SplitTextUtils": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
         "../../source/coffee/slikland/utils/StringUtils.coffee": {
             "name": "../../source/coffee/slikland/utils/StringUtils.coffee",
             "modules": {},
             "classes": {
                 "StringUtils": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "../../source/coffee/slikland/utils/SunUtils.coffee": {
+            "name": "../../source/coffee/slikland/utils/SunUtils.coffee",
+            "modules": {},
+            "classes": {
+                "SunUtils": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "../../source/coffee/slikland/utils/TouchUtils.coffee": {
+            "name": "../../source/coffee/slikland/utils/TouchUtils.coffee",
+            "modules": {},
+            "classes": {
+                "TouchUtils": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "../../source/coffee/slikland/utils/URLUtils.coffee": {
+            "name": "../../source/coffee/slikland/utils/URLUtils.coffee",
+            "modules": {},
+            "classes": {
+                "URLUtils": 1
             },
             "fors": {},
             "namespaces": {}
@@ -276,6 +386,18 @@
             "line": 3,
             "description": "BaseAnimation interface class for most frame / time based animation.<br>\nPlease do not instantiate this class. Use the extended classes.",
             "extends": "BaseDOM"
+        },
+        "KTween": {
+            "name": "KTween",
+            "shortname": "KTween",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "file": "../../source/coffee/slikland/anim/KTween.coffee",
+            "line": 1,
+            "description": "KTween class"
         },
         "SpriteSheetAnimation": {
             "name": "SpriteSheetAnimation",
@@ -626,6 +748,19 @@
             "description": "Bunch of utilities methods for Colors",
             "static": 1
         },
+        "DOMUtils": {
+            "name": "DOMUtils",
+            "shortname": "DOMUtils",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "file": "../../source/coffee/slikland/utils/DOMUtils.coffee",
+            "line": 1,
+            "description": "Bunch of utilities methods for manipulating DOM elements",
+            "static": 1
+        },
         "Detections": {
             "name": "Detections",
             "shortname": "Detections",
@@ -635,9 +770,73 @@
             "plugin_for": [],
             "extension_for": [],
             "file": "../../source/coffee/slikland/utils/Detections.coffee",
-            "line": 2,
-            "description": "Detections Class",
-            "extends": "Class"
+            "line": 3,
+            "description": "Detections Class"
+        },
+        "FunctionUtils": {
+            "name": "FunctionUtils",
+            "shortname": "FunctionUtils",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "file": "../../source/coffee/slikland/utils/FunctionUtils.coffee",
+            "line": 1,
+            "description": "Bunch of utilities methods for functions",
+            "static": 1
+        },
+        "JSONUtils": {
+            "name": "JSONUtils",
+            "shortname": "JSONUtils",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "file": "../../source/coffee/slikland/utils/JSONUtils.coffee",
+            "line": 1,
+            "description": "Bunch of utilities methods for JSON objects",
+            "static": 1
+        },
+        "MathUtils": {
+            "name": "MathUtils",
+            "shortname": "MathUtils",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "file": "../../source/coffee/slikland/utils/MathUtils.coffee",
+            "line": 1,
+            "description": "Bunch of utilities methods for Math",
+            "static": 1
+        },
+        "MouseUtils": {
+            "name": "MouseUtils",
+            "shortname": "MouseUtils",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "file": "../../source/coffee/slikland/utils/MouseUtils.coffee",
+            "line": 1,
+            "description": "Bunch of utilities methods for mouse",
+            "static": 1
+        },
+        "ObjectUtils": {
+            "name": "ObjectUtils",
+            "shortname": "ObjectUtils",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "file": "../../source/coffee/slikland/utils/ObjectUtils.coffee",
+            "line": 1,
+            "description": "Bunch of utilities methods for objects",
+            "static": 1
         },
         "Prototypes": {
             "name": "Prototypes",
@@ -651,6 +850,44 @@
             "line": 1,
             "description": "This is actually not a Class. It's a bunch of helper methods adding prototype methods to native classes."
         },
+        "ResizeUtils": {
+            "name": "ResizeUtils",
+            "shortname": "ResizeUtils",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "file": "../../source/coffee/slikland/utils/ResizeUtils.coffee",
+            "line": 1,
+            "description": "Bunch of utilities methods for resize",
+            "static": 1
+        },
+        "ShareUtils": {
+            "name": "ShareUtils",
+            "shortname": "ShareUtils",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "file": "../../source/coffee/slikland/utils/ShareUtils.coffee",
+            "line": 1,
+            "description": "Bunch of utilities methods for social networks share",
+            "static": 1
+        },
+        "SplitTextUtils": {
+            "name": "SplitTextUtils",
+            "shortname": "SplitTextUtils",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "file": "../../source/coffee/slikland/utils/SplitTextUtils.coffee",
+            "line": 1,
+            "static": 1
+        },
         "StringUtils": {
             "name": "StringUtils",
             "shortname": "StringUtils",
@@ -662,6 +899,43 @@
             "file": "../../source/coffee/slikland/utils/StringUtils.coffee",
             "line": 4,
             "description": "Bunch of utilities methods for String",
+            "static": 1
+        },
+        "SunUtils": {
+            "name": "SunUtils",
+            "shortname": "SunUtils",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "file": "../../source/coffee/slikland/utils/SunUtils.coffee",
+            "line": 1,
+            "description": "Methods for Sunrise and Sunset"
+        },
+        "TouchUtils": {
+            "name": "TouchUtils",
+            "shortname": "TouchUtils",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "file": "../../source/coffee/slikland/utils/TouchUtils.coffee",
+            "line": 1,
+            "description": "Bunch of utilities methods for TouchUtils"
+        },
+        "URLUtils": {
+            "name": "URLUtils",
+            "shortname": "URLUtils",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "file": "../../source/coffee/slikland/utils/URLUtils.coffee",
+            "line": 3,
+            "description": "Bunch of utilities methods for URL",
             "static": 1
         }
     },
@@ -3613,8 +3887,115 @@
             "class": "BaseView"
         },
         {
+            "file": "../../source/coffee/slikland/utils/FunctionUtils.coffee",
+            "line": 8,
+            "itemtype": "method",
+            "name": "debounce",
+            "static": 1,
+            "params": [
+                {
+                    "name": "fn",
+                    "description": "",
+                    "type": "Function"
+                },
+                {
+                    "name": "delay",
+                    "description": "",
+                    "type": "Number"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "Function"
+            },
+            "class": "FunctionUtils"
+        },
+        {
+            "file": "../../source/coffee/slikland/utils/FunctionUtils.coffee",
+            "line": 27,
+            "itemtype": "method",
+            "name": "throttle",
+            "static": 1,
+            "params": [
+                {
+                    "name": "fn",
+                    "description": "",
+                    "type": "Function"
+                },
+                {
+                    "name": "threshhold",
+                    "description": "",
+                    "type": "Number",
+                    "optional": true,
+                    "optdefault": "250"
+                },
+                {
+                    "name": "scope",
+                    "description": "",
+                    "type": "Function",
+                    "optional": true,
+                    "optdefault": "null"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "Function"
+            },
+            "class": "FunctionUtils"
+        },
+        {
+            "file": "../../source/coffee/slikland/utils/MouseUtils.coffee",
+            "line": 7,
+            "itemtype": "method",
+            "name": "getMousePos",
+            "static": 1,
+            "params": [
+                {
+                    "name": "e",
+                    "description": "",
+                    "type": "Event"
+                },
+                {
+                    "name": "global",
+                    "description": "",
+                    "type": "Boolean",
+                    "optional": true,
+                    "optdefault": "true"
+                }
+            ],
+            "return": {
+                "description": "A array with a format [x, y]",
+                "type": "Array"
+            },
+            "class": "MouseUtils"
+        },
+        {
+            "file": "../../source/coffee/slikland/utils/MouseUtils.coffee",
+            "line": 22,
+            "itemtype": "method",
+            "name": "toGlobal",
+            "static": 1,
+            "params": [
+                {
+                    "name": "x",
+                    "description": "",
+                    "type": "Number"
+                },
+                {
+                    "name": "y",
+                    "description": "",
+                    "type": "Number"
+                }
+            ],
+            "return": {
+                "description": "A array with a format [x, y]",
+                "type": "Array"
+            },
+            "class": "MouseUtils"
+        },
+        {
             "file": "../../source/coffee/slikland/utils/ObjectUtils.coffee",
-            "line": 3,
+            "line": 8,
             "description": "Return the length of a item.",
             "itemtype": "method",
             "name": "count",
@@ -3630,7 +4011,7 @@
                 "description": "",
                 "type": "Number"
             },
-            "class": "Prototypes"
+            "class": "ObjectUtils"
         },
         {
             "file": "../../source/coffee/slikland/utils/Prototypes.coffee",
@@ -3676,6 +4057,326 @@
                 "\n\n\t// Instance getter / stter\n\tclass A\n\t\t\\@get test:()->\n\t\t\treturn \\@_test\n\t\t\\@set test:(value)->\n\t\t\t\\@_test = value\n\ta = new A()\n\ta.test = 'Hello setter'\n\tconsole.log(a.test) // Hello setter\n\n\t// Static getter / setter\n\tclass A\n\t\t\\@get \\@, TEST:()->\n\t\t\treturn @_TEST\n\t\t\\@set \\@, TEST:(value)->\n\t\t\t\\@_TEST = value\n\tA.TEST = 'Hello setter'\n\tconsole.log(A.TEST) // Hello setter"
             ],
             "class": "Prototypes"
+        },
+        {
+            "file": "../../source/coffee/slikland/utils/ResizeUtils.coffee",
+            "line": 8,
+            "itemtype": "method",
+            "name": "fitTo",
+            "static": 1,
+            "params": [
+                {
+                    "name": "itemEl",
+                    "description": "",
+                    "type": "HTMLElement"
+                },
+                {
+                    "name": "parentEl",
+                    "description": "",
+                    "type": "HTMLElement"
+                },
+                {
+                    "name": "cover",
+                    "description": "",
+                    "type": "Boolean",
+                    "optional": true,
+                    "optdefault": "true"
+                },
+                {
+                    "name": "noScale",
+                    "description": "",
+                    "type": "Boolean",
+                    "optional": true,
+                    "optdefault": "true"
+                },
+                {
+                    "name": "apply",
+                    "description": "",
+                    "type": "Boolean",
+                    "optional": true,
+                    "optdefault": "true"
+                },
+                {
+                    "name": "force",
+                    "description": "Valid values: 'width' or 'height'",
+                    "type": "String",
+                    "optional": true,
+                    "optdefault": "null"
+                }
+            ],
+            "return": {
+                "description": "A object with a format {x:0, y:0, width:0, height:0, scale:0}",
+                "type": "Object"
+            },
+            "class": "ResizeUtils"
+        },
+        {
+            "file": "../../source/coffee/slikland/utils/ResizeUtils.coffee",
+            "line": 65,
+            "itemtype": "method",
+            "name": "parseValues",
+            "static": 1,
+            "params": [
+                {
+                    "name": "element",
+                    "description": "",
+                    "type": "HTMLElement|HTMLImageElement"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "Object"
+            },
+            "class": "ResizeUtils"
+        },
+        {
+            "file": "../../source/coffee/slikland/utils/SplitTextUtils.coffee",
+            "line": 6,
+            "description": "Split texts to chars for animations",
+            "itemtype": "method",
+            "name": "splitHTMLChars",
+            "params": [
+                {
+                    "name": "target",
+                    "description": "",
+                    "type": "HTMLElement"
+                },
+                {
+                    "name": "opt",
+                    "description": "",
+                    "type": "Object",
+                    "optional": true,
+                    "optdefault": "{}"
+                },
+                {
+                    "name": "className",
+                    "description": "",
+                    "type": "String",
+                    "optional": true,
+                    "optdefault": "'split-chunk'"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "Array"
+            },
+            "class": "SplitTextUtils"
+        },
+        {
+            "file": "../../source/coffee/slikland/utils/SplitTextUtils.coffee",
+            "line": 17,
+            "description": "Split texts to words for animations",
+            "itemtype": "method",
+            "name": "splitHTMLWords",
+            "params": [
+                {
+                    "name": "target",
+                    "description": "",
+                    "type": "HTMLElement"
+                },
+                {
+                    "name": "opt",
+                    "description": "",
+                    "type": "Object",
+                    "optional": true,
+                    "optdefault": "{}"
+                },
+                {
+                    "name": "className",
+                    "description": "",
+                    "type": "String",
+                    "optional": true,
+                    "optdefault": "'split-chunk'"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "Array"
+            },
+            "class": "SplitTextUtils"
+        },
+        {
+            "file": "../../source/coffee/slikland/utils/SplitTextUtils.coffee",
+            "line": 28,
+            "description": "Split texts to lines for animations",
+            "itemtype": "method",
+            "name": "splitHTMLLines",
+            "params": [
+                {
+                    "name": "target",
+                    "description": "",
+                    "type": "HTMLElement"
+                },
+                {
+                    "name": "opt",
+                    "description": "",
+                    "type": "Object",
+                    "optional": true,
+                    "optdefault": "{}"
+                },
+                {
+                    "name": "className",
+                    "description": "",
+                    "type": "String",
+                    "optional": true,
+                    "optdefault": "'split-chunk'"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "Array"
+            },
+            "class": "SplitTextUtils"
+        },
+        {
+            "file": "../../source/coffee/slikland/utils/SplitTextUtils.coffee",
+            "line": 69,
+            "itemtype": "method",
+            "name": "_findParentsUntil",
+            "params": [
+                {
+                    "name": "target",
+                    "description": "",
+                    "type": "HTMLElement"
+                },
+                {
+                    "name": "parent",
+                    "description": "",
+                    "type": "HTMLElement"
+                }
+            ],
+            "access": "private",
+            "tagname": "",
+            "return": {
+                "description": "",
+                "type": "HTMLElement"
+            },
+            "class": "SplitTextUtils"
+        },
+        {
+            "file": "../../source/coffee/slikland/utils/SplitTextUtils.coffee",
+            "line": 84,
+            "itemtype": "method",
+            "name": "_splitHTML",
+            "params": [
+                {
+                    "name": "target",
+                    "description": "",
+                    "type": "HTMLElement"
+                },
+                {
+                    "name": "className",
+                    "description": "",
+                    "type": "String"
+                },
+                {
+                    "name": "opt",
+                    "description": "",
+                    "type": "Object"
+                },
+                {
+                    "name": "type",
+                    "description": "",
+                    "type": "String"
+                }
+            ],
+            "access": "private",
+            "tagname": "",
+            "return": {
+                "description": "",
+                "type": "Array"
+            },
+            "class": "SplitTextUtils"
+        },
+        {
+            "file": "../../source/coffee/slikland/utils/SplitTextUtils.coffee",
+            "line": 111,
+            "itemtype": "method",
+            "name": "_replaceChars",
+            "params": [
+                {
+                    "name": "match",
+                    "description": "",
+                    "type": "String"
+                },
+                {
+                    "name": "text",
+                    "description": "",
+                    "type": "String"
+                },
+                {
+                    "name": "tag",
+                    "description": "",
+                    "type": "String"
+                }
+            ],
+            "access": "private",
+            "tagname": "",
+            "return": {
+                "description": "",
+                "type": "String"
+            },
+            "class": "SplitTextUtils"
+        },
+        {
+            "file": "../../source/coffee/slikland/utils/SplitTextUtils.coffee",
+            "line": 131,
+            "itemtype": "method",
+            "name": "_replaceWords",
+            "params": [
+                {
+                    "name": "match",
+                    "description": "",
+                    "type": "String"
+                },
+                {
+                    "name": "text",
+                    "description": "",
+                    "type": "String"
+                },
+                {
+                    "name": "tag",
+                    "description": "",
+                    "type": "String"
+                }
+            ],
+            "access": "private",
+            "tagname": "",
+            "return": {
+                "description": "",
+                "type": "String"
+            },
+            "class": "SplitTextUtils"
+        },
+        {
+            "file": "../../source/coffee/slikland/utils/SplitTextUtils.coffee",
+            "line": 147,
+            "itemtype": "method",
+            "name": "_replaceAll",
+            "params": [
+                {
+                    "name": "target",
+                    "description": "",
+                    "type": "String"
+                },
+                {
+                    "name": "search",
+                    "description": "",
+                    "type": "RegExp"
+                },
+                {
+                    "name": "replacement",
+                    "description": "",
+                    "type": "String"
+                }
+            ],
+            "access": "private",
+            "tagname": "",
+            "return": {
+                "description": "",
+                "type": "String"
+            },
+            "class": "SplitTextUtils"
         },
         {
             "file": "../../source/coffee/slikland/utils/StringUtils.coffee",
@@ -4222,6 +4923,149 @@
                 "type": "Array"
             },
             "class": "StringUtils"
+        },
+        {
+            "file": "../../source/coffee/slikland/utils/TouchUtils.coffee",
+            "line": 7,
+            "itemtype": "method",
+            "name": "getTouchPositions",
+            "static": 1,
+            "params": [
+                {
+                    "name": "evt",
+                    "description": "",
+                    "type": "Event"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "Array"
+            },
+            "class": "TouchUtils"
+        },
+        {
+            "file": "../../source/coffee/slikland/utils/URLUtils.coffee",
+            "line": 10,
+            "itemtype": "method",
+            "name": "compare",
+            "static": 1,
+            "params": [
+                {
+                    "name": "a",
+                    "description": "URL A",
+                    "type": "String"
+                },
+                {
+                    "name": "b",
+                    "description": "URL B",
+                    "type": "String"
+                },
+                {
+                    "name": "base",
+                    "description": "Base URL",
+                    "type": "String",
+                    "optional": true,
+                    "optdefault": "app?.root || ''"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "Boolean"
+            },
+            "class": "URLUtils"
+        },
+        {
+            "file": "../../source/coffee/slikland/utils/URLUtils.coffee",
+            "line": 25,
+            "itemtype": "method",
+            "name": "sameHost",
+            "static": 1,
+            "params": [
+                {
+                    "name": "a",
+                    "description": "URL A",
+                    "type": "String"
+                },
+                {
+                    "name": "b",
+                    "description": "URL B",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "Boolean"
+            },
+            "class": "URLUtils"
+        },
+        {
+            "file": "../../source/coffee/slikland/utils/URLUtils.coffee",
+            "line": 37,
+            "itemtype": "method",
+            "name": "removeQueryParameter",
+            "static": 1,
+            "params": [
+                {
+                    "name": "url",
+                    "description": "",
+                    "type": "String"
+                },
+                {
+                    "name": "parameter",
+                    "description": "",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "Cleanup URL",
+                "type": "String"
+            },
+            "class": "URLUtils"
+        },
+        {
+            "file": "../../source/coffee/slikland/utils/URLUtils.coffee",
+            "line": 61,
+            "itemtype": "method",
+            "name": "parseParams",
+            "static": 1,
+            "params": [
+                {
+                    "name": "p_path",
+                    "description": "",
+                    "type": "String",
+                    "optional": true,
+                    "optdefault": "''"
+                }
+            ],
+            "return": {
+                "description": "Parsed object of params",
+                "type": "Object"
+            },
+            "class": "URLUtils"
+        },
+        {
+            "file": "../../source/coffee/slikland/utils/URLUtils.coffee",
+            "line": 77,
+            "itemtype": "method",
+            "name": "parseSerialize",
+            "static": 1,
+            "params": [
+                {
+                    "name": "obj",
+                    "description": "",
+                    "type": "Object"
+                },
+                {
+                    "name": "prefix",
+                    "description": "",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "String"
+            },
+            "class": "URLUtils"
         }
     ],
     "warnings": [

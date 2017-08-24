@@ -1,3 +1,8 @@
+###*
+Bunch of utilities methods for objects
+@class ObjectUtils
+@static
+###
 class ObjectUtils
 
 	###*

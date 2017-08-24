@@ -1,10 +1,38 @@
+###*
+@class SplitTextUtils
+@static
+###
 class SplitTextUtils
+	###*
+	Split texts to chars for animations
+	@method splitHTMLChars
+	@param {HTMLElement} target
+	@param {Object} [opt={}]
+	@param {String} [className='split-chunk']
+	@return {Array}
+	###
 	@splitHTMLChars:(target, opt = {}, className = 'split-chunk')->
 		return @_splitHTML(target, className, opt, @_replaceChars)
 
+	###*
+	Split texts to words for animations
+	@method splitHTMLWords
+	@param {HTMLElement} target
+	@param {Object} [opt={}]
+	@param {String} [className='split-chunk']
+	@return {Array}
+	###
 	@splitHTMLWords:(target, opt = {}, className = 'split-chunk')->
 		return @_splitHTML(target, className, opt, @_replaceWords)
 
+	###*
+	Split texts to lines for animations
+	@method splitHTMLLines
+	@param {HTMLElement} target
+	@param {Object} [opt={}]
+	@param {String} [className='split-chunk']
+	@return {Array}
+	###
 	@splitHTMLLines:(target, opt = {}, className = 'split-chunk')->
 		words = @_splitHTML(target, className, opt, @_replaceWords)
 		l = words.length
@@ -37,7 +65,14 @@ class SplitTextUtils
 				span.appendChild(document.createTextNode(' '))
 			spans.push(span)
 		return spans
-
+	
+	###*
+	@method _findParentsUntil
+	@param {HTMLElement} target
+	@param {HTMLElement} parent
+	@private
+	@return {HTMLElement}
+	###	
 	@_findParentsUntil:(target, parent)->
 		if target.parentNode == parent
 			return target
@@ -46,7 +81,15 @@ class SplitTextUtils
 		else
 			return @_findParentsUntil(target.parentNode, parent)
 
-
+	###*
+	@method _splitHTML
+	@param {HTMLElement} target
+	@param {String} className
+	@param {Object} opt
+	@param {String} type
+	@private
+	@return {Array}
+	###	
 	@_splitHTML:(target, className, opt, type)->
 		if target instanceof BaseDOM
 			target = target.element
@@ -65,6 +108,14 @@ class SplitTextUtils
 
 		# return new SplitText(target.querySelectorAll('.' + className), opt)
 
+	###*
+	@method _replaceChars
+	@param {String} match
+	@param {String} text
+	@param {String} tag
+	@private
+	@return {String}
+	###	
 	@_replaceChars:(match, text, tag)=>
 		ret = ''
 		if text
@@ -77,6 +128,14 @@ class SplitTextUtils
 			ret += tag
 		return ret
 
+	###*
+	@method _replaceWords
+	@param {String} match
+	@param {String} text
+	@param {String} tag
+	@private
+	@return {String}
+	###	
 	@_replaceWords:(match, text, tag)=>
 		ret = ''
 		if text
@@ -85,5 +144,13 @@ class SplitTextUtils
 			ret += tag
 		return ret
 
+	###*
+	@method _replaceAll
+	@param {String} target
+	@param {RegExp} search
+	@param {String} replacement
+	@private
+	@return {String}
+	###	
 	@_replaceAll:(target, search, replacement)=>
 		return target.replace(new RegExp(search, 'g'), replacement)

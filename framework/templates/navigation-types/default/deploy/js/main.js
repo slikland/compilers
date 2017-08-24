@@ -1450,11 +1450,19 @@ NavigationContainer = (function(_super) {
   __extends(NavigationContainer, _super);
   /**
   	@class NavigationContainer
+  	@param {String} [p_CSSClassName='nav-container']
+  	@param {String} [p_element=null] HTMLElement type
   	@constructor
    */
-  function NavigationContainer() {
+  function NavigationContainer(p_CSSClassName, p_element) {
+    if (p_CSSClassName == null) {
+      p_CSSClassName = 'nav-container';
+    }
+    if (p_element == null) {
+      p_element = null;
+    }
     this.setupNavigation = __bind(this.setupNavigation, this);
-    NavigationContainer.__super__.constructor.call(this, null, 'nav-container');
+    NavigationContainer.__super__.constructor.call(this, null, p_CSSClassName, p_element);
     this._id = 'main';
   }
   /**
@@ -1531,22 +1539,10 @@ ColorUtils = (function() {
     return parseInt(p_hex, 16);
   };
   ColorUtils.RGBToInt = function(p_r, p_g, p_b) {
-    if (p_g == null) {
-      p_g = -1;
-    }
-    if (p_b == null) {
-      p_b = -1;
-    }
     return ColorUtils.hexToInt(ColorUtils.RGBToHex(p_r, p_g, p_b));
   };
   ColorUtils.RGBToHex = function(p_r, p_g, p_b) {
     var hex;
-    if (p_g == null) {
-      p_g = -1;
-    }
-    if (p_b == null) {
-      p_b = -1;
-    }
     hex = p_r << 16 | p_g << 8 | p_b;
     return "#" + hex.toString(16);
   };
@@ -1565,6 +1561,70 @@ ColorUtils = (function() {
     return 'rgb(' + r + ',' + g + ',' + b + ')';
   };
   return ColorUtils;
+})();
+/**
+Bunch of utilities methods for functions
+@class FunctionUtils
+@static
+ */
+var FunctionUtils;
+FunctionUtils = (function() {
+  function FunctionUtils() {}
+  /**
+  @method debounce
+  @static
+  @param {Function} fn
+  @param {Number} delay
+  @return {Function}
+   */
+  FunctionUtils.debounce = function(fn, delay) {
+    var timer;
+    timer = null;
+    return function() {
+      var args, context;
+      context = this;
+      args = arguments;
+      clearTimeout(timer);
+      timer = setTimeout((function() {
+        fn.apply(context, args);
+      }), delay);
+    };
+  };
+  /**
+  @method throttle
+  @static
+  @param {Function} fn
+  @param {Number} [threshhold=250]
+  @return {Function} [scope=null]
+   */
+  FunctionUtils.throttle = function(fn, threshhold, scope) {
+    var deferTimer, last;
+    if (threshhold == null) {
+      threshhold = 250;
+    }
+    if (scope == null) {
+      scope = null;
+    }
+    last = void 0;
+    deferTimer = void 0;
+    return function() {
+      var args, context, now;
+      context = scope || this;
+      now = +(new Date);
+      args = arguments;
+      if (last && now < last + threshhold) {
+        clearTimeout(deferTimer);
+        deferTimer = setTimeout((function() {
+          last = now;
+          fn.apply(context, args);
+        }), threshhold);
+      } else {
+        last = now;
+        fn.apply(context, args);
+      }
+    };
+  };
+  return FunctionUtils;
 })();
 var MediaDOM;
 MediaDOM = (function(_super) {

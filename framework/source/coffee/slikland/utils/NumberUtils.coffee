@@ -86,37 +86,3 @@ class NumberUtils
 	@rangeRandom:(p_low, p_high, p_rounded=false)->
 		return if !p_rounded then (Math.random() * (p_high - p_low)) + p_low else Math.round(Math.round(Math.random() * (p_high - p_low)) + p_low)
 
-	# Public: Getting the distance between two geographical points.
-	#
-	# from - From coordinates {Points}.
-	# high - To coordinates {Points}.
-	# units - Mean radius of Earth in {String} (km, meters, feet and miles).
-	#
-	# Returns
-	#    The resulting the coordinates {Number}.
-	@distanceBetweenCoordinates:(p_from, p_to, p_units = "km")->
-		radius
-		switch p_units
-			when "km"
-				radius = 6371
-			when "meters"
-				radius = 6378000
-			when "feet"
-				radius = 20925525
-			when "miles"
-				radius = 3963
-
-		dLatitude  = (p_to.x - p_from.x) * Math.PI / 180
-		dLongitude  = (p_to.y - p_from.y) * Math.PI / 180
-
-		a  = Math.sin(dLatitude / 2) * Math.sin(dLatitude / 2) + Math.sin(dLongitude / 2) * Math.sin(dLongitude / 2) * Math.cos(p_from.x * Math.PI / 180) * Math.cos(p_to.x * Math.PI / 180)
-		c  = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a))
-
-		return radius * c
-
-	@getShortRotation:(p_start, p_end, p_useRadians = false)->
-		cap = if p_useRadians then Math.PI * 2 else 360
-		diff = (p_end - p_start) % cap;
-		if (diff isnt diff % (cap / 2))
-			diff = (diff < 0) ? diff + cap : diff - cap
-		return p_start + diff

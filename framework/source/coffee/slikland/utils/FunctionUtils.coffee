@@ -1,5 +1,17 @@
+###*
+Bunch of utilities methods for functions
+@class FunctionUtils
+@static
+###
 class FunctionUtils
 
+  ###*
+  @method debounce
+  @static
+  @param {Function} fn
+  @param {Number} delay
+  @return {Function}
+  ### 
   @debounce:(fn, delay)->
     timer = null
     ->
@@ -12,7 +24,15 @@ class FunctionUtils
       ), delay)
       return
 
-  @throttle:(fn, threshhold = 250, scope)->
+  ###*
+  @method throttle
+  @static
+  @param {Function} fn
+  @param {Number} [threshhold=250]
+  @param {Function} [scope=null]
+  @return {Function}
+  ### 
+  @throttle:(fn, threshhold = 250, scope=null)->
     last = undefined
     deferTimer = undefined
     ->

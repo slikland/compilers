@@ -3,6 +3,7 @@
 #import slikland.navigation.core.data.LanguageData
 #import slikland.utils.Resizer
 #import slikland.utils.ColorUtils
+#import slikland.utils.FunctionUtils
 
 #############################
 # IMPORT VIEWS BELLOW 	#

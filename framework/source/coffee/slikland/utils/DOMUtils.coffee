@@ -1,3 +1,8 @@
+###*
+Bunch of utilities methods for manipulating DOM elements
+@class DOMUtils
+@static
+###
 class DOMUtils
 	
 	@addCSSClass:(el, className)->

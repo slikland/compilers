@@ -1,8 +1,8 @@
 #import slikland.utils.Resizer
+
 ###*
 Detections Class
 @class Detections
-@extends Class
 ###
 class Detections
 	matches: [

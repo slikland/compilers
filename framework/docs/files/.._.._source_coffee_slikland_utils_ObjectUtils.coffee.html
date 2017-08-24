@@ -49,16 +49,29 @@
                                 <li><a href="../classes/ConditionsValidation.html">ConditionsValidation</a></li>
                                 <li><a href="../classes/Debug.html">Debug</a></li>
                                 <li><a href="../classes/Detections.html">Detections</a></li>
+                                <li><a href="../classes/DOMUtils.html">DOMUtils</a></li>
                                 <li><a href="../classes/EventDispatcher.html">EventDispatcher</a></li>
+                                <li><a href="../classes/FunctionUtils.html">FunctionUtils</a></li>
+                                <li><a href="../classes/JSONUtils.html">JSONUtils</a></li>
+                                <li><a href="../classes/KTween.html">KTween</a></li>
+                                <li><a href="../classes/MathUtils.html">MathUtils</a></li>
                                 <li><a href="../classes/MetaController.html">MetaController</a></li>
+                                <li><a href="../classes/MouseUtils.html">MouseUtils</a></li>
                                 <li><a href="../classes/Navigation.html">Navigation</a></li>
                                 <li><a href="../classes/NavigationContainer.html">NavigationContainer</a></li>
                                 <li><a href="../classes/NavigationLoader.html">NavigationLoader</a></li>
                                 <li><a href="../classes/NavigationRouter.html">NavigationRouter</a></li>
+                                <li><a href="../classes/ObjectUtils.html">ObjectUtils</a></li>
                                 <li><a href="../classes/PreloadFiles.html">PreloadFiles</a></li>
                                 <li><a href="../classes/Prototypes.html">Prototypes</a></li>
+                                <li><a href="../classes/ResizeUtils.html">ResizeUtils</a></li>
+                                <li><a href="../classes/ShareUtils.html">ShareUtils</a></li>
+                                <li><a href="../classes/SplitTextUtils.html">SplitTextUtils</a></li>
                                 <li><a href="../classes/SpriteSheetAnimation.html">SpriteSheetAnimation</a></li>
                                 <li><a href="../classes/StringUtils.html">StringUtils</a></li>
+                                <li><a href="../classes/SunUtils.html">SunUtils</a></li>
+                                <li><a href="../classes/TouchUtils.html">TouchUtils</a></li>
+                                <li><a href="../classes/URLUtils.html">URLUtils</a></li>
                                 <li><a href="../classes/ViewsData.html">ViewsData</a></li>
                             </ul>
                 
@@ -101,6 +114,11 @@
 
 <div class="file">
     <pre class="code prettyprint linenums">
+###*
+Bunch of utilities methods for objects
+@class ObjectUtils
+@static
+###
 class ObjectUtils
 
 	###*
@@ -239,6 +257,7 @@ class ObjectUtils
 
 # Feature: global.isPlainObject(source)
 &#x60;!function(e){if(&quot;object&quot;==typeof exports&amp;&amp;&quot;undefined&quot;!=typeof module)module.exports=e();else if(&quot;function&quot;==typeof define&amp;&amp;define.amd)define([],e);else{var t;t=&quot;undefined&quot;!=typeof window?window:&quot;undefined&quot;!=typeof global?global:&quot;undefined&quot;!=typeof self?self:this,t.isPlainObject=e()}}(function(){return function e(t,r,n){function o(f,u){if(!r[f]){if(!t[f]){var c=&quot;function&quot;==typeof require&amp;&amp;require;if(!u&amp;&amp;c)return c(f,!0);if(i)return i(f,!0);var p=new Error(&quot;Cannot find module &#x27;&quot;+f+&quot;&#x27;&quot;);throw p.code=&quot;MODULE_NOT_FOUND&quot;,p}var s=r[f]={exports:{}};t[f][0].call(s.exports,function(e){var r=t[f][1][e];return o(r?r:e)},s,s.exports,e,t,r,n)}return r[f].exports}for(var i=&quot;function&quot;==typeof require&amp;&amp;require,f=0;f&lt;n.length;f++)o(n[f]);return o}({1:[function(e,t,r){&quot;use strict&quot;;function n(e){return o(e)===!0&amp;&amp;&quot;[object Object]&quot;===Object.prototype.toString.call(e)}var o=e(&quot;isobject&quot;);t.exports=function(e){var t,r;return n(e)===!1?!1:(t=e.constructor,&quot;function&quot;!=typeof t?!1:(r=t.prototype,n(r)===!1?!1:r.hasOwnProperty(&quot;isPrototypeOf&quot;)===!1?!1:!0))}},{isobject:2}],2:[function(e,t,r){&quot;use strict&quot;;t.exports=function(e){return null!=e&amp;&amp;&quot;object&quot;==typeof e&amp;&amp;!Array.isArray(e)}},{}]},{},[1])(1)});&#x60;
+
     </pre>
 </div>
                     </div>
