@@ -52,6 +52,7 @@
                                 <li><a href="../classes/DOMUtils.html">DOMUtils</a></li>
                                 <li><a href="../classes/EventDispatcher.html">EventDispatcher</a></li>
                                 <li><a href="../classes/FunctionUtils.html">FunctionUtils</a></li>
+                                <li><a href="../classes/GestureUtils.html">GestureUtils</a></li>
                                 <li><a href="../classes/JSONUtils.html">JSONUtils</a></li>
                                 <li><a href="../classes/KTween.html">KTween</a></li>
                                 <li><a href="../classes/MathUtils.html">MathUtils</a></li>
@@ -61,6 +62,7 @@
                                 <li><a href="../classes/NavigationContainer.html">NavigationContainer</a></li>
                                 <li><a href="../classes/NavigationLoader.html">NavigationLoader</a></li>
                                 <li><a href="../classes/NavigationRouter.html">NavigationRouter</a></li>
+                                <li><a href="../classes/NumberUtils.html">NumberUtils</a></li>
                                 <li><a href="../classes/ObjectUtils.html">ObjectUtils</a></li>
                                 <li><a href="../classes/PreloadFiles.html">PreloadFiles</a></li>
                                 <li><a href="../classes/Prototypes.html">Prototypes</a></li>
@@ -70,7 +72,6 @@
                                 <li><a href="../classes/SpriteSheetAnimation.html">SpriteSheetAnimation</a></li>
                                 <li><a href="../classes/StringUtils.html">StringUtils</a></li>
                                 <li><a href="../classes/SunUtils.html">SunUtils</a></li>
-                                <li><a href="../classes/TouchUtils.html">TouchUtils</a></li>
                                 <li><a href="../classes/URLUtils.html">URLUtils</a></li>
                                 <li><a href="../classes/ViewsData.html">ViewsData</a></li>
                             </ul>
@@ -132,17 +133,408 @@
     <ul class="api-class-tabs">
         <li class="api-class-tab index"><a href="#index">Index</a></li>
 
+            <li class="api-class-tab methods"><a href="#methods">Methods</a></li>
     </ul>
 
     <div>
         <div id="index" class="api-class-tabpanel index">
             <h2 class="off-left">Item Index</h2>
 
+                <div class="index-section methods">
+                    <h3>Methods</h3>
+
+                    <ul class="index-list methods">
+                            <li class="index-item method">
+                                <a href="#method_hexToInt">hexToInt</a>
+
+                                    <span class="flag static">static</span>
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_hexToRGB">hexToRGB</a>
+
+                                    <span class="flag static">static</span>
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_lightenOrDarken">lightenOrDarken</a>
+
+                                    <span class="flag static">static</span>
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_randomHex">randomHex</a>
+
+                                    <span class="flag static">static</span>
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_randomRGB">randomRGB</a>
+
+                                    <span class="flag static">static</span>
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_RGBToHex">RGBToHex</a>
+
+                                    <span class="flag static">static</span>
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_RGBToInt">RGBToInt</a>
+
+                                    <span class="flag static">static</span>
+                            </li>
+                    </ul>
+                </div>
 
 
 
         </div>
 
+            <div id="methods" class="api-class-tabpanel">
+                <h2 class="off-left">Methods</h2>
+
+<div id="method_hexToInt" class="method item">
+    <h3 class="name"><code>hexToInt</code></h3>
+
+        <span class="paren">()</span>
+
+        <span class="returns-inline">
+            <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>
+        </span>
+
+
+
+
+        <span class="flag static">static</span>
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._.._source_coffee_slikland_utils_ColorUtils.coffee.html#l53"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;utils&#x2F;ColorUtils.coffee:53</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Converts a Hexadecimal color value to integer value.</p>
+
+    </div>
+
+
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>:
+                    <p>The result integer value</p>
+
+            </div>
+        </div>
+
+
+</div>
+<div id="method_hexToRGB" class="method item">
+    <h3 class="name"><code>hexToRGB</code></h3>
+
+        <span class="paren">()</span>
+
+        <span class="returns-inline">
+            <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>
+        </span>
+
+
+
+
+        <span class="flag static">static</span>
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._.._source_coffee_slikland_utils_ColorUtils.coffee.html#l82"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;utils&#x2F;ColorUtils.coffee:82</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Converts a Hexadecimal color value to RGB value.</p>
+
+    </div>
+
+
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>:
+                    <p>The RGB value of result on format rgb(r,g,b)</p>
+
+            </div>
+        </div>
+
+
+</div>
+<div id="method_lightenOrDarken" class="method item">
+    <h3 class="name"><code>lightenOrDarken</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>p_hex</code>
+                </li>
+                <li class="arg">
+                        <code>p_amount</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+        <span class="returns-inline">
+            <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>
+        </span>
+
+
+
+
+        <span class="flag static">static</span>
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._.._source_coffee_slikland_utils_ColorUtils.coffee.html#l7"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;utils&#x2F;ColorUtils.coffee:7</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Darken/lighten a hexadecimal colors</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">p_hex</code>
+                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>
+
+
+                    <div class="param-description">
+                        <p>The target hexadecimal color value to be darkened or lightened.</p>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">p_amount</code>
+                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number" class="crosslink external" target="_blank">Number</a></span>
+
+
+                    <div class="param-description">
+                        <p>This value must be between -1 and 1 (-1 more darken and 1 more lighten)</p>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>:
+                    <p>The hexadecimal value of result.</p>
+
+            </div>
+        </div>
+
+
+</div>
+<div id="method_randomHex" class="method item">
+    <h3 class="name"><code>randomHex</code></h3>
+
+        <span class="paren">()</span>
+
+        <span class="returns-inline">
+            <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>
+        </span>
+
+
+
+
+        <span class="flag static">static</span>
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._.._source_coffee_slikland_utils_ColorUtils.coffee.html#l35"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;utils&#x2F;ColorUtils.coffee:35</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Generate a random hexadecimal color</p>
+
+    </div>
+
+
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>:
+                    <p>The hexadecimal value of result.</p>
+
+            </div>
+        </div>
+
+
+</div>
+<div id="method_randomRGB" class="method item">
+    <h3 class="name"><code>randomRGB</code></h3>
+
+        <span class="paren">()</span>
+
+        <span class="returns-inline">
+            <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>
+        </span>
+
+
+
+
+        <span class="flag static">static</span>
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._.._source_coffee_slikland_utils_ColorUtils.coffee.html#l44"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;utils&#x2F;ColorUtils.coffee:44</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Generate a random RGB color</p>
+
+    </div>
+
+
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>:
+                    <p>The RGB value of result on format rgb(r,g,b)</p>
+
+            </div>
+        </div>
+
+
+</div>
+<div id="method_RGBToHex" class="method item">
+    <h3 class="name"><code>RGBToHex</code></h3>
+
+        <span class="paren">()</span>
+
+        <span class="returns-inline">
+            <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>
+        </span>
+
+
+
+
+        <span class="flag static">static</span>
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._.._source_coffee_slikland_utils_ColorUtils.coffee.html#l72"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;utils&#x2F;ColorUtils.coffee:72</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Converts a RGB color value to Hexadecimal value.</p>
+
+    </div>
+
+
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>:
+                    <p>The result Hexadecimal value</p>
+
+            </div>
+        </div>
+
+
+</div>
+<div id="method_RGBToInt" class="method item">
+    <h3 class="name"><code>RGBToInt</code></h3>
+
+        <span class="paren">()</span>
+
+        <span class="returns-inline">
+            <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>
+        </span>
+
+
+
+
+        <span class="flag static">static</span>
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._.._source_coffee_slikland_utils_ColorUtils.coffee.html#l63"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;utils&#x2F;ColorUtils.coffee:63</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Converts a RGB color value to integer value.</p>
+
+    </div>
+
+
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>:
+                    <p>The result integer value</p>
+
+            </div>
+        </div>
+
+
+</div>
+            </div>
 
 
 

@@ -1,3 +1,7 @@
+###*
+Methods for gesture and touch
+@class GestureUtils
+###
 class GestureUtils extends EventDispatcher
 
 	@ON_SWIPE_LEFT: 'onSwipeLeft'
@@ -81,3 +85,23 @@ class GestureUtils extends EventDispatcher
 		@_xDown = null
 		@_yDown = null
 		@trigger GestureUtils.ON_TOUCH_END, event
+
+	###*
+	@method getTouchPositions
+	@static
+	@param {Event} evt
+	@return {Array}
+	###	
+	@getTouchPositions:(evt)->
+		if evt.touches
+			touches = evt.touches
+		else
+			touches = [{pageX: evt.pageX, pageY: evt.pageY}]
+		i = touches.length
+		tPos = []
+		sl = document.body.scrollLeft
+		st = document.body.scrollTop
+		while i-- > 0
+			tPos[i] = [touches[i].pageX - sl, touches[i].pageY - st]
+		return tPos
+

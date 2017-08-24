@@ -1,8 +1,6 @@
 ###*
 Methods for Sunrise and Sunset
-
 @class SunUtils
-
 ###
 class SunUtils
 

@@ -1,9 +1,7 @@
 ###*
 Bunch of utilities methods for Math
-
 @class MathUtils
 @static
-
 ###
 class MathUtils
 

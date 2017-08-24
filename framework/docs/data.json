@@ -250,6 +250,15 @@
             "fors": {},
             "namespaces": {}
         },
+        "../../source/coffee/slikland/utils/GestureUtils.coffee": {
+            "name": "../../source/coffee/slikland/utils/GestureUtils.coffee",
+            "modules": {},
+            "classes": {
+                "GestureUtils": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
         "../../source/coffee/slikland/utils/JSONUtils.coffee": {
             "name": "../../source/coffee/slikland/utils/JSONUtils.coffee",
             "modules": {},
@@ -273,6 +282,15 @@
             "modules": {},
             "classes": {
                 "MouseUtils": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "../../source/coffee/slikland/utils/NumberUtils.coffee": {
+            "name": "../../source/coffee/slikland/utils/NumberUtils.coffee",
+            "modules": {},
+            "classes": {
+                "NumberUtils": 1
             },
             "fors": {},
             "namespaces": {}
@@ -336,15 +354,6 @@
             "modules": {},
             "classes": {
                 "SunUtils": 1
-            },
-            "fors": {},
-            "namespaces": {}
-        },
-        "../../source/coffee/slikland/utils/TouchUtils.coffee": {
-            "name": "../../source/coffee/slikland/utils/TouchUtils.coffee",
-            "modules": {},
-            "classes": {
-                "TouchUtils": 1
             },
             "fors": {},
             "namespaces": {}
@@ -786,6 +795,18 @@
             "description": "Bunch of utilities methods for functions",
             "static": 1
         },
+        "GestureUtils": {
+            "name": "GestureUtils",
+            "shortname": "GestureUtils",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "file": "../../source/coffee/slikland/utils/GestureUtils.coffee",
+            "line": 1,
+            "description": "Methods for gesture and touch"
+        },
         "JSONUtils": {
             "name": "JSONUtils",
             "shortname": "JSONUtils",
@@ -823,6 +844,19 @@
             "file": "../../source/coffee/slikland/utils/MouseUtils.coffee",
             "line": 1,
             "description": "Bunch of utilities methods for mouse",
+            "static": 1
+        },
+        "NumberUtils": {
+            "name": "NumberUtils",
+            "shortname": "NumberUtils",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "file": "../../source/coffee/slikland/utils/NumberUtils.coffee",
+            "line": 1,
+            "description": "Bunch of utilities methods for Numbers",
             "static": 1
         },
         "ObjectUtils": {
@@ -912,18 +946,6 @@
             "file": "../../source/coffee/slikland/utils/SunUtils.coffee",
             "line": 1,
             "description": "Methods for Sunrise and Sunset"
-        },
-        "TouchUtils": {
-            "name": "TouchUtils",
-            "shortname": "TouchUtils",
-            "classitems": [],
-            "plugins": [],
-            "extensions": [],
-            "plugin_for": [],
-            "extension_for": [],
-            "file": "../../source/coffee/slikland/utils/TouchUtils.coffee",
-            "line": 1,
-            "description": "Bunch of utilities methods for TouchUtils"
         },
         "URLUtils": {
             "name": "URLUtils",
@@ -3887,6 +3909,411 @@
             "class": "BaseView"
         },
         {
+            "file": "../../source/coffee/slikland/utils/ArrayUtils.coffee",
+            "line": 11,
+            "description": "Removes an item from an array.",
+            "itemtype": "method",
+            "name": "removeItem",
+            "static": 1,
+            "params": [
+                {
+                    "name": "The",
+                    "description": "array that contains the item that should be removed.",
+                    "type": "Array"
+                },
+                {
+                    "name": "p_item",
+                    "description": "The item to be removed from the array.",
+                    "type": "Object"
+                },
+                {
+                    "name": "p_clone",
+                    "description": "Apply and return changes to a cloned array.",
+                    "type": "Boolean",
+                    "optional": true,
+                    "optdefault": "false"
+                }
+            ],
+            "return": {
+                "description": "An array with the removed items.",
+                "type": "Array"
+            },
+            "class": "ArrayUtils"
+        },
+        {
+            "file": "../../source/coffee/slikland/utils/ArrayUtils.coffee",
+            "line": 26,
+            "description": "Removes an item by index from an array.",
+            "itemtype": "method",
+            "name": "removeItemByIndex",
+            "params": [
+                {
+                    "name": "p_index",
+                    "description": "The index to be removed from the array.",
+                    "type": "Number"
+                },
+                {
+                    "name": "p_array",
+                    "description": "The array that contains the item that should be removed.",
+                    "type": "Array"
+                },
+                {
+                    "name": "p_clone",
+                    "description": "Apply and return changes to a cloned array.",
+                    "type": "Boolean",
+                    "optional": true,
+                    "optdefault": "false"
+                }
+            ],
+            "return": {
+                "description": "An array with the removed item.",
+                "type": "Array"
+            },
+            "static": 1,
+            "class": "ArrayUtils"
+        },
+        {
+            "file": "../../source/coffee/slikland/utils/ArrayUtils.coffee",
+            "line": 40,
+            "description": "Removes all strings duplicated from an array.",
+            "itemtype": "method",
+            "name": "removeDuplicateStrings",
+            "params": [
+                {
+                    "name": "p_array",
+                    "description": "The array where the duplicates string should be removed.",
+                    "type": "Array"
+                }
+            ],
+            "return": {
+                "description": "An array with the removed item.",
+                "type": "Array"
+            },
+            "static": 1,
+            "class": "ArrayUtils"
+        },
+        {
+            "file": "../../source/coffee/slikland/utils/ArrayUtils.coffee",
+            "line": 50,
+            "description": "Finds element in array and returns boolean value",
+            "itemtype": "method",
+            "name": "hasItem",
+            "params": [
+                {
+                    "name": "p_value",
+                    "description": "",
+                    "type": "Object"
+                },
+                {
+                    "name": "p_array",
+                    "description": "The array to be used as reference.",
+                    "type": "Array"
+                }
+            ],
+            "return": {
+                "description": "The resulting boolean.",
+                "type": "Boolean"
+            },
+            "static": 1,
+            "class": "ArrayUtils"
+        },
+        {
+            "file": "../../source/coffee/slikland/utils/ArrayUtils.coffee",
+            "line": 61,
+            "description": "Returns a new merged array.",
+            "itemtype": "method",
+            "name": "merge",
+            "static": 1,
+            "params": [
+                {
+                    "name": "p_arrayA",
+                    "description": "The array to be used as reference A.",
+                    "type": "Array"
+                },
+                {
+                    "name": "p_arrayB",
+                    "description": "The array to be used as reference B.",
+                    "type": "Array"
+                }
+            ],
+            "return": {
+                "description": "Returns a new merged array.",
+                "type": "Array"
+            },
+            "class": "ArrayUtils"
+        },
+        {
+            "file": "../../source/coffee/slikland/utils/ArrayUtils.coffee",
+            "line": 83,
+            "description": "Returns a random index inside the range of the array.",
+            "itemtype": "method",
+            "name": "randomIndex",
+            "static": 1,
+            "params": [
+                {
+                    "name": "p_array",
+                    "description": "The array to be used as reference.",
+                    "type": "Array"
+                }
+            ],
+            "return": {
+                "description": "A random number valid index.",
+                "type": "Number"
+            },
+            "class": "ArrayUtils"
+        },
+        {
+            "file": "../../source/coffee/slikland/utils/ArrayUtils.coffee",
+            "line": 93,
+            "description": "Returns a random item within an array.",
+            "itemtype": "method",
+            "name": "randomItem",
+            "params": [
+                {
+                    "name": "p_array",
+                    "description": "The array to be used as reference.",
+                    "type": "Array"
+                }
+            ],
+            "return": {
+                "description": "The resulting object.",
+                "type": "Object"
+            },
+            "static": 1,
+            "class": "ArrayUtils"
+        },
+        {
+            "file": "../../source/coffee/slikland/utils/ArrayUtils.coffee",
+            "line": 103,
+            "description": "Shuffles the order of the items in an array.",
+            "itemtype": "method",
+            "name": "shuffle",
+            "static": 1,
+            "params": [
+                {
+                    "name": "p_array",
+                    "description": "The array to shuffled.",
+                    "type": "Array"
+                },
+                {
+                    "name": "p_clone",
+                    "description": "Apply and return changes to a cloned array.",
+                    "type": "Boolean",
+                    "optional": true,
+                    "optdefault": "false"
+                }
+            ],
+            "return": {
+                "description": "The resulting object.",
+                "type": "Array"
+            },
+            "class": "ArrayUtils"
+        },
+        {
+            "file": "../../source/coffee/slikland/utils/ArrayUtils.coffee",
+            "line": 120,
+            "description": "Move some item to another position in an array.",
+            "itemtype": "method",
+            "name": "move",
+            "static": 1,
+            "params": [
+                {
+                    "name": "p_array",
+                    "description": "The array to Array.",
+                    "type": "Array"
+                },
+                {
+                    "name": "p_oldIndex",
+                    "description": "The number to old index.",
+                    "type": "Number"
+                },
+                {
+                    "name": "p_newIndex",
+                    "description": "The number to new index.",
+                    "type": "Number"
+                },
+                {
+                    "name": "p_clone",
+                    "description": "Apply and return changes to a cloned array.",
+                    "type": "Boolean",
+                    "optional": true,
+                    "optdefault": "false"
+                }
+            ],
+            "return": {
+                "description": "The resulting object.",
+                "type": "Array"
+            },
+            "class": "ArrayUtils"
+        },
+        {
+            "file": "../../source/coffee/slikland/utils/ArrayUtils.coffee",
+            "line": 139,
+            "description": "Shuffles the order of the items from middle to end",
+            "itemtype": "method",
+            "name": "fromMiddleToEnd",
+            "static": 1,
+            "params": [
+                {
+                    "name": "p_array",
+                    "description": "The array to shuffled.",
+                    "type": "Array"
+                }
+            ],
+            "return": {
+                "description": "The resulting object.",
+                "type": "Array"
+            },
+            "class": "ArrayUtils"
+        },
+        {
+            "file": "../../source/coffee/slikland/utils/ArrayUtils.coffee",
+            "line": 154,
+            "description": "Shuffles the order of the items from end to middle",
+            "itemtype": "method",
+            "name": "fromEndToMiddle",
+            "static": 1,
+            "params": [
+                {
+                    "name": "p_array",
+                    "description": "The array to shuffled.",
+                    "type": "Array"
+                }
+            ],
+            "return": {
+                "description": "The resulting object.",
+                "type": "Array"
+            },
+            "class": "ArrayUtils"
+        },
+        {
+            "file": "../../source/coffee/slikland/utils/ArrayUtils.coffee",
+            "line": 164,
+            "itemtype": "method",
+            "name": "lastIndexOf",
+            "static": 1,
+            "params": [
+                {
+                    "name": "p_array",
+                    "description": "",
+                    "type": "Array"
+                },
+                {
+                    "name": "p_value",
+                    "description": "",
+                    "type": "Object"
+                }
+            ],
+            "return": {
+                "description": "The resulting index.",
+                "type": "Number"
+            },
+            "class": "ArrayUtils"
+        },
+        {
+            "file": "../../source/coffee/slikland/utils/ColorUtils.coffee",
+            "line": 7,
+            "description": "Darken/lighten a hexadecimal colors",
+            "itemtype": "method",
+            "name": "lightenOrDarken",
+            "static": 1,
+            "params": [
+                {
+                    "name": "p_hex",
+                    "description": "The target hexadecimal color value to be darkened or lightened.",
+                    "type": "String"
+                },
+                {
+                    "name": "p_amount",
+                    "description": "This value must be between -1 and 1 (-1 more darken and 1 more lighten)",
+                    "type": "Number"
+                }
+            ],
+            "return": {
+                "description": "The hexadecimal value of result.",
+                "type": "String"
+            },
+            "class": "ColorUtils"
+        },
+        {
+            "file": "../../source/coffee/slikland/utils/ColorUtils.coffee",
+            "line": 35,
+            "description": "Generate a random hexadecimal color",
+            "itemtype": "method",
+            "name": "randomHex",
+            "static": 1,
+            "return": {
+                "description": "The hexadecimal value of result.",
+                "type": "String"
+            },
+            "class": "ColorUtils"
+        },
+        {
+            "file": "../../source/coffee/slikland/utils/ColorUtils.coffee",
+            "line": 44,
+            "description": "Generate a random RGB color",
+            "itemtype": "method",
+            "name": "randomRGB",
+            "static": 1,
+            "return": {
+                "description": "The RGB value of result on format rgb(r,g,b)",
+                "type": "String"
+            },
+            "class": "ColorUtils"
+        },
+        {
+            "file": "../../source/coffee/slikland/utils/ColorUtils.coffee",
+            "line": 53,
+            "description": "Converts a Hexadecimal color value to integer value.",
+            "itemtype": "method",
+            "name": "hexToInt",
+            "static": 1,
+            "return": {
+                "description": "The result integer value",
+                "type": "String"
+            },
+            "class": "ColorUtils"
+        },
+        {
+            "file": "../../source/coffee/slikland/utils/ColorUtils.coffee",
+            "line": 63,
+            "description": "Converts a RGB color value to integer value.",
+            "itemtype": "method",
+            "name": "RGBToInt",
+            "static": 1,
+            "return": {
+                "description": "The result integer value",
+                "type": "String"
+            },
+            "class": "ColorUtils"
+        },
+        {
+            "file": "../../source/coffee/slikland/utils/ColorUtils.coffee",
+            "line": 72,
+            "description": "Converts a RGB color value to Hexadecimal value.",
+            "itemtype": "method",
+            "name": "RGBToHex",
+            "static": 1,
+            "return": {
+                "description": "The result Hexadecimal value",
+                "type": "String"
+            },
+            "class": "ColorUtils"
+        },
+        {
+            "file": "../../source/coffee/slikland/utils/ColorUtils.coffee",
+            "line": 82,
+            "description": "Converts a Hexadecimal color value to RGB value.",
+            "itemtype": "method",
+            "name": "hexToRGB",
+            "static": 1,
+            "return": {
+                "description": "The RGB value of result on format rgb(r,g,b)",
+                "type": "String"
+            },
+            "class": "ColorUtils"
+        },
+        {
             "file": "../../source/coffee/slikland/utils/FunctionUtils.coffee",
             "line": 8,
             "itemtype": "method",
@@ -3944,6 +4371,206 @@
             "class": "FunctionUtils"
         },
         {
+            "file": "../../source/coffee/slikland/utils/GestureUtils.coffee",
+            "line": 89,
+            "itemtype": "method",
+            "name": "getTouchPositions",
+            "static": 1,
+            "params": [
+                {
+                    "name": "evt",
+                    "description": "",
+                    "type": "Event"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "Array"
+            },
+            "class": "GestureUtils"
+        },
+        {
+            "file": "../../source/coffee/slikland/utils/JSONUtils.coffee",
+            "line": 8,
+            "itemtype": "method",
+            "name": "parseJSON",
+            "static": 1,
+            "params": [
+                {
+                    "name": "json",
+                    "description": "",
+                    "type": "JSON|Object"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "JSON"
+            },
+            "class": "JSONUtils"
+        },
+        {
+            "file": "../../source/coffee/slikland/utils/JSONUtils.coffee",
+            "line": 24,
+            "itemtype": "method",
+            "name": "replaceMultiline",
+            "static": 1,
+            "params": [
+                {
+                    "name": "json",
+                    "description": "",
+                    "type": "JSON|Object"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "JSON"
+            },
+            "class": "JSONUtils"
+        },
+        {
+            "file": "../../source/coffee/slikland/utils/JSONUtils.coffee",
+            "line": 37,
+            "itemtype": "method",
+            "name": "_replaceMultilinePart",
+            "static": 1,
+            "access": "private",
+            "tagname": "",
+            "params": [
+                {
+                    "name": "match",
+                    "description": "",
+                    "type": "String"
+                },
+                {
+                    "name": "prefix",
+                    "description": "",
+                    "type": "String"
+                },
+                {
+                    "name": "spaces",
+                    "description": "",
+                    "type": "String"
+                },
+                {
+                    "name": "value",
+                    "description": "",
+                    "type": "String"
+                },
+                {
+                    "name": "suffix",
+                    "description": "",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "String"
+            },
+            "class": "JSONUtils"
+        },
+        {
+            "file": "../../source/coffee/slikland/utils/JSONUtils.coffee",
+            "line": 52,
+            "itemtype": "method",
+            "name": "_replaceEmptyMultiline",
+            "static": 1,
+            "access": "private",
+            "tagname": "",
+            "params": [
+                {
+                    "name": "match",
+                    "description": "",
+                    "type": "String"
+                },
+                {
+                    "name": "prefix",
+                    "description": "",
+                    "type": "String"
+                },
+                {
+                    "name": "value",
+                    "description": "",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "String"
+            },
+            "class": "JSONUtils"
+        },
+        {
+            "file": "../../source/coffee/slikland/utils/JSONUtils.coffee",
+            "line": 65,
+            "itemtype": "method",
+            "name": "removeComments",
+            "static": 1,
+            "params": [
+                {
+                    "name": "json",
+                    "description": "",
+                    "type": "JSON|Object"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "JSON"
+            },
+            "class": "JSONUtils"
+        },
+        {
+            "file": "../../source/coffee/slikland/utils/JSONUtils.coffee",
+            "line": 83,
+            "itemtype": "method",
+            "name": "filterObject",
+            "static": 1,
+            "params": [
+                {
+                    "name": "data",
+                    "description": "",
+                    "type": "JSON|Object|Array"
+                },
+                {
+                    "name": "name",
+                    "description": "",
+                    "type": "String"
+                },
+                {
+                    "name": "type ",
+                    "description": "The typeof of object",
+                    "type": "String",
+                    "optional": true,
+                    "optdefault": " null"
+                },
+                {
+                    "name": "ignore ",
+                    "description": "",
+                    "type": "Boolean",
+                    "optional": true,
+                    "optdefault": " null"
+                },
+                {
+                    "name": "getParent ",
+                    "description": "",
+                    "type": "Boolean",
+                    "optional": true,
+                    "optdefault": " false"
+                },
+                {
+                    "name": "p_currentPath ",
+                    "description": "",
+                    "type": "Array",
+                    "optional": true,
+                    "optdefault": " []"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "JSON|Object|Array"
+            },
+            "class": "JSONUtils"
+        },
+        {
             "file": "../../source/coffee/slikland/utils/MouseUtils.coffee",
             "line": 7,
             "itemtype": "method",
@@ -3994,6 +4621,198 @@
             "class": "MouseUtils"
         },
         {
+            "file": "../../source/coffee/slikland/utils/NumberUtils.coffee",
+            "line": 8,
+            "description": "Checks whether the number is an odd number.",
+            "itemtype": "method",
+            "name": "isOdd",
+            "static": 1,
+            "params": [
+                {
+                    "name": "p_value",
+                    "description": "The number to check.",
+                    "type": "Number"
+                }
+            ],
+            "return": {
+                "description": "The resulting boolean object.",
+                "type": "Boolean"
+            },
+            "class": "NumberUtils"
+        },
+        {
+            "file": "../../source/coffee/slikland/utils/NumberUtils.coffee",
+            "line": 18,
+            "description": "Checks whether the number is an even number.",
+            "itemtype": "method",
+            "name": "isEven",
+            "static": 1,
+            "params": [
+                {
+                    "name": "p_value",
+                    "description": "The number to check.",
+                    "type": "Number"
+                }
+            ],
+            "return": {
+                "description": "The resulting boolean object.",
+                "type": "Boolean"
+            },
+            "class": "NumberUtils"
+        },
+        {
+            "file": "../../source/coffee/slikland/utils/NumberUtils.coffee",
+            "line": 28,
+            "description": "Checks whether the number is zero.",
+            "itemtype": "method",
+            "name": "isZero",
+            "static": 1,
+            "params": [
+                {
+                    "name": "p_value",
+                    "description": "The number to check.",
+                    "type": "Number"
+                }
+            ],
+            "return": {
+                "description": "The resulting boolean object.",
+                "type": "Boolean"
+            },
+            "class": "NumberUtils"
+        },
+        {
+            "file": "../../source/coffee/slikland/utils/NumberUtils.coffee",
+            "line": 38,
+            "description": "Returns the value in percent of a {Number}.",
+            "itemtype": "method",
+            "name": "toPercent",
+            "static": 1,
+            "params": [
+                {
+                    "name": "p_value",
+                    "description": "The number to check.",
+                    "type": "Number"
+                },
+                {
+                    "name": "p_min",
+                    "description": "The number of lower limit.",
+                    "type": "Number"
+                },
+                {
+                    "name": "p_max",
+                    "description": "The number of higher limit.",
+                    "type": "Number"
+                }
+            ],
+            "return": {
+                "description": "The resulting number object.",
+                "type": "Number"
+            },
+            "class": "NumberUtils"
+        },
+        {
+            "file": "../../source/coffee/slikland/utils/NumberUtils.coffee",
+            "line": 50,
+            "description": "Returns the value in Number of a {percent}.",
+            "itemtype": "method",
+            "name": "percentToValue",
+            "static": 1,
+            "params": [
+                {
+                    "name": "p_percent",
+                    "description": "The number in percent to check.",
+                    "type": "Number"
+                },
+                {
+                    "name": "p_min",
+                    "description": "The number of lower limit.",
+                    "type": "Number"
+                },
+                {
+                    "name": "p_max",
+                    "description": "The number of higher limit.",
+                    "type": "Number"
+                }
+            ],
+            "return": {
+                "description": "The resulting number object.",
+                "type": "Number"
+            },
+            "class": "NumberUtils"
+        },
+        {
+            "file": "../../source/coffee/slikland/utils/NumberUtils.coffee",
+            "line": 62,
+            "description": "Returns bytes to formatted MB's string.",
+            "itemtype": "method",
+            "name": "getBytesAsMegabytes",
+            "static": 1,
+            "params": [
+                {
+                    "name": "p_bytes",
+                    "description": "",
+                    "type": "Number"
+                }
+            ],
+            "return": {
+                "description": "Results in MB's",
+                "type": "String"
+            },
+            "class": "NumberUtils"
+        },
+        {
+            "file": "../../source/coffee/slikland/utils/NumberUtils.coffee",
+            "line": 72,
+            "description": "Returns bytes to formatted byte, KB's, MB's or GB's string.",
+            "itemtype": "method",
+            "name": "bytesTo",
+            "static": 1,
+            "params": [
+                {
+                    "name": "p_bytes",
+                    "description": "",
+                    "type": "Number"
+                }
+            ],
+            "return": {
+                "description": "Results in byte, KB's, MB's or GB's",
+                "type": "String"
+            },
+            "class": "NumberUtils"
+        },
+        {
+            "file": "../../source/coffee/slikland/utils/NumberUtils.coffee",
+            "line": 87,
+            "description": "Generates a random number between two numbers.",
+            "itemtype": "method",
+            "name": "rangeRandom",
+            "static": 1,
+            "params": [
+                {
+                    "name": "p_low",
+                    "description": "The number of lower limit of range.",
+                    "type": "Number"
+                },
+                {
+                    "name": "p_high",
+                    "description": "The number of higher limit of range.",
+                    "type": "Number"
+                },
+                {
+                    "name": "p_rounded",
+                    "description": "The boolean that defines if the random number will be rounded or not.",
+                    "type": "Boolean",
+                    "optional": true,
+                    "optdefault": "false"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "Number"
+            },
+            "class": "NumberUtils"
+        },
+        {
             "file": "../../source/coffee/slikland/utils/ObjectUtils.coffee",
             "line": 8,
             "description": "Return the length of a item.",
@@ -4010,6 +4829,198 @@
             "return": {
                 "description": "",
                 "type": "Number"
+            },
+            "class": "ObjectUtils"
+        },
+        {
+            "file": "../../source/coffee/slikland/utils/ObjectUtils.coffee",
+            "line": 24,
+            "description": "Return a array of a object item.",
+            "itemtype": "method",
+            "name": "toArray",
+            "static": 1,
+            "params": [
+                {
+                    "name": "p_source",
+                    "description": "",
+                    "type": "Object"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "Array"
+            },
+            "class": "ObjectUtils"
+        },
+        {
+            "file": "../../source/coffee/slikland/utils/ObjectUtils.coffee",
+            "line": 36,
+            "description": "Returns a new merged object.",
+            "itemtype": "method",
+            "name": "merge",
+            "static": 1,
+            "params": [
+                {
+                    "name": "a",
+                    "description": "The object to be used as reference A.",
+                    "type": "Object"
+                },
+                {
+                    "name": "b",
+                    "description": "The object to be used as reference B.",
+                    "type": "Object"
+                }
+            ],
+            "return": {
+                "description": "Returns a new merged object.",
+                "type": "Object"
+            },
+            "class": "ObjectUtils"
+        },
+        {
+            "file": "../../source/coffee/slikland/utils/ObjectUtils.coffee",
+            "line": 56,
+            "description": "Returns a new cloned object.",
+            "itemtype": "method",
+            "name": "clone",
+            "static": 1,
+            "params": [
+                {
+                    "name": "p_target",
+                    "description": "The object to be cloned.",
+                    "type": "Object"
+                }
+            ],
+            "return": {
+                "description": "Returns a new cloned object.",
+                "type": "Object"
+            },
+            "class": "ObjectUtils"
+        },
+        {
+            "file": "../../source/coffee/slikland/utils/ObjectUtils.coffee",
+            "line": 90,
+            "description": "Replace the value of a object",
+            "itemtype": "method",
+            "name": "replaceValue",
+            "static": 1,
+            "params": [
+                {
+                    "name": "p_obj",
+                    "description": "",
+                    "type": "Object"
+                },
+                {
+                    "name": "p_value",
+                    "description": "",
+                    "type": "Object"
+                },
+                {
+                    "name": "p_newvalue",
+                    "description": "",
+                    "type": "Object"
+                },
+                {
+                    "name": "p_clone",
+                    "description": "",
+                    "type": "Boolean",
+                    "optional": true,
+                    "optdefault": "true"
+                }
+            ],
+            "return": {
+                "description": "Returns the object with a new value.",
+                "type": "Object"
+            },
+            "class": "ObjectUtils"
+        },
+        {
+            "file": "../../source/coffee/slikland/utils/ObjectUtils.coffee",
+            "line": 111,
+            "itemtype": "method",
+            "name": "hasSameKey",
+            "static": 1,
+            "params": [
+                {
+                    "name": "p_a",
+                    "description": "",
+                    "type": "Object"
+                },
+                {
+                    "name": "p_b",
+                    "description": "",
+                    "type": "Object"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "Boolean"
+            },
+            "class": "ObjectUtils"
+        },
+        {
+            "file": "../../source/coffee/slikland/utils/ObjectUtils.coffee",
+            "line": 121,
+            "itemtype": "method",
+            "name": "isEqual",
+            "static": 1,
+            "params": [
+                {
+                    "name": "p_a",
+                    "description": "",
+                    "type": "Object"
+                },
+                {
+                    "name": "p_b",
+                    "description": "",
+                    "type": "Object"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "Boolean"
+            },
+            "class": "ObjectUtils"
+        },
+        {
+            "file": "../../source/coffee/slikland/utils/ObjectUtils.coffee",
+            "line": 131,
+            "description": "Return a mapped object of a array item.",
+            "itemtype": "method",
+            "name": "parseLinkedArray",
+            "static": 1,
+            "params": [
+                {
+                    "name": "p_source",
+                    "description": "The array object",
+                    "type": "Array"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "Object"
+            },
+            "example": [
+                "\n```\nObjectUtils.parseLinkedArray([['id', 'name'], [0, 'name1'], [1, 'name2']])\nOutput://[{id: 0, 'name': 'name1'}, {id: 1, 'name': 'name2'}]\n\n```"
+            ],
+            "class": "ObjectUtils"
+        },
+        {
+            "file": "../../source/coffee/slikland/utils/ObjectUtils.coffee",
+            "line": 160,
+            "itemtype": "method",
+            "name": "getClassName",
+            "static": 1,
+            "params": [
+                {
+                    "name": "p_source",
+                    "description": "",
+                    "type": "Object"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "String"
             },
             "class": "ObjectUtils"
         },
@@ -4923,25 +5934,6 @@
                 "type": "Array"
             },
             "class": "StringUtils"
-        },
-        {
-            "file": "../../source/coffee/slikland/utils/TouchUtils.coffee",
-            "line": 7,
-            "itemtype": "method",
-            "name": "getTouchPositions",
-            "static": 1,
-            "params": [
-                {
-                    "name": "evt",
-                    "description": "",
-                    "type": "Event"
-                }
-            ],
-            "return": {
-                "description": "",
-                "type": "Array"
-            },
-            "class": "TouchUtils"
         },
         {
             "file": "../../source/coffee/slikland/utils/URLUtils.coffee",

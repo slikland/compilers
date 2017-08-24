@@ -52,6 +52,7 @@
                                 <li><a href="../classes/DOMUtils.html">DOMUtils</a></li>
                                 <li><a href="../classes/EventDispatcher.html">EventDispatcher</a></li>
                                 <li><a href="../classes/FunctionUtils.html">FunctionUtils</a></li>
+                                <li><a href="../classes/GestureUtils.html">GestureUtils</a></li>
                                 <li><a href="../classes/JSONUtils.html">JSONUtils</a></li>
                                 <li><a href="../classes/KTween.html">KTween</a></li>
                                 <li><a href="../classes/MathUtils.html">MathUtils</a></li>
@@ -61,6 +62,7 @@
                                 <li><a href="../classes/NavigationContainer.html">NavigationContainer</a></li>
                                 <li><a href="../classes/NavigationLoader.html">NavigationLoader</a></li>
                                 <li><a href="../classes/NavigationRouter.html">NavigationRouter</a></li>
+                                <li><a href="../classes/NumberUtils.html">NumberUtils</a></li>
                                 <li><a href="../classes/ObjectUtils.html">ObjectUtils</a></li>
                                 <li><a href="../classes/PreloadFiles.html">PreloadFiles</a></li>
                                 <li><a href="../classes/Prototypes.html">Prototypes</a></li>
@@ -70,7 +72,6 @@
                                 <li><a href="../classes/SpriteSheetAnimation.html">SpriteSheetAnimation</a></li>
                                 <li><a href="../classes/StringUtils.html">StringUtils</a></li>
                                 <li><a href="../classes/SunUtils.html">SunUtils</a></li>
-                                <li><a href="../classes/TouchUtils.html">TouchUtils</a></li>
                                 <li><a href="../classes/URLUtils.html">URLUtils</a></li>
                                 <li><a href="../classes/ViewsData.html">ViewsData</a></li>
                             </ul>
@@ -137,24 +138,26 @@ class ObjectUtils
 				result++
 		return result
 
-	# Public: Return a {Array} of a {Object} item.
-	#
-	# source -  The {Object} object.
-	#
-	# Returns
-	#   The resulting {Array}.
+	###*
+	Return a array of a object item.
+	@method toArray
+	@static
+	@param {Object} p_source
+	@return {Array}
+	###	
 	@toArray:(p_source)-&gt;
 		result = []
 		result.push(p_source[k]) for k,v of p_source
 		return result
 
-	@mixin:(superclass, mixins...)-&gt;
-		false
-		# class Mixed extends superclass
-		# for mixin in mixins
-		# 	Object.assign(Mixed.prototype, mixin.prototype)
-		# return Mixed
-
+	###*
+	Returns a new merged object.
+	@method merge
+	@static
+	@param {Object} a The object to be used as reference A.
+	@param {Object} b The object to be used as reference B.
+	@return {Object} Returns a new merged object.
+	###
 	@merge:(a, b)-&gt;
 		if isPlainObject(a) &amp;&amp; isPlainObject(b)
 			for k of b
@@ -167,6 +170,13 @@ class ObjectUtils
 					a[k] = ObjectUtils.merge(a[k], b[k])
 		return a
 
+	###*
+	Returns a new cloned object.
+	@method clone
+	@static
+	@param {Object} p_target The object to be cloned.
+	@return {Object} Returns a new cloned object.
+	###
 	@clone:(p_target)-&gt;
 		try
 			if !p_target or typeof p_target isnt &#x27;object&#x27;
@@ -194,6 +204,16 @@ class ObjectUtils
 		catch err
 			return JSON.parse(JSON.stringify(p_target))
 
+	###*
+	Replace the value of a object
+	@method replaceValue
+	@static
+	@param {Object} p_obj
+	@param {Object} p_value
+	@param {Object} p_newvalue
+	@param {Boolean} [p_clone=true]
+	@return {Object} Returns the object with a new value.
+	###
 	@replaceValue:(p_obj, p_value, p_newvalue, p_clone=true)-&gt;
 		resp = []
 		# p_obj = if p_clone then ObjectUtils.clone(p_obj) else p_obj
@@ -205,22 +225,39 @@ class ObjectUtils
 				resp = [].concat resp, ObjectUtils.replaceValue(v, p_value, p_newvalue, p_clone)
 		return resp
 		
+	###*
+	@method hasSameKey
+	@static
+	@param {Object} p_a
+	@param {Object} p_b
+	@return {Boolean} 
+	###
 	@hasSameKey:(p_a, p_b)-&gt;
 		return if Object.getOwnPropertyNames(p_a)[0] == Object.getOwnPropertyNames(p_b)[0] then true else false
 
+	###*
+	@method isEqual
+	@static
+	@param {Object} p_a
+	@param {Object} p_b
+	@return {Boolean} 
+	###
 	@isEqual:(p_a, p_b)-&gt;
 		return JSON.stringify(p_a) == JSON.stringify(p_b)
 
-	# Public: Return a mapped {Array} of a {Array} item.
-	#
-	# source -  The {Array} object.
-	#
-	# Returns
-	#   The resulting {Array}.
-	#
-	# Example
-	#	ObjectUtils.parseLinkedArray([[&#x27;id&#x27;, &#x27;name&#x27;], [0, &#x27;name1&#x27;], [1, &#x27;name2&#x27;]])
-	#	// [{id: 0, &#x27;name&#x27;: &#x27;name1&#x27;}, {id: 1, &#x27;name&#x27;: &#x27;name2&#x27;}]
+	###*
+	Return a mapped object of a array item.
+	@method parseLinkedArray
+	@static
+	@param {Array} p_source The array object
+	@return {Object} 
+	@example
+	&#x60;&#x60;&#x60;
+	ObjectUtils.parseLinkedArray([[&#x27;id&#x27;, &#x27;name&#x27;], [0, &#x27;name1&#x27;], [1, &#x27;name2&#x27;]])
+	Output://[{id: 0, &#x27;name&#x27;: &#x27;name1&#x27;}, {id: 1, &#x27;name&#x27;: &#x27;name2&#x27;}]
+
+	&#x60;&#x60;&#x60;
+	###
 	@parseLinkedArray:(p_source)-&gt;
 		if !p_source or (p_source and p_source.length &lt; 1)
 			return []
@@ -236,12 +273,18 @@ class ObjectUtils
 				o[names[j]] = item[j]
 			ret[i - 1] = o
 		return ret
-
+	
+	###*
+	@method getClassName
+	@static
+	@param {Object} p_source
+	@return {String} 
+	###
 	@getClassName:(p_source)-&gt;
-		if typeof p_source is &#x27;undefined&#x27;
-			return &#x27;undefined&#x27;
+		if typeof p_source is undefined
+			return undefined
 		if p_source is null
-			return &#x27;null&#x27;
+			return null
 		if p_source.constructor?
 			if p_source.constructor.name?
 				return p_source.constructor.name
@@ -253,7 +296,7 @@ class ObjectUtils
 					matches = description.match(/function\s*(\w+)/)
 				if matches? &amp;&amp; matches.length is 2
 					return matches[1]
-		return &#x27;undefined&#x27;
+		return undefined
 
 # Feature: global.isPlainObject(source)
 &#x60;!function(e){if(&quot;object&quot;==typeof exports&amp;&amp;&quot;undefined&quot;!=typeof module)module.exports=e();else if(&quot;function&quot;==typeof define&amp;&amp;define.amd)define([],e);else{var t;t=&quot;undefined&quot;!=typeof window?window:&quot;undefined&quot;!=typeof global?global:&quot;undefined&quot;!=typeof self?self:this,t.isPlainObject=e()}}(function(){return function e(t,r,n){function o(f,u){if(!r[f]){if(!t[f]){var c=&quot;function&quot;==typeof require&amp;&amp;require;if(!u&amp;&amp;c)return c(f,!0);if(i)return i(f,!0);var p=new Error(&quot;Cannot find module &#x27;&quot;+f+&quot;&#x27;&quot;);throw p.code=&quot;MODULE_NOT_FOUND&quot;,p}var s=r[f]={exports:{}};t[f][0].call(s.exports,function(e){var r=t[f][1][e];return o(r?r:e)},s,s.exports,e,t,r,n)}return r[f].exports}for(var i=&quot;function&quot;==typeof require&amp;&amp;require,f=0;f&lt;n.length;f++)o(n[f]);return o}({1:[function(e,t,r){&quot;use strict&quot;;function n(e){return o(e)===!0&amp;&amp;&quot;[object Object]&quot;===Object.prototype.toString.call(e)}var o=e(&quot;isobject&quot;);t.exports=function(e){var t,r;return n(e)===!1?!1:(t=e.constructor,&quot;function&quot;!=typeof t?!1:(r=t.prototype,n(r)===!1?!1:r.hasOwnProperty(&quot;isPrototypeOf&quot;)===!1?!1:!0))}},{isobject:2}],2:[function(e,t,r){&quot;use strict&quot;;t.exports=function(e){return null!=e&amp;&amp;&quot;object&quot;==typeof e&amp;&amp;!Array.isArray(e)}},{}]},{},[1])(1)});&#x60;

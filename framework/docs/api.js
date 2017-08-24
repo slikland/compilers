@@ -15,6 +15,7 @@ YUI.add("yuidoc-meta", function(Y) {
         "Detections",
         "EventDispatcher",
         "FunctionUtils",
+        "GestureUtils",
         "JSONUtils",
         "KTween",
         "MathUtils",
@@ -24,6 +25,7 @@ YUI.add("yuidoc-meta", function(Y) {
         "NavigationContainer",
         "NavigationLoader",
         "NavigationRouter",
+        "NumberUtils",
         "ObjectUtils",
         "PreloadFiles",
         "Prototypes",
@@ -33,7 +35,6 @@ YUI.add("yuidoc-meta", function(Y) {
         "SpriteSheetAnimation",
         "StringUtils",
         "SunUtils",
-        "TouchUtils",
         "URLUtils",
         "ViewsData"
     ],

@@ -52,6 +52,7 @@
                                 <li><a href="../classes/DOMUtils.html">DOMUtils</a></li>
                                 <li><a href="../classes/EventDispatcher.html">EventDispatcher</a></li>
                                 <li><a href="../classes/FunctionUtils.html">FunctionUtils</a></li>
+                                <li><a href="../classes/GestureUtils.html">GestureUtils</a></li>
                                 <li><a href="../classes/JSONUtils.html">JSONUtils</a></li>
                                 <li><a href="../classes/KTween.html">KTween</a></li>
                                 <li><a href="../classes/MathUtils.html">MathUtils</a></li>
@@ -61,6 +62,7 @@
                                 <li><a href="../classes/NavigationContainer.html">NavigationContainer</a></li>
                                 <li><a href="../classes/NavigationLoader.html">NavigationLoader</a></li>
                                 <li><a href="../classes/NavigationRouter.html">NavigationRouter</a></li>
+                                <li><a href="../classes/NumberUtils.html">NumberUtils</a></li>
                                 <li><a href="../classes/ObjectUtils.html">ObjectUtils</a></li>
                                 <li><a href="../classes/PreloadFiles.html">PreloadFiles</a></li>
                                 <li><a href="../classes/Prototypes.html">Prototypes</a></li>
@@ -70,7 +72,6 @@
                                 <li><a href="../classes/SpriteSheetAnimation.html">SpriteSheetAnimation</a></li>
                                 <li><a href="../classes/StringUtils.html">StringUtils</a></li>
                                 <li><a href="../classes/SunUtils.html">SunUtils</a></li>
-                                <li><a href="../classes/TouchUtils.html">TouchUtils</a></li>
                                 <li><a href="../classes/URLUtils.html">URLUtils</a></li>
                                 <li><a href="../classes/ViewsData.html">ViewsData</a></li>
                             </ul>
@@ -120,6 +121,13 @@ Bunch of utilities methods for JSON objects
 @static
 ###
 class JSONUtils
+
+	###*
+	@method parseJSON
+	@static
+	@param {JSON|Object} json
+	@return {JSON}
+	###
 	@parseJSON:(json)=&gt;
 		stringfied = false
 		if typeof(json) == &#x27;string&#x27;
@@ -130,6 +138,12 @@ class JSONUtils
 			json = JSON.parse(json)
 		return json
 
+	###*
+	@method replaceMultiline
+	@static
+	@param {JSON|Object} json
+	@return {JSON}
+	###
 	@replaceMultiline:(json)-&gt;
 		if typeof(json) != &#x27;string&#x27;
 			return json
@@ -137,13 +151,40 @@ class JSONUtils
 		json = json.replace(/^(\s*.*?)&quot;&quot;&quot;([\s\S]*?)&quot;&quot;&quot;/igm, @_replaceEmptyMultiline)
 		return json
 
+	###*
+	@method _replaceMultilinePart
+	@static
+	@private
+	@param {String} match
+	@param {String} prefix
+	@param {String} spaces
+	@param {String} value
+	@param {String} suffix
+	@return {String}
+	###
 	@_replaceMultilinePart:(match, prefix, spaces, value, suffix)-&gt;
 		re = new RegExp(spaces + &#x27;?([^\n]*)&#x27;, &#x27;g&#x27;)
 		value = value.replace(re, &#x27;$1&#x27;)
 		return prefix + value + suffix
+	###*
+	@method _replaceEmptyMultiline
+	@static
+	@private
+	@param {String} match
+	@param {String} prefix
+	@param {String} value
+	@return {String}
+	###
 	@_replaceEmptyMultiline:(match, prefix, value)-&gt;
 		value = value.replace(/\n/g, &#x27;\\n&#x27;).replace(/\r/g, &#x27;\\r&#x27;).replace(/\t/g, &#x27;\\t&#x27;)
 		return prefix + &#x27;&quot;&#x27; + value + &#x27;&quot;&#x27;
+
+	###*
+	@method removeComments
+	@static
+	@param {JSON|Object} json
+	@return {JSON}
+	###
 	@removeComments:(json)-&gt;
 		stringfied = true
 		if typeof(json) != &#x27;string&#x27;
@@ -156,6 +197,17 @@ class JSONUtils
 		else
 			return JSON.parse(json)
 
+	###*
+	@method filterObject
+	@static
+	@param {JSON|Object|Array} data
+	@param {String} name
+	@param {String} [type = null] The typeof of object
+	@param {Boolean} [ignore = null]
+	@param {Boolean} [getParent = false]
+	@param {Array} [p_currentPath = []]
+	@return {JSON|Object|Array}
+	###
 	@filterObject:(data, name, type = null, ignore = null, getParent = false, p_currentPath = [])-&gt;
 		resp = []
 		name = [].concat(name)
