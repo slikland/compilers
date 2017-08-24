@@ -129,6 +129,7 @@ class BaseView extends BaseDOM
 	}
 	```
 	@param {String} [p_CSSClassName=null]
+	@param {String} [p_element='div'] HTMLElement type
 	###
 	_meta = null
 	constructor: (p_data=null, p_CSSClassName=null, p_element = 'div') ->

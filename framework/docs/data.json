@@ -502,6 +502,22 @@
             "line": 11,
             "description": "NavigationContainer Class",
             "extends": "BaseView",
+            "params": [
+                {
+                    "name": "p_CSSClassName",
+                    "description": "",
+                    "type": "String",
+                    "optional": true,
+                    "optdefault": "'nav-container'"
+                },
+                {
+                    "name": "p_element",
+                    "description": "HTMLElement type",
+                    "type": "String",
+                    "optional": true,
+                    "optdefault": "null"
+                }
+            ],
             "is_constructor": 1
         },
         "NavigationLoader": {
@@ -571,6 +587,13 @@
                     "type": "String",
                     "optional": true,
                     "optdefault": "null"
+                },
+                {
+                    "name": "p_element",
+                    "description": "HTMLElement type",
+                    "type": "String",
+                    "optional": true,
+                    "optdefault": "'div'"
                 }
             ],
             "example": [
@@ -2451,7 +2474,7 @@
         },
         {
             "file": "../../source/coffee/slikland/navigation/core/NavigationContainer.coffee",
-            "line": 19,
+            "line": 21,
             "itemtype": "method",
             "name": "setupNavigation",
             "params": [
@@ -2465,7 +2488,7 @@
         },
         {
             "file": "../../source/coffee/slikland/navigation/core/NavigationContainer.coffee",
-            "line": 28,
+            "line": 30,
             "description": "Returns the current instance of {{#crossLink \"Navigation\"}}{{/crossLink}}",
             "itemtype": "attribute",
             "name": "navigation",
@@ -2475,7 +2498,7 @@
         },
         {
             "file": "../../source/coffee/slikland/navigation/core/NavigationContainer.coffee",
-            "line": 37,
+            "line": 39,
             "description": "__This getter must be overridden with a instance of {{#crossLink \"BaseNavigationController\"}}{{/crossLink}}.__<br>\nReturns the current navigation controller instance.",
             "itemtype": "attribute",
             "name": "controller",
@@ -3169,7 +3192,7 @@
         },
         {
             "file": "../../source/coffee/slikland/navigation/display/BaseView.coffee",
-            "line": 150,
+            "line": 151,
             "description": "Returns the loader queue of this specific view.",
             "itemtype": "attribute",
             "name": "loader",
@@ -3180,7 +3203,7 @@
         },
         {
             "file": "../../source/coffee/slikland/navigation/display/BaseView.coffee",
-            "line": 160,
+            "line": 161,
             "description": "Returns true if the view was created.",
             "itemtype": "attribute",
             "name": "created",
@@ -3193,7 +3216,7 @@
         },
         {
             "file": "../../source/coffee/slikland/navigation/display/BaseView.coffee",
-            "line": 171,
+            "line": 172,
             "description": "Returns true if the view was shown.",
             "itemtype": "attribute",
             "name": "showed",
@@ -3206,7 +3229,7 @@
         },
         {
             "file": "../../source/coffee/slikland/navigation/display/BaseView.coffee",
-            "line": 182,
+            "line": 183,
             "description": "Sets/gets a clone of data object with default and/or custom values of properties of view.",
             "itemtype": "attribute",
             "name": "data",
@@ -3216,7 +3239,7 @@
         },
         {
             "file": "../../source/coffee/slikland/navigation/display/BaseView.coffee",
-            "line": 194,
+            "line": 195,
             "description": "Sets/gets the unique ID of view.",
             "itemtype": "attribute",
             "name": "id",
@@ -3226,7 +3249,7 @@
         },
         {
             "file": "../../source/coffee/slikland/navigation/display/BaseView.coffee",
-            "line": 205,
+            "line": 206,
             "description": "Sets/gets the content of view.",
             "itemtype": "attribute",
             "name": "content",
@@ -3236,7 +3259,7 @@
         },
         {
             "file": "../../source/coffee/slikland/navigation/display/BaseView.coffee",
-            "line": 216,
+            "line": 217,
             "description": "Sets/gets the route of view.",
             "itemtype": "attribute",
             "name": "route",
@@ -3246,7 +3269,7 @@
         },
         {
             "file": "../../source/coffee/slikland/navigation/display/BaseView.coffee",
-            "line": 227,
+            "line": 228,
             "description": "Sets/gets the actual route data.",
             "itemtype": "attribute",
             "name": "routeData",
@@ -3258,7 +3281,7 @@
         },
         {
             "file": "../../source/coffee/slikland/navigation/display/BaseView.coffee",
-            "line": 239,
+            "line": 240,
             "description": "Sets/gets the parent view of this view.",
             "itemtype": "attribute",
             "name": "parentView",
@@ -3268,7 +3291,7 @@
         },
         {
             "file": "../../source/coffee/slikland/navigation/display/BaseView.coffee",
-            "line": 250,
+            "line": 251,
             "description": "Sets/gets a array of {{#crossLink \"BaseView\"}}{{/crossLink}} instances of subviews of this view.",
             "itemtype": "attribute",
             "name": "subviews",
@@ -3278,7 +3301,7 @@
         },
         {
             "file": "../../source/coffee/slikland/navigation/display/BaseView.coffee",
-            "line": 261,
+            "line": 262,
             "description": "Sets/gets if this views is destroyable.",
             "itemtype": "attribute",
             "name": "destroyable",
@@ -3288,7 +3311,7 @@
         },
         {
             "file": "../../source/coffee/slikland/navigation/display/BaseView.coffee",
-            "line": 272,
+            "line": 273,
             "description": "Sets/gets the type is a 'view' or a 'sub-view'.",
             "itemtype": "attribute",
             "name": "type",
@@ -3300,7 +3323,7 @@
         },
         {
             "file": "../../source/coffee/slikland/navigation/display/BaseView.coffee",
-            "line": 284,
+            "line": 285,
             "description": "Returns the meta object of his content.",
             "itemtype": "attribute",
             "name": "meta",
@@ -3311,7 +3334,7 @@
         },
         {
             "file": "../../source/coffee/slikland/navigation/display/BaseView.coffee",
-            "line": 294,
+            "line": 295,
             "description": "Sets/gets the loading progress of this view.",
             "itemtype": "attribute",
             "name": "progress",
@@ -3322,7 +3345,7 @@
         },
         {
             "file": "../../source/coffee/slikland/navigation/display/BaseView.coffee",
-            "line": 305,
+            "line": 306,
             "description": "Returns the reverse path of his parent view.",
             "itemtype": "attribute",
             "name": "reverseParentPath",
@@ -3334,7 +3357,7 @@
         },
         {
             "file": "../../source/coffee/slikland/navigation/display/BaseView.coffee",
-            "line": 316,
+            "line": 317,
             "description": "Returns the path of his parent view.",
             "itemtype": "attribute",
             "name": "parentPath",
@@ -3346,7 +3369,7 @@
         },
         {
             "file": "../../source/coffee/slikland/navigation/display/BaseView.coffee",
-            "line": 327,
+            "line": 328,
             "description": "Returns the wrapper container for the sub-views of this view.",
             "itemtype": "attribute",
             "name": "subviewsWrapper",
@@ -3357,7 +3380,7 @@
         },
         {
             "file": "../../source/coffee/slikland/navigation/display/BaseView.coffee",
-            "line": 337,
+            "line": 338,
             "description": "Returns the CSS Selector of the wrapper container for attach this view.",
             "itemtype": "attribute",
             "name": "attachToParentWrapper",
@@ -3368,7 +3391,7 @@
         },
         {
             "file": "../../source/coffee/slikland/navigation/display/BaseView.coffee",
-            "line": 347,
+            "line": 348,
             "description": "Returns a reverse list of the parent path of this view.",
             "itemtype": "method",
             "name": "getReverseParentList",
@@ -3388,7 +3411,7 @@
         },
         {
             "file": "../../source/coffee/slikland/navigation/display/BaseView.coffee",
-            "line": 361,
+            "line": 362,
             "description": "Usually starts before the creation routine of view calling by the navigation controller.<br>\nCallback the method {{#crossLink \"BaseView/create:method\"}}{{/crossLink}} and trigger the event {{#crossLink \"BaseView/CREATE_START:event\"}}{{/crossLink}} after complete.",
             "itemtype": "method",
             "name": "createStart",
@@ -3405,7 +3428,7 @@
         },
         {
             "file": "../../source/coffee/slikland/navigation/display/BaseView.coffee",
-            "line": 372,
+            "line": 373,
             "description": "Usually starts when the creation routine of view calling by the navigation controller.<br>\nCallback the method {{#crossLink \"BaseView/createComplete:method\"}}{{/crossLink}} and trigger the event {{#crossLink \"BaseView/CREATE:event\"}}{{/crossLink}} after complete.",
             "itemtype": "method",
             "name": "create",
@@ -3422,7 +3445,7 @@
         },
         {
             "file": "../../source/coffee/slikland/navigation/display/BaseView.coffee",
-            "line": 383,
+            "line": 384,
             "description": "Usually starts when finished the creation routine of view calling by the navigation controller and trigger the event {{#crossLink \"BaseView/CREATE_COMPLETE:event\"}}{{/crossLink}} after complete the routine.",
             "itemtype": "method",
             "name": "createComplete",
@@ -3439,7 +3462,7 @@
         },
         {
             "file": "../../source/coffee/slikland/navigation/display/BaseView.coffee",
-            "line": 393,
+            "line": 394,
             "description": "Usually starts before the showing routine of view calling by the navigation controller.<br>\nCallback the method {{#crossLink \"BaseView/show:method\"}}{{/crossLink}} and trigger the event {{#crossLink \"BaseView/SHOW_START:event\"}}{{/crossLink}} after complete.",
             "itemtype": "method",
             "name": "showStart",
@@ -3456,7 +3479,7 @@
         },
         {
             "file": "../../source/coffee/slikland/navigation/display/BaseView.coffee",
-            "line": 405,
+            "line": 406,
             "description": "Usually starts when the showing routine of view calling by the navigation controller.<br>\nCallback the method {{#crossLink \"BaseView/showComplete:method\"}}{{/crossLink}} and trigger the event {{#crossLink \"BaseView/SHOW:event\"}}{{/crossLink}} after complete.",
             "itemtype": "method",
             "name": "show",
@@ -3473,7 +3496,7 @@
         },
         {
             "file": "../../source/coffee/slikland/navigation/display/BaseView.coffee",
-            "line": 416,
+            "line": 417,
             "description": "Usually when finished the showing routine of view calling by the navigation controller and trigger the event {{#crossLink \"BaseView/SHOW_COMPLETE:event\"}}{{/crossLink}} after complete the routine.",
             "itemtype": "method",
             "name": "showComplete",
@@ -3490,7 +3513,7 @@
         },
         {
             "file": "../../source/coffee/slikland/navigation/display/BaseView.coffee",
-            "line": 426,
+            "line": 427,
             "description": "Usually starts before the hiding routine of view calling by the navigation controller.<br>\nCallback the method {{#crossLink \"BaseView/hide:method\"}}{{/crossLink}} and trigger the event {{#crossLink \"BaseView/HIDE_START:event\"}}{{/crossLink}} after complete.",
             "itemtype": "method",
             "name": "hideStart",
@@ -3507,7 +3530,7 @@
         },
         {
             "file": "../../source/coffee/slikland/navigation/display/BaseView.coffee",
-            "line": 437,
+            "line": 438,
             "description": "Usually starts when the hiding routine of view calling by the navigation controller.<br>\nCallback the method {{#crossLink \"BaseView/hideComplete:method\"}}{{/crossLink}} and trigger the event {{#crossLink \"BaseView/HIDE:event\"}}{{/crossLink}} after complete.",
             "itemtype": "method",
             "name": "hide",
@@ -3524,7 +3547,7 @@
         },
         {
             "file": "../../source/coffee/slikland/navigation/display/BaseView.coffee",
-            "line": 449,
+            "line": 450,
             "description": "Usually when finished the hiding routine of view calling by the navigation controller and trigger the event {{#crossLink \"BaseView/HIDE_COMPLETE:event\"}}{{/crossLink}} after complete the routine.",
             "itemtype": "method",
             "name": "hideComplete",
@@ -3541,7 +3564,7 @@
         },
         {
             "file": "../../source/coffee/slikland/navigation/display/BaseView.coffee",
-            "line": 458,
+            "line": 459,
             "description": "Usually used to pauses animations or something else in looping in view.\nTrigger the event {{#crossLink \"BaseView/PAUSE:event\"}}{{/crossLink}} after complete.",
             "itemtype": "method",
             "name": "pause",
@@ -3549,7 +3572,7 @@
         },
         {
             "file": "../../source/coffee/slikland/navigation/display/BaseView.coffee",
-            "line": 467,
+            "line": 468,
             "description": "Usually used to resumes animations or something else in view.\nTrigger the event {{#crossLink \"BaseView/RESUME:event\"}}{{/crossLink}} after complete.",
             "itemtype": "method",
             "name": "pause",
@@ -3557,7 +3580,7 @@
         },
         {
             "file": "../../source/coffee/slikland/navigation/display/BaseView.coffee",
-            "line": 476,
+            "line": 477,
             "description": "Usually starts when the destroying routine of view calling by the navigation controller.<br>\nCallback the method {{#crossLink \"BaseView/destroyComplete:method\"}}{{/crossLink}} and trigger the event {{#crossLink \"BaseView/DESTROY:event\"}}{{/crossLink}} after complete.",
             "itemtype": "method",
             "name": "destroy",
@@ -3574,7 +3597,7 @@
         },
         {
             "file": "../../source/coffee/slikland/navigation/display/BaseView.coffee",
-            "line": 497,
+            "line": 498,
             "description": "Usually when finished the destroying routine of view calling by the navigation controller and trigger the event {{#crossLink \"BaseView/DESTROY_COMPLETE:event\"}}{{/crossLink}} after complete the routine.",
             "itemtype": "method",
             "name": "destroyComplete",

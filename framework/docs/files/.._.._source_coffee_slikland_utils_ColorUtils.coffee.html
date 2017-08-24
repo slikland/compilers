@@ -107,39 +107,53 @@ Bunch of utilities methods for Colors
 @static
 ###
 class ColorUtils
-	@lightenColor:(p_color, p_amount)-&gt;
-		usePound = false
-		if p_color[0] == &quot;#&quot;
-			p_color = p_color.slice(1)
-			usePound = true
+	@lightenOrDarken:(p_hex, p_amount)-&gt;
+		# validate hex string
+		color = p_hex.replace(/[^0-9a-f]/gi, &#x27;&#x27;)
+		if color.length &lt; 6
+			color = color[0] + color[0] + color[1] + color[1] + color[2] + color[2]
+		p_amount = p_amount or 0
+		# convert to decimal and change amount
+		shade = &#x27;#&#x27;
+		c = undefined
+		i = undefined
+		black = 0
+		white = 255
+		i = 0
+		while i &lt; 3
+			c = parseInt(color.substr(i * 2, 2), 16)
+			c = Math.round(Math.min(Math.max(black, c + p_amount * white), white)).toString(16)
+			shade += (&#x27;00&#x27; + c).substr(c.length)
+			i++
+		return shade
 
-		num = parseInt(p_color, 16)
-		r = (num &gt;&gt; 16) + p_amount
-		if r &gt; 255
-			r = 255
-		else if r &lt; 0
-			r = 0
+	@randomHex:()-&gt;
+		return &#x27;#&#x27;+Math.floor(Math.random()*16777215).toString(16)
 
-		b = ((num &gt;&gt; 8) &amp; 0x00FF) + p_amount
-		if b &gt; 255
-			b = 255
-		else if b &lt; 0
-			b = 0
+	@randomRGB:()-&gt;
+		return ColorUtils.hexToRGB(ColorUtils.randomHex())
 
-		g = (num &amp; 0x0000FF) + p_amount
-		if g &gt; 255
-			g = 255
-		else if g &lt; 0
-			g = 0
+	@hexToInt:(p_hex)-&gt;
+		p_hex = p_hex.substr(4, 2) + p_hex.substr(2, 2) + p_hex.substr(0, 2);
+		return parseInt(p_hex, 16)
+	
+	@RGBToInt:(p_r, p_g, p_b)-&gt;
+		return ColorUtils.hexToInt(ColorUtils.RGBToHex(p_r, p_g, p_b))
 
-		if usePound
-			return &quot;#&quot; + (g | (b &lt;&lt; 8) | (r &lt;&lt; 16)).toString(16)
-		else 
-			return (g | (b &lt;&lt; 8) | (r &lt;&lt; 16)).toString(16)
+	@RGBToHex:(p_r, p_g, p_b)-&gt;
+		hex = p_r &lt;&lt; 16 | p_g &lt;&lt; 8 | p_b
+		return &quot;#&quot; + hex.toString(16)
 
-	@hexToInt:(hex)-&gt;
-		hex = hex.substr(4, 2) + hex.substr(2, 2) + hex.substr(0, 2);
-		return parseInt(hex, 16)
+	@hexToRGB:(p_hex) -&gt;
+		hex = 0
+		if p_hex.charAt(0) == &#x27;#&#x27;
+			if p_hex.length == 4
+				p_hex = &#x27;#&#x27; + p_hex.charAt(1).repeat(2) + p_hex.charAt(2).repeat(2) + p_hex.charAt(3).repeat(2)
+			hex = parseInt(p_hex.slice(1), 16)
+		r = hex &gt;&gt; 16 &amp; 0xFF
+		g = hex &gt;&gt; 8 &amp; 0xFF
+		b = hex &amp; 0xFF
+		return &#x27;rgb(&#x27;+r+&#x27;,&#x27;+g+&#x27;,&#x27;+b+&#x27;)&#x27;
 
     </pre>
 </div>

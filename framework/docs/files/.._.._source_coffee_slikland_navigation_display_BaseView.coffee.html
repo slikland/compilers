@@ -198,8 +198,8 @@ class BaseView extends BaseDOM
 
 	###*
 	@class BaseView
-	@constructor	
-	@param {Object} [p_data=null] 
+	@constructor
+	@param {Object} [p_data=null]
 	Data object sets the default and/or custom values of properties of view for navigation controller.&lt;br&gt;
 	If this object it&#x27;s not null, some default properties are not required explained below:
 	Default Key|Type|Required
@@ -232,12 +232,13 @@ class BaseView extends BaseDOM
 	}
 	&#x60;&#x60;&#x60;
 	@param {String} [p_CSSClassName=null]
+	@param {String} [p_element=&#x27;div&#x27;] HTMLElement type
 	###
 	_meta = null
-	constructor: (p_data=null, p_CSSClassName=null) -&gt;
+	constructor: (p_data=null, p_CSSClassName=null, p_element = &#x27;div&#x27;) -&gt;
 		@_created = false
 		@_showed = false
-		
+
 		@data = if p_data then p_data else {}
 		@id = if @_data.id? then @_data.id
 		@content = if @_data.content? then @_data.content
@@ -246,9 +247,9 @@ class BaseView extends BaseDOM
 		@parentView = if @_data.parentView? then @_data.parentView
 		@subviews = if @_data.subviews? then @_data.subviews
 		@destroyable = if @_data.destroyable? then @_data.destroyable
-		
+
 		_meta = MetaController.getInstance()
-		super({element:&#x27;div&#x27;, className:p_CSSClassName})
+		super({element: p_element, className:p_CSSClassName})
 
 	###*
 	Returns the loader queue of this specific view.
@@ -492,7 +493,7 @@ class BaseView extends BaseDOM
 		@_created = true
 		@trigger(BaseView.CREATE_COMPLETE, @)
 		false
-		
+
 	###*
 	Usually starts before the showing routine of view calling by the navigation controller.&lt;br&gt;
 	Callback the method {{#crossLink &quot;BaseView/show:method&quot;}}{{/crossLink}} and trigger the event {{#crossLink &quot;BaseView/SHOW_START:event&quot;}}{{/crossLink}} after complete.
@@ -575,7 +576,7 @@ class BaseView extends BaseDOM
 	resume:()=&gt;
 		@trigger(BaseView.RESUME, @)
 		false
-	
+
 	###*
 	Usually starts when the destroying routine of view calling by the navigation controller.&lt;br&gt;
 	Callback the method {{#crossLink &quot;BaseView/destroyComplete:method&quot;}}{{/crossLink}} and trigger the event {{#crossLink &quot;BaseView/DESTROY:event&quot;}}{{/crossLink}} after complete.

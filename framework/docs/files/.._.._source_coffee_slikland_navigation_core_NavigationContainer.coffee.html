@@ -113,10 +113,12 @@ class NavigationContainer extends BaseView
 
 	###*
 	@class NavigationContainer
+	@param {String} [p_CSSClassName=&#x27;nav-container&#x27;]
+	@param {String} [p_element=null] HTMLElement type
 	@constructor
 	###
-	constructor: () -&gt;
-		super null, &#x27;nav-container&#x27;
+	constructor: (p_CSSClassName = &#x27;nav-container&#x27;, p_element = null) -&gt;
+		super null, p_CSSClassName, p_element
 		@_id = &#x27;main&#x27;
 
 	###*

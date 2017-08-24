@@ -34,11 +34,10 @@ class ColorUtils
 		p_hex = p_hex.substr(4, 2) + p_hex.substr(2, 2) + p_hex.substr(0, 2);
 		return parseInt(p_hex, 16)
 	
-	@RGBToInt:(p_r, p_g=-1, p_b=-1)->
-
+	@RGBToInt:(p_r, p_g, p_b)->
 		return ColorUtils.hexToInt(ColorUtils.RGBToHex(p_r, p_g, p_b))
 
-	@RGBToHex:(p_r, p_g=-1, p_b=-1)->
+	@RGBToHex:(p_r, p_g, p_b)->
 		hex = p_r << 16 | p_g << 8 | p_b
 		return "#" + hex.toString(16)
 
