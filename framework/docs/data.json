@@ -5029,6 +5029,212 @@
             "class": "JSONUtils"
         },
         {
+            "file": "../../source/coffee/slikland/utils/MathUtils.coffee",
+            "line": 8,
+            "itemtype": "method",
+            "name": "quadraticBezier",
+            "static": 1,
+            "params": [
+                {
+                    "name": "p_0",
+                    "description": "A point object like {\"x\":0,\"y\":0}",
+                    "type": "Object"
+                },
+                {
+                    "name": "p_1",
+                    "description": "A point object like {\"x\":0,\"y\":0}",
+                    "type": "Object"
+                },
+                {
+                    "name": "p_2",
+                    "description": "A point object like {\"x\":0,\"y\":0}",
+                    "type": "Object"
+                },
+                {
+                    "name": "t",
+                    "description": "",
+                    "type": "Number"
+                },
+                {
+                    "name": "pFinal",
+                    "description": "",
+                    "type": "Object"
+                }
+            ],
+            "return": {
+                "description": "Result point like {\"x\":0,\"y\":0}",
+                "type": "Object"
+            },
+            "class": "MathUtils"
+        },
+        {
+            "file": "../../source/coffee/slikland/utils/MathUtils.coffee",
+            "line": 24,
+            "itemtype": "method",
+            "name": "cubicBezier",
+            "static": 1,
+            "params": [
+                {
+                    "name": "p_0",
+                    "description": "A point object like {\"x\":0,\"y\":0}",
+                    "type": "Object"
+                },
+                {
+                    "name": "p_1",
+                    "description": "A point object like {\"x\":0,\"y\":0}",
+                    "type": "Object"
+                },
+                {
+                    "name": "p_2",
+                    "description": "A point object like {\"x\":0,\"y\":0}",
+                    "type": "Object"
+                },
+                {
+                    "name": "p_3",
+                    "description": "A point object like {\"x\":0,\"y\":0}",
+                    "type": "Object"
+                },
+                {
+                    "name": "t",
+                    "description": "",
+                    "type": "Number"
+                },
+                {
+                    "name": "pFinal",
+                    "description": "",
+                    "type": "Object"
+                }
+            ],
+            "return": {
+                "description": "Result point like {\"x\":0,\"y\":0}",
+                "type": "Object"
+            },
+            "class": "MathUtils"
+        },
+        {
+            "file": "../../source/coffee/slikland/utils/MathUtils.coffee",
+            "line": 41,
+            "description": "Getting the distance between two geographical points.",
+            "itemtype": "method",
+            "name": "distanceBetweenCoordinates",
+            "static": 1,
+            "params": [
+                {
+                    "name": "p_from",
+                    "description": "From coordinates (point object like {\"x\":0,\"y\":0})",
+                    "type": "Object"
+                },
+                {
+                    "name": "p_high",
+                    "description": "To coordinates (point object like {\"x\":0,\"y\":0})",
+                    "type": "Object"
+                },
+                {
+                    "name": "p_units",
+                    "description": "Mean radius of Earth in string the valid values are \"km\", \"meters\", \"feet\" and \"miles\"",
+                    "type": "String",
+                    "optional": true,
+                    "optdefault": "\"km\""
+                }
+            ],
+            "return": {
+                "description": "The resulting the coordinates",
+                "type": "Number"
+            },
+            "class": "MathUtils"
+        },
+        {
+            "file": "../../source/coffee/slikland/utils/MathUtils.coffee",
+            "line": 70,
+            "itemtype": "method",
+            "name": "getShortRotation",
+            "static": 1,
+            "params": [
+                {
+                    "name": "p_start",
+                    "description": "",
+                    "type": "Number"
+                },
+                {
+                    "name": "p_end",
+                    "description": "",
+                    "type": "Number"
+                },
+                {
+                    "name": "p_useRadians",
+                    "description": "",
+                    "type": "Boolean",
+                    "optional": true,
+                    "optdefault": "false"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "Number"
+            },
+            "class": "MathUtils"
+        },
+        {
+            "file": "../../source/coffee/slikland/utils/MathUtils.coffee",
+            "line": 85,
+            "description": "Returns the value in radians of a degress number.",
+            "itemtype": "method",
+            "name": "degreesToRadians",
+            "static": 1,
+            "params": [
+                {
+                    "name": "p_value",
+                    "description": "",
+                    "type": "Number"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "Number"
+            },
+            "class": "MathUtils"
+        },
+        {
+            "file": "../../source/coffee/slikland/utils/MathUtils.coffee",
+            "line": 95,
+            "description": "Returns the value in degress of a number.",
+            "itemtype": "method",
+            "name": "toDegrees",
+            "static": 1,
+            "params": [
+                {
+                    "name": "p_value",
+                    "description": "",
+                    "type": "Number"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "Number"
+            },
+            "class": "MathUtils"
+        },
+        {
+            "file": "../../source/coffee/slikland/utils/MathUtils.coffee",
+            "line": 105,
+            "description": "Returns the value in radians of a number.",
+            "itemtype": "method",
+            "name": "toRadians",
+            "static": 1,
+            "params": [
+                {
+                    "name": "p_value",
+                    "description": "",
+                    "type": "Number"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "Number"
+            },
+            "class": "MathUtils"
+        },
+        {
             "file": "../../source/coffee/slikland/utils/MouseUtils.coffee",
             "line": 7,
             "itemtype": "method",
