@@ -1,12 +1,31 @@
 #namespace slikland.utils.keyboard
 ###*
+Wrapper for keyboard shortcuts
 @class Shortcut
 ###
 class Shortcut
 
-	@MODIFIERS: ['alt', 'ctrl', 'meta', 'shift']
-	@MODIFIER_CODES: [16, 18, 17, 91]
+	###*
+	@property MODIFIERS
+	@type Array
+	@default ['alt', 'ctrl', 'meta', 'shift']
+	@readyonly
+	###
+	@const MODIFIERS: ['alt', 'ctrl', 'meta', 'shift']
 
+	###*
+	@property MODIFIER_CODES
+	@type Array
+	@default [16, 18, 17, 91]
+	@readyonly
+	###
+	@const MODIFIER_CODES: [16, 18, 17, 91]
+
+	###*
+	@class Shortcut
+	@constructor
+	@param {HTMLElement} [target=null]
+	###
 	constructor:(target = null)->
 		if !target
 			target = window
@@ -16,6 +35,7 @@ class Shortcut
 
 		@_target.addEventListener('keydown', @_keyDown)
 		@_target.addEventListener('keyup', @_keyUp)
+		
 	destroy:()->
 		@_target?.removeEventListener('keydown', @_keyDown)
 		@_target?.removeEventListener('keyup', @_keyUp)

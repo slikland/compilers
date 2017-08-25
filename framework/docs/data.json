@@ -767,7 +767,18 @@
             "plugin_for": [],
             "extension_for": [],
             "file": "../../source/coffee/slikland/utils/keyboard/Shortcut.coffee",
-            "line": 2
+            "line": 24,
+            "description": "Wrapper for keyboard shortcuts",
+            "is_constructor": 1,
+            "params": [
+                {
+                    "name": "target",
+                    "description": "",
+                    "type": "HTMLElement",
+                    "optional": true,
+                    "optdefault": "null"
+                }
+            ]
         },
         "ArrayUtils": {
             "name": "ArrayUtils",
@@ -3984,6 +3995,26 @@
             "class": "BaseView"
         },
         {
+            "file": "../../source/coffee/slikland/utils/keyboard/Shortcut.coffee",
+            "line": 8,
+            "itemtype": "property",
+            "name": "MODIFIERS",
+            "type": "Array",
+            "default": "['alt', 'ctrl', 'meta', 'shift']",
+            "readyonly": "",
+            "class": "Shortcut"
+        },
+        {
+            "file": "../../source/coffee/slikland/utils/keyboard/Shortcut.coffee",
+            "line": 16,
+            "itemtype": "property",
+            "name": "MODIFIER_CODES",
+            "type": "Array",
+            "default": "[16, 18, 17, 91]",
+            "readyonly": "",
+            "class": "Shortcut"
+        },
+        {
             "file": "../../source/coffee/slikland/utils/ArrayUtils.coffee",
             "line": 11,
             "description": "Removes an item from an array.",
@@ -6851,6 +6882,14 @@
         }
     ],
     "warnings": [
+        {
+            "message": "unknown tag: readyonly",
+            "line": " ../../source/coffee/slikland/utils/keyboard/Shortcut.coffee:8"
+        },
+        {
+            "message": "unknown tag: readyonly",
+            "line": " ../../source/coffee/slikland/utils/keyboard/Shortcut.coffee:16"
+        },
         {
             "message": "unknown tag: protect",
             "line": " ../../source/coffee/slikland/utils/GeolocationDetection.coffee:20"
