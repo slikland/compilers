@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>BaseDOM - Caim Framework</title>
+    <title>../../source/coffee/slikland/utils/keyboard/Shortcut.coffee - Caim Framework</title>
     <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
     <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
     <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
@@ -114,43 +114,94 @@
             <div class="apidocs">
                 <div id="docs-main">
                     <div class="content">
-<h1>BaseDOM Class</h1>
-<div class="box meta">
+<h1 class="file-heading">File: ../../source/coffee/slikland/utils/keyboard/Shortcut.coffee</h1>
+
+<div class="file">
+    <pre class="code prettyprint linenums">
+#namespace slikland.utils.keyboard
+###*
+@class Shortcut
+###
+class Shortcut
+
+	@MODIFIERS: [&#x27;alt&#x27;, &#x27;ctrl&#x27;, &#x27;meta&#x27;, &#x27;shift&#x27;]
+	@MODIFIER_CODES: [16, 18, 17, 91]
+
+	constructor:(target = null)-&gt;
+		if !target
+			target = window
+		@_target = target
+
+		@_shortcuts = []
+
+		@_target.addEventListener(&#x27;keydown&#x27;, @_keyDown)
+		@_target.addEventListener(&#x27;keyup&#x27;, @_keyUp)
+	destroy:()-&gt;
+		@_target?.removeEventListener(&#x27;keydown&#x27;, @_keyDown)
+		@_target?.removeEventListener(&#x27;keyup&#x27;, @_keyUp)
+		@_shortcuts.length = 0
+		delete @_shortcuts
+		delete @_target
 
 
-        <div class="foundat">
-            Defined in: <a href="../files/.._.._source_coffee_slikland_display_BaseDOM.coffee.html#l74"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;display&#x2F;BaseDOM.coffee:74</code></a>
-        </div>
+	_keyDown:(e)=&gt;
 
+		keyCode = e.keyCode
+		key = &#x27;&#x27;
+		if !(keyCode in @constructor.MODIFIER_CODES)
+			key = String.fromCharCode(keyCode).toLowerCase()
+		modifiers = []
+		for k in @constructor.MODIFIERS
+			if e[k + &#x27;Key&#x27;]
+				modifiers.push(k)
+		modifiers.sort()
+		shortcut = &#x27;[&#x27; + modifiers.join(&#x27;][&#x27;) + &#x27;]&#x27; + key
+		items = @_findShortcut(shortcut)
+		for item in items
+			item.callback?()
+			if item.preventDefault
+				e.preventDefault()
 
-</div>
+	_normalizeShortcut:(shortcut)-&gt;
+		shortcut = shortcut.toLowerCase()
+		modRE = /\[(.*?)\]/g
+		modifiers = []
+		while (o = modRE.exec(shortcut))
+			mod = o[1]
+			if mod == &#x27;cmd&#x27;
+				mod = &#x27;meta&#x27;
+			if mod in @constructor.MODIFIERS
+				modifiers.push(mod)
+		shortcut = shortcut.replace(/\[.*?\]/g, &#x27;&#x27;).split(&#x27;&#x27;)
+		shortcut.sort()
+		modifiers.sort()
+		return &#x27;[&#x27; + modifiers.join(&#x27;][&#x27;) + &#x27;]&#x27; + shortcut.join(&#x27;&#x27;)
 
+	_findShortcut:(shortcut)-&gt;
+		found = []
+		i = @_shortcuts.length
+		while i-- &gt; 0
+			if @_shortcuts[i].normalized == shortcut
+				found.push(@_shortcuts[i])
+		return found
 
-<div class="box intro">
-    <p>Base DOM manipulation class</p>
+	addShortcut:(shortcut, callback, preventDefault = true)-&gt;
+		normalized = @_normalizeShortcut(shortcut)
+		i = @_shortcuts.length
+		while i-- &gt; 0
+			if @_shortcuts[i].normalized == normalized &amp;&amp; @_shortcuts[i].callback == callback
+				return
+		@_shortcuts.push({normalized: normalized, shortcut: shortcut, callback: callback, preventDefault: preventDefault})
 
-</div>
+	removeShortcut:(shortcut, callback)-&gt;
+		normalized = @_normalizeShortcut(shortcut)
+		i = @_shortcuts.length
+		while i-- &gt; 0
+			if @_shortcuts[i].normalized == normalized
+				if !callback || (callback &amp;&amp; @_shortcuts[i].callback == callback)
+					@_shortcuts.splice(i, 1)
 
-
-<div id="classdocs" class="tabview">
-    <ul class="api-class-tabs">
-        <li class="api-class-tab index"><a href="#index">Index</a></li>
-
-    </ul>
-
-    <div>
-        <div id="index" class="api-class-tabpanel index">
-            <h2 class="off-left">Item Index</h2>
-
-
-
-
-        </div>
-
-
-
-
-    </div>
+    </pre>
 </div>
                     </div>
                 </div>

@@ -52,6 +52,7 @@
                                 <li><a href="../classes/DOMUtils.html">DOMUtils</a></li>
                                 <li><a href="../classes/EventDispatcher.html">EventDispatcher</a></li>
                                 <li><a href="../classes/FunctionUtils.html">FunctionUtils</a></li>
+                                <li><a href="../classes/GeolocationDetection.html">GeolocationDetection</a></li>
                                 <li><a href="../classes/GestureUtils.html">GestureUtils</a></li>
                                 <li><a href="../classes/JSONUtils.html">JSONUtils</a></li>
                                 <li><a href="../classes/KTween.html">KTween</a></li>
@@ -66,8 +67,10 @@
                                 <li><a href="../classes/ObjectUtils.html">ObjectUtils</a></li>
                                 <li><a href="../classes/PreloadFiles.html">PreloadFiles</a></li>
                                 <li><a href="../classes/Prototypes.html">Prototypes</a></li>
+                                <li><a href="../classes/Resizer.html">Resizer</a></li>
                                 <li><a href="../classes/ResizeUtils.html">ResizeUtils</a></li>
                                 <li><a href="../classes/ShareUtils.html">ShareUtils</a></li>
+                                <li><a href="../classes/Shortcut.html">Shortcut</a></li>
                                 <li><a href="../classes/SplitTextUtils.html">SplitTextUtils</a></li>
                                 <li><a href="../classes/SpriteSheetAnimation.html">SpriteSheetAnimation</a></li>
                                 <li><a href="../classes/StringUtils.html">StringUtils</a></li>
@@ -118,19 +121,53 @@
 ###*
 Methods for gesture and touch
 @class GestureUtils
+@extends EventDispatcher
 ###
 class GestureUtils extends EventDispatcher
 
-	@ON_SWIPE_LEFT: &#x27;onSwipeLeft&#x27;
-	@ON_SWIPE_RIGHT: &#x27;onSwipeRight&#x27;
-	@ON_SWIPE_UP: &#x27;onSwipeUp&#x27;
-	@ON_SWIPE_DOWN: &#x27;onSwipeDown&#x27;
-	@ON_TOUCH_START: &#x27;onTouchStart&#x27;
-	@ON_TOUCH_END: &#x27;onTouchEnd&#x27;
+	###*
+	@event ON_SWIPE_LEFT
+	@static
+	###
+	@const ON_SWIPE_LEFT: &#x27;onSwipeLeft&#x27;
+
+	###*
+	@event ON_SWIPE_RIGHT
+	@static
+	###
+	@const ON_SWIPE_RIGHT: &#x27;onSwipeRight&#x27;
+
+	###*
+	@event ON_SWIPE_UP
+	@static
+	###
+	@const ON_SWIPE_UP: &#x27;onSwipeUp&#x27;
+
+	###*
+	@event ON_SWIPE_DOWN
+	@static
+	###
+	@const ON_SWIPE_DOWN: &#x27;onSwipeDown&#x27;
+
+	###*
+	@event ON_TOUCH_START
+	@static
+	###
+	@const ON_TOUCH_START: &#x27;onTouchStart&#x27;
+
+	###*
+	@event ON_TOUCH_END
+	@static
+	###
+	@const ON_TOUCH_END: &#x27;onTouchEnd&#x27;
 
 	constructor:()-&gt;
 		super
 
+	###*
+	@method registerElement
+	@param {HTMLElement} element
+	###
 	registerElement:(element)=&gt;
 		@_xDown = null
 		@_yDown = null
@@ -141,7 +178,13 @@ class GestureUtils extends EventDispatcher
 		@_element.on &#x27;touchend&#x27;, @_onTouchEnd
 		document.body.on &quot;touchend&quot;, @_onTouchEnd
 		document.body.on &quot;mouseup&quot;, @_onTouchEnd
+		false
 
+	###*
+	@method _onTouchStart
+	@param {Event} event
+	@private
+	###
 	_onTouchStart:(event)=&gt;
 		if event.touches
 			clientX = event.touches[0].clientX
@@ -157,27 +200,63 @@ class GestureUtils extends EventDispatcher
 		@_element.on &#x27;touchmove&#x27;, @_onTouchMove
 
 		@trigger GestureUtils.ON_TOUCH_START, event
+		false
 
+	###*
+	@method _onLeft
+	@param {Function} callback
+	@private
+	###
 	_onLeft:(callback)=&gt;
 		@trigger GestureUtils.ON_SWIPE_LEFT
+		false
 
+	###*
+	@method _onRight
+	@param {Function} callback
+	@private
+	###
 	_onRight:(callback)=&gt;
 		@trigger GestureUtils.ON_SWIPE_RIGHT
-
+		false
+	
+	###*
+	@method _onUp
+	@param {Function} callback
+	@private
+	###
 	_onUp:(callback)=&gt;
 		@trigger GestureUtils.ON_SWIPE_UP
-
+		false
+	
+	###*
+	@method _onDown
+	@param {Function} callback
+	@private
+	###
 	_onDown:(callback)=&gt;
 		@trigger GestureUtils.ON_SWIPE_DOWN
-
+		false
+	
+	###*
+	@method _onTouchMove
+	@param {Event} event
+	@private
+	###
 	_onTouchMove:(event)=&gt;
 		if event.touches
 			@_clientX = event.touches[0].clientX
 			@_clientY = event.touches[0].clientY
 		else
 			@_clientX = event.clientX
-			@_clientY = event.clientY 
+			@_clientY = event.clientY
+		false 
 
+	###*
+	@method _onTouchEnd
+	@param {Event} event
+	@private
+	###
 	_onTouchEnd:(event)=&gt;
 		return if !@_xDown or !@_yDown
 
@@ -202,6 +281,7 @@ class GestureUtils extends EventDispatcher
 		@_xDown = null
 		@_yDown = null
 		@trigger GestureUtils.ON_TOUCH_END, event
+		false
 
 	###*
 	@method getTouchPositions

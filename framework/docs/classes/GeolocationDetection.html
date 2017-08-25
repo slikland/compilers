@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>GestureUtils - Caim Framework</title>
+    <title>GeolocationDetection - Caim Framework</title>
     <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
     <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
     <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
@@ -114,7 +114,7 @@
             <div class="apidocs">
                 <div id="docs-main">
                     <div class="content">
-<h1>GestureUtils Class</h1>
+<h1>GeolocationDetection Class</h1>
 <div class="box meta">
 
         <div class="extends">
@@ -122,7 +122,7 @@
         </div>
 
         <div class="foundat">
-            Defined in: <a href="../files/.._.._source_coffee_slikland_utils_GestureUtils.coffee.html#l1"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;utils&#x2F;GestureUtils.coffee:1</code></a>
+            Defined in: <a href="../files/.._.._source_coffee_slikland_utils_GeolocationDetection.coffee.html#l1"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;utils&#x2F;GeolocationDetection.coffee:1</code></a>
         </div>
 
 
@@ -130,7 +130,7 @@
 
 
 <div class="box intro">
-    <p>Methods for gesture and touch</p>
+    <p>Methods for geolocation detection</p>
 
 </div>
 
@@ -140,6 +140,8 @@
         <li class="api-class-tab index"><a href="#index">Index</a></li>
 
             <li class="api-class-tab methods"><a href="#methods">Methods</a></li>
+            <li class="api-class-tab properties"><a href="#properties">Properties</a></li>
+            <li class="api-class-tab attrs"><a href="#attrs">Attributes</a></li>
             <li class="api-class-tab events"><a href="#events">Events</a></li>
     </ul>
 
@@ -152,37 +154,16 @@
 
                     <ul class="index-list methods extends">
                             <li class="index-item method private">
-                                <a href="#method__onDown">_onDown</a>
+                                <a href="#method__error">_error</a>
 
                             </li>
                             <li class="index-item method private">
-                                <a href="#method__onLeft">_onLeft</a>
-
-                            </li>
-                            <li class="index-item method private">
-                                <a href="#method__onRight">_onRight</a>
-
-                            </li>
-                            <li class="index-item method private">
-                                <a href="#method__onTouchEnd">_onTouchEnd</a>
-
-                            </li>
-                            <li class="index-item method private">
-                                <a href="#method__onTouchMove">_onTouchMove</a>
-
-                            </li>
-                            <li class="index-item method private">
-                                <a href="#method__onTouchStart">_onTouchStart</a>
-
-                            </li>
-                            <li class="index-item method private">
-                                <a href="#method__onUp">_onUp</a>
+                                <a href="#method__success">_success</a>
 
                             </li>
                             <li class="index-item method">
-                                <a href="#method_getTouchPositions">getTouchPositions</a>
+                                <a href="#method_fetchPosition">fetchPosition</a>
 
-                                    <span class="flag static">static</span>
                             </li>
                             <li class="index-item method inherited">
                                 <a href="#method_hasEvent">hasEvent</a>
@@ -196,10 +177,6 @@
                                 <a href="#method_on">on</a>
 
                             </li>
-                            <li class="index-item method">
-                                <a href="#method_registerElement">registerElement</a>
-
-                            </li>
                             <li class="index-item method inherited">
                                 <a href="#method_stackTrigger">stackTrigger</a>
 
@@ -211,39 +188,38 @@
                     </ul>
                 </div>
 
+                <div class="index-section properties">
+                    <h3>Properties</h3>
 
+                    <ul class="index-list properties extends">
+                            <li class="index-item property">
+                                <a href="#property_isSearching">isSearching</a>
+
+                            </li>
+                    </ul>
+                </div>
+
+                <div class="index-section attrs">
+                    <h3>Attributes</h3>
+
+                    <ul class="index-list attrs extends">
+                            <li class="index-item attr">
+                                <a href="#attr_position">position</a>
+                            </li>
+                    </ul>
+                </div>
 
                 <div class="index-section events">
                     <h3>Events</h3>
 
                     <ul class="index-list events extends">
                             <li class="index-item event">
-                                <a href="#event_ON_SWIPE_DOWN">ON_SWIPE_DOWN</a>
+                                <a href="#event_COMPLETE">COMPLETE</a>
 
                                     <span class="flag static">static</span>
                             </li>
                             <li class="index-item event">
-                                <a href="#event_ON_SWIPE_LEFT">ON_SWIPE_LEFT</a>
-
-                                    <span class="flag static">static</span>
-                            </li>
-                            <li class="index-item event">
-                                <a href="#event_ON_SWIPE_RIGHT">ON_SWIPE_RIGHT</a>
-
-                                    <span class="flag static">static</span>
-                            </li>
-                            <li class="index-item event">
-                                <a href="#event_ON_SWIPE_UP">ON_SWIPE_UP</a>
-
-                                    <span class="flag static">static</span>
-                            </li>
-                            <li class="index-item event">
-                                <a href="#event_ON_TOUCH_END">ON_TOUCH_END</a>
-
-                                    <span class="flag static">static</span>
-                            </li>
-                            <li class="index-item event">
-                                <a href="#event_ON_TOUCH_START">ON_TOUCH_START</a>
+                                <a href="#event_ERROR">ERROR</a>
 
                                     <span class="flag static">static</span>
                             </li>
@@ -254,13 +230,13 @@
             <div id="methods" class="api-class-tabpanel">
                 <h2 class="off-left">Methods</h2>
 
-<div id="method__onDown" class="method item private">
-    <h3 class="name"><code>_onDown</code></h3>
+<div id="method__error" class="method item private">
+    <h3 class="name"><code>_error</code></h3>
 
         <div class="args">
             <span class="paren">(</span><ul class="args-list inline commas">
                 <li class="arg">
-                        <code>callback</code>
+                        <code>error</code>
                 </li>
             </ul><span class="paren">)</span>
         </div>
@@ -276,7 +252,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._.._source_coffee_slikland_utils_GestureUtils.coffee.html#l112"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;utils&#x2F;GestureUtils.coffee:112</code></a>
+        <a href="../files/.._.._source_coffee_slikland_utils_GeolocationDetection.coffee.html#l68"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;utils&#x2F;GeolocationDetection.coffee:68</code></a>
         </p>
 
 
@@ -292,8 +268,8 @@
 
             <ul class="params-list">
                 <li class="param">
-                        <code class="param-name">callback</code>
-                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function" class="crosslink external" target="_blank">Function</a></span>
+                        <code class="param-name">error</code>
+                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>
 
 
                     <div class="param-description">
@@ -307,13 +283,13 @@
 
 
 </div>
-<div id="method__onLeft" class="method item private">
-    <h3 class="name"><code>_onLeft</code></h3>
+<div id="method__success" class="method item private">
+    <h3 class="name"><code>_success</code></h3>
 
         <div class="args">
             <span class="paren">(</span><ul class="args-list inline commas">
                 <li class="arg">
-                        <code>callback</code>
+                        <code>position</code>
                 </li>
             </ul><span class="paren">)</span>
         </div>
@@ -329,7 +305,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._.._source_coffee_slikland_utils_GestureUtils.coffee.html#l85"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;utils&#x2F;GestureUtils.coffee:85</code></a>
+        <a href="../files/.._.._source_coffee_slikland_utils_GeolocationDetection.coffee.html#l57"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;utils&#x2F;GeolocationDetection.coffee:57</code></a>
         </p>
 
 
@@ -345,8 +321,8 @@
 
             <ul class="params-list">
                 <li class="param">
-                        <code class="param-name">callback</code>
-                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function" class="crosslink external" target="_blank">Function</a></span>
+                        <code class="param-name">position</code>
+                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>
 
 
                     <div class="param-description">
@@ -360,20 +336,13 @@
 
 
 </div>
-<div id="method__onRight" class="method item private">
-    <h3 class="name"><code>_onRight</code></h3>
+<div id="method_fetchPosition" class="method item">
+    <h3 class="name"><code>fetchPosition</code></h3>
 
-        <div class="args">
-            <span class="paren">(</span><ul class="args-list inline commas">
-                <li class="arg">
-                        <code>callback</code>
-                </li>
-            </ul><span class="paren">)</span>
-        </div>
+        <span class="paren">()</span>
 
 
 
-        <span class="flag private">private</span>
 
 
 
@@ -382,7 +351,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._.._source_coffee_slikland_utils_GestureUtils.coffee.html#l94"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;utils&#x2F;GestureUtils.coffee:94</code></a>
+        <a href="../files/.._.._source_coffee_slikland_utils_GeolocationDetection.coffee.html#l34"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;utils&#x2F;GeolocationDetection.coffee:34</code></a>
         </p>
 
 
@@ -393,298 +362,7 @@
         
     </div>
 
-        <div class="params">
-            <h4>Parameters:</h4>
 
-            <ul class="params-list">
-                <li class="param">
-                        <code class="param-name">callback</code>
-                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function" class="crosslink external" target="_blank">Function</a></span>
-
-
-                    <div class="param-description">
-                         
-                    </div>
-
-                </li>
-            </ul>
-        </div>
-
-
-
-</div>
-<div id="method__onTouchEnd" class="method item private">
-    <h3 class="name"><code>_onTouchEnd</code></h3>
-
-        <div class="args">
-            <span class="paren">(</span><ul class="args-list inline commas">
-                <li class="arg">
-                        <code>event</code>
-                </li>
-            </ul><span class="paren">)</span>
-        </div>
-
-
-
-        <span class="flag private">private</span>
-
-
-
-
-
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/.._.._source_coffee_slikland_utils_GestureUtils.coffee.html#l135"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;utils&#x2F;GestureUtils.coffee:135</code></a>
-        </p>
-
-
-
-    </div>
-
-    <div class="description">
-        
-    </div>
-
-        <div class="params">
-            <h4>Parameters:</h4>
-
-            <ul class="params-list">
-                <li class="param">
-                        <code class="param-name">event</code>
-                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/API/Event" class="crosslink external" target="_blank">Event</a></span>
-
-
-                    <div class="param-description">
-                         
-                    </div>
-
-                </li>
-            </ul>
-        </div>
-
-
-
-</div>
-<div id="method__onTouchMove" class="method item private">
-    <h3 class="name"><code>_onTouchMove</code></h3>
-
-        <div class="args">
-            <span class="paren">(</span><ul class="args-list inline commas">
-                <li class="arg">
-                        <code>event</code>
-                </li>
-            </ul><span class="paren">)</span>
-        </div>
-
-
-
-        <span class="flag private">private</span>
-
-
-
-
-
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/.._.._source_coffee_slikland_utils_GestureUtils.coffee.html#l121"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;utils&#x2F;GestureUtils.coffee:121</code></a>
-        </p>
-
-
-
-    </div>
-
-    <div class="description">
-        
-    </div>
-
-        <div class="params">
-            <h4>Parameters:</h4>
-
-            <ul class="params-list">
-                <li class="param">
-                        <code class="param-name">event</code>
-                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/API/Event" class="crosslink external" target="_blank">Event</a></span>
-
-
-                    <div class="param-description">
-                         
-                    </div>
-
-                </li>
-            </ul>
-        </div>
-
-
-
-</div>
-<div id="method__onTouchStart" class="method item private">
-    <h3 class="name"><code>_onTouchStart</code></h3>
-
-        <div class="args">
-            <span class="paren">(</span><ul class="args-list inline commas">
-                <li class="arg">
-                        <code>event</code>
-                </li>
-            </ul><span class="paren">)</span>
-        </div>
-
-
-
-        <span class="flag private">private</span>
-
-
-
-
-
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/.._.._source_coffee_slikland_utils_GestureUtils.coffee.html#l63"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;utils&#x2F;GestureUtils.coffee:63</code></a>
-        </p>
-
-
-
-    </div>
-
-    <div class="description">
-        
-    </div>
-
-        <div class="params">
-            <h4>Parameters:</h4>
-
-            <ul class="params-list">
-                <li class="param">
-                        <code class="param-name">event</code>
-                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/API/Event" class="crosslink external" target="_blank">Event</a></span>
-
-
-                    <div class="param-description">
-                         
-                    </div>
-
-                </li>
-            </ul>
-        </div>
-
-
-
-</div>
-<div id="method__onUp" class="method item private">
-    <h3 class="name"><code>_onUp</code></h3>
-
-        <div class="args">
-            <span class="paren">(</span><ul class="args-list inline commas">
-                <li class="arg">
-                        <code>callback</code>
-                </li>
-            </ul><span class="paren">)</span>
-        </div>
-
-
-
-        <span class="flag private">private</span>
-
-
-
-
-
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/.._.._source_coffee_slikland_utils_GestureUtils.coffee.html#l103"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;utils&#x2F;GestureUtils.coffee:103</code></a>
-        </p>
-
-
-
-    </div>
-
-    <div class="description">
-        
-    </div>
-
-        <div class="params">
-            <h4>Parameters:</h4>
-
-            <ul class="params-list">
-                <li class="param">
-                        <code class="param-name">callback</code>
-                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function" class="crosslink external" target="_blank">Function</a></span>
-
-
-                    <div class="param-description">
-                         
-                    </div>
-
-                </li>
-            </ul>
-        </div>
-
-
-
-</div>
-<div id="method_getTouchPositions" class="method item">
-    <h3 class="name"><code>getTouchPositions</code></h3>
-
-        <div class="args">
-            <span class="paren">(</span><ul class="args-list inline commas">
-                <li class="arg">
-                        <code>evt</code>
-                </li>
-            </ul><span class="paren">)</span>
-        </div>
-
-        <span class="returns-inline">
-            <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array" class="crosslink external" target="_blank">Array</a></span>
-        </span>
-
-
-
-
-        <span class="flag static">static</span>
-
-
-
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/.._.._source_coffee_slikland_utils_GestureUtils.coffee.html#l166"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;utils&#x2F;GestureUtils.coffee:166</code></a>
-        </p>
-
-
-
-    </div>
-
-    <div class="description">
-        
-    </div>
-
-        <div class="params">
-            <h4>Parameters:</h4>
-
-            <ul class="params-list">
-                <li class="param">
-                        <code class="param-name">evt</code>
-                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/API/Event" class="crosslink external" target="_blank">Event</a></span>
-
-
-                    <div class="param-description">
-                         
-                    </div>
-
-                </li>
-            </ul>
-        </div>
-
-        <div class="returns">
-            <h4>Returns:</h4>
-
-            <div class="returns-description">
-                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array" class="crosslink external" target="_blank">Array</a></span>:
-            </div>
-        </div>
 
 
 </div>
@@ -927,58 +605,6 @@ ed.on('someEvent', someEventHandler);</code></pre>
             </div>
         </div>
 </div>
-<div id="method_registerElement" class="method item">
-    <h3 class="name"><code>registerElement</code></h3>
-
-        <div class="args">
-            <span class="paren">(</span><ul class="args-list inline commas">
-                <li class="arg">
-                        <code>element</code>
-                </li>
-            </ul><span class="paren">)</span>
-        </div>
-
-
-
-
-
-
-
-
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/.._.._source_coffee_slikland_utils_GestureUtils.coffee.html#l47"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;utils&#x2F;GestureUtils.coffee:47</code></a>
-        </p>
-
-
-
-    </div>
-
-    <div class="description">
-        
-    </div>
-
-        <div class="params">
-            <h4>Parameters:</h4>
-
-            <ul class="params-list">
-                <li class="param">
-                        <code class="param-name">element</code>
-                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement" class="crosslink external" target="_blank">HTMLElement</a></span>
-
-
-                    <div class="param-description">
-                         
-                    </div>
-
-                </li>
-            </ul>
-        </div>
-
-
-
-</div>
 <div id="method_stackTrigger" class="method item inherited">
     <h3 class="name"><code>stackTrigger</code></h3>
 
@@ -1199,13 +825,75 @@ ed.trigger('someEvent', {someData: true}, window);</code></pre>
 </div>
             </div>
 
+            <div id="properties" class="api-class-tabpanel">
+                <h2 class="off-left">Properties</h2>
 
+<div id="property_isSearching" class="property item">
+    <h3 class="name"><code>isSearching</code></h3>
+    <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean" class="crosslink external" target="_blank">Boolean</a></span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._.._source_coffee_slikland_utils_GeolocationDetection.coffee.html#l20"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;utils&#x2F;GeolocationDetection.coffee:20</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        
+    </div>
+
+        <p><strong>Default:</strong> false</p>
+
+
+</div>
+            </div>
+
+            <div id="attrs" class="api-class-tabpanel">
+                <h2 class="off-left">Attributes</h2>
+
+                    <div id="attr_position" class="attr item">
+                        <a name="config_position"></a> 
+                        <h3 class="name"><code>position</code></h3>
+                        <span class="type"></span>
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                            <span class="flag readonly">readonly</span>
+                    
+                        <div class="meta">
+                                    <p>
+                                    Defined in
+                            <a href="../files/.._.._source_coffee_slikland_utils_GeolocationDetection.coffee.html#l49"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;utils&#x2F;GeolocationDetection.coffee:49</code></a>
+                            </p>
+                    
+                    
+                        </div>
+                    
+                        <div class="description">
+                            
+                        </div>
+                    
+                    
+                    
+                    </div>
+            </div>
 
             <div id="events" class="api-class-tabpanel">
                 <h2 class="off-left">Events</h2>
 
-                    <div id="event_ON_SWIPE_DOWN" class="events item">
-                        <h3 class="name"><code>ON_SWIPE_DOWN</code></h3>
+                    <div id="event_COMPLETE" class="events item">
+                        <h3 class="name"><code>COMPLETE</code></h3>
                         <span class="type"></span>
                     
                     
@@ -1216,7 +904,7 @@ ed.trigger('someEvent', {someData: true}, window);</code></pre>
                         <div class="meta">
                                     <p>
                                     Defined in
-                            <a href="../files/.._.._source_coffee_slikland_utils_GestureUtils.coffee.html#l26"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;utils&#x2F;GestureUtils.coffee:26</code></a>
+                            <a href="../files/.._.._source_coffee_slikland_utils_GeolocationDetection.coffee.html#l8"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;utils&#x2F;GeolocationDetection.coffee:8</code></a>
                             </p>
                     
                     
@@ -1229,8 +917,8 @@ ed.trigger('someEvent', {someData: true}, window);</code></pre>
                     
                     
                     </div>
-                    <div id="event_ON_SWIPE_LEFT" class="events item">
-                        <h3 class="name"><code>ON_SWIPE_LEFT</code></h3>
+                    <div id="event_ERROR" class="events item">
+                        <h3 class="name"><code>ERROR</code></h3>
                         <span class="type"></span>
                     
                     
@@ -1241,107 +929,7 @@ ed.trigger('someEvent', {someData: true}, window);</code></pre>
                         <div class="meta">
                                     <p>
                                     Defined in
-                            <a href="../files/.._.._source_coffee_slikland_utils_GestureUtils.coffee.html#l8"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;utils&#x2F;GestureUtils.coffee:8</code></a>
-                            </p>
-                    
-                    
-                        </div>
-                    
-                        <div class="description">
-                            
-                        </div>
-                    
-                    
-                    
-                    </div>
-                    <div id="event_ON_SWIPE_RIGHT" class="events item">
-                        <h3 class="name"><code>ON_SWIPE_RIGHT</code></h3>
-                        <span class="type"></span>
-                    
-                    
-                    
-                    
-                            <span class="flag static">static</span>
-                    
-                        <div class="meta">
-                                    <p>
-                                    Defined in
-                            <a href="../files/.._.._source_coffee_slikland_utils_GestureUtils.coffee.html#l14"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;utils&#x2F;GestureUtils.coffee:14</code></a>
-                            </p>
-                    
-                    
-                        </div>
-                    
-                        <div class="description">
-                            
-                        </div>
-                    
-                    
-                    
-                    </div>
-                    <div id="event_ON_SWIPE_UP" class="events item">
-                        <h3 class="name"><code>ON_SWIPE_UP</code></h3>
-                        <span class="type"></span>
-                    
-                    
-                    
-                    
-                            <span class="flag static">static</span>
-                    
-                        <div class="meta">
-                                    <p>
-                                    Defined in
-                            <a href="../files/.._.._source_coffee_slikland_utils_GestureUtils.coffee.html#l20"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;utils&#x2F;GestureUtils.coffee:20</code></a>
-                            </p>
-                    
-                    
-                        </div>
-                    
-                        <div class="description">
-                            
-                        </div>
-                    
-                    
-                    
-                    </div>
-                    <div id="event_ON_TOUCH_END" class="events item">
-                        <h3 class="name"><code>ON_TOUCH_END</code></h3>
-                        <span class="type"></span>
-                    
-                    
-                    
-                    
-                            <span class="flag static">static</span>
-                    
-                        <div class="meta">
-                                    <p>
-                                    Defined in
-                            <a href="../files/.._.._source_coffee_slikland_utils_GestureUtils.coffee.html#l38"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;utils&#x2F;GestureUtils.coffee:38</code></a>
-                            </p>
-                    
-                    
-                        </div>
-                    
-                        <div class="description">
-                            
-                        </div>
-                    
-                    
-                    
-                    </div>
-                    <div id="event_ON_TOUCH_START" class="events item">
-                        <h3 class="name"><code>ON_TOUCH_START</code></h3>
-                        <span class="type"></span>
-                    
-                    
-                    
-                    
-                            <span class="flag static">static</span>
-                    
-                        <div class="meta">
-                                    <p>
-                                    Defined in
-                            <a href="../files/.._.._source_coffee_slikland_utils_GestureUtils.coffee.html#l32"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;utils&#x2F;GestureUtils.coffee:32</code></a>
+                            <a href="../files/.._.._source_coffee_slikland_utils_GeolocationDetection.coffee.html#l14"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;utils&#x2F;GeolocationDetection.coffee:14</code></a>
                             </p>
                     
                     

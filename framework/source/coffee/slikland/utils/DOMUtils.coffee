@@ -5,6 +5,12 @@ Bunch of utilities methods for manipulating DOM elements
 ###
 class DOMUtils
 	
+	###*
+	@method addCSSClass
+	@param {HTMLElement} el
+	@param {String} className
+	@return {HTMLElement}
+	###
 	@addCSSClass:(el, className)->
 		if !(el instanceof Element)
 			return
@@ -20,7 +26,14 @@ class DOMUtils
 				continue
 			classNames[p++] = className[i]
 		el.className = classNames.join(' ')
+		return el
 
+	###*
+	@method removeCSSClass
+	@param {HTMLElement} el
+	@param {String} className
+	@return {HTMLElement}
+	###
 	@removeCSSClass:(el, className)->
 		if !(el instanceof Element)
 			return
@@ -35,7 +48,14 @@ class DOMUtils
 			if (p = classNames.indexOf(className[i])) >= 0
 				classNames.splice(p, 1)
 		el.className = classNames.join(' ')
-	
+		return el
+
+	###*
+	@method hasCSSClass
+	@param {HTMLElement} el
+	@param {String} className
+	@return {Boolean}
+	###
 	@hasCSSClass:(el, className)->
 		if !(el instanceof Element)
 			return
@@ -54,6 +74,12 @@ class DOMUtils
 			hasClass &= (classNames.indexOf(className[i]) >= 0)
 		return hasClass
 	
+	###*
+	@method toggleCSSClass
+	@param {HTMLElement} el
+	@param {String} name
+	@param {Boolean} [toggle=null]
+	###
 	@toggleCSSClass:(el, name, toggle = null)->
 		if !el
 			return
@@ -65,7 +91,12 @@ class DOMUtils
 		else
 			@removeCSSClass(el, name)
 
-
+	###*
+	@method findParentQuerySelector
+	@param {HTMLElement} target
+	@param {String} selector
+	@return {HTMLElement|Boolean}
+	###
 	@findParentQuerySelector:(target, selector)->
 		if !target.parentNode || target.parentNode == target
 			return false
@@ -76,6 +107,11 @@ class DOMUtils
 				return target
 		return @findParentQuerySelector(target.parentNode, selector)
 
+	###*
+	@method removeAllChildren
+	@param {HTMLElement} target
+	###
 	@removeAllChildren:(target)->
 		while target.childNodes.length
 			target.removeChild(target.firstChild)
+		false

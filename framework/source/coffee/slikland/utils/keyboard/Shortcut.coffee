@@ -1,4 +1,7 @@
 #namespace slikland.utils.keyboard
+###*
+@class Shortcut
+###
 class Shortcut
 
 	@MODIFIERS: ['alt', 'ctrl', 'meta', 'shift']

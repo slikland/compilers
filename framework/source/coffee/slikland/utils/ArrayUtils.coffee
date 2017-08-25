@@ -12,7 +12,7 @@ class ArrayUtils
 	Removes an item from an array.
 	@method removeItem
 	@static
-	@param {Array} The array that contains the item that should be removed.
+	@param {Array} p_array The array that contains the item that should be removed.
 	@param {Object} p_item The item to be removed from the array.
 	@param {Boolean} [p_clone=false] Apply and return changes to a cloned array.
 	@return {Array} An array with the removed items.

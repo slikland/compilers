@@ -205,6 +205,15 @@
             "fors": {},
             "namespaces": {}
         },
+        "../../source/coffee/slikland/utils/keyboard/Shortcut.coffee": {
+            "name": "../../source/coffee/slikland/utils/keyboard/Shortcut.coffee",
+            "modules": {},
+            "classes": {
+                "Shortcut": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
         "../../source/coffee/slikland/utils/ArrayUtils.coffee": {
             "name": "../../source/coffee/slikland/utils/ArrayUtils.coffee",
             "modules": {},
@@ -246,6 +255,15 @@
             "modules": {},
             "classes": {
                 "FunctionUtils": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "../../source/coffee/slikland/utils/GeolocationDetection.coffee": {
+            "name": "../../source/coffee/slikland/utils/GeolocationDetection.coffee",
+            "modules": {},
+            "classes": {
+                "GeolocationDetection": 1
             },
             "fors": {},
             "namespaces": {}
@@ -318,6 +336,15 @@
             "modules": {},
             "classes": {
                 "ResizeUtils": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "../../source/coffee/slikland/utils/Resizer.coffee": {
+            "name": "../../source/coffee/slikland/utils/Resizer.coffee",
+            "modules": {},
+            "classes": {
+                "Resizer": 1
             },
             "fors": {},
             "namespaces": {}
@@ -731,6 +758,17 @@
                 "\n```\n{\n\t\"id\":\"home\",\n\t\"class\":\"template-home-view\", //the valid formats are \"ClassName\", \"class-name\", \"class name\" or \"class_name\"\n\t\"route\":\"/\", //valid formats are String or RegExp\n\t\"content\":\"data/home.json\",\n\t\"cache\":true,\n\t\"parentView\":\"someViewID\", //the unique ID of parent view\n\t\"destroyable\":true,\n\t\"loadContent\":true,\n\t\"snap\":true, //only for scroll navigation type\n\t\"subviewsWrapper\":\"CSSSelector\", //like #ID or .className etc\n\t\"attachToParentWrapper\":\"CSSSelector\" //like #ID or .className etc\n}\n```"
             ]
         },
+        "Shortcut": {
+            "name": "Shortcut",
+            "shortname": "Shortcut",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "file": "../../source/coffee/slikland/utils/keyboard/Shortcut.coffee",
+            "line": 2
+        },
         "ArrayUtils": {
             "name": "ArrayUtils",
             "shortname": "ArrayUtils",
@@ -795,6 +833,19 @@
             "description": "Bunch of utilities methods for functions",
             "static": 1
         },
+        "GeolocationDetection": {
+            "name": "GeolocationDetection",
+            "shortname": "GeolocationDetection",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "file": "../../source/coffee/slikland/utils/GeolocationDetection.coffee",
+            "line": 1,
+            "description": "Methods for geolocation detection",
+            "extends": "EventDispatcher"
+        },
         "GestureUtils": {
             "name": "GestureUtils",
             "shortname": "GestureUtils",
@@ -805,7 +856,8 @@
             "extension_for": [],
             "file": "../../source/coffee/slikland/utils/GestureUtils.coffee",
             "line": 1,
-            "description": "Methods for gesture and touch"
+            "description": "Methods for gesture and touch",
+            "extends": "EventDispatcher"
         },
         "JSONUtils": {
             "name": "JSONUtils",
@@ -896,6 +948,29 @@
             "line": 1,
             "description": "Bunch of utilities methods for resize",
             "static": 1
+        },
+        "Resizer": {
+            "name": "Resizer",
+            "shortname": "Resizer",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "file": "../../source/coffee/slikland/utils/Resizer.coffee",
+            "line": 20,
+            "extends": "EventDispatcher",
+            "is_constructor": 1,
+            "params": [
+                {
+                    "name": "p_start",
+                    "description": "",
+                    "type": "Boolean",
+                    "optional": true,
+                    "optdefault": "true"
+                }
+            ],
+            "default": "true"
         },
         "ShareUtils": {
             "name": "ShareUtils",
@@ -3917,8 +3992,8 @@
             "static": 1,
             "params": [
                 {
-                    "name": "The",
-                    "description": "array that contains the item that should be removed.",
+                    "name": "p_array",
+                    "description": "The array that contains the item that should be removed.",
                     "type": "Array"
                 },
                 {
@@ -4314,6 +4389,138 @@
             "class": "ColorUtils"
         },
         {
+            "file": "../../source/coffee/slikland/utils/DOMUtils.coffee",
+            "line": 8,
+            "itemtype": "method",
+            "name": "addCSSClass",
+            "params": [
+                {
+                    "name": "el",
+                    "description": "",
+                    "type": "HTMLElement"
+                },
+                {
+                    "name": "className",
+                    "description": "",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "HTMLElement"
+            },
+            "class": "DOMUtils"
+        },
+        {
+            "file": "../../source/coffee/slikland/utils/DOMUtils.coffee",
+            "line": 31,
+            "itemtype": "method",
+            "name": "removeCSSClass",
+            "params": [
+                {
+                    "name": "el",
+                    "description": "",
+                    "type": "HTMLElement"
+                },
+                {
+                    "name": "className",
+                    "description": "",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "HTMLElement"
+            },
+            "class": "DOMUtils"
+        },
+        {
+            "file": "../../source/coffee/slikland/utils/DOMUtils.coffee",
+            "line": 53,
+            "itemtype": "method",
+            "name": "hasCSSClass",
+            "params": [
+                {
+                    "name": "el",
+                    "description": "",
+                    "type": "HTMLElement"
+                },
+                {
+                    "name": "className",
+                    "description": "",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "Boolean"
+            },
+            "class": "DOMUtils"
+        },
+        {
+            "file": "../../source/coffee/slikland/utils/DOMUtils.coffee",
+            "line": 77,
+            "itemtype": "method",
+            "name": "toggleCSSClass",
+            "params": [
+                {
+                    "name": "el",
+                    "description": "",
+                    "type": "HTMLElement"
+                },
+                {
+                    "name": "name",
+                    "description": "",
+                    "type": "String"
+                },
+                {
+                    "name": "toggle",
+                    "description": "",
+                    "type": "Boolean",
+                    "optional": true,
+                    "optdefault": "null"
+                }
+            ],
+            "class": "DOMUtils"
+        },
+        {
+            "file": "../../source/coffee/slikland/utils/DOMUtils.coffee",
+            "line": 94,
+            "itemtype": "method",
+            "name": "findParentQuerySelector",
+            "params": [
+                {
+                    "name": "target",
+                    "description": "",
+                    "type": "HTMLElement"
+                },
+                {
+                    "name": "selector",
+                    "description": "",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "HTMLElement|Boolean"
+            },
+            "class": "DOMUtils"
+        },
+        {
+            "file": "../../source/coffee/slikland/utils/DOMUtils.coffee",
+            "line": 110,
+            "itemtype": "method",
+            "name": "removeAllChildren",
+            "params": [
+                {
+                    "name": "target",
+                    "description": "",
+                    "type": "HTMLElement"
+                }
+            ],
+            "class": "DOMUtils"
+        },
+        {
             "file": "../../source/coffee/slikland/utils/FunctionUtils.coffee",
             "line": 8,
             "itemtype": "method",
@@ -4371,8 +4578,259 @@
             "class": "FunctionUtils"
         },
         {
+            "file": "../../source/coffee/slikland/utils/GeolocationDetection.coffee",
+            "line": 8,
+            "itemtype": "event",
+            "name": "COMPLETE",
+            "static": 1,
+            "class": "GeolocationDetection"
+        },
+        {
+            "file": "../../source/coffee/slikland/utils/GeolocationDetection.coffee",
+            "line": 14,
+            "itemtype": "event",
+            "name": "ERROR",
+            "static": 1,
+            "class": "GeolocationDetection"
+        },
+        {
+            "file": "../../source/coffee/slikland/utils/GeolocationDetection.coffee",
+            "line": 20,
+            "itemtype": "property",
+            "name": "isSearching",
+            "type": "Boolean",
+            "default": "false",
+            "protect": "",
+            "class": "GeolocationDetection"
+        },
+        {
+            "file": "../../source/coffee/slikland/utils/GeolocationDetection.coffee",
+            "line": 34,
+            "itemtype": "method",
+            "name": "fetchPosition",
+            "class": "GeolocationDetection"
+        },
+        {
+            "file": "../../source/coffee/slikland/utils/GeolocationDetection.coffee",
+            "line": 49,
+            "itemtype": "attribute",
+            "name": "position",
+            "return": {
+                "description": "",
+                "type": "Object"
+            },
+            "readonly": "",
+            "class": "GeolocationDetection"
+        },
+        {
+            "file": "../../source/coffee/slikland/utils/GeolocationDetection.coffee",
+            "line": 57,
+            "itemtype": "method",
+            "name": "_success",
+            "params": [
+                {
+                    "name": "position",
+                    "description": "",
+                    "type": "Object"
+                }
+            ],
+            "access": "private",
+            "tagname": "",
+            "class": "GeolocationDetection"
+        },
+        {
+            "file": "../../source/coffee/slikland/utils/GeolocationDetection.coffee",
+            "line": 68,
+            "itemtype": "method",
+            "name": "_error",
+            "params": [
+                {
+                    "name": "error",
+                    "description": "",
+                    "type": "Object"
+                }
+            ],
+            "access": "private",
+            "tagname": "",
+            "class": "GeolocationDetection"
+        },
+        {
             "file": "../../source/coffee/slikland/utils/GestureUtils.coffee",
-            "line": 89,
+            "line": 8,
+            "itemtype": "event",
+            "name": "ON_SWIPE_LEFT",
+            "static": 1,
+            "class": "GestureUtils"
+        },
+        {
+            "file": "../../source/coffee/slikland/utils/GestureUtils.coffee",
+            "line": 14,
+            "itemtype": "event",
+            "name": "ON_SWIPE_RIGHT",
+            "static": 1,
+            "class": "GestureUtils"
+        },
+        {
+            "file": "../../source/coffee/slikland/utils/GestureUtils.coffee",
+            "line": 20,
+            "itemtype": "event",
+            "name": "ON_SWIPE_UP",
+            "static": 1,
+            "class": "GestureUtils"
+        },
+        {
+            "file": "../../source/coffee/slikland/utils/GestureUtils.coffee",
+            "line": 26,
+            "itemtype": "event",
+            "name": "ON_SWIPE_DOWN",
+            "static": 1,
+            "class": "GestureUtils"
+        },
+        {
+            "file": "../../source/coffee/slikland/utils/GestureUtils.coffee",
+            "line": 32,
+            "itemtype": "event",
+            "name": "ON_TOUCH_START",
+            "static": 1,
+            "class": "GestureUtils"
+        },
+        {
+            "file": "../../source/coffee/slikland/utils/GestureUtils.coffee",
+            "line": 38,
+            "itemtype": "event",
+            "name": "ON_TOUCH_END",
+            "static": 1,
+            "class": "GestureUtils"
+        },
+        {
+            "file": "../../source/coffee/slikland/utils/GestureUtils.coffee",
+            "line": 47,
+            "itemtype": "method",
+            "name": "registerElement",
+            "params": [
+                {
+                    "name": "element",
+                    "description": "",
+                    "type": "HTMLElement"
+                }
+            ],
+            "class": "GestureUtils"
+        },
+        {
+            "file": "../../source/coffee/slikland/utils/GestureUtils.coffee",
+            "line": 63,
+            "itemtype": "method",
+            "name": "_onTouchStart",
+            "params": [
+                {
+                    "name": "event",
+                    "description": "",
+                    "type": "Event"
+                }
+            ],
+            "access": "private",
+            "tagname": "",
+            "class": "GestureUtils"
+        },
+        {
+            "file": "../../source/coffee/slikland/utils/GestureUtils.coffee",
+            "line": 85,
+            "itemtype": "method",
+            "name": "_onLeft",
+            "params": [
+                {
+                    "name": "callback",
+                    "description": "",
+                    "type": "Function"
+                }
+            ],
+            "access": "private",
+            "tagname": "",
+            "class": "GestureUtils"
+        },
+        {
+            "file": "../../source/coffee/slikland/utils/GestureUtils.coffee",
+            "line": 94,
+            "itemtype": "method",
+            "name": "_onRight",
+            "params": [
+                {
+                    "name": "callback",
+                    "description": "",
+                    "type": "Function"
+                }
+            ],
+            "access": "private",
+            "tagname": "",
+            "class": "GestureUtils"
+        },
+        {
+            "file": "../../source/coffee/slikland/utils/GestureUtils.coffee",
+            "line": 103,
+            "itemtype": "method",
+            "name": "_onUp",
+            "params": [
+                {
+                    "name": "callback",
+                    "description": "",
+                    "type": "Function"
+                }
+            ],
+            "access": "private",
+            "tagname": "",
+            "class": "GestureUtils"
+        },
+        {
+            "file": "../../source/coffee/slikland/utils/GestureUtils.coffee",
+            "line": 112,
+            "itemtype": "method",
+            "name": "_onDown",
+            "params": [
+                {
+                    "name": "callback",
+                    "description": "",
+                    "type": "Function"
+                }
+            ],
+            "access": "private",
+            "tagname": "",
+            "class": "GestureUtils"
+        },
+        {
+            "file": "../../source/coffee/slikland/utils/GestureUtils.coffee",
+            "line": 121,
+            "itemtype": "method",
+            "name": "_onTouchMove",
+            "params": [
+                {
+                    "name": "event",
+                    "description": "",
+                    "type": "Event"
+                }
+            ],
+            "access": "private",
+            "tagname": "",
+            "class": "GestureUtils"
+        },
+        {
+            "file": "../../source/coffee/slikland/utils/GestureUtils.coffee",
+            "line": 135,
+            "itemtype": "method",
+            "name": "_onTouchEnd",
+            "params": [
+                {
+                    "name": "event",
+                    "description": "",
+                    "type": "Event"
+                }
+            ],
+            "access": "private",
+            "tagname": "",
+            "class": "GestureUtils"
+        },
+        {
+            "file": "../../source/coffee/slikland/utils/GestureUtils.coffee",
+            "line": 166,
             "itemtype": "method",
             "name": "getTouchPositions",
             "static": 1,
@@ -5139,6 +5597,132 @@
                 "type": "Object"
             },
             "class": "ResizeUtils"
+        },
+        {
+            "file": "../../source/coffee/slikland/utils/Resizer.coffee",
+            "line": 33,
+            "itemtype": "attribute",
+            "name": "width",
+            "type": "{Number}",
+            "readonly": "",
+            "class": "Resizer"
+        },
+        {
+            "file": "../../source/coffee/slikland/utils/Resizer.coffee",
+            "line": 41,
+            "itemtype": "attribute",
+            "name": "height",
+            "type": "{Number}",
+            "readonly": "",
+            "class": "Resizer"
+        },
+        {
+            "file": "../../source/coffee/slikland/utils/Resizer.coffee",
+            "line": 49,
+            "itemtype": "attribute",
+            "name": "orientation",
+            "type": "{String} 'landscape' or 'portrait'",
+            "readonly": "",
+            "class": "Resizer"
+        },
+        {
+            "file": "../../source/coffee/slikland/utils/Resizer.coffee",
+            "line": 58,
+            "description": "Gets/Sets bounds",
+            "itemtype": "attribute",
+            "name": "bounds",
+            "type": "{Object} The object like {\"top\":0, \"bottom\":0, \"left\":0, \"right\":0}",
+            "readonly": "",
+            "class": "Resizer"
+        },
+        {
+            "file": "../../source/coffee/slikland/utils/Resizer.coffee",
+            "line": 69,
+            "itemtype": "method",
+            "name": "start",
+            "class": "Resizer"
+        },
+        {
+            "file": "../../source/coffee/slikland/utils/Resizer.coffee",
+            "line": 78,
+            "itemtype": "method",
+            "name": "stop",
+            "class": "Resizer"
+        },
+        {
+            "file": "../../source/coffee/slikland/utils/Resizer.coffee",
+            "line": 86,
+            "itemtype": "method",
+            "name": "change",
+            "params": [
+                {
+                    "name": "evt",
+                    "description": "",
+                    "type": "Event"
+                },
+                {
+                    "name": "allKinds",
+                    "description": "",
+                    "type": "Boolean",
+                    "optional": true,
+                    "optdefault": "false"
+                }
+            ],
+            "class": "Resizer"
+        },
+        {
+            "file": "../../source/coffee/slikland/utils/Resizer.coffee",
+            "line": 124,
+            "itemtype": "method",
+            "name": "addClass",
+            "params": [
+                {
+                    "name": "className",
+                    "description": "",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "HTMLElement"
+            },
+            "class": "Resizer"
+        },
+        {
+            "file": "../../source/coffee/slikland/utils/Resizer.coffee",
+            "line": 132,
+            "itemtype": "method",
+            "name": "removeClass",
+            "params": [
+                {
+                    "name": "className",
+                    "description": "",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "HTMLElement"
+            },
+            "class": "Resizer"
+        },
+        {
+            "file": "../../source/coffee/slikland/utils/Resizer.coffee",
+            "line": 140,
+            "itemtype": "method",
+            "name": "hasClass",
+            "params": [
+                {
+                    "name": "className",
+                    "description": "",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "Boolean"
+            },
+            "class": "Resizer"
         },
         {
             "file": "../../source/coffee/slikland/utils/SplitTextUtils.coffee",
@@ -6061,6 +6645,10 @@
         }
     ],
     "warnings": [
+        {
+            "message": "unknown tag: protect",
+            "line": " ../../source/coffee/slikland/utils/GeolocationDetection.coffee:20"
+        },
         {
             "message": "unknown tag: _a",
             "line": " ../../source/coffee/slikland/utils/Prototypes.coffee:55"

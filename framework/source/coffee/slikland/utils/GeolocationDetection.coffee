@@ -1,8 +1,28 @@
+###*
+Methods for geolocation detection
+@class GeolocationDetection
+@extends EventDispatcher
+###
 class GeolocationDetection extends EventDispatcher
 
-	@COMPLETE: 'geolocation_complete'
-	@ERROR: 'geolocation_error'
+	###*
+	@event COMPLETE
+	@static
+	###
+	@const COMPLETE: 'geolocation_complete'
+	
+	###*
+	@event ERROR
+	@static
+	###
+	@const ERROR: 'geolocation_error'
 
+	###*
+	@property isSearching
+	@type Boolean
+	@default false
+	@protect
+	###
 	isSearching: false
 
 	@getInstance:()=>
@@ -11,6 +31,9 @@ class GeolocationDetection extends EventDispatcher
 	constructor:()->
 		super
 		
+	###*
+	@method fetchPosition
+	###
 	fetchPosition: ()->
 		#avoid searching twice
 		if @isSearching then return
@@ -21,15 +44,33 @@ class GeolocationDetection extends EventDispatcher
 			navigator.geolocation.getCurrentPosition(@_success, @_error)
 		else
 			@_error('Geolocation is not supported for this Browser/OS version yet.')
+		false
 
+	###*
+	@attribute position
+	@return {Object}
+	@readOnly
+	###
 	@get position:()->
 		return @_position
 
+	###*
+	@method _success
+	@param {Object} position
+	@private
+	###
 	_success:(position)=>
 		@_position = position
 		@isSearching = false
 		@trigger(Geolocation.COMPLETE, position)
-
+		false
+		
+	###*
+	@method _error
+	@param {Object} error
+	@private
+	###
 	_error:(error)=>
 		@isSearching = false
 		@trigger(Geolocation.ERROR, error)
+		false

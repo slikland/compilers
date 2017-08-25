@@ -52,6 +52,7 @@
                                 <li><a href="../classes/DOMUtils.html">DOMUtils</a></li>
                                 <li><a href="../classes/EventDispatcher.html">EventDispatcher</a></li>
                                 <li><a href="../classes/FunctionUtils.html">FunctionUtils</a></li>
+                                <li><a href="../classes/GeolocationDetection.html">GeolocationDetection</a></li>
                                 <li><a href="../classes/GestureUtils.html">GestureUtils</a></li>
                                 <li><a href="../classes/JSONUtils.html">JSONUtils</a></li>
                                 <li><a href="../classes/KTween.html">KTween</a></li>
@@ -66,8 +67,10 @@
                                 <li><a href="../classes/ObjectUtils.html">ObjectUtils</a></li>
                                 <li><a href="../classes/PreloadFiles.html">PreloadFiles</a></li>
                                 <li><a href="../classes/Prototypes.html">Prototypes</a></li>
+                                <li><a href="../classes/Resizer.html">Resizer</a></li>
                                 <li><a href="../classes/ResizeUtils.html">ResizeUtils</a></li>
                                 <li><a href="../classes/ShareUtils.html">ShareUtils</a></li>
+                                <li><a href="../classes/Shortcut.html">Shortcut</a></li>
                                 <li><a href="../classes/SplitTextUtils.html">SplitTextUtils</a></li>
                                 <li><a href="../classes/SpriteSheetAnimation.html">SpriteSheetAnimation</a></li>
                                 <li><a href="../classes/StringUtils.html">StringUtils</a></li>
@@ -122,6 +125,12 @@ Bunch of utilities methods for manipulating DOM elements
 ###
 class DOMUtils
 	
+	###*
+	@method addCSSClass
+	@param {HTMLElement} el
+	@param {String} className
+	@return {HTMLElement}
+	###
 	@addCSSClass:(el, className)-&gt;
 		if !(el instanceof Element)
 			return
@@ -137,7 +146,14 @@ class DOMUtils
 				continue
 			classNames[p++] = className[i]
 		el.className = classNames.join(&#x27; &#x27;)
+		return el
 
+	###*
+	@method removeCSSClass
+	@param {HTMLElement} el
+	@param {String} className
+	@return {HTMLElement}
+	###
 	@removeCSSClass:(el, className)-&gt;
 		if !(el instanceof Element)
 			return
@@ -152,7 +168,14 @@ class DOMUtils
 			if (p = classNames.indexOf(className[i])) &gt;= 0
 				classNames.splice(p, 1)
 		el.className = classNames.join(&#x27; &#x27;)
-	
+		return el
+
+	###*
+	@method hasCSSClass
+	@param {HTMLElement} el
+	@param {String} className
+	@return {Boolean}
+	###
 	@hasCSSClass:(el, className)-&gt;
 		if !(el instanceof Element)
 			return
@@ -171,6 +194,12 @@ class DOMUtils
 			hasClass &amp;= (classNames.indexOf(className[i]) &gt;= 0)
 		return hasClass
 	
+	###*
+	@method toggleCSSClass
+	@param {HTMLElement} el
+	@param {String} name
+	@param {Boolean} [toggle=null]
+	###
 	@toggleCSSClass:(el, name, toggle = null)-&gt;
 		if !el
 			return
@@ -182,7 +211,12 @@ class DOMUtils
 		else
 			@removeCSSClass(el, name)
 
-
+	###*
+	@method findParentQuerySelector
+	@param {HTMLElement} target
+	@param {String} selector
+	@return {HTMLElement|Boolean}
+	###
 	@findParentQuerySelector:(target, selector)-&gt;
 		if !target.parentNode || target.parentNode == target
 			return false
@@ -193,9 +227,14 @@ class DOMUtils
 				return target
 		return @findParentQuerySelector(target.parentNode, selector)
 
+	###*
+	@method removeAllChildren
+	@param {HTMLElement} target
+	###
 	@removeAllChildren:(target)-&gt;
 		while target.childNodes.length
 			target.removeChild(target.firstChild)
+		false
 
     </pre>
 </div>

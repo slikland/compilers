@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>NavigationLoader - Caim Framework</title>
+    <title>Resizer - Caim Framework</title>
     <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
     <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
     <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
@@ -114,7 +114,7 @@
             <div class="apidocs">
                 <div id="docs-main">
                     <div class="content">
-<h1>NavigationLoader Class</h1>
+<h1>Resizer Class</h1>
 <div class="box meta">
 
         <div class="extends">
@@ -122,7 +122,7 @@
         </div>
 
         <div class="foundat">
-            Defined in: <a href="../files/.._.._source_coffee_slikland_navigation_core_NavigationLoader.coffee.html#l39"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;navigation&#x2F;core&#x2F;NavigationLoader.coffee:39</code></a>
+            Defined in: <a href="../files/.._.._source_coffee_slikland_utils_Resizer.coffee.html#l20"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;utils&#x2F;Resizer.coffee:20</code></a>
         </div>
 
 
@@ -130,19 +130,18 @@
 
 
 <div class="box intro">
-    <p>Base class to setup the configuration file and start loading of dependencies.</p>
-
+    
 </div>
 
     <div class="constructor">
         <h2>Constructor</h2>
-<div id="method_NavigationLoader" class="method item">
-    <h3 class="name"><code>NavigationLoader</code></h3>
+<div id="method_Resizer" class="method item">
+    <h3 class="name"><code>Resizer</code></h3>
 
         <div class="args">
             <span class="paren">(</span><ul class="args-list inline commas">
                 <li class="arg">
-                        <code>p_configPath</code>
+                        <code class="optional">[p_start=true]</code>
                 </li>
             </ul><span class="paren">)</span>
         </div>
@@ -157,7 +156,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._.._source_coffee_slikland_navigation_core_NavigationLoader.coffee.html#l39"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;navigation&#x2F;core&#x2F;NavigationLoader.coffee:39</code></a>
+        <a href="../files/.._.._source_coffee_slikland_utils_Resizer.coffee.html#l20"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;utils&#x2F;Resizer.coffee:20</code></a>
         </p>
 
 
@@ -173,13 +172,13 @@
 
             <ul class="params-list">
                 <li class="param">
-                        <code class="param-name">p_configPath</code>
-                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>
+                        <code class="param-name optional">[p_start=true]</code>
+                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean" class="crosslink external" target="_blank">Boolean</a></span>
+                        <span class="flag optional" title="This parameter is optional.">optional</span>
 
 
                     <div class="param-description">
-                        <p>Path of the navigation configuration file.</p>
-
+                         
                     </div>
 
                 </li>
@@ -196,6 +195,7 @@
         <li class="api-class-tab index"><a href="#index">Index</a></li>
 
             <li class="api-class-tab methods"><a href="#methods">Methods</a></li>
+            <li class="api-class-tab attrs"><a href="#attrs">Attributes</a></li>
     </ul>
 
     <div>
@@ -206,56 +206,20 @@
                     <h3>Methods</h3>
 
                     <ul class="index-list methods extends">
-                            <li class="index-item method private">
-                                <a href="#method_addFiles">addFiles</a>
+                            <li class="index-item method">
+                                <a href="#method_addClass">addClass</a>
 
                             </li>
-                            <li class="index-item method private">
-                                <a href="#method_addLoader">addLoader</a>
+                            <li class="index-item method">
+                                <a href="#method_change">change</a>
 
                             </li>
-                            <li class="index-item method private">
-                                <a href="#method_assetsLoaded">assetsLoaded</a>
-
-                            </li>
-                            <li class="index-item method private">
-                                <a href="#method_configLoaded">configLoaded</a>
-
-                            </li>
-                            <li class="index-item method private">
-                                <a href="#method_contentLoaded">contentLoaded</a>
+                            <li class="index-item method">
+                                <a href="#method_hasClass">hasClass</a>
 
                             </li>
                             <li class="index-item method inherited">
                                 <a href="#method_hasEvent">hasEvent</a>
-
-                            </li>
-                            <li class="index-item method private">
-                                <a href="#method_initialQueue">initialQueue</a>
-
-                            </li>
-                            <li class="index-item method private">
-                                <a href="#method_loadComplete">loadComplete</a>
-
-                            </li>
-                            <li class="index-item method private">
-                                <a href="#method_loadContents">loadContents</a>
-
-                            </li>
-                            <li class="index-item method protected">
-                                <a href="#method_loaded">loaded</a>
-
-                            </li>
-                            <li class="index-item method protected">
-                                <a href="#method_loader">loader</a>
-
-                            </li>
-                            <li class="index-item method private">
-                                <a href="#method_loadFileComplete">loadFileComplete</a>
-
-                            </li>
-                            <li class="index-item method private">
-                                <a href="#method_loadProgress">loadProgress</a>
 
                             </li>
                             <li class="index-item method inherited">
@@ -266,24 +230,20 @@
                                 <a href="#method_on">on</a>
 
                             </li>
-                            <li class="index-item method private">
-                                <a href="#method_parseConfig">parseConfig</a>
-
-                            </li>
-                            <li class="index-item method private">
-                                <a href="#method_removeLoader">removeLoader</a>
-
-                            </li>
-                            <li class="index-item method private">
-                                <a href="#method_removeParam">removeParam</a>
-
-                            </li>
-                            <li class="index-item method private">
-                                <a href="#method_selectLanguage">selectLanguage</a>
+                            <li class="index-item method">
+                                <a href="#method_removeClass">removeClass</a>
 
                             </li>
                             <li class="index-item method inherited">
                                 <a href="#method_stackTrigger">stackTrigger</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_start">start</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_stop">stop</a>
 
                             </li>
                             <li class="index-item method inherited">
@@ -294,95 +254,46 @@
                 </div>
 
 
+                <div class="index-section attrs">
+                    <h3>Attributes</h3>
+
+                    <ul class="index-list attrs extends">
+                            <li class="index-item attr">
+                                <a href="#attr_bounds">bounds</a>
+                            </li>
+                            <li class="index-item attr">
+                                <a href="#attr_height">height</a>
+                            </li>
+                            <li class="index-item attr">
+                                <a href="#attr_orientation">orientation</a>
+                            </li>
+                            <li class="index-item attr">
+                                <a href="#attr_width">width</a>
+                            </li>
+                    </ul>
+                </div>
 
         </div>
 
             <div id="methods" class="api-class-tabpanel">
                 <h2 class="off-left">Methods</h2>
 
-<div id="method_addFiles" class="method item private">
-    <h3 class="name"><code>addFiles</code></h3>
+<div id="method_addClass" class="method item">
+    <h3 class="name"><code>addClass</code></h3>
 
         <div class="args">
             <span class="paren">(</span><ul class="args-list inline commas">
                 <li class="arg">
-                        <code>p_queue</code>
-                </li>
-                <li class="arg">
-                        <code>p_files</code>
-                </li>
-            </ul><span class="paren">)</span>
-        </div>
-
-
-
-        <span class="flag private">private</span>
-
-
-
-
-
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/.._.._source_coffee_slikland_navigation_core_NavigationLoader.coffee.html#l247"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;navigation&#x2F;core&#x2F;NavigationLoader.coffee:247</code></a>
-        </p>
-
-
-
-    </div>
-
-    <div class="description">
-        
-    </div>
-
-        <div class="params">
-            <h4>Parameters:</h4>
-
-            <ul class="params-list">
-                <li class="param">
-                        <code class="param-name">p_queue</code>
-                        <span class="type">createjs.LoadQueue</span>
-
-
-                    <div class="param-description">
-                         
-                    </div>
-
-                </li>
-                <li class="param">
-                        <code class="param-name">p_files</code>
-                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>
-
-
-                    <div class="param-description">
-                         
-                    </div>
-
-                </li>
-            </ul>
-        </div>
-
-
-
-</div>
-<div id="method_addLoader" class="method item private">
-    <h3 class="name"><code>addLoader</code></h3>
-
-        <div class="args">
-            <span class="paren">(</span><ul class="args-list inline commas">
-                <li class="arg">
-                        <code>p_id</code>
+                        <code>className</code>
                 </li>
             </ul><span class="paren">)</span>
         </div>
 
         <span class="returns-inline">
-            <span class="type">createjs.LoadQueue</span>
+            <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement" class="crosslink external" target="_blank">HTMLElement</a></span>
         </span>
 
 
-        <span class="flag private">private</span>
 
 
 
@@ -391,7 +302,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._.._source_coffee_slikland_navigation_core_NavigationLoader.coffee.html#l221"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;navigation&#x2F;core&#x2F;NavigationLoader.coffee:221</code></a>
+        <a href="../files/.._.._source_coffee_slikland_utils_Resizer.coffee.html#l124"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;utils&#x2F;Resizer.coffee:124</code></a>
         </p>
 
 
@@ -407,7 +318,7 @@
 
             <ul class="params-list">
                 <li class="param">
-                        <code class="param-name">p_id</code>
+                        <code class="param-name">className</code>
                         <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>
 
 
@@ -423,26 +334,28 @@
             <h4>Returns:</h4>
 
             <div class="returns-description">
-                        <span class="type">createjs.LoadQueue</span>:
+                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement" class="crosslink external" target="_blank">HTMLElement</a></span>:
             </div>
         </div>
 
 
 </div>
-<div id="method_assetsLoaded" class="method item private">
-    <h3 class="name"><code>assetsLoaded</code></h3>
+<div id="method_change" class="method item">
+    <h3 class="name"><code>change</code></h3>
 
         <div class="args">
             <span class="paren">(</span><ul class="args-list inline commas">
                 <li class="arg">
-                        <code>p_id</code>
+                        <code>evt</code>
+                </li>
+                <li class="arg">
+                        <code class="optional">[allKinds=false]</code>
                 </li>
             </ul><span class="paren">)</span>
         </div>
 
 
 
-        <span class="flag private">private</span>
 
 
 
@@ -451,7 +364,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._.._source_coffee_slikland_navigation_core_NavigationLoader.coffee.html#l361"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;navigation&#x2F;core&#x2F;NavigationLoader.coffee:361</code></a>
+        <a href="../files/.._.._source_coffee_slikland_utils_Resizer.coffee.html#l86"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;utils&#x2F;Resizer.coffee:86</code></a>
         </p>
 
 
@@ -459,8 +372,7 @@
     </div>
 
     <div class="description">
-        <p>Called when the others groups is completely loaded.</p>
-
+        
     </div>
 
         <div class="params">
@@ -468,7 +380,73 @@
 
             <ul class="params-list">
                 <li class="param">
-                        <code class="param-name">p_id</code>
+                        <code class="param-name">evt</code>
+                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/API/Event" class="crosslink external" target="_blank">Event</a></span>
+
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name optional">[allKinds=false]</code>
+                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean" class="crosslink external" target="_blank">Boolean</a></span>
+                        <span class="flag optional" title="This parameter is optional.">optional</span>
+
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+
+
+</div>
+<div id="method_hasClass" class="method item">
+    <h3 class="name"><code>hasClass</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>className</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+        <span class="returns-inline">
+            <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean" class="crosslink external" target="_blank">Boolean</a></span>
+        </span>
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._.._source_coffee_slikland_utils_Resizer.coffee.html#l140"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;utils&#x2F;Resizer.coffee:140</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">className</code>
                         <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>
 
 
@@ -480,112 +458,13 @@
             </ul>
         </div>
 
+        <div class="returns">
+            <h4>Returns:</h4>
 
-
-</div>
-<div id="method_configLoaded" class="method item private">
-    <h3 class="name"><code>configLoaded</code></h3>
-
-        <div class="args">
-            <span class="paren">(</span><ul class="args-list inline commas">
-                <li class="arg">
-                        <code>evt</code>
-                </li>
-            </ul><span class="paren">)</span>
+            <div class="returns-description">
+                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean" class="crosslink external" target="_blank">Boolean</a></span>:
+            </div>
         </div>
-
-
-
-        <span class="flag private">private</span>
-
-
-
-
-
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/.._.._source_coffee_slikland_navigation_core_NavigationLoader.coffee.html#l71"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;navigation&#x2F;core&#x2F;NavigationLoader.coffee:71</code></a>
-        </p>
-
-
-
-    </div>
-
-    <div class="description">
-        
-    </div>
-
-        <div class="params">
-            <h4>Parameters:</h4>
-
-            <ul class="params-list">
-                <li class="param">
-                        <code class="param-name">evt</code>
-                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/API/Event" class="crosslink external" target="_blank">Event</a></span>
-
-
-                    <div class="param-description">
-                         
-                    </div>
-
-                </li>
-            </ul>
-        </div>
-
-
-
-</div>
-<div id="method_contentLoaded" class="method item private">
-    <h3 class="name"><code>contentLoaded</code></h3>
-
-        <div class="args">
-            <span class="paren">(</span><ul class="args-list inline commas">
-                <li class="arg">
-                        <code>evt</code>
-                </li>
-            </ul><span class="paren">)</span>
-        </div>
-
-
-
-        <span class="flag private">private</span>
-
-
-
-
-
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/.._.._source_coffee_slikland_navigation_core_NavigationLoader.coffee.html#l148"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;navigation&#x2F;core&#x2F;NavigationLoader.coffee:148</code></a>
-        </p>
-
-
-
-    </div>
-
-    <div class="description">
-        
-    </div>
-
-        <div class="params">
-            <h4>Parameters:</h4>
-
-            <ul class="params-list">
-                <li class="param">
-                        <code class="param-name">evt</code>
-                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/API/Event" class="crosslink external" target="_blank">Event</a></span>
-
-
-                    <div class="param-description">
-                         
-                    </div>
-
-                </li>
-            </ul>
-        </div>
-
 
 
 </div>
@@ -665,309 +544,6 @@
                         <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean" class="crosslink external" target="_blank">Boolean</a></span>:
             </div>
         </div>
-
-
-</div>
-<div id="method_initialQueue" class="method item private">
-    <h3 class="name"><code>initialQueue</code></h3>
-
-        <span class="paren">()</span>
-
-
-
-        <span class="flag private">private</span>
-
-
-
-
-
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/.._.._source_coffee_slikland_navigation_core_NavigationLoader.coffee.html#l165"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;navigation&#x2F;core&#x2F;NavigationLoader.coffee:165</code></a>
-        </p>
-
-
-
-    </div>
-
-    <div class="description">
-        
-    </div>
-
-
-
-
-</div>
-<div id="method_loadComplete" class="method item private">
-    <h3 class="name"><code>loadComplete</code></h3>
-
-        <div class="args">
-            <span class="paren">(</span><ul class="args-list inline commas">
-                <li class="arg">
-                        <code>evt</code>
-                </li>
-            </ul><span class="paren">)</span>
-        </div>
-
-
-
-        <span class="flag private">private</span>
-
-
-
-
-
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/.._.._source_coffee_slikland_navigation_core_NavigationLoader.coffee.html#l334"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;navigation&#x2F;core&#x2F;NavigationLoader.coffee:334</code></a>
-        </p>
-
-
-
-    </div>
-
-    <div class="description">
-        
-    </div>
-
-        <div class="params">
-            <h4>Parameters:</h4>
-
-            <ul class="params-list">
-                <li class="param">
-                        <code class="param-name">evt</code>
-                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/API/Event" class="crosslink external" target="_blank">Event</a></span>
-
-
-                    <div class="param-description">
-                         
-                    </div>
-
-                </li>
-            </ul>
-        </div>
-
-
-
-</div>
-<div id="method_loadContents" class="method item private">
-    <h3 class="name"><code>loadContents</code></h3>
-
-        <span class="paren">()</span>
-
-
-
-        <span class="flag private">private</span>
-
-
-
-
-
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/.._.._source_coffee_slikland_navigation_core_NavigationLoader.coffee.html#l126"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;navigation&#x2F;core&#x2F;NavigationLoader.coffee:126</code></a>
-        </p>
-
-
-
-    </div>
-
-    <div class="description">
-        
-    </div>
-
-
-
-
-</div>
-<div id="method_loaded" class="method item protected">
-    <h3 class="name"><code>loaded</code></h3>
-
-        <span class="paren">()</span>
-
-        <span class="returns-inline">
-            <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean" class="crosslink external" target="_blank">Boolean</a></span>
-        </span>
-
-
-        <span class="flag protected">protected</span>
-
-
-
-
-
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/.._.._source_coffee_slikland_navigation_core_NavigationLoader.coffee.html#l63"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;navigation&#x2F;core&#x2F;NavigationLoader.coffee:63</code></a>
-        </p>
-
-
-
-    </div>
-
-    <div class="description">
-        
-    </div>
-
-
-        <div class="returns">
-            <h4>Returns:</h4>
-
-            <div class="returns-description">
-                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean" class="crosslink external" target="_blank">Boolean</a></span>:
-            </div>
-        </div>
-
-
-</div>
-<div id="method_loader" class="method item protected">
-    <h3 class="name"><code>loader</code></h3>
-
-        <span class="paren">()</span>
-
-        <span class="returns-inline">
-            <span class="type">AssetLoader</span>
-        </span>
-
-
-        <span class="flag protected">protected</span>
-
-
-
-
-
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/.._.._source_coffee_slikland_navigation_core_NavigationLoader.coffee.html#l55"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;navigation&#x2F;core&#x2F;NavigationLoader.coffee:55</code></a>
-        </p>
-
-
-
-    </div>
-
-    <div class="description">
-        
-    </div>
-
-
-        <div class="returns">
-            <h4>Returns:</h4>
-
-            <div class="returns-description">
-                        <span class="type">AssetLoader</span>:
-            </div>
-        </div>
-
-
-</div>
-<div id="method_loadFileComplete" class="method item private">
-    <h3 class="name"><code>loadFileComplete</code></h3>
-
-        <div class="args">
-            <span class="paren">(</span><ul class="args-list inline commas">
-                <li class="arg">
-                        <code>evt</code>
-                </li>
-            </ul><span class="paren">)</span>
-        </div>
-
-
-
-        <span class="flag private">private</span>
-
-
-
-
-
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/.._.._source_coffee_slikland_navigation_core_NavigationLoader.coffee.html#l273"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;navigation&#x2F;core&#x2F;NavigationLoader.coffee:273</code></a>
-        </p>
-
-
-
-    </div>
-
-    <div class="description">
-        
-    </div>
-
-        <div class="params">
-            <h4>Parameters:</h4>
-
-            <ul class="params-list">
-                <li class="param">
-                        <code class="param-name">evt</code>
-                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/API/Event" class="crosslink external" target="_blank">Event</a></span>
-
-
-                    <div class="param-description">
-                         
-                    </div>
-
-                </li>
-            </ul>
-        </div>
-
-
-
-</div>
-<div id="method_loadProgress" class="method item private">
-    <h3 class="name"><code>loadProgress</code></h3>
-
-        <div class="args">
-            <span class="paren">(</span><ul class="args-list inline commas">
-                <li class="arg">
-                        <code>evt</code>
-                </li>
-            </ul><span class="paren">)</span>
-        </div>
-
-
-
-        <span class="flag private">private</span>
-
-
-
-
-
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/.._.._source_coffee_slikland_navigation_core_NavigationLoader.coffee.html#l325"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;navigation&#x2F;core&#x2F;NavigationLoader.coffee:325</code></a>
-        </p>
-
-
-
-    </div>
-
-    <div class="description">
-        
-    </div>
-
-        <div class="params">
-            <h4>Parameters:</h4>
-
-            <ul class="params-list">
-                <li class="param">
-                        <code class="param-name">evt</code>
-                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/API/Event" class="crosslink external" target="_blank">Event</a></span>
-
-
-                    <div class="param-description">
-                         
-                    </div>
-
-                </li>
-            </ul>
-        </div>
-
 
 
 </div>
@@ -1131,76 +707,22 @@ ed.on('someEvent', someEventHandler);</code></pre>
             </div>
         </div>
 </div>
-<div id="method_parseConfig" class="method item private">
-    <h3 class="name"><code>parseConfig</code></h3>
+<div id="method_removeClass" class="method item">
+    <h3 class="name"><code>removeClass</code></h3>
 
         <div class="args">
             <span class="paren">(</span><ul class="args-list inline commas">
                 <li class="arg">
-                        <code>p_data</code>
-                </li>
-            </ul><span class="paren">)</span>
-        </div>
-
-
-
-        <span class="flag private">private</span>
-
-
-
-
-
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/.._.._source_coffee_slikland_navigation_core_NavigationLoader.coffee.html#l109"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;navigation&#x2F;core&#x2F;NavigationLoader.coffee:109</code></a>
-        </p>
-
-
-
-    </div>
-
-    <div class="description">
-        
-    </div>
-
-        <div class="params">
-            <h4>Parameters:</h4>
-
-            <ul class="params-list">
-                <li class="param">
-                        <code class="param-name">p_data</code>
-                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>
-
-
-                    <div class="param-description">
-                         
-                    </div>
-
-                </li>
-            </ul>
-        </div>
-
-
-
-</div>
-<div id="method_removeLoader" class="method item private">
-    <h3 class="name"><code>removeLoader</code></h3>
-
-        <div class="args">
-            <span class="paren">(</span><ul class="args-list inline commas">
-                <li class="arg">
-                        <code>p_queue</code>
+                        <code>className</code>
                 </li>
             </ul><span class="paren">)</span>
         </div>
 
         <span class="returns-inline">
-            <span class="type">createjs.LoadQueue</span>
+            <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement" class="crosslink external" target="_blank">HTMLElement</a></span>
         </span>
 
 
-        <span class="flag private">private</span>
 
 
 
@@ -1209,7 +731,7 @@ ed.on('someEvent', someEventHandler);</code></pre>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._.._source_coffee_slikland_navigation_core_NavigationLoader.coffee.html#l234"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;navigation&#x2F;core&#x2F;NavigationLoader.coffee:234</code></a>
+        <a href="../files/.._.._source_coffee_slikland_utils_Resizer.coffee.html#l132"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;utils&#x2F;Resizer.coffee:132</code></a>
         </p>
 
 
@@ -1225,8 +747,8 @@ ed.on('someEvent', someEventHandler);</code></pre>
 
             <ul class="params-list">
                 <li class="param">
-                        <code class="param-name">p_queue</code>
-                        <span class="type">createjs.LoadQueue</span>
+                        <code class="param-name">className</code>
+                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>
 
 
                     <div class="param-description">
@@ -1241,128 +763,9 @@ ed.on('someEvent', someEventHandler);</code></pre>
             <h4>Returns:</h4>
 
             <div class="returns-description">
-                        <span class="type">createjs.LoadQueue</span>:
+                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement" class="crosslink external" target="_blank">HTMLElement</a></span>:
             </div>
         </div>
-
-
-</div>
-<div id="method_removeParam" class="method item private">
-    <h3 class="name"><code>removeParam</code></h3>
-
-        <div class="args">
-            <span class="paren">(</span><ul class="args-list inline commas">
-                <li class="arg">
-                        <code>p_param</code>
-                </li>
-                <li class="arg">
-                        <code>p_url</code>
-                </li>
-            </ul><span class="paren">)</span>
-        </div>
-
-
-
-        <span class="flag private">private</span>
-
-
-
-
-
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/.._.._source_coffee_slikland_navigation_core_NavigationLoader.coffee.html#l302"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;navigation&#x2F;core&#x2F;NavigationLoader.coffee:302</code></a>
-        </p>
-
-
-
-    </div>
-
-    <div class="description">
-        
-    </div>
-
-        <div class="params">
-            <h4>Parameters:</h4>
-
-            <ul class="params-list">
-                <li class="param">
-                        <code class="param-name">p_param</code>
-                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>
-
-
-                    <div class="param-description">
-                         
-                    </div>
-
-                </li>
-                <li class="param">
-                        <code class="param-name">p_url</code>
-                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>
-
-
-                    <div class="param-description">
-                         
-                    </div>
-
-                </li>
-            </ul>
-        </div>
-
-
-
-</div>
-<div id="method_selectLanguage" class="method item private">
-    <h3 class="name"><code>selectLanguage</code></h3>
-
-        <div class="args">
-            <span class="paren">(</span><ul class="args-list inline commas">
-                <li class="arg">
-                        <code>p_data</code>
-                </li>
-            </ul><span class="paren">)</span>
-        </div>
-
-
-
-        <span class="flag private">private</span>
-
-
-
-
-
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/.._.._source_coffee_slikland_navigation_core_NavigationLoader.coffee.html#l86"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;navigation&#x2F;core&#x2F;NavigationLoader.coffee:86</code></a>
-        </p>
-
-
-
-    </div>
-
-    <div class="description">
-        
-    </div>
-
-        <div class="params">
-            <h4>Parameters:</h4>
-
-            <ul class="params-list">
-                <li class="param">
-                        <code class="param-name">p_data</code>
-                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>
-
-
-                    <div class="param-description">
-                         
-                    </div>
-
-                </li>
-            </ul>
-        </div>
-
 
 
 </div>
@@ -1481,6 +884,66 @@ function test()
             </div>
         </div>
 </div>
+<div id="method_start" class="method item">
+    <h3 class="name"><code>start</code></h3>
+
+        <span class="paren">()</span>
+
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._.._source_coffee_slikland_utils_Resizer.coffee.html#l69"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;utils&#x2F;Resizer.coffee:69</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        
+    </div>
+
+
+
+
+</div>
+<div id="method_stop" class="method item">
+    <h3 class="name"><code>stop</code></h3>
+
+        <span class="paren">()</span>
+
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._.._source_coffee_slikland_utils_Resizer.coffee.html#l78"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;utils&#x2F;Resizer.coffee:78</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        
+    </div>
+
+
+
+
+</div>
 <div id="method_trigger" class="method item inherited">
     <h3 class="name"><code>trigger</code></h3>
 
@@ -1587,6 +1050,127 @@ ed.trigger('someEvent', {someData: true}, window);</code></pre>
             </div>
 
 
+            <div id="attrs" class="api-class-tabpanel">
+                <h2 class="off-left">Attributes</h2>
+
+                    <div id="attr_bounds" class="attr item">
+                        <a name="config_bounds"></a> 
+                        <h3 class="name"><code>bounds</code></h3>
+                        <span class="type">Object The object like "top":0, "bottom":0, "left":0, "right":0</span>
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                            <span class="flag readonly">readonly</span>
+                    
+                        <div class="meta">
+                                    <p>
+                                    Defined in
+                            <a href="../files/.._.._source_coffee_slikland_utils_Resizer.coffee.html#l58"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;utils&#x2F;Resizer.coffee:58</code></a>
+                            </p>
+                    
+                    
+                        </div>
+                    
+                        <div class="description">
+                            <p>Gets/Sets bounds</p>
+                    
+                        </div>
+                    
+                    
+                    
+                    </div>
+                    <div id="attr_height" class="attr item">
+                        <a name="config_height"></a> 
+                        <h3 class="name"><code>height</code></h3>
+                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number" class="crosslink external" target="_blank">Number</a></span>
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                            <span class="flag readonly">readonly</span>
+                    
+                        <div class="meta">
+                                    <p>
+                                    Defined in
+                            <a href="../files/.._.._source_coffee_slikland_utils_Resizer.coffee.html#l41"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;utils&#x2F;Resizer.coffee:41</code></a>
+                            </p>
+                    
+                    
+                        </div>
+                    
+                        <div class="description">
+                            
+                        </div>
+                    
+                    
+                    
+                    </div>
+                    <div id="attr_orientation" class="attr item">
+                        <a name="config_orientation"></a> 
+                        <h3 class="name"><code>orientation</code></h3>
+                        <span class="type">String 'landscape' or 'portrait'</span>
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                            <span class="flag readonly">readonly</span>
+                    
+                        <div class="meta">
+                                    <p>
+                                    Defined in
+                            <a href="../files/.._.._source_coffee_slikland_utils_Resizer.coffee.html#l49"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;utils&#x2F;Resizer.coffee:49</code></a>
+                            </p>
+                    
+                    
+                        </div>
+                    
+                        <div class="description">
+                            
+                        </div>
+                    
+                    
+                    
+                    </div>
+                    <div id="attr_width" class="attr item">
+                        <a name="config_width"></a> 
+                        <h3 class="name"><code>width</code></h3>
+                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number" class="crosslink external" target="_blank">Number</a></span>
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                            <span class="flag readonly">readonly</span>
+                    
+                        <div class="meta">
+                                    <p>
+                                    Defined in
+                            <a href="../files/.._.._source_coffee_slikland_utils_Resizer.coffee.html#l33"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;utils&#x2F;Resizer.coffee:33</code></a>
+                            </p>
+                    
+                    
+                        </div>
+                    
+                        <div class="description">
+                            
+                        </div>
+                    
+                    
+                    
+                    </div>
+            </div>
 
     </div>
 </div>
