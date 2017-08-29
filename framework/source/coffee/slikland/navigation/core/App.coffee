@@ -12,9 +12,8 @@ class App extends EventDispatcher
 	# @TODO
 	# IMPLEMENT THIS
 	# 
-	# HARDCODED !!!1!
+	# FOR NOW IS HARDCODED !!!1!
 	# 
-	
 	framework_version = "3.3.1"
 
 	_root = null

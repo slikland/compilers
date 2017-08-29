@@ -121,12 +121,12 @@ class BaseDOM extends EventDispatcher
 		if className
 			@addClass(className)
 
-		if MutationObserver?
-			@_observer = new MutationObserver(@_mutations)
-			@_observer.observe(@element, { childList: true })
-		else
-			@element.on 'DOMNodeInsertedIntoDocument', @_addedToDOM
-			@element.on 'DOMNodeRemovedFromDocument', @_removedFromDOM
+		# if MutationObserver?
+		# 	@_observer = new MutationObserver(@_mutations)
+		# 	@_observer.observe(@element, { childList: true })
+		# else
+		# 	@element.on 'DOMNodeInsertedIntoDocument', @_addedToDOM
+		# 	@element.on 'DOMNodeRemovedFromDocument', @_removedFromDOM
 
 		@element.__instance__ = @
 
