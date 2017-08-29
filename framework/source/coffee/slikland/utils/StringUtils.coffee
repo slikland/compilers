@@ -2,9 +2,9 @@
 #import slikland.utils.ArrayUtils
 
 ###*
-Bunch of utilities methods for String
 @class StringUtils
 @static
+@submodule slikland.utils
 ###
 
 class StringUtils

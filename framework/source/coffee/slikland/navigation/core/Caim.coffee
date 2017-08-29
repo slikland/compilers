@@ -16,6 +16,7 @@
 Base class to setup the navigation and start loading of dependencies.
 
 @class Caim
+@module slikland
 @extends EventDispatcher
 ###
 class Caim extends EventDispatcher

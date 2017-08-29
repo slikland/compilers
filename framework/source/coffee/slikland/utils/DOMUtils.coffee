@@ -1,7 +1,7 @@
 ###*
-Bunch of utilities methods for manipulating DOM elements
 @class DOMUtils
 @static
+@submodule slikland.utils
 ###
 class DOMUtils
 	

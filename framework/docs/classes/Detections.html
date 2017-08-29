@@ -66,7 +66,6 @@
                                 <li><a href="../classes/NumberUtils.html">NumberUtils</a></li>
                                 <li><a href="../classes/ObjectUtils.html">ObjectUtils</a></li>
                                 <li><a href="../classes/PreloadFiles.html">PreloadFiles</a></li>
-                                <li><a href="../classes/Prototypes.html">Prototypes</a></li>
                                 <li><a href="../classes/Resizer.html">Resizer</a></li>
                                 <li><a href="../classes/ResizeUtils.html">ResizeUtils</a></li>
                                 <li><a href="../classes/ShareUtils.html">ShareUtils</a></li>
@@ -81,6 +80,9 @@
                 
                 
                             <ul id="api-modules" class="apis modules">
+                                <li><a href="../modules/slikland.html">slikland</a></li>
+                                <li><a href="../modules/slikland.utils.html">slikland.utils</a></li>
+                                <li><a href="../modules/slikland.utils.keyboard.html">slikland.utils.keyboard</a></li>
                             </ul>
                         </div>
                     </div>
@@ -119,24 +121,59 @@
 
 
         <div class="foundat">
-            Defined in: <a href="../files/.._.._source_coffee_slikland_utils_Detections.coffee.html#l3"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;utils&#x2F;Detections.coffee:3</code></a>
+            Defined in: <a href="../files/.._.._source_coffee_slikland_utils_Detections.coffee.html#l31"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;utils&#x2F;Detections.coffee:31</code></a>
         </div>
 
+            Module: <a href="../modules/slikland.utils.html">slikland.utils</a><br>
+            Parent Module: <a href="../modules/slikland.html">slikland</a>
 
 </div>
 
 
 <div class="box intro">
-    <p>Detections Class</p>
-
+    
 </div>
 
+    <div class="constructor">
+        <h2>Constructor</h2>
+<div id="method_Detections" class="method item">
+    <h3 class="name"><code>Detections</code></h3>
+
+        <span class="paren">()</span>
+
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._.._source_coffee_slikland_utils_Detections.coffee.html#l31"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;utils&#x2F;Detections.coffee:31</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        
+    </div>
+
+
+
+
+</div>
+    </div>
 
 <div id="classdocs" class="tabview">
     <ul class="api-class-tabs">
         <li class="api-class-tab index"><a href="#index">Index</a></li>
 
             <li class="api-class-tab methods"><a href="#methods">Methods</a></li>
+            <li class="api-class-tab properties"><a href="#properties">Properties</a></li>
     </ul>
 
     <div>
@@ -147,14 +184,116 @@
                     <h3>Methods</h3>
 
                     <ul class="index-list methods">
+                            <li class="index-item method protected">
+                                <a href="#method_getBrowser">getBrowser</a>
+
+                            </li>
+                            <li class="index-item method private">
+                                <a href="#method_getFirstMatch">getFirstMatch</a>
+
+                            </li>
                             <li class="index-item method">
                                 <a href="#method_getInstance">getInstance</a>
 
                                     <span class="flag static">static</span>
                             </li>
+                            <li class="index-item method protected">
+                                <a href="#method_getOS">getOS</a>
+
+                            </li>
+                            <li class="index-item method protected">
+                                <a href="#method_test">test</a>
+
+                            </li>
+                            <li class="index-item method private">
+                                <a href="#method_testCanvas">testCanvas</a>
+
+                            </li>
+                            <li class="index-item method private">
+                                <a href="#method_testRetinaDisplay">testRetinaDisplay</a>
+
+                            </li>
+                            <li class="index-item method private">
+                                <a href="#method_testWebGL">testWebGL</a>
+
+                            </li>
                     </ul>
                 </div>
 
+                <div class="index-section properties">
+                    <h3>Properties</h3>
+
+                    <ul class="index-list properties">
+                            <li class="index-item property">
+                                <a href="#property_cache">cache</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_canvas">canvas</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_desktop">desktop</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_iosInlineVideo">iosInlineVideo</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_mobile">mobile</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_orientation">orientation</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_os">os</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_platform">platform</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_retina">retina</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_standalone">standalone</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_tablet">tablet</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_touch">touch</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_ua">ua</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_version">version</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_versionArr">versionArr</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_vibrate">vibrate</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_webgl">webgl</a>
+
+                            </li>
+                    </ul>
+                </div>
 
 
         </div>
@@ -162,6 +301,125 @@
             <div id="methods" class="api-class-tabpanel">
                 <h2 class="off-left">Methods</h2>
 
+<div id="method_getBrowser" class="method item protected">
+    <h3 class="name"><code>getBrowser</code></h3>
+
+        <span class="paren">()</span>
+
+        <span class="returns-inline">
+            <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array" class="crosslink external" target="_blank">Array</a></span>
+        </span>
+
+
+        <span class="flag protected">protected</span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._.._source_coffee_slikland_utils_Detections.coffee.html#l203"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;utils&#x2F;Detections.coffee:203</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        
+    </div>
+
+
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array" class="crosslink external" target="_blank">Array</a></span>:
+                    <p>The result in array is a string like [&quot;name&quot;, &quot;version&quot;]</p>
+
+            </div>
+        </div>
+
+
+</div>
+<div id="method_getFirstMatch" class="method item private">
+    <h3 class="name"><code>getFirstMatch</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>re</code>
+                </li>
+                <li class="arg">
+                        <code>val</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+        <span class="returns-inline">
+            <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean" class="crosslink external" target="_blank">Boolean</a></span>
+        </span>
+
+
+        <span class="flag private">private</span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._.._source_coffee_slikland_utils_Detections.coffee.html#l192"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;utils&#x2F;Detections.coffee:192</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">re</code>
+                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RegExp" class="crosslink external" target="_blank">RegExp</a></span>
+
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">val</code>
+                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number" class="crosslink external" target="_blank">Number</a></span>
+
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean" class="crosslink external" target="_blank">Boolean</a></span>:
+            </div>
+        </div>
+
+
+</div>
 <div id="method_getInstance" class="method item">
     <h3 class="name"><code>getInstance</code></h3>
 
@@ -181,7 +439,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._.._source_coffee_slikland_utils_Detections.coffee.html#l25"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;utils&#x2F;Detections.coffee:25</code></a>
+        <a href="../files/.._.._source_coffee_slikland_utils_Detections.coffee.html#l23"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;utils&#x2F;Detections.coffee:23</code></a>
         </p>
 
 
@@ -203,8 +461,649 @@
 
 
 </div>
+<div id="method_getOS" class="method item protected">
+    <h3 class="name"><code>getOS</code></h3>
+
+        <span class="paren">()</span>
+
+        <span class="returns-inline">
+            <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>
+        </span>
+
+
+        <span class="flag protected">protected</span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._.._source_coffee_slikland_utils_Detections.coffee.html#l217"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;utils&#x2F;Detections.coffee:217</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        
+    </div>
+
+
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>:
+                    <p>The result values are 'ios', 'osx', 'android', 'windows' and 'blackberry'</p>
+
+            </div>
+        </div>
+
+
+</div>
+<div id="method_test" class="method item protected">
+    <h3 class="name"><code>test</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>value</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+        <span class="returns-inline">
+            <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number" class="crosslink external" target="_blank">Number</a></span>
+        </span>
+
+
+        <span class="flag protected">protected</span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._.._source_coffee_slikland_utils_Detections.coffee.html#l157"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;utils&#x2F;Detections.coffee:157</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">value</code>
+                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>
+
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number" class="crosslink external" target="_blank">Number</a></span>:
+            </div>
+        </div>
+
+
+</div>
+<div id="method_testCanvas" class="method item private">
+    <h3 class="name"><code>testCanvas</code></h3>
+
+        <span class="paren">()</span>
+
+        <span class="returns-inline">
+            <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean" class="crosslink external" target="_blank">Boolean</a></span>
+        </span>
+
+
+        <span class="flag private">private</span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._.._source_coffee_slikland_utils_Detections.coffee.html#l268"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;utils&#x2F;Detections.coffee:268</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        
+    </div>
+
+
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean" class="crosslink external" target="_blank">Boolean</a></span>:
+            </div>
+        </div>
+
+
+</div>
+<div id="method_testRetinaDisplay" class="method item private">
+    <h3 class="name"><code>testRetinaDisplay</code></h3>
+
+        <span class="paren">()</span>
+
+        <span class="returns-inline">
+            <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean" class="crosslink external" target="_blank">Boolean</a></span>
+        </span>
+
+
+        <span class="flag private">private</span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._.._source_coffee_slikland_utils_Detections.coffee.html#l246"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;utils&#x2F;Detections.coffee:246</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        
+    </div>
+
+
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean" class="crosslink external" target="_blank">Boolean</a></span>:
+            </div>
+        </div>
+
+
+</div>
+<div id="method_testWebGL" class="method item private">
+    <h3 class="name"><code>testWebGL</code></h3>
+
+        <span class="paren">()</span>
+
+        <span class="returns-inline">
+            <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean" class="crosslink external" target="_blank">Boolean</a></span>
+        </span>
+
+
+        <span class="flag private">private</span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._.._source_coffee_slikland_utils_Detections.coffee.html#l257"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;utils&#x2F;Detections.coffee:257</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        
+    </div>
+
+
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean" class="crosslink external" target="_blank">Boolean</a></span>:
+            </div>
+        </div>
+
+
+</div>
             </div>
 
+            <div id="properties" class="api-class-tabpanel">
+                <h2 class="off-left">Properties</h2>
+
+<div id="property_cache" class="property item">
+    <h3 class="name"><code>cache</code></h3>
+    <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean" class="crosslink external" target="_blank">Boolean</a></span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._.._source_coffee_slikland_utils_Detections.coffee.html#l115"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;utils&#x2F;Detections.coffee:115</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        
+    </div>
+
+
+
+</div>
+<div id="property_canvas" class="property item">
+    <h3 class="name"><code>canvas</code></h3>
+    <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean" class="crosslink external" target="_blank">Boolean</a></span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._.._source_coffee_slikland_utils_Detections.coffee.html#l121"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;utils&#x2F;Detections.coffee:121</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        
+    </div>
+
+
+
+</div>
+<div id="property_desktop" class="property item">
+    <h3 class="name"><code>desktop</code></h3>
+    <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean" class="crosslink external" target="_blank">Boolean</a></span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._.._source_coffee_slikland_utils_Detections.coffee.html#l103"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;utils&#x2F;Detections.coffee:103</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        
+    </div>
+
+
+
+</div>
+<div id="property_iosInlineVideo" class="property item">
+    <h3 class="name"><code>iosInlineVideo</code></h3>
+    <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean" class="crosslink external" target="_blank">Boolean</a></span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._.._source_coffee_slikland_utils_Detections.coffee.html#l141"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;utils&#x2F;Detections.coffee:141</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        
+    </div>
+
+
+
+</div>
+<div id="property_mobile" class="property item">
+    <h3 class="name"><code>mobile</code></h3>
+    <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean" class="crosslink external" target="_blank">Boolean</a></span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._.._source_coffee_slikland_utils_Detections.coffee.html#l97"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;utils&#x2F;Detections.coffee:97</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        
+    </div>
+
+
+
+</div>
+<div id="property_orientation" class="property item">
+    <h3 class="name"><code>orientation</code></h3>
+    <span class="type">String 'landscape' or 'portrait'</span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._.._source_coffee_slikland_utils_Detections.coffee.html#l148"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;utils&#x2F;Detections.coffee:148</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        
+    </div>
+
+
+
+</div>
+<div id="property_os" class="property item">
+    <h3 class="name"><code>os</code></h3>
+    <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean" class="crosslink external" target="_blank">Boolean</a></span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._.._source_coffee_slikland_utils_Detections.coffee.html#l109"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;utils&#x2F;Detections.coffee:109</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        
+    </div>
+
+
+
+</div>
+<div id="property_platform" class="property item">
+    <h3 class="name"><code>platform</code></h3>
+    <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._.._source_coffee_slikland_utils_Detections.coffee.html#l43"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;utils&#x2F;Detections.coffee:43</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        
+    </div>
+
+
+
+</div>
+<div id="property_retina" class="property item">
+    <h3 class="name"><code>retina</code></h3>
+    <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean" class="crosslink external" target="_blank">Boolean</a></span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._.._source_coffee_slikland_utils_Detections.coffee.html#l67"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;utils&#x2F;Detections.coffee:67</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        
+    </div>
+
+
+
+</div>
+<div id="property_standalone" class="property item">
+    <h3 class="name"><code>standalone</code></h3>
+    <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean" class="crosslink external" target="_blank">Boolean</a></span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._.._source_coffee_slikland_utils_Detections.coffee.html#l61"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;utils&#x2F;Detections.coffee:61</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        
+    </div>
+
+
+
+</div>
+<div id="property_tablet" class="property item">
+    <h3 class="name"><code>tablet</code></h3>
+    <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean" class="crosslink external" target="_blank">Boolean</a></span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._.._source_coffee_slikland_utils_Detections.coffee.html#l91"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;utils&#x2F;Detections.coffee:91</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        
+    </div>
+
+
+
+</div>
+<div id="property_touch" class="property item">
+    <h3 class="name"><code>touch</code></h3>
+    <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean" class="crosslink external" target="_blank">Boolean</a></span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._.._source_coffee_slikland_utils_Detections.coffee.html#l85"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;utils&#x2F;Detections.coffee:85</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        
+    </div>
+
+
+
+</div>
+<div id="property_ua" class="property item">
+    <h3 class="name"><code>ua</code></h3>
+    <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._.._source_coffee_slikland_utils_Detections.coffee.html#l37"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;utils&#x2F;Detections.coffee:37</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        
+    </div>
+
+
+
+</div>
+<div id="property_version" class="property item">
+    <h3 class="name"><code>version</code></h3>
+    <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._.._source_coffee_slikland_utils_Detections.coffee.html#l49"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;utils&#x2F;Detections.coffee:49</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        
+    </div>
+
+
+
+</div>
+<div id="property_versionArr" class="property item">
+    <h3 class="name"><code>versionArr</code></h3>
+    <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array" class="crosslink external" target="_blank">Array</a></span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._.._source_coffee_slikland_utils_Detections.coffee.html#l76"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;utils&#x2F;Detections.coffee:76</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        
+    </div>
+
+
+
+</div>
+<div id="property_vibrate" class="property item">
+    <h3 class="name"><code>vibrate</code></h3>
+    <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean" class="crosslink external" target="_blank">Boolean</a></span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._.._source_coffee_slikland_utils_Detections.coffee.html#l55"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;utils&#x2F;Detections.coffee:55</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        
+    </div>
+
+
+
+</div>
+<div id="property_webgl" class="property item">
+    <h3 class="name"><code>webgl</code></h3>
+    <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean" class="crosslink external" target="_blank">Boolean</a></span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._.._source_coffee_slikland_utils_Detections.coffee.html#l127"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;utils&#x2F;Detections.coffee:127</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        
+    </div>
+
+
+
+</div>
+            </div>
 
 
     </div>

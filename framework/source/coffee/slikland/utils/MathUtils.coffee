@@ -1,7 +1,7 @@
 ###*
-Bunch of utilities methods for Math
 @class MathUtils
 @static
+@submodule slikland.utils
 ###
 class MathUtils
 

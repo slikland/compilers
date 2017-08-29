@@ -1,7 +1,7 @@
 ###*
-Bunch of utilities methods for Numbers
 @class NumberUtils
 @static
+@submodule slikland.utils
 ###
 class NumberUtils
 

@@ -1,7 +1,7 @@
 ###*
-Bunch of utilities methods for resize
 @class ResizeUtils
 @static
+@submodule slikland.utils
 ###
 class ResizeUtils
 

@@ -66,7 +66,6 @@
                                 <li><a href="../classes/NumberUtils.html">NumberUtils</a></li>
                                 <li><a href="../classes/ObjectUtils.html">ObjectUtils</a></li>
                                 <li><a href="../classes/PreloadFiles.html">PreloadFiles</a></li>
-                                <li><a href="../classes/Prototypes.html">Prototypes</a></li>
                                 <li><a href="../classes/Resizer.html">Resizer</a></li>
                                 <li><a href="../classes/ResizeUtils.html">ResizeUtils</a></li>
                                 <li><a href="../classes/ShareUtils.html">ShareUtils</a></li>
@@ -81,6 +80,9 @@
                 
                 
                             <ul id="api-modules" class="apis modules">
+                                <li><a href="../modules/slikland.html">slikland</a></li>
+                                <li><a href="../modules/slikland.utils.html">slikland.utils</a></li>
+                                <li><a href="../modules/slikland.utils.keyboard.html">slikland.utils.keyboard</a></li>
                             </ul>
                         </div>
                     </div>
@@ -119,8 +121,8 @@
 <div class="file">
     <pre class="code prettyprint linenums">
 ###*
-Methods for Sunrise and Sunset
 @class SunUtils
+@submodule slikland.utils
 ###
 class SunUtils
 
@@ -132,12 +134,21 @@ class SunUtils
 	@getInstance:()=&gt;
 		@_instance ?= new @(arguments...)
 
+	###*
+	@class SunUtils
+	@constructor
+	###
 	constructor:()-&gt;
 		@_location = null
 		@_waitingLocation = false
 		@_zenith = 90.83333333333333
 		@_sunsetQueue = []
 
+	###*
+	@method getTimeToNextSunset
+	@param {Function} callback
+	@return {Number|Boolean}
+	###
 	getTimeToNextSunset:(callback)-&gt;
 		#add to queue
 		@_sunsetQueue.push callback if callback
@@ -171,30 +182,70 @@ class SunUtils
 
 		return result
 
+	###*
+	@method COS
+	@param {Number} deg
+	@protected
+	@return {Number}
+	###
 	COS:(deg)-&gt;
 		rad = Math.PI * deg / 180
 		return Math.cos(rad)
 
+	###*
+	@method SIN
+	@param {Number} deg
+	@protected
+	@return {Number}
+	###
 	SIN:(deg)-&gt;
 		rad = Math.PI * deg / 180
 		return Math.sin(rad)
 
+	###*
+	@method TAN
+	@param {Number} deg
+	@protected
+	@return {Number}
+	###
 	TAN:(deg)-&gt;
 		rad = Math.PI * deg / 180
 		return Math.tan(rad)
 
+	###*
+	@method ACOS
+	@param {Number} cos
+	@protected
+	@return {Number}
+	###
 	ACOS:(cos)-&gt;
 		return Math.acos(cos) * 180 / Math.PI
 
+	###*
+	@method ASIN
+	@param {Number} cos
+	@protected
+	@return {Number}
+	###
 	ASIN:(sin)-&gt;
 		return Math.asin(sin) * 180 / Math.PI
 
+	###*
+	@method ATAN
+	@param {Number} tan
+	@protected
+	@return {Number}
+	###
 	ATAN:(tan)-&gt;
 		return Math.atan(tan) * 180 / Math.PI
 
-	# Private
-	#-------------------------------------
-	_showLocation:(location)=&gt;
+	###*
+	@method _showLocation
+	@param {Object} location A object likes {coords:{&quot;latitude&quot;:0, &quot;longitude&quot;:0}}
+	@param {Function} callback
+	@private
+	###
+	_showLocation:(location, callback)=&gt;
 		@_location = location
 		if @_location
 			@_waitingLocation = false
@@ -203,11 +254,23 @@ class SunUtils
 			for callback,i in @_sunsetQueue
 				@_sunsetQueue.splice(i, 1)
 				callback(false)
+		false
 
+	###*
+	@method _getCurrentTime
+	@private
+	@return {Number}
+	###
 	_getCurrentTime:()-&gt;
 		now = new Date()
 		return (now.getHours() * 3600) + (now.getMinutes() * 60) + now.getSeconds()
 
+	###*
+	@method _calcSunsetOf
+	@param {Date} now
+	@private
+	@return {Number}
+	###
 	_calcSunsetOf:(now)-&gt;
 		result = false
 		now ?= new Date()

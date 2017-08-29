@@ -1,7 +1,7 @@
 ###*
-Bunch of utilities methods for JSON objects
 @class JSONUtils
 @static
+@submodule slikland.utils
 ###
 class JSONUtils
 

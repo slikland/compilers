@@ -1,7 +1,7 @@
 #namespace slikland.utils.keyboard
 ###*
-Wrapper for keyboard shortcuts
 @class Shortcut
+@submodule slikland.utils.keyboard
 ###
 class Shortcut
 

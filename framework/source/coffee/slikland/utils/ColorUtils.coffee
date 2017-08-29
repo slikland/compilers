@@ -1,7 +1,7 @@
 ###*
-Bunch of utilities methods for Colors
 @class ColorUtils
 @static
+@submodule slikland.utils
 ###
 class ColorUtils
 	###*

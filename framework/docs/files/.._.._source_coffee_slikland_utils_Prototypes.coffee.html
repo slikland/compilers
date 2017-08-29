@@ -66,7 +66,6 @@
                                 <li><a href="../classes/NumberUtils.html">NumberUtils</a></li>
                                 <li><a href="../classes/ObjectUtils.html">ObjectUtils</a></li>
                                 <li><a href="../classes/PreloadFiles.html">PreloadFiles</a></li>
-                                <li><a href="../classes/Prototypes.html">Prototypes</a></li>
                                 <li><a href="../classes/Resizer.html">Resizer</a></li>
                                 <li><a href="../classes/ResizeUtils.html">ResizeUtils</a></li>
                                 <li><a href="../classes/ShareUtils.html">ShareUtils</a></li>
@@ -81,6 +80,9 @@
                 
                 
                             <ul id="api-modules" class="apis modules">
+                                <li><a href="../modules/slikland.html">slikland</a></li>
+                                <li><a href="../modules/slikland.utils.html">slikland.utils</a></li>
+                                <li><a href="../modules/slikland.utils.keyboard.html">slikland.utils.keyboard</a></li>
                             </ul>
                         </div>
                     </div>
@@ -118,12 +120,7 @@
 
 <div class="file">
     <pre class="code prettyprint linenums">
-###*
-This is actually not a Class. It&#x27;s a bunch of helper methods adding prototype methods to native classes.
-
-@class Prototypes
-###
-
+## This is actually not a Class. It&#x27;s a bunch of helper methods adding prototype methods to native classes.
 ##--------------------------------------
 ##	Getter / Setter
 ##	@example
@@ -179,7 +176,7 @@ This method is a decorator to protect a property of a class instance removing th
 * Please ignore de backslash on \\\@ as the code formatter doesn&#x27;t escape atmarks.
 
 @method @protectProperties
-@beta
+@beta 
 @example
 	class A
 		\@protectProperties [&quot;_a&quot;, &quot;_b&quot;]

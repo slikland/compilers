@@ -1,6 +1,6 @@
 ###*
-Methods for Sunrise and Sunset
 @class SunUtils
+@submodule slikland.utils
 ###
 class SunUtils
 
@@ -12,12 +12,21 @@ class SunUtils
 	@getInstance:()=>
 		@_instance ?= new @(arguments...)
 
+	###*
+	@class SunUtils
+	@constructor
+	###
 	constructor:()->
 		@_location = null
 		@_waitingLocation = false
 		@_zenith = 90.83333333333333
 		@_sunsetQueue = []
 
+	###*
+	@method getTimeToNextSunset
+	@param {Function} callback
+	@return {Number|Boolean}
+	###
 	getTimeToNextSunset:(callback)->
 		#add to queue
 		@_sunsetQueue.push callback if callback
@@ -51,30 +60,70 @@ class SunUtils
 
 		return result
 
+	###*
+	@method COS
+	@param {Number} deg
+	@protected
+	@return {Number}
+	###
 	COS:(deg)->
 		rad = Math.PI * deg / 180
 		return Math.cos(rad)
 
+	###*
+	@method SIN
+	@param {Number} deg
+	@protected
+	@return {Number}
+	###
 	SIN:(deg)->
 		rad = Math.PI * deg / 180
 		return Math.sin(rad)
 
+	###*
+	@method TAN
+	@param {Number} deg
+	@protected
+	@return {Number}
+	###
 	TAN:(deg)->
 		rad = Math.PI * deg / 180
 		return Math.tan(rad)
 
+	###*
+	@method ACOS
+	@param {Number} cos
+	@protected
+	@return {Number}
+	###
 	ACOS:(cos)->
 		return Math.acos(cos) * 180 / Math.PI
 
+	###*
+	@method ASIN
+	@param {Number} cos
+	@protected
+	@return {Number}
+	###
 	ASIN:(sin)->
 		return Math.asin(sin) * 180 / Math.PI
 
+	###*
+	@method ATAN
+	@param {Number} tan
+	@protected
+	@return {Number}
+	###
 	ATAN:(tan)->
 		return Math.atan(tan) * 180 / Math.PI
 
-	# Private
-	#-------------------------------------
-	_showLocation:(location)=>
+	###*
+	@method _showLocation
+	@param {Object} location A object likes {coords:{"latitude":0, "longitude":0}}
+	@param {Function} callback
+	@private
+	###
+	_showLocation:(location, callback)=>
 		@_location = location
 		if @_location
 			@_waitingLocation = false
@@ -83,11 +132,23 @@ class SunUtils
 			for callback,i in @_sunsetQueue
 				@_sunsetQueue.splice(i, 1)
 				callback(false)
+		false
 
+	###*
+	@method _getCurrentTime
+	@private
+	@return {Number}
+	###
 	_getCurrentTime:()->
 		now = new Date()
 		return (now.getHours() * 3600) + (now.getMinutes() * 60) + now.getSeconds()
 
+	###*
+	@method _calcSunsetOf
+	@param {Date} now
+	@private
+	@return {Number}
+	###
 	_calcSunsetOf:(now)->
 		result = false
 		now ?= new Date()

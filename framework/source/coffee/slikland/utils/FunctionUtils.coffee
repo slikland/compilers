@@ -1,7 +1,7 @@
 ###*
-Bunch of utilities methods for functions
 @class FunctionUtils
 @static
+@submodule slikland.utils
 ###
 class FunctionUtils
 

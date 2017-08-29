@@ -1,8 +1,6 @@
-#import slikland.utils.Resizer
-
 ###*
-Detections Class
 @class Detections
+@submodule slikland.utils
 ###
 class Detections
 	matches: [
@@ -30,28 +28,107 @@ class Detections
 	@getInstance:()=>
 		@_instance ?= new @(arguments...)
 
+	###*
+	@class Detections
+	@constructor
+	###
 	constructor:()->
 		@matched = null
+		###*
+		@property ua
+		@type {String}
+		@readOnly
+		###
 		@ua = navigator?.userAgent || ''
+		###*
+		@property platform
+		@type {String}
+		@readOnly
+		###
 		@platform = navigator?.platform || ''
+		###*
+		@property version
+		@type {String}
+		@readOnly
+		###
 		@version = getFirstMatch(/version\/(\d+(\.\d+)*)/i, @ua)
+		###*
+		@property vibrate
+		@type {Boolean}
+		@readOnly
+		###
 		@vibrate = (navigator.vibrate || navigator.webkitVibrate || navigator.mozVibrate || navigator.msVibrate)
+		###*
+		@property standalone
+		@type {Boolean}
+		@readOnly
+		###
 		@standalone = window?.navigator.standalone || window?.matchMedia('(display-mode: standalone)').matches
+		###*
+		@property retina
+		@type {Boolean}
+		@readOnly
+		###
 		@retina = @testRetinaDisplay()
 		
 		@getBrowser()
+		
+		###*
+		@property versionArr
+		@type {Array}
+		@readOnly
+		###
 		@versionArr = if !@version? then [] else @version.split('.')
 		for k, v of @versionArr
 			@versionArr[k] = Number(v)
 		
+		###*
+		@property touch
+		@type {Boolean}
+		@readOnly
+		###
 		@touch = Boolean('ontouchstart' of window) || Boolean(navigator.maxTouchPoints > 0) || Boolean(navigator.msMaxTouchPoints > 0)
+		###*
+		@property tablet
+		@type {Boolean}
+		@readOnly
+		###
 		@tablet = /(ipad.*|tablet(?!\s+pc).*|(android.*?chrome((?!mobi).)*))$/i.test(@ua)
+		###*
+		@property mobile
+		@type {Boolean}
+		@readOnly
+		###
 		@mobile = !@tablet && Boolean(getFirstMatch(/(ipod|iphone|ipad)/i, @ua) || /[^-]mobi/i.test(@ua))
+		###*
+		@property desktop
+		@type {Boolean}
+		@readOnly
+		###
 		@desktop = !@mobile && !@tablet
-
+		###*
+		@property os
+		@type {Boolean}
+		@readOnly
+		###
 		@os = getOS()
+		###*
+		@property cache
+		@type {Boolean}
+		@readOnly
+		###
 		@cache = @serviceWorker = ('serviceWorker' of navigator)
+		###*
+		@property canvas
+		@type {Boolean}
+		@readOnly
+		###
 		@canvas = testCanvas()
+		###*
+		@property webgl
+		@type {Boolean}
+		@readOnly
+		###
 		@webgl = testWebGL()
 
 		versionToCheck = 10
@@ -61,11 +138,28 @@ class Detections
 		else
 			if o = /\(iP(?:hone|ad|od).*? OS (\d+)_(\d+)/i.exec(@ua)
 				validVersion = Number(o[1]) >= versionToCheck
+		###*
+		@property iosInlineVideo
+		@type {Boolean}
+		@readOnly
+		###
 		@iosInlineVideo = (@os == "ios" && validVersion)
 
+	###*
+	@property orientation
+	@type {String} 'landscape' or 'portrait'
+	@readOnly
+	###
 	@get orientation:->
-		return Resizer.getInstance().orientation
+		ratio = screen?.width/screen?.height
+		return if window?.innerWidth > window?.innerHeight and ratio > 1.3 then 'landscape' else 'portrait'
 		
+	###*
+	@method test
+	@param {String} value
+	@return {Number} 
+	@protected
+	###
 	test:(value)->
 		if !@matched
 			return 0
@@ -95,10 +189,22 @@ class Detections
 					return -1
 		return result
 
+	###*
+	@method getFirstMatch
+	@param {RegExp} re 
+	@param {Number} val 
+	@return {Boolean} 
+	@private
+	###
 	getFirstMatch=(re, val)->
 		m = val.match(re)
 		return (m && m.length > 1 && m[1]) || null
 
+	###*
+	@method getBrowser
+	@return {Array} The result in array is a string like ["name", "version"]
+	@protected
+	###
 	getBrowser:()->
 		for m in @matches
 			if m.test.test(@ua)
@@ -108,6 +214,12 @@ class Detections
 				break
 		return [@name, @version]
 		
+	###*
+	@method getOS
+	@return {String} The result values are 'ios', 'osx', 'android', 'windows' and 'blackberry'
+	@default undefined
+	@protected
+	###
 	getOS=()->
 		result = undefined
 		
@@ -131,18 +243,33 @@ class Detections
 			result = 'windows'
 		return result
 
+	###*
+	@method testRetinaDisplay
+	@return {Boolean} 
+	@private
+	###
 	testRetinaDisplay:()=>
 		if window?.matchMedia
 			mq = window.matchMedia('only screen and (min--moz-device-pixel-ratio: 1.3), only screen and (-o-min-device-pixel-ratio: 2.6/2), only screen and (-webkit-min-device-pixel-ratio: 1.3), only screen  and (min-device-pixel-ratio: 1.3), only screen and (min-resolution: 1.3dppx)')
 			return mq and mq.matches or window?.devicePixelRatio > 1
 		return false
 
+	###*
+	@method testWebGL
+	@return {Boolean} 
+	@private
+	###
 	testWebGL=()->
 		try
 			return !!window.WebGLRenderingContext && Boolean(document.createElement("canvas").getContext('webgl')) || Boolean(document.createElement("canvas").getContext('experimental-webgl'))
 		catch err
 			return false
 
+	###*
+	@method testCanvas
+	@return {Boolean} 
+	@private
+	###
 	testCanvas=()->
 		try
 			return !!window.CanvasRenderingContext2D && Boolean(document.createElement("canvas").getContext('2d'))

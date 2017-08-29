@@ -1,7 +1,7 @@
 ###*
-Bunch of utilities methods for mouse
 @class MouseUtils
 @static
+@submodule slikland.utils
 ###
 class MouseUtils
 	###*

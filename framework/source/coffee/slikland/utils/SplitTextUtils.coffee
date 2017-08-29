@@ -1,6 +1,7 @@
 ###*
 @class SplitTextUtils
 @static
+@submodule slikland.utils
 ###
 class SplitTextUtils
 	###*

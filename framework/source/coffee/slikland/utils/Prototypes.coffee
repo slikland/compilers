@@ -1,9 +1,4 @@
-###*
-This is actually not a Class. It's a bunch of helper methods adding prototype methods to native classes.
-
-@class Prototypes
-###
-
+## This is actually not a Class. It's a bunch of helper methods adding prototype methods to native classes.
 ##--------------------------------------
 ##	Getter / Setter
 ##	@example
@@ -59,7 +54,7 @@ This method is a decorator to protect a property of a class instance removing th
 * Please ignore de backslash on \\\@ as the code formatter doesn't escape atmarks.
 
 @method @protectProperties
-@beta
+@beta 
 @example
 	class A
 		\@protectProperties ["_a", "_b"]

@@ -4,6 +4,7 @@
 ###*
 @class Resizer
 @extends EventDispatcher
+@submodule slikland.utils
 ###
 class Resizer extends EventDispatcher
 

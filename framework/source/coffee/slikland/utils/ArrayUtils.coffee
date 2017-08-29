@@ -2,8 +2,8 @@
 #import slikland.utils.NumberUtils
 
 ###*
-Bunch of utilities methods for Array
 @class ArrayUtils
+@submodule slikland.utils
 @static
 ###
 class ArrayUtils

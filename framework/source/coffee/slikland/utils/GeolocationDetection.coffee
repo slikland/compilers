@@ -1,7 +1,6 @@
 ###*
-Methods for geolocation detection
 @class GeolocationDetection
-@extends EventDispatcher
+@submodule slikland.utils
 ###
 class GeolocationDetection extends EventDispatcher
 
@@ -33,6 +32,11 @@ class GeolocationDetection extends EventDispatcher
 	@getInstance:()=>
 		@_instance ?= new @(arguments...)
 
+	###*
+	@class GeolocationDetection
+	@constructor
+	@extends EventDispatcher
+	###
 	constructor:()->
 		super
 		

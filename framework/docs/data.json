@@ -153,7 +153,9 @@
         },
         "../../source/coffee/slikland/navigation/core/Caim.coffee": {
             "name": "../../source/coffee/slikland/navigation/core/Caim.coffee",
-            "modules": {},
+            "modules": {
+                "slikland": 1
+            },
             "classes": {
                 "Caim": 1
             },
@@ -325,9 +327,7 @@
         "../../source/coffee/slikland/utils/Prototypes.coffee": {
             "name": "../../source/coffee/slikland/utils/Prototypes.coffee",
             "modules": {},
-            "classes": {
-                "Prototypes": 1
-            },
+            "classes": {},
             "fors": {},
             "namespaces": {}
         },
@@ -395,7 +395,110 @@
             "namespaces": {}
         }
     },
-    "modules": {},
+    "modules": {
+        "slikland": {
+            "name": "slikland",
+            "submodules": {
+                "slikland.utils.keyboard": 1,
+                "slikland.utils": 1
+            },
+            "elements": {},
+            "classes": {
+                "AnimationTicker": 1,
+                "BaseAnimation": 1,
+                "KTween": 1,
+                "SpriteSheetAnimation": 1,
+                "Debug": 1,
+                "BaseDOM": 1,
+                "EventDispatcher": 1,
+                "PreloadFiles": 1,
+                "ConditionsValidation": 1,
+                "ViewsData": 1,
+                "MetaController": 1,
+                "BaseNavigationController": 1,
+                "Caim": 1,
+                "Navigation": 1,
+                "NavigationContainer": 1,
+                "NavigationLoader": 1,
+                "NavigationRouter": 1,
+                "BaseView": 1,
+                "Shortcut": 1,
+                "ArrayUtils": 1,
+                "ColorUtils": 1,
+                "DOMUtils": 1,
+                "Detections": 1,
+                "FunctionUtils": 1,
+                "GeolocationDetection": 1,
+                "GestureUtils": 1,
+                "JSONUtils": 1,
+                "MathUtils": 1,
+                "MouseUtils": 1,
+                "NumberUtils": 1,
+                "ObjectUtils": 1,
+                "ResizeUtils": 1,
+                "Resizer": 1,
+                "ShareUtils": 1,
+                "SplitTextUtils": 1,
+                "StringUtils": 1,
+                "SunUtils": 1,
+                "URLUtils": 1
+            },
+            "fors": {},
+            "namespaces": {},
+            "tag": "module",
+            "file": "../../source/coffee/slikland/utils/URLUtils.coffee",
+            "line": 3,
+            "description": "Base class to setup the navigation and start loading of dependencies."
+        },
+        "slikland.utils.keyboard": {
+            "name": "slikland.utils.keyboard",
+            "submodules": {},
+            "elements": {},
+            "classes": {
+                "Shortcut": 1
+            },
+            "fors": {},
+            "is_submodule": 1,
+            "namespaces": {},
+            "module": "slikland",
+            "namespace": "",
+            "file": "../../source/coffee/slikland/utils/keyboard/Shortcut.coffee",
+            "line": 24
+        },
+        "slikland.utils": {
+            "name": "slikland.utils",
+            "submodules": {},
+            "elements": {},
+            "classes": {
+                "ArrayUtils": 1,
+                "ColorUtils": 1,
+                "DOMUtils": 1,
+                "Detections": 1,
+                "FunctionUtils": 1,
+                "GeolocationDetection": 1,
+                "GestureUtils": 1,
+                "JSONUtils": 1,
+                "MathUtils": 1,
+                "MouseUtils": 1,
+                "NumberUtils": 1,
+                "ObjectUtils": 1,
+                "ResizeUtils": 1,
+                "Resizer": 1,
+                "ShareUtils": 1,
+                "SplitTextUtils": 1,
+                "StringUtils": 1,
+                "SunUtils": 1,
+                "URLUtils": 1
+            },
+            "fors": {},
+            "is_submodule": 1,
+            "namespaces": {},
+            "module": "slikland",
+            "namespace": "",
+            "file": "../../source/coffee/slikland/utils/URLUtils.coffee",
+            "line": 3
+        }
+    },
     "classes": {
         "AnimationTicker": {
             "name": "AnimationTicker",
@@ -405,6 +508,7 @@
             "extensions": [],
             "plugin_for": [],
             "extension_for": [],
+            "module": "slikland",
             "file": "../../source/coffee/slikland/anim/AnimationTicker.coffee",
             "line": 3,
             "description": "Class to controll animation. It calls a callback method every requestAnimation frame.<br>\nIn case of Internet Explorer 9, it uses a setTimeout with 16 ms.",
@@ -418,6 +522,7 @@
             "extensions": [],
             "plugin_for": [],
             "extension_for": [],
+            "module": "slikland",
             "file": "../../source/coffee/slikland/anim/BaseAnimation.coffee",
             "line": 3,
             "description": "BaseAnimation interface class for most frame / time based animation.<br>\nPlease do not instantiate this class. Use the extended classes.",
@@ -431,6 +536,7 @@
             "extensions": [],
             "plugin_for": [],
             "extension_for": [],
+            "module": "slikland",
             "file": "../../source/coffee/slikland/anim/KTween.coffee",
             "line": 1,
             "description": "KTween class"
@@ -443,6 +549,7 @@
             "extensions": [],
             "plugin_for": [],
             "extension_for": [],
+            "module": "slikland",
             "file": "../../source/coffee/slikland/anim/SpriteSheetAnimation.coffee",
             "line": 20,
             "description": "Spritesheet Animation class\n\nThis class will animate a spritesheet. It already handles responsiveness.<br>\nSo If the size of the SpriteSheetAnimation div is set, the animation will fit in the defined size.<br>\nIf a size is not set, it'll use the size defined in the JSON object.",
@@ -467,6 +574,7 @@
             "extensions": [],
             "plugin_for": [],
             "extension_for": [],
+            "module": "slikland",
             "file": "../../source/coffee/slikland/debug/Debug.coffee",
             "line": 1,
             "description": "Debug Class",
@@ -481,6 +589,7 @@
             "extensions": [],
             "plugin_for": [],
             "extension_for": [],
+            "module": "slikland",
             "file": "../../source/coffee/slikland/display/BaseDOM.coffee",
             "line": 74,
             "description": "Base DOM manipulation class"
@@ -493,6 +602,7 @@
             "extensions": [],
             "plugin_for": [],
             "extension_for": [],
+            "module": "slikland",
             "file": "../../source/coffee/slikland/event/EventDispatcher.coffee",
             "line": 2,
             "description": "EventDispatcher class for handling and triggering events."
@@ -505,6 +615,7 @@
             "extensions": [],
             "plugin_for": [],
             "extension_for": [],
+            "module": "slikland",
             "file": "../../source/coffee/slikland/loader/PreloadFiles.coffee",
             "line": 1,
             "description": "It's a simple wrapper to PreloadJS.\nSee more info on <a href=\"http://www.createjs.com/docs/preloadjs/\" target=\"_blank\" class=\"crosslink\">PreloadJS Docs</a>"
@@ -517,6 +628,7 @@
             "extensions": [],
             "plugin_for": [],
             "extension_for": [],
+            "module": "slikland",
             "file": "../../source/coffee/slikland/navigation/core/data/ConditionsValidation.coffee",
             "line": 16,
             "description": "Singleton ConditionsValidation class",
@@ -537,6 +649,7 @@
             "extensions": [],
             "plugin_for": [],
             "extension_for": [],
+            "module": "slikland",
             "file": "../../source/coffee/slikland/navigation/core/data/ViewsData.coffee",
             "line": 23,
             "description": "ViewsData Class",
@@ -559,6 +672,7 @@
             "extensions": [],
             "plugin_for": [],
             "extension_for": [],
+            "module": "slikland",
             "file": "../../source/coffee/slikland/navigation/core/meta/MetaController.coffee",
             "line": 8,
             "extends": "EventDispatcher",
@@ -579,6 +693,7 @@
             "extension_for": [
                 "Navigation"
             ],
+            "module": "slikland",
             "file": "../../source/coffee/slikland/navigation/core/BaseNavigationController.coffee",
             "line": 28,
             "description": "BaseNavigationController is a base class for any type of navigation controller.<br>\nPlease do not instantiate this class. Use the extended classes.",
@@ -593,8 +708,9 @@
             "extensions": [],
             "plugin_for": [],
             "extension_for": [],
+            "module": "slikland",
             "file": "../../source/coffee/slikland/navigation/core/Caim.coffee",
-            "line": 28,
+            "line": 29,
             "description": "Base class to setup the navigation and start loading of dependencies.",
             "extends": "EventDispatcher",
             "is_constructor": 1,
@@ -628,6 +744,8 @@
             "extensions": [],
             "plugin_for": [],
             "extension_for": [],
+            "module": "slikland",
+            "namespace": "",
             "file": "../../source/coffee/slikland/navigation/core/Navigation.coffee",
             "line": 34,
             "description": "Navigation Class\nThe instance of this class can be accessed by `app.navigation` wrapper",
@@ -654,6 +772,8 @@
             "extensions": [],
             "plugin_for": [],
             "extension_for": [],
+            "module": "slikland",
+            "namespace": "",
             "file": "../../source/coffee/slikland/navigation/core/NavigationContainer.coffee",
             "line": 11,
             "description": "NavigationContainer Class",
@@ -684,6 +804,8 @@
             "extensions": [],
             "plugin_for": [],
             "extension_for": [],
+            "module": "slikland",
+            "namespace": "",
             "file": "../../source/coffee/slikland/navigation/core/NavigationLoader.coffee",
             "line": 39,
             "description": "Base class to setup the configuration file and start loading of dependencies.",
@@ -707,6 +829,8 @@
             "extension_for": [
                 "Navigation"
             ],
+            "module": "slikland",
+            "namespace": "",
             "file": "../../source/coffee/slikland/navigation/core/NavigationRouter.coffee",
             "line": 19,
             "extends": "EventDispatcher",
@@ -721,6 +845,8 @@
             "extensions": [],
             "plugin_for": [],
             "extension_for": [],
+            "module": "slikland",
+            "namespace": "",
             "file": "../../source/coffee/slikland/navigation/display/BaseView.coffee",
             "line": 95,
             "description": "Base View",
@@ -761,9 +887,11 @@
             "extensions": [],
             "plugin_for": [],
             "extension_for": [],
+            "module": "slikland",
+            "namespace": "",
             "file": "../../source/coffee/slikland/utils/keyboard/Shortcut.coffee",
             "line": 24,
-            "description": "Wrapper for keyboard shortcuts",
+            "submodule": "slikland.utils.keyboard",
             "is_constructor": 1,
             "params": [
                 {
@@ -783,9 +911,11 @@
             "extensions": [],
             "plugin_for": [],
             "extension_for": [],
+            "module": "slikland",
+            "namespace": "",
             "file": "../../source/coffee/slikland/utils/ArrayUtils.coffee",
             "line": 4,
-            "description": "Bunch of utilities methods for Array",
+            "submodule": "slikland.utils",
             "static": 1
         },
         "ColorUtils": {
@@ -796,9 +926,11 @@
             "extensions": [],
             "plugin_for": [],
             "extension_for": [],
+            "module": "slikland",
+            "namespace": "",
             "file": "../../source/coffee/slikland/utils/ColorUtils.coffee",
             "line": 1,
-            "description": "Bunch of utilities methods for Colors",
+            "submodule": "slikland.utils",
             "static": 1
         },
         "DOMUtils": {
@@ -809,9 +941,11 @@
             "extensions": [],
             "plugin_for": [],
             "extension_for": [],
+            "module": "slikland",
+            "namespace": "",
             "file": "../../source/coffee/slikland/utils/DOMUtils.coffee",
             "line": 1,
-            "description": "Bunch of utilities methods for manipulating DOM elements",
+            "submodule": "slikland.utils",
             "static": 1
         },
         "Detections": {
@@ -822,9 +956,12 @@
             "extensions": [],
             "plugin_for": [],
             "extension_for": [],
+            "module": "slikland",
+            "namespace": "",
             "file": "../../source/coffee/slikland/utils/Detections.coffee",
-            "line": 3,
-            "description": "Detections Class"
+            "line": 31,
+            "submodule": "slikland.utils",
+            "is_constructor": 1
         },
         "FunctionUtils": {
             "name": "FunctionUtils",
@@ -834,9 +971,11 @@
             "extensions": [],
             "plugin_for": [],
             "extension_for": [],
+            "module": "slikland",
+            "namespace": "",
             "file": "../../source/coffee/slikland/utils/FunctionUtils.coffee",
             "line": 1,
-            "description": "Bunch of utilities methods for functions",
+            "submodule": "slikland.utils",
             "static": 1
         },
         "GeolocationDetection": {
@@ -847,9 +986,12 @@
             "extensions": [],
             "plugin_for": [],
             "extension_for": [],
+            "module": "slikland",
+            "namespace": "",
             "file": "../../source/coffee/slikland/utils/GeolocationDetection.coffee",
-            "line": 1,
-            "description": "Methods for geolocation detection",
+            "line": 35,
+            "submodule": "slikland.utils",
+            "is_constructor": 1,
             "extends": "EventDispatcher"
         },
         "GestureUtils": {
@@ -860,9 +1002,12 @@
             "extensions": [],
             "plugin_for": [],
             "extension_for": [],
+            "module": "slikland",
+            "namespace": "",
             "file": "../../source/coffee/slikland/utils/GestureUtils.coffee",
-            "line": 1,
-            "description": "Methods for gesture and touch",
+            "line": 43,
+            "submodule": "slikland.utils",
+            "is_constructor": 1,
             "extends": "EventDispatcher"
         },
         "JSONUtils": {
@@ -873,9 +1018,11 @@
             "extensions": [],
             "plugin_for": [],
             "extension_for": [],
+            "module": "slikland",
+            "namespace": "",
             "file": "../../source/coffee/slikland/utils/JSONUtils.coffee",
             "line": 1,
-            "description": "Bunch of utilities methods for JSON objects",
+            "submodule": "slikland.utils",
             "static": 1
         },
         "MathUtils": {
@@ -886,9 +1033,11 @@
             "extensions": [],
             "plugin_for": [],
             "extension_for": [],
+            "module": "slikland",
+            "namespace": "",
             "file": "../../source/coffee/slikland/utils/MathUtils.coffee",
             "line": 1,
-            "description": "Bunch of utilities methods for Math",
+            "submodule": "slikland.utils",
             "static": 1
         },
         "MouseUtils": {
@@ -899,9 +1048,11 @@
             "extensions": [],
             "plugin_for": [],
             "extension_for": [],
+            "module": "slikland",
+            "namespace": "",
             "file": "../../source/coffee/slikland/utils/MouseUtils.coffee",
             "line": 1,
-            "description": "Bunch of utilities methods for mouse",
+            "submodule": "slikland.utils",
             "static": 1
         },
         "NumberUtils": {
@@ -912,9 +1063,11 @@
             "extensions": [],
             "plugin_for": [],
             "extension_for": [],
+            "module": "slikland",
+            "namespace": "",
             "file": "../../source/coffee/slikland/utils/NumberUtils.coffee",
             "line": 1,
-            "description": "Bunch of utilities methods for Numbers",
+            "submodule": "slikland.utils",
             "static": 1
         },
         "ObjectUtils": {
@@ -925,22 +1078,12 @@
             "extensions": [],
             "plugin_for": [],
             "extension_for": [],
+            "module": "slikland",
+            "namespace": "",
             "file": "../../source/coffee/slikland/utils/ObjectUtils.coffee",
             "line": 1,
-            "description": "Bunch of utilities methods for objects",
+            "submodule": "slikland.utils",
             "static": 1
-        },
-        "Prototypes": {
-            "name": "Prototypes",
-            "shortname": "Prototypes",
-            "classitems": [],
-            "plugins": [],
-            "extensions": [],
-            "plugin_for": [],
-            "extension_for": [],
-            "file": "../../source/coffee/slikland/utils/Prototypes.coffee",
-            "line": 1,
-            "description": "This is actually not a Class. It's a bunch of helper methods adding prototype methods to native classes."
         },
         "ResizeUtils": {
             "name": "ResizeUtils",
@@ -950,9 +1093,11 @@
             "extensions": [],
             "plugin_for": [],
             "extension_for": [],
+            "module": "slikland",
+            "namespace": "",
             "file": "../../source/coffee/slikland/utils/ResizeUtils.coffee",
             "line": 1,
-            "description": "Bunch of utilities methods for resize",
+            "submodule": "slikland.utils",
             "static": 1
         },
         "Resizer": {
@@ -963,8 +1108,11 @@
             "extensions": [],
             "plugin_for": [],
             "extension_for": [],
+            "module": "slikland",
+            "namespace": "",
             "file": "../../source/coffee/slikland/utils/Resizer.coffee",
-            "line": 40,
+            "line": 41,
+            "submodule": "slikland.utils",
             "extends": "EventDispatcher",
             "is_constructor": 1,
             "params": [
@@ -985,9 +1133,11 @@
             "extensions": [],
             "plugin_for": [],
             "extension_for": [],
+            "module": "slikland",
+            "namespace": "",
             "file": "../../source/coffee/slikland/utils/ShareUtils.coffee",
             "line": 1,
-            "description": "Bunch of utilities methods for social networks share",
+            "submodule": "slikland.utils",
             "static": 1
         },
         "SplitTextUtils": {
@@ -998,8 +1148,11 @@
             "extensions": [],
             "plugin_for": [],
             "extension_for": [],
+            "module": "slikland",
+            "namespace": "",
             "file": "../../source/coffee/slikland/utils/SplitTextUtils.coffee",
             "line": 1,
+            "submodule": "slikland.utils",
             "static": 1
         },
         "StringUtils": {
@@ -1010,9 +1163,11 @@
             "extensions": [],
             "plugin_for": [],
             "extension_for": [],
+            "module": "slikland",
+            "namespace": "",
             "file": "../../source/coffee/slikland/utils/StringUtils.coffee",
             "line": 4,
-            "description": "Bunch of utilities methods for String",
+            "submodule": "slikland.utils",
             "static": 1
         },
         "SunUtils": {
@@ -1023,9 +1178,12 @@
             "extensions": [],
             "plugin_for": [],
             "extension_for": [],
+            "module": "slikland",
+            "namespace": "",
             "file": "../../source/coffee/slikland/utils/SunUtils.coffee",
-            "line": 1,
-            "description": "Methods for Sunrise and Sunset"
+            "line": 15,
+            "submodule": "slikland.utils",
+            "is_constructor": 1
         },
         "URLUtils": {
             "name": "URLUtils",
@@ -1035,9 +1193,11 @@
             "extensions": [],
             "plugin_for": [],
             "extension_for": [],
+            "module": "slikland",
+            "namespace": "",
             "file": "../../source/coffee/slikland/utils/URLUtils.coffee",
             "line": 3,
-            "description": "Bunch of utilities methods for URL",
+            "submodule": "slikland.utils",
             "static": 1
         }
     },
@@ -2319,7 +2479,7 @@
         },
         {
             "file": "../../source/coffee/slikland/navigation/core/Caim.coffee",
-            "line": 59,
+            "line": 60,
             "itemtype": "method",
             "name": "preParserState",
             "params": [
@@ -2336,11 +2496,12 @@
             ],
             "access": "private",
             "tagname": "",
-            "class": "Caim"
+            "class": "Caim",
+            "module": "slikland"
         },
         {
             "file": "../../source/coffee/slikland/navigation/core/Caim.coffee",
-            "line": 70,
+            "line": 71,
             "itemtype": "method",
             "name": "configLoaded",
             "params": [
@@ -2352,11 +2513,12 @@
             ],
             "access": "private",
             "tagname": "",
-            "class": "Caim"
+            "class": "Caim",
+            "module": "slikland"
         },
         {
             "file": "../../source/coffee/slikland/navigation/core/Caim.coffee",
-            "line": 82,
+            "line": 83,
             "itemtype": "method",
             "name": "progress",
             "params": [
@@ -2368,11 +2530,12 @@
             ],
             "access": "private",
             "tagname": "",
-            "class": "Caim"
+            "class": "Caim",
+            "module": "slikland"
         },
         {
             "file": "../../source/coffee/slikland/navigation/core/Caim.coffee",
-            "line": 91,
+            "line": 92,
             "itemtype": "method",
             "name": "groupLoaded",
             "params": [
@@ -2384,11 +2547,12 @@
             ],
             "access": "private",
             "tagname": "",
-            "class": "Caim"
+            "class": "Caim",
+            "module": "slikland"
         },
         {
             "file": "../../source/coffee/slikland/navigation/core/Caim.coffee",
-            "line": 116,
+            "line": 117,
             "itemtype": "method",
             "name": "createPreloaderView",
             "params": [
@@ -2402,11 +2566,12 @@
             ],
             "access": "protected",
             "tagname": "",
-            "class": "Caim"
+            "class": "Caim",
+            "module": "slikland"
         },
         {
             "file": "../../source/coffee/slikland/navigation/core/Caim.coffee",
-            "line": 129,
+            "line": 130,
             "itemtype": "method",
             "name": "showPreloaderView",
             "params": [
@@ -2420,11 +2585,12 @@
             ],
             "access": "protected",
             "tagname": "",
-            "class": "Caim"
+            "class": "Caim",
+            "module": "slikland"
         },
         {
             "file": "../../source/coffee/slikland/navigation/core/Caim.coffee",
-            "line": 139,
+            "line": 140,
             "itemtype": "method",
             "name": "hidePreloderView",
             "params": [
@@ -2438,11 +2604,12 @@
             ],
             "access": "protected",
             "tagname": "",
-            "class": "Caim"
+            "class": "Caim",
+            "module": "slikland"
         },
         {
             "file": "../../source/coffee/slikland/navigation/core/Caim.coffee",
-            "line": 150,
+            "line": 151,
             "itemtype": "method",
             "name": "destroyPreloderView",
             "params": [
@@ -2456,20 +2623,22 @@
             ],
             "access": "protected",
             "tagname": "",
-            "class": "Caim"
+            "class": "Caim",
+            "module": "slikland"
         },
         {
             "file": "../../source/coffee/slikland/navigation/core/Caim.coffee",
-            "line": 164,
+            "line": 165,
             "itemtype": "method",
             "name": "_createMainView",
             "access": "private",
             "tagname": "",
-            "class": "Caim"
+            "class": "Caim",
+            "module": "slikland"
         },
         {
             "file": "../../source/coffee/slikland/navigation/core/Caim.coffee",
-            "line": 188,
+            "line": 189,
             "itemtype": "method",
             "name": "_showMainView",
             "params": [
@@ -2483,11 +2652,12 @@
             ],
             "access": "private",
             "tagname": "",
-            "class": "Caim"
+            "class": "Caim",
+            "module": "slikland"
         },
         {
             "file": "../../source/coffee/slikland/navigation/core/Caim.coffee",
-            "line": 198,
+            "line": 199,
             "description": "Called only when the core assets is completely loaded.",
             "itemtype": "method",
             "name": "coreAssetsLoaded",
@@ -2502,11 +2672,12 @@
             ],
             "access": "protected",
             "tagname": "",
-            "class": "Caim"
+            "class": "Caim",
+            "module": "slikland"
         },
         {
             "file": "../../source/coffee/slikland/navigation/core/Caim.coffee",
-            "line": 207,
+            "line": 208,
             "description": "Called only when the preloader assets is completely loaded.",
             "itemtype": "method",
             "name": "preloaderAssetsLoaded",
@@ -2521,11 +2692,12 @@
             ],
             "access": "protected",
             "tagname": "",
-            "class": "Caim"
+            "class": "Caim",
+            "module": "slikland"
         },
         {
             "file": "../../source/coffee/slikland/navigation/core/Caim.coffee",
-            "line": 216,
+            "line": 217,
             "description": "Called only when the main assets is completely loaded.",
             "itemtype": "method",
             "name": "mainAssetsLoaded",
@@ -2540,7 +2712,8 @@
             ],
             "access": "protected",
             "tagname": "",
-            "class": "Caim"
+            "class": "Caim",
+            "module": "slikland"
         },
         {
             "file": "../../source/coffee/slikland/navigation/core/Navigation.coffee",
@@ -2548,7 +2721,8 @@
             "itemtype": "event",
             "name": "CHANGE_ROUTE",
             "static": 1,
-            "class": "Navigation"
+            "class": "Navigation",
+            "module": "slikland"
         },
         {
             "file": "../../source/coffee/slikland/navigation/core/Navigation.coffee",
@@ -2556,7 +2730,8 @@
             "itemtype": "event",
             "name": "CHANGE_VIEW",
             "static": 1,
-            "class": "Navigation"
+            "class": "Navigation",
+            "module": "slikland"
         },
         {
             "file": "../../source/coffee/slikland/navigation/core/Navigation.coffee",
@@ -2564,7 +2739,8 @@
             "itemtype": "event",
             "name": "CHANGE_INTERNAL_VIEW",
             "static": 1,
-            "class": "Navigation"
+            "class": "Navigation",
+            "module": "slikland"
         },
         {
             "file": "../../source/coffee/slikland/navigation/core/Navigation.coffee",
@@ -2578,7 +2754,8 @@
                     "type": "Object"
                 }
             ],
-            "class": "Navigation"
+            "class": "Navigation",
+            "module": "slikland"
         },
         {
             "file": "../../source/coffee/slikland/navigation/core/Navigation.coffee",
@@ -2594,7 +2771,8 @@
                     "optdefault": "null"
                 }
             ],
-            "class": "Navigation"
+            "class": "Navigation",
+            "module": "slikland"
         },
         {
             "file": "../../source/coffee/slikland/navigation/core/Navigation.coffee",
@@ -2604,7 +2782,8 @@
             "name": "visibleViews",
             "type": "{Array}",
             "readonly": "",
-            "class": "Navigation"
+            "class": "Navigation",
+            "module": "slikland"
         },
         {
             "file": "../../source/coffee/slikland/navigation/core/Navigation.coffee",
@@ -2614,7 +2793,8 @@
             "name": "currentView",
             "type": "{BaseView}",
             "readonly": "",
-            "class": "Navigation"
+            "class": "Navigation",
+            "module": "slikland"
         },
         {
             "file": "../../source/coffee/slikland/navigation/core/Navigation.coffee",
@@ -2624,7 +2804,8 @@
             "name": "previousView",
             "type": "{BaseView}",
             "readonly": "",
-            "class": "Navigation"
+            "class": "Navigation",
+            "module": "slikland"
         },
         {
             "file": "../../source/coffee/slikland/navigation/core/Navigation.coffee",
@@ -2634,7 +2815,8 @@
             "name": "routeData",
             "type": "{Object}",
             "readonly": "",
-            "class": "Navigation"
+            "class": "Navigation",
+            "module": "slikland"
         },
         {
             "file": "../../source/coffee/slikland/navigation/core/Navigation.coffee",
@@ -2644,7 +2826,8 @@
             "name": "router",
             "type": "{NavigationRouter}",
             "readonly": "",
-            "class": "Navigation"
+            "class": "Navigation",
+            "module": "slikland"
         },
         {
             "file": "../../source/coffee/slikland/navigation/core/Navigation.coffee",
@@ -2654,7 +2837,8 @@
             "name": "navigation",
             "type": "{BaseNavigationController}",
             "readonly": "",
-            "class": "Navigation"
+            "class": "Navigation",
+            "module": "slikland"
         },
         {
             "file": "../../source/coffee/slikland/navigation/core/Navigation.coffee",
@@ -2670,7 +2854,8 @@
             ],
             "deprecated": true,
             "deprecationMessage": "Uses the {{#crossLink \"Navigation/gotoRoute:method\"}}{{/crossLink}} or {{#crossLink \"Navigation/gotoView:method\"}}{{/crossLink}}",
-            "class": "Navigation"
+            "class": "Navigation",
+            "module": "slikland"
         },
         {
             "file": "../../source/coffee/slikland/navigation/core/Navigation.coffee",
@@ -2691,7 +2876,8 @@
                     "optdefault": "false"
                 }
             ],
-            "class": "Navigation"
+            "class": "Navigation",
+            "module": "slikland"
         },
         {
             "file": "../../source/coffee/slikland/navigation/core/Navigation.coffee",
@@ -2712,7 +2898,8 @@
                     "optdefault": "false"
                 }
             ],
-            "class": "Navigation"
+            "class": "Navigation",
+            "module": "slikland"
         },
         {
             "file": "../../source/coffee/slikland/navigation/core/Navigation.coffee",
@@ -2733,14 +2920,16 @@
                     "optdefault": "false"
                 }
             ],
-            "class": "Navigation"
+            "class": "Navigation",
+            "module": "slikland"
         },
         {
             "file": "../../source/coffee/slikland/navigation/core/Navigation.coffee",
             "line": 213,
             "itemtype": "method",
             "name": "gotoDefault",
-            "class": "Navigation"
+            "class": "Navigation",
+            "module": "slikland"
         },
         {
             "file": "../../source/coffee/slikland/navigation/core/Navigation.coffee",
@@ -2754,7 +2943,8 @@
                     "type": "String"
                 }
             ],
-            "class": "Navigation"
+            "class": "Navigation",
+            "module": "slikland"
         },
         {
             "file": "../../source/coffee/slikland/navigation/core/Navigation.coffee",
@@ -2773,7 +2963,8 @@
                 "type": "String"
             },
             "default": "null",
-            "class": "Navigation"
+            "class": "Navigation",
+            "module": "slikland"
         },
         {
             "file": "../../source/coffee/slikland/navigation/core/Navigation.coffee",
@@ -2792,7 +2983,8 @@
                 "type": "String"
             },
             "default": "null",
-            "class": "Navigation"
+            "class": "Navigation",
+            "module": "slikland"
         },
         {
             "file": "../../source/coffee/slikland/navigation/core/Navigation.coffee",
@@ -2810,7 +3002,8 @@
             ],
             "access": "private",
             "tagname": "",
-            "class": "Navigation"
+            "class": "Navigation",
+            "module": "slikland"
         },
         {
             "file": "../../source/coffee/slikland/navigation/core/Navigation.coffee",
@@ -2828,7 +3021,8 @@
             ],
             "access": "private",
             "tagname": "",
-            "class": "Navigation"
+            "class": "Navigation",
+            "module": "slikland"
         },
         {
             "file": "../../source/coffee/slikland/navigation/core/Navigation.coffee",
@@ -2846,7 +3040,8 @@
             ],
             "access": "private",
             "tagname": "",
-            "class": "Navigation"
+            "class": "Navigation",
+            "module": "slikland"
         },
         {
             "file": "../../source/coffee/slikland/navigation/core/NavigationContainer.coffee",
@@ -2860,7 +3055,8 @@
                     "type": "Object"
                 }
             ],
-            "class": "NavigationContainer"
+            "class": "NavigationContainer",
+            "module": "slikland"
         },
         {
             "file": "../../source/coffee/slikland/navigation/core/NavigationContainer.coffee",
@@ -2870,7 +3066,8 @@
             "name": "navigation",
             "type": "{Navigation}",
             "readonly": "",
-            "class": "NavigationContainer"
+            "class": "NavigationContainer",
+            "module": "slikland"
         },
         {
             "file": "../../source/coffee/slikland/navigation/core/NavigationContainer.coffee",
@@ -2880,7 +3077,8 @@
             "name": "controller",
             "type": "{BaseNavigationController}",
             "readonly": "",
-            "class": "NavigationContainer"
+            "class": "NavigationContainer",
+            "module": "slikland"
         },
         {
             "file": "../../source/coffee/slikland/navigation/core/NavigationLoader.coffee",
@@ -2893,7 +3091,8 @@
             },
             "access": "protected",
             "tagname": "",
-            "class": "NavigationLoader"
+            "class": "NavigationLoader",
+            "module": "slikland"
         },
         {
             "file": "../../source/coffee/slikland/navigation/core/NavigationLoader.coffee",
@@ -2906,7 +3105,8 @@
             },
             "access": "protected",
             "tagname": "",
-            "class": "NavigationLoader"
+            "class": "NavigationLoader",
+            "module": "slikland"
         },
         {
             "file": "../../source/coffee/slikland/navigation/core/NavigationLoader.coffee",
@@ -2922,7 +3122,8 @@
             ],
             "access": "private",
             "tagname": "",
-            "class": "NavigationLoader"
+            "class": "NavigationLoader",
+            "module": "slikland"
         },
         {
             "file": "../../source/coffee/slikland/navigation/core/NavigationLoader.coffee",
@@ -2938,7 +3139,8 @@
             ],
             "access": "private",
             "tagname": "",
-            "class": "NavigationLoader"
+            "class": "NavigationLoader",
+            "module": "slikland"
         },
         {
             "file": "../../source/coffee/slikland/navigation/core/NavigationLoader.coffee",
@@ -2954,7 +3156,8 @@
             ],
             "access": "private",
             "tagname": "",
-            "class": "NavigationLoader"
+            "class": "NavigationLoader",
+            "module": "slikland"
         },
         {
             "file": "../../source/coffee/slikland/navigation/core/NavigationLoader.coffee",
@@ -2963,7 +3166,8 @@
             "name": "loadContents",
             "access": "private",
             "tagname": "",
-            "class": "NavigationLoader"
+            "class": "NavigationLoader",
+            "module": "slikland"
         },
         {
             "file": "../../source/coffee/slikland/navigation/core/NavigationLoader.coffee",
@@ -2979,7 +3183,8 @@
             ],
             "access": "private",
             "tagname": "",
-            "class": "NavigationLoader"
+            "class": "NavigationLoader",
+            "module": "slikland"
         },
         {
             "file": "../../source/coffee/slikland/navigation/core/NavigationLoader.coffee",
@@ -2988,7 +3193,8 @@
             "name": "initialQueue",
             "access": "private",
             "tagname": "",
-            "class": "NavigationLoader"
+            "class": "NavigationLoader",
+            "module": "slikland"
         },
         {
             "file": "../../source/coffee/slikland/navigation/core/NavigationLoader.coffee",
@@ -3008,7 +3214,8 @@
             },
             "access": "private",
             "tagname": "",
-            "class": "NavigationLoader"
+            "class": "NavigationLoader",
+            "module": "slikland"
         },
         {
             "file": "../../source/coffee/slikland/navigation/core/NavigationLoader.coffee",
@@ -3028,7 +3235,8 @@
             },
             "access": "private",
             "tagname": "",
-            "class": "NavigationLoader"
+            "class": "NavigationLoader",
+            "module": "slikland"
         },
         {
             "file": "../../source/coffee/slikland/navigation/core/NavigationLoader.coffee",
@@ -3049,7 +3257,8 @@
             ],
             "access": "private",
             "tagname": "",
-            "class": "NavigationLoader"
+            "class": "NavigationLoader",
+            "module": "slikland"
         },
         {
             "file": "../../source/coffee/slikland/navigation/core/NavigationLoader.coffee",
@@ -3065,7 +3274,8 @@
             ],
             "access": "private",
             "tagname": "",
-            "class": "NavigationLoader"
+            "class": "NavigationLoader",
+            "module": "slikland"
         },
         {
             "file": "../../source/coffee/slikland/navigation/core/NavigationLoader.coffee",
@@ -3086,7 +3296,8 @@
             ],
             "access": "private",
             "tagname": "",
-            "class": "NavigationLoader"
+            "class": "NavigationLoader",
+            "module": "slikland"
         },
         {
             "file": "../../source/coffee/slikland/navigation/core/NavigationLoader.coffee",
@@ -3102,7 +3313,8 @@
             ],
             "access": "private",
             "tagname": "",
-            "class": "NavigationLoader"
+            "class": "NavigationLoader",
+            "module": "slikland"
         },
         {
             "file": "../../source/coffee/slikland/navigation/core/NavigationLoader.coffee",
@@ -3118,7 +3330,8 @@
             ],
             "access": "private",
             "tagname": "",
-            "class": "NavigationLoader"
+            "class": "NavigationLoader",
+            "module": "slikland"
         },
         {
             "file": "../../source/coffee/slikland/navigation/core/NavigationLoader.coffee",
@@ -3135,7 +3348,8 @@
             ],
             "access": "private",
             "tagname": "",
-            "class": "NavigationLoader"
+            "class": "NavigationLoader",
+            "module": "slikland"
         },
         {
             "file": "../../source/coffee/slikland/navigation/core/NavigationRouter.coffee",
@@ -3143,7 +3357,8 @@
             "itemtype": "event",
             "name": "CHANGE",
             "static": 1,
-            "class": "NavigationRouter"
+            "class": "NavigationRouter",
+            "module": "slikland"
         },
         {
             "file": "../../source/coffee/slikland/navigation/core/NavigationRouter.coffee",
@@ -3151,7 +3366,8 @@
             "itemtype": "event",
             "name": "CHANGE_ROUTE",
             "static": 1,
-            "class": "NavigationRouter"
+            "class": "NavigationRouter",
+            "module": "slikland"
         },
         {
             "file": "../../source/coffee/slikland/navigation/core/NavigationRouter.coffee",
@@ -3178,7 +3394,8 @@
                 "description": "",
                 "type": "NavigationRouter"
             },
-            "class": "NavigationRouter"
+            "class": "NavigationRouter",
+            "module": "slikland"
         },
         {
             "file": "../../source/coffee/slikland/navigation/core/NavigationRouter.coffee",
@@ -3191,7 +3408,8 @@
             },
             "access": "private",
             "tagname": "",
-            "class": "NavigationRouter"
+            "class": "NavigationRouter",
+            "module": "slikland"
         },
         {
             "file": "../../source/coffee/slikland/navigation/core/NavigationRouter.coffee",
@@ -3211,7 +3429,8 @@
             },
             "access": "private",
             "tagname": "",
-            "class": "NavigationRouter"
+            "class": "NavigationRouter",
+            "module": "slikland"
         },
         {
             "file": "../../source/coffee/slikland/navigation/core/NavigationRouter.coffee",
@@ -3231,7 +3450,8 @@
             },
             "access": "private",
             "tagname": "",
-            "class": "NavigationRouter"
+            "class": "NavigationRouter",
+            "module": "slikland"
         },
         {
             "file": "../../source/coffee/slikland/navigation/core/NavigationRouter.coffee",
@@ -3249,7 +3469,8 @@
             ],
             "access": "private",
             "tagname": "",
-            "class": "NavigationRouter"
+            "class": "NavigationRouter",
+            "module": "slikland"
         },
         {
             "file": "../../source/coffee/slikland/navigation/core/NavigationRouter.coffee",
@@ -3265,7 +3486,8 @@
             ],
             "access": "private",
             "tagname": "",
-            "class": "NavigationRouter"
+            "class": "NavigationRouter",
+            "module": "slikland"
         },
         {
             "file": "../../source/coffee/slikland/navigation/core/NavigationRouter.coffee",
@@ -3276,7 +3498,8 @@
                 "description": "",
                 "type": "String"
             },
-            "class": "NavigationRouter"
+            "class": "NavigationRouter",
+            "module": "slikland"
         },
         {
             "file": "../../source/coffee/slikland/navigation/core/NavigationRouter.coffee",
@@ -3287,7 +3510,8 @@
                 "description": "",
                 "type": "Object"
             },
-            "class": "NavigationRouter"
+            "class": "NavigationRouter",
+            "module": "slikland"
         },
         {
             "file": "../../source/coffee/slikland/navigation/core/NavigationRouter.coffee",
@@ -3308,7 +3532,8 @@
                     "optdefault": " true"
                 }
             ],
-            "class": "NavigationRouter"
+            "class": "NavigationRouter",
+            "module": "slikland"
         },
         {
             "file": "../../source/coffee/slikland/navigation/core/NavigationRouter.coffee",
@@ -3329,7 +3554,8 @@
                     "optdefault": " false"
                 }
             ],
-            "class": "NavigationRouter"
+            "class": "NavigationRouter",
+            "module": "slikland"
         },
         {
             "file": "../../source/coffee/slikland/navigation/core/NavigationRouter.coffee",
@@ -3343,7 +3569,8 @@
                     "type": "String"
                 }
             ],
-            "class": "NavigationRouter"
+            "class": "NavigationRouter",
+            "module": "slikland"
         },
         {
             "file": "../../source/coffee/slikland/navigation/core/NavigationRouter.coffee",
@@ -3357,7 +3584,8 @@
                     "type": "String"
                 }
             ],
-            "class": "NavigationRouter"
+            "class": "NavigationRouter",
+            "module": "slikland"
         },
         {
             "file": "../../source/coffee/slikland/navigation/core/NavigationRouter.coffee",
@@ -3379,7 +3607,8 @@
                     "optdefault": " null"
                 }
             ],
-            "class": "NavigationRouter"
+            "class": "NavigationRouter",
+            "module": "slikland"
         },
         {
             "file": "../../source/coffee/slikland/navigation/core/NavigationRouter.coffee",
@@ -3394,7 +3623,8 @@
                     "type": "String"
                 }
             ],
-            "class": "NavigationRouter"
+            "class": "NavigationRouter",
+            "module": "slikland"
         },
         {
             "file": "../../source/coffee/slikland/navigation/core/NavigationRouter.coffee",
@@ -3402,7 +3632,8 @@
             "description": "Remove all routes",
             "itemtype": "method",
             "name": "removeAllRoutes",
-            "class": "NavigationRouter"
+            "class": "NavigationRouter",
+            "module": "slikland"
         },
         {
             "file": "../../source/coffee/slikland/navigation/core/NavigationRouter.coffee",
@@ -3422,7 +3653,8 @@
                 "description": "",
                 "type": "Array"
             },
-            "class": "NavigationRouter"
+            "class": "NavigationRouter",
+            "module": "slikland"
         },
         {
             "file": "../../source/coffee/slikland/navigation/core/NavigationRouter.coffee",
@@ -3447,7 +3679,8 @@
                 "description": "",
                 "type": "Number"
             },
-            "class": "NavigationRouter"
+            "class": "NavigationRouter",
+            "module": "slikland"
         },
         {
             "file": "../../source/coffee/slikland/navigation/display/BaseView.coffee",
@@ -3456,7 +3689,8 @@
             "itemtype": "event",
             "name": "CREATE_START",
             "static": 1,
-            "class": "BaseView"
+            "class": "BaseView",
+            "module": "slikland"
         },
         {
             "file": "../../source/coffee/slikland/navigation/display/BaseView.coffee",
@@ -3465,7 +3699,8 @@
             "itemtype": "event",
             "name": "CREATE",
             "static": 1,
-            "class": "BaseView"
+            "class": "BaseView",
+            "module": "slikland"
         },
         {
             "file": "../../source/coffee/slikland/navigation/display/BaseView.coffee",
@@ -3474,7 +3709,8 @@
             "itemtype": "event",
             "name": "CREATE_COMPLETE",
             "static": 1,
-            "class": "BaseView"
+            "class": "BaseView",
+            "module": "slikland"
         },
         {
             "file": "../../source/coffee/slikland/navigation/display/BaseView.coffee",
@@ -3483,7 +3719,8 @@
             "itemtype": "event",
             "name": "SHOW_START",
             "static": 1,
-            "class": "BaseView"
+            "class": "BaseView",
+            "module": "slikland"
         },
         {
             "file": "../../source/coffee/slikland/navigation/display/BaseView.coffee",
@@ -3492,7 +3729,8 @@
             "itemtype": "event",
             "name": "SHOW",
             "static": 1,
-            "class": "BaseView"
+            "class": "BaseView",
+            "module": "slikland"
         },
         {
             "file": "../../source/coffee/slikland/navigation/display/BaseView.coffee",
@@ -3501,7 +3739,8 @@
             "itemtype": "event",
             "name": "SHOW_COMPLETE",
             "static": 1,
-            "class": "BaseView"
+            "class": "BaseView",
+            "module": "slikland"
         },
         {
             "file": "../../source/coffee/slikland/navigation/display/BaseView.coffee",
@@ -3510,7 +3749,8 @@
             "itemtype": "event",
             "name": "HIDE_START",
             "static": 1,
-            "class": "BaseView"
+            "class": "BaseView",
+            "module": "slikland"
         },
         {
             "file": "../../source/coffee/slikland/navigation/display/BaseView.coffee",
@@ -3519,7 +3759,8 @@
             "itemtype": "event",
             "name": "HIDE",
             "static": 1,
-            "class": "BaseView"
+            "class": "BaseView",
+            "module": "slikland"
         },
         {
             "file": "../../source/coffee/slikland/navigation/display/BaseView.coffee",
@@ -3528,7 +3769,8 @@
             "itemtype": "event",
             "name": "HIDE_COMPLETE",
             "static": 1,
-            "class": "BaseView"
+            "class": "BaseView",
+            "module": "slikland"
         },
         {
             "file": "../../source/coffee/slikland/navigation/display/BaseView.coffee",
@@ -3537,7 +3779,8 @@
             "itemtype": "event",
             "name": "DESTROY",
             "static": 1,
-            "class": "BaseView"
+            "class": "BaseView",
+            "module": "slikland"
         },
         {
             "file": "../../source/coffee/slikland/navigation/display/BaseView.coffee",
@@ -3546,7 +3789,8 @@
             "itemtype": "event",
             "name": "DESTROY_COMPLETE",
             "static": 1,
-            "class": "BaseView"
+            "class": "BaseView",
+            "module": "slikland"
         },
         {
             "file": "../../source/coffee/slikland/navigation/display/BaseView.coffee",
@@ -3555,7 +3799,8 @@
             "itemtype": "event",
             "name": "PAUSE",
             "static": 1,
-            "class": "BaseView"
+            "class": "BaseView",
+            "module": "slikland"
         },
         {
             "file": "../../source/coffee/slikland/navigation/display/BaseView.coffee",
@@ -3564,7 +3809,8 @@
             "itemtype": "event",
             "name": "RESUME",
             "static": 1,
-            "class": "BaseView"
+            "class": "BaseView",
+            "module": "slikland"
         },
         {
             "file": "../../source/coffee/slikland/navigation/display/BaseView.coffee",
@@ -3575,7 +3821,8 @@
             "type": "{createjs.LoadQueue}",
             "default": "null",
             "readonly": "",
-            "class": "BaseView"
+            "class": "BaseView",
+            "module": "slikland"
         },
         {
             "file": "../../source/coffee/slikland/navigation/display/BaseView.coffee",
@@ -3588,7 +3835,8 @@
             "access": "protected",
             "tagname": "",
             "readonly": "",
-            "class": "BaseView"
+            "class": "BaseView",
+            "module": "slikland"
         },
         {
             "file": "../../source/coffee/slikland/navigation/display/BaseView.coffee",
@@ -3601,7 +3849,8 @@
             "access": "protected",
             "tagname": "",
             "readonly": "",
-            "class": "BaseView"
+            "class": "BaseView",
+            "module": "slikland"
         },
         {
             "file": "../../source/coffee/slikland/navigation/display/BaseView.coffee",
@@ -3611,7 +3860,8 @@
             "name": "data",
             "type": "{Object}",
             "default": "{}",
-            "class": "BaseView"
+            "class": "BaseView",
+            "module": "slikland"
         },
         {
             "file": "../../source/coffee/slikland/navigation/display/BaseView.coffee",
@@ -3621,7 +3871,8 @@
             "name": "id",
             "type": "{String}",
             "default": "null",
-            "class": "BaseView"
+            "class": "BaseView",
+            "module": "slikland"
         },
         {
             "file": "../../source/coffee/slikland/navigation/display/BaseView.coffee",
@@ -3631,7 +3882,8 @@
             "name": "content",
             "type": "{String|Object|JSON}",
             "default": "null",
-            "class": "BaseView"
+            "class": "BaseView",
+            "module": "slikland"
         },
         {
             "file": "../../source/coffee/slikland/navigation/display/BaseView.coffee",
@@ -3641,7 +3893,8 @@
             "name": "route",
             "type": "{String|RegExp}",
             "default": "null",
-            "class": "BaseView"
+            "class": "BaseView",
+            "module": "slikland"
         },
         {
             "file": "../../source/coffee/slikland/navigation/display/BaseView.coffee",
@@ -3653,7 +3906,8 @@
             "access": "protected",
             "tagname": "",
             "default": "null",
-            "class": "BaseView"
+            "class": "BaseView",
+            "module": "slikland"
         },
         {
             "file": "../../source/coffee/slikland/navigation/display/BaseView.coffee",
@@ -3663,7 +3917,8 @@
             "name": "parentView",
             "type": "{BaseView}",
             "default": "null",
-            "class": "BaseView"
+            "class": "BaseView",
+            "module": "slikland"
         },
         {
             "file": "../../source/coffee/slikland/navigation/display/BaseView.coffee",
@@ -3673,7 +3928,8 @@
             "name": "subviews",
             "type": "{Array}",
             "default": "null",
-            "class": "BaseView"
+            "class": "BaseView",
+            "module": "slikland"
         },
         {
             "file": "../../source/coffee/slikland/navigation/display/BaseView.coffee",
@@ -3683,7 +3939,8 @@
             "name": "destroyable",
             "type": "{Boolean}",
             "default": "false",
-            "class": "BaseView"
+            "class": "BaseView",
+            "module": "slikland"
         },
         {
             "file": "../../source/coffee/slikland/navigation/display/BaseView.coffee",
@@ -3695,7 +3952,8 @@
             "access": "protected",
             "tagname": "",
             "default": "null",
-            "class": "BaseView"
+            "class": "BaseView",
+            "module": "slikland"
         },
         {
             "file": "../../source/coffee/slikland/navigation/display/BaseView.coffee",
@@ -3706,7 +3964,8 @@
             "type": "{Object}",
             "default": "null",
             "readonly": "",
-            "class": "BaseView"
+            "class": "BaseView",
+            "module": "slikland"
         },
         {
             "file": "../../source/coffee/slikland/navigation/display/BaseView.coffee",
@@ -3717,7 +3976,8 @@
             "type": "{Number}",
             "access": "protected",
             "tagname": "",
-            "class": "BaseView"
+            "class": "BaseView",
+            "module": "slikland"
         },
         {
             "file": "../../source/coffee/slikland/navigation/display/BaseView.coffee",
@@ -3729,7 +3989,8 @@
             "access": "protected",
             "tagname": "",
             "readonly": "",
-            "class": "BaseView"
+            "class": "BaseView",
+            "module": "slikland"
         },
         {
             "file": "../../source/coffee/slikland/navigation/display/BaseView.coffee",
@@ -3741,7 +4002,8 @@
             "access": "protected",
             "tagname": "",
             "readonly": "",
-            "class": "BaseView"
+            "class": "BaseView",
+            "module": "slikland"
         },
         {
             "file": "../../source/coffee/slikland/navigation/display/BaseView.coffee",
@@ -3752,7 +4014,8 @@
             "type": "{HTMLElement}",
             "default": "null",
             "readonly": "",
-            "class": "BaseView"
+            "class": "BaseView",
+            "module": "slikland"
         },
         {
             "file": "../../source/coffee/slikland/navigation/display/BaseView.coffee",
@@ -3763,7 +4026,8 @@
             "type": "{String}",
             "default": "null",
             "readonly": "",
-            "class": "BaseView"
+            "class": "BaseView",
+            "module": "slikland"
         },
         {
             "file": "../../source/coffee/slikland/navigation/display/BaseView.coffee",
@@ -3783,7 +4047,8 @@
             "access": "private",
             "tagname": "",
             "readonly": "",
-            "class": "BaseView"
+            "class": "BaseView",
+            "module": "slikland"
         },
         {
             "file": "../../source/coffee/slikland/navigation/display/BaseView.coffee",
@@ -3800,7 +4065,8 @@
                     "optdefault": "null"
                 }
             ],
-            "class": "BaseView"
+            "class": "BaseView",
+            "module": "slikland"
         },
         {
             "file": "../../source/coffee/slikland/navigation/display/BaseView.coffee",
@@ -3817,7 +4083,8 @@
                     "optdefault": "null"
                 }
             ],
-            "class": "BaseView"
+            "class": "BaseView",
+            "module": "slikland"
         },
         {
             "file": "../../source/coffee/slikland/navigation/display/BaseView.coffee",
@@ -3834,7 +4101,8 @@
                     "optdefault": "null"
                 }
             ],
-            "class": "BaseView"
+            "class": "BaseView",
+            "module": "slikland"
         },
         {
             "file": "../../source/coffee/slikland/navigation/display/BaseView.coffee",
@@ -3851,7 +4119,8 @@
                     "optdefault": "null"
                 }
             ],
-            "class": "BaseView"
+            "class": "BaseView",
+            "module": "slikland"
         },
         {
             "file": "../../source/coffee/slikland/navigation/display/BaseView.coffee",
@@ -3868,7 +4137,8 @@
                     "optdefault": "null"
                 }
             ],
-            "class": "BaseView"
+            "class": "BaseView",
+            "module": "slikland"
         },
         {
             "file": "../../source/coffee/slikland/navigation/display/BaseView.coffee",
@@ -3885,7 +4155,8 @@
                     "optdefault": "null"
                 }
             ],
-            "class": "BaseView"
+            "class": "BaseView",
+            "module": "slikland"
         },
         {
             "file": "../../source/coffee/slikland/navigation/display/BaseView.coffee",
@@ -3902,7 +4173,8 @@
                     "optdefault": "null"
                 }
             ],
-            "class": "BaseView"
+            "class": "BaseView",
+            "module": "slikland"
         },
         {
             "file": "../../source/coffee/slikland/navigation/display/BaseView.coffee",
@@ -3919,7 +4191,8 @@
                     "optdefault": "null"
                 }
             ],
-            "class": "BaseView"
+            "class": "BaseView",
+            "module": "slikland"
         },
         {
             "file": "../../source/coffee/slikland/navigation/display/BaseView.coffee",
@@ -3936,7 +4209,8 @@
                     "optdefault": "null"
                 }
             ],
-            "class": "BaseView"
+            "class": "BaseView",
+            "module": "slikland"
         },
         {
             "file": "../../source/coffee/slikland/navigation/display/BaseView.coffee",
@@ -3944,7 +4218,8 @@
             "description": "Usually used to pauses animations or something else in looping in view.\nTrigger the event {{#crossLink \"BaseView/PAUSE:event\"}}{{/crossLink}} after complete.",
             "itemtype": "method",
             "name": "pause",
-            "class": "BaseView"
+            "class": "BaseView",
+            "module": "slikland"
         },
         {
             "file": "../../source/coffee/slikland/navigation/display/BaseView.coffee",
@@ -3952,7 +4227,8 @@
             "description": "Usually used to resumes animations or something else in view.\nTrigger the event {{#crossLink \"BaseView/RESUME:event\"}}{{/crossLink}} after complete.",
             "itemtype": "method",
             "name": "pause",
-            "class": "BaseView"
+            "class": "BaseView",
+            "module": "slikland"
         },
         {
             "file": "../../source/coffee/slikland/navigation/display/BaseView.coffee",
@@ -3969,7 +4245,8 @@
                     "optdefault": "null"
                 }
             ],
-            "class": "BaseView"
+            "class": "BaseView",
+            "module": "slikland"
         },
         {
             "file": "../../source/coffee/slikland/navigation/display/BaseView.coffee",
@@ -3986,7 +4263,8 @@
                     "optdefault": "null"
                 }
             ],
-            "class": "BaseView"
+            "class": "BaseView",
+            "module": "slikland"
         },
         {
             "file": "../../source/coffee/slikland/utils/keyboard/Shortcut.coffee",
@@ -3996,7 +4274,9 @@
             "type": "Array",
             "static": 1,
             "default": "['alt', 'ctrl', 'meta', 'shift']",
-            "class": "Shortcut"
+            "class": "Shortcut",
+            "module": "slikland",
+            "submodule": "slikland.utils.keyboard"
         },
         {
             "file": "../../source/coffee/slikland/utils/keyboard/Shortcut.coffee",
@@ -4006,14 +4286,18 @@
             "type": "Array",
             "static": 1,
             "default": "[16, 18, 17, 91]",
-            "class": "Shortcut"
+            "class": "Shortcut",
+            "module": "slikland",
+            "submodule": "slikland.utils.keyboard"
         },
         {
             "file": "../../source/coffee/slikland/utils/keyboard/Shortcut.coffee",
             "line": 39,
             "itemtype": "method",
             "name": "destroy",
-            "class": "Shortcut"
+            "class": "Shortcut",
+            "module": "slikland",
+            "submodule": "slikland.utils.keyboard"
         },
         {
             "file": "../../source/coffee/slikland/utils/keyboard/Shortcut.coffee",
@@ -4029,7 +4313,9 @@
                     "type": "E"
                 }
             ],
-            "class": "Shortcut"
+            "class": "Shortcut",
+            "module": "slikland",
+            "submodule": "slikland.utils.keyboard"
         },
         {
             "file": "../../source/coffee/slikland/utils/keyboard/Shortcut.coffee",
@@ -4049,7 +4335,9 @@
                 "description": "",
                 "type": "Array"
             },
-            "class": "Shortcut"
+            "class": "Shortcut",
+            "module": "slikland",
+            "submodule": "slikland.utils.keyboard"
         },
         {
             "file": "../../source/coffee/slikland/utils/keyboard/Shortcut.coffee",
@@ -4069,7 +4357,9 @@
                 "description": "",
                 "type": "Array"
             },
-            "class": "Shortcut"
+            "class": "Shortcut",
+            "module": "slikland",
+            "submodule": "slikland.utils.keyboard"
         },
         {
             "file": "../../source/coffee/slikland/utils/keyboard/Shortcut.coffee",
@@ -4095,7 +4385,9 @@
                     "optdefault": "true"
                 }
             ],
-            "class": "Shortcut"
+            "class": "Shortcut",
+            "module": "slikland",
+            "submodule": "slikland.utils.keyboard"
         },
         {
             "file": "../../source/coffee/slikland/utils/keyboard/Shortcut.coffee",
@@ -4114,7 +4406,9 @@
                     "type": "Function"
                 }
             ],
-            "class": "Shortcut"
+            "class": "Shortcut",
+            "module": "slikland",
+            "submodule": "slikland.utils.keyboard"
         },
         {
             "file": "../../source/coffee/slikland/utils/ArrayUtils.coffee",
@@ -4146,7 +4440,9 @@
                 "description": "An array with the removed items.",
                 "type": "Array"
             },
-            "class": "ArrayUtils"
+            "class": "ArrayUtils",
+            "module": "slikland",
+            "submodule": "slikland.utils"
         },
         {
             "file": "../../source/coffee/slikland/utils/ArrayUtils.coffee",
@@ -4178,7 +4474,9 @@
                 "type": "Array"
             },
             "static": 1,
-            "class": "ArrayUtils"
+            "class": "ArrayUtils",
+            "module": "slikland",
+            "submodule": "slikland.utils"
         },
         {
             "file": "../../source/coffee/slikland/utils/ArrayUtils.coffee",
@@ -4198,7 +4496,9 @@
                 "type": "Array"
             },
             "static": 1,
-            "class": "ArrayUtils"
+            "class": "ArrayUtils",
+            "module": "slikland",
+            "submodule": "slikland.utils"
         },
         {
             "file": "../../source/coffee/slikland/utils/ArrayUtils.coffee",
@@ -4223,7 +4523,9 @@
                 "type": "Boolean"
             },
             "static": 1,
-            "class": "ArrayUtils"
+            "class": "ArrayUtils",
+            "module": "slikland",
+            "submodule": "slikland.utils"
         },
         {
             "file": "../../source/coffee/slikland/utils/ArrayUtils.coffee",
@@ -4248,7 +4550,9 @@
                 "description": "Returns a new merged array.",
                 "type": "Array"
             },
-            "class": "ArrayUtils"
+            "class": "ArrayUtils",
+            "module": "slikland",
+            "submodule": "slikland.utils"
         },
         {
             "file": "../../source/coffee/slikland/utils/ArrayUtils.coffee",
@@ -4268,7 +4572,9 @@
                 "description": "A random number valid index.",
                 "type": "Number"
             },
-            "class": "ArrayUtils"
+            "class": "ArrayUtils",
+            "module": "slikland",
+            "submodule": "slikland.utils"
         },
         {
             "file": "../../source/coffee/slikland/utils/ArrayUtils.coffee",
@@ -4288,7 +4594,9 @@
                 "type": "Object"
             },
             "static": 1,
-            "class": "ArrayUtils"
+            "class": "ArrayUtils",
+            "module": "slikland",
+            "submodule": "slikland.utils"
         },
         {
             "file": "../../source/coffee/slikland/utils/ArrayUtils.coffee",
@@ -4315,7 +4623,9 @@
                 "description": "The resulting object.",
                 "type": "Array"
             },
-            "class": "ArrayUtils"
+            "class": "ArrayUtils",
+            "module": "slikland",
+            "submodule": "slikland.utils"
         },
         {
             "file": "../../source/coffee/slikland/utils/ArrayUtils.coffee",
@@ -4352,7 +4662,9 @@
                 "description": "The resulting object.",
                 "type": "Array"
             },
-            "class": "ArrayUtils"
+            "class": "ArrayUtils",
+            "module": "slikland",
+            "submodule": "slikland.utils"
         },
         {
             "file": "../../source/coffee/slikland/utils/ArrayUtils.coffee",
@@ -4372,7 +4684,9 @@
                 "description": "The resulting object.",
                 "type": "Array"
             },
-            "class": "ArrayUtils"
+            "class": "ArrayUtils",
+            "module": "slikland",
+            "submodule": "slikland.utils"
         },
         {
             "file": "../../source/coffee/slikland/utils/ArrayUtils.coffee",
@@ -4392,7 +4706,9 @@
                 "description": "The resulting object.",
                 "type": "Array"
             },
-            "class": "ArrayUtils"
+            "class": "ArrayUtils",
+            "module": "slikland",
+            "submodule": "slikland.utils"
         },
         {
             "file": "../../source/coffee/slikland/utils/ArrayUtils.coffee",
@@ -4416,7 +4732,9 @@
                 "description": "The resulting index.",
                 "type": "Number"
             },
-            "class": "ArrayUtils"
+            "class": "ArrayUtils",
+            "module": "slikland",
+            "submodule": "slikland.utils"
         },
         {
             "file": "../../source/coffee/slikland/utils/ColorUtils.coffee",
@@ -4441,7 +4759,9 @@
                 "description": "The hexadecimal value of result.",
                 "type": "String"
             },
-            "class": "ColorUtils"
+            "class": "ColorUtils",
+            "module": "slikland",
+            "submodule": "slikland.utils"
         },
         {
             "file": "../../source/coffee/slikland/utils/ColorUtils.coffee",
@@ -4454,7 +4774,9 @@
                 "description": "The hexadecimal value of result.",
                 "type": "String"
             },
-            "class": "ColorUtils"
+            "class": "ColorUtils",
+            "module": "slikland",
+            "submodule": "slikland.utils"
         },
         {
             "file": "../../source/coffee/slikland/utils/ColorUtils.coffee",
@@ -4467,7 +4789,9 @@
                 "description": "The RGB value of result on format rgb(r,g,b)",
                 "type": "String"
             },
-            "class": "ColorUtils"
+            "class": "ColorUtils",
+            "module": "slikland",
+            "submodule": "slikland.utils"
         },
         {
             "file": "../../source/coffee/slikland/utils/ColorUtils.coffee",
@@ -4480,7 +4804,9 @@
                 "description": "The result integer value",
                 "type": "String"
             },
-            "class": "ColorUtils"
+            "class": "ColorUtils",
+            "module": "slikland",
+            "submodule": "slikland.utils"
         },
         {
             "file": "../../source/coffee/slikland/utils/ColorUtils.coffee",
@@ -4493,7 +4819,9 @@
                 "description": "The result integer value",
                 "type": "String"
             },
-            "class": "ColorUtils"
+            "class": "ColorUtils",
+            "module": "slikland",
+            "submodule": "slikland.utils"
         },
         {
             "file": "../../source/coffee/slikland/utils/ColorUtils.coffee",
@@ -4506,7 +4834,9 @@
                 "description": "The result Hexadecimal value",
                 "type": "String"
             },
-            "class": "ColorUtils"
+            "class": "ColorUtils",
+            "module": "slikland",
+            "submodule": "slikland.utils"
         },
         {
             "file": "../../source/coffee/slikland/utils/ColorUtils.coffee",
@@ -4519,7 +4849,9 @@
                 "description": "The RGB value of result on format rgb(r,g,b)",
                 "type": "String"
             },
-            "class": "ColorUtils"
+            "class": "ColorUtils",
+            "module": "slikland",
+            "submodule": "slikland.utils"
         },
         {
             "file": "../../source/coffee/slikland/utils/DOMUtils.coffee",
@@ -4543,7 +4875,9 @@
                 "description": "",
                 "type": "HTMLElement"
             },
-            "class": "DOMUtils"
+            "class": "DOMUtils",
+            "module": "slikland",
+            "submodule": "slikland.utils"
         },
         {
             "file": "../../source/coffee/slikland/utils/DOMUtils.coffee",
@@ -4567,7 +4901,9 @@
                 "description": "",
                 "type": "HTMLElement"
             },
-            "class": "DOMUtils"
+            "class": "DOMUtils",
+            "module": "slikland",
+            "submodule": "slikland.utils"
         },
         {
             "file": "../../source/coffee/slikland/utils/DOMUtils.coffee",
@@ -4591,7 +4927,9 @@
                 "description": "",
                 "type": "Boolean"
             },
-            "class": "DOMUtils"
+            "class": "DOMUtils",
+            "module": "slikland",
+            "submodule": "slikland.utils"
         },
         {
             "file": "../../source/coffee/slikland/utils/DOMUtils.coffee",
@@ -4618,7 +4956,9 @@
                     "optdefault": "null"
                 }
             ],
-            "class": "DOMUtils"
+            "class": "DOMUtils",
+            "module": "slikland",
+            "submodule": "slikland.utils"
         },
         {
             "file": "../../source/coffee/slikland/utils/DOMUtils.coffee",
@@ -4642,7 +4982,9 @@
                 "description": "",
                 "type": "HTMLElement|Boolean"
             },
-            "class": "DOMUtils"
+            "class": "DOMUtils",
+            "module": "slikland",
+            "submodule": "slikland.utils"
         },
         {
             "file": "../../source/coffee/slikland/utils/DOMUtils.coffee",
@@ -4657,11 +4999,13 @@
                     "type": "HTMLElement"
                 }
             ],
-            "class": "DOMUtils"
+            "class": "DOMUtils",
+            "module": "slikland",
+            "submodule": "slikland.utils"
         },
         {
             "file": "../../source/coffee/slikland/utils/Detections.coffee",
-            "line": 25,
+            "line": 23,
             "itemtype": "method",
             "name": "getInstance",
             "static": 1,
@@ -4669,7 +5013,321 @@
                 "description": "",
                 "type": "Detections"
             },
-            "class": "Detections"
+            "class": "Detections",
+            "module": "slikland",
+            "submodule": "slikland.utils"
+        },
+        {
+            "file": "../../source/coffee/slikland/utils/Detections.coffee",
+            "line": 37,
+            "itemtype": "property",
+            "name": "ua",
+            "type": "{String}",
+            "readonly": "",
+            "class": "Detections",
+            "module": "slikland",
+            "submodule": "slikland.utils"
+        },
+        {
+            "file": "../../source/coffee/slikland/utils/Detections.coffee",
+            "line": 43,
+            "itemtype": "property",
+            "name": "platform",
+            "type": "{String}",
+            "readonly": "",
+            "class": "Detections",
+            "module": "slikland",
+            "submodule": "slikland.utils"
+        },
+        {
+            "file": "../../source/coffee/slikland/utils/Detections.coffee",
+            "line": 49,
+            "itemtype": "property",
+            "name": "version",
+            "type": "{String}",
+            "readonly": "",
+            "class": "Detections",
+            "module": "slikland",
+            "submodule": "slikland.utils"
+        },
+        {
+            "file": "../../source/coffee/slikland/utils/Detections.coffee",
+            "line": 55,
+            "itemtype": "property",
+            "name": "vibrate",
+            "type": "{Boolean}",
+            "readonly": "",
+            "class": "Detections",
+            "module": "slikland",
+            "submodule": "slikland.utils"
+        },
+        {
+            "file": "../../source/coffee/slikland/utils/Detections.coffee",
+            "line": 61,
+            "itemtype": "property",
+            "name": "standalone",
+            "type": "{Boolean}",
+            "readonly": "",
+            "class": "Detections",
+            "module": "slikland",
+            "submodule": "slikland.utils"
+        },
+        {
+            "file": "../../source/coffee/slikland/utils/Detections.coffee",
+            "line": 67,
+            "itemtype": "property",
+            "name": "retina",
+            "type": "{Boolean}",
+            "readonly": "",
+            "class": "Detections",
+            "module": "slikland",
+            "submodule": "slikland.utils"
+        },
+        {
+            "file": "../../source/coffee/slikland/utils/Detections.coffee",
+            "line": 76,
+            "itemtype": "property",
+            "name": "versionArr",
+            "type": "{Array}",
+            "readonly": "",
+            "class": "Detections",
+            "module": "slikland",
+            "submodule": "slikland.utils"
+        },
+        {
+            "file": "../../source/coffee/slikland/utils/Detections.coffee",
+            "line": 85,
+            "itemtype": "property",
+            "name": "touch",
+            "type": "{Boolean}",
+            "readonly": "",
+            "class": "Detections",
+            "module": "slikland",
+            "submodule": "slikland.utils"
+        },
+        {
+            "file": "../../source/coffee/slikland/utils/Detections.coffee",
+            "line": 91,
+            "itemtype": "property",
+            "name": "tablet",
+            "type": "{Boolean}",
+            "readonly": "",
+            "class": "Detections",
+            "module": "slikland",
+            "submodule": "slikland.utils"
+        },
+        {
+            "file": "../../source/coffee/slikland/utils/Detections.coffee",
+            "line": 97,
+            "itemtype": "property",
+            "name": "mobile",
+            "type": "{Boolean}",
+            "readonly": "",
+            "class": "Detections",
+            "module": "slikland",
+            "submodule": "slikland.utils"
+        },
+        {
+            "file": "../../source/coffee/slikland/utils/Detections.coffee",
+            "line": 103,
+            "itemtype": "property",
+            "name": "desktop",
+            "type": "{Boolean}",
+            "readonly": "",
+            "class": "Detections",
+            "module": "slikland",
+            "submodule": "slikland.utils"
+        },
+        {
+            "file": "../../source/coffee/slikland/utils/Detections.coffee",
+            "line": 109,
+            "itemtype": "property",
+            "name": "os",
+            "type": "{Boolean}",
+            "readonly": "",
+            "class": "Detections",
+            "module": "slikland",
+            "submodule": "slikland.utils"
+        },
+        {
+            "file": "../../source/coffee/slikland/utils/Detections.coffee",
+            "line": 115,
+            "itemtype": "property",
+            "name": "cache",
+            "type": "{Boolean}",
+            "readonly": "",
+            "class": "Detections",
+            "module": "slikland",
+            "submodule": "slikland.utils"
+        },
+        {
+            "file": "../../source/coffee/slikland/utils/Detections.coffee",
+            "line": 121,
+            "itemtype": "property",
+            "name": "canvas",
+            "type": "{Boolean}",
+            "readonly": "",
+            "class": "Detections",
+            "module": "slikland",
+            "submodule": "slikland.utils"
+        },
+        {
+            "file": "../../source/coffee/slikland/utils/Detections.coffee",
+            "line": 127,
+            "itemtype": "property",
+            "name": "webgl",
+            "type": "{Boolean}",
+            "readonly": "",
+            "class": "Detections",
+            "module": "slikland",
+            "submodule": "slikland.utils"
+        },
+        {
+            "file": "../../source/coffee/slikland/utils/Detections.coffee",
+            "line": 141,
+            "itemtype": "property",
+            "name": "iosInlineVideo",
+            "type": "{Boolean}",
+            "readonly": "",
+            "class": "Detections",
+            "module": "slikland",
+            "submodule": "slikland.utils"
+        },
+        {
+            "file": "../../source/coffee/slikland/utils/Detections.coffee",
+            "line": 148,
+            "itemtype": "property",
+            "name": "orientation",
+            "type": "{String} 'landscape' or 'portrait'",
+            "readonly": "",
+            "class": "Detections",
+            "module": "slikland",
+            "submodule": "slikland.utils"
+        },
+        {
+            "file": "../../source/coffee/slikland/utils/Detections.coffee",
+            "line": 157,
+            "itemtype": "method",
+            "name": "test",
+            "params": [
+                {
+                    "name": "value",
+                    "description": "",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "Number"
+            },
+            "access": "protected",
+            "tagname": "",
+            "class": "Detections",
+            "module": "slikland",
+            "submodule": "slikland.utils"
+        },
+        {
+            "file": "../../source/coffee/slikland/utils/Detections.coffee",
+            "line": 192,
+            "itemtype": "method",
+            "name": "getFirstMatch",
+            "params": [
+                {
+                    "name": "re",
+                    "description": "",
+                    "type": "RegExp"
+                },
+                {
+                    "name": "val",
+                    "description": "",
+                    "type": "Number"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "Boolean"
+            },
+            "access": "private",
+            "tagname": "",
+            "class": "Detections",
+            "module": "slikland",
+            "submodule": "slikland.utils"
+        },
+        {
+            "file": "../../source/coffee/slikland/utils/Detections.coffee",
+            "line": 203,
+            "itemtype": "method",
+            "name": "getBrowser",
+            "return": {
+                "description": "The result in array is a string like [\"name\", \"version\"]",
+                "type": "Array"
+            },
+            "access": "protected",
+            "tagname": "",
+            "class": "Detections",
+            "module": "slikland",
+            "submodule": "slikland.utils"
+        },
+        {
+            "file": "../../source/coffee/slikland/utils/Detections.coffee",
+            "line": 217,
+            "itemtype": "method",
+            "name": "getOS",
+            "return": {
+                "description": "The result values are 'ios', 'osx', 'android', 'windows' and 'blackberry'",
+                "type": "String"
+            },
+            "default": "undefined",
+            "access": "protected",
+            "tagname": "",
+            "class": "Detections",
+            "module": "slikland",
+            "submodule": "slikland.utils"
+        },
+        {
+            "file": "../../source/coffee/slikland/utils/Detections.coffee",
+            "line": 246,
+            "itemtype": "method",
+            "name": "testRetinaDisplay",
+            "return": {
+                "description": "",
+                "type": "Boolean"
+            },
+            "access": "private",
+            "tagname": "",
+            "class": "Detections",
+            "module": "slikland",
+            "submodule": "slikland.utils"
+        },
+        {
+            "file": "../../source/coffee/slikland/utils/Detections.coffee",
+            "line": 257,
+            "itemtype": "method",
+            "name": "testWebGL",
+            "return": {
+                "description": "",
+                "type": "Boolean"
+            },
+            "access": "private",
+            "tagname": "",
+            "class": "Detections",
+            "module": "slikland",
+            "submodule": "slikland.utils"
+        },
+        {
+            "file": "../../source/coffee/slikland/utils/Detections.coffee",
+            "line": 268,
+            "itemtype": "method",
+            "name": "testCanvas",
+            "return": {
+                "description": "",
+                "type": "Boolean"
+            },
+            "access": "private",
+            "tagname": "",
+            "class": "Detections",
+            "module": "slikland",
+            "submodule": "slikland.utils"
         },
         {
             "file": "../../source/coffee/slikland/utils/FunctionUtils.coffee",
@@ -4693,7 +5351,9 @@
                 "description": "",
                 "type": "Function"
             },
-            "class": "FunctionUtils"
+            "class": "FunctionUtils",
+            "module": "slikland",
+            "submodule": "slikland.utils"
         },
         {
             "file": "../../source/coffee/slikland/utils/FunctionUtils.coffee",
@@ -4726,38 +5386,46 @@
                 "description": "",
                 "type": "Function"
             },
-            "class": "FunctionUtils"
+            "class": "FunctionUtils",
+            "module": "slikland",
+            "submodule": "slikland.utils"
         },
         {
             "file": "../../source/coffee/slikland/utils/GeolocationDetection.coffee",
-            "line": 8,
+            "line": 7,
             "itemtype": "event",
             "name": "COMPLETE",
             "static": 1,
-            "class": "GeolocationDetection"
+            "class": "GeolocationDetection",
+            "module": "slikland",
+            "submodule": "slikland.utils"
         },
         {
             "file": "../../source/coffee/slikland/utils/GeolocationDetection.coffee",
-            "line": 14,
+            "line": 13,
             "itemtype": "event",
             "name": "ERROR",
             "static": 1,
-            "class": "GeolocationDetection"
+            "class": "GeolocationDetection",
+            "module": "slikland",
+            "submodule": "slikland.utils"
         },
         {
             "file": "../../source/coffee/slikland/utils/GeolocationDetection.coffee",
-            "line": 20,
+            "line": 19,
             "itemtype": "property",
             "name": "isSearching",
             "type": "Boolean",
             "default": "false",
             "access": "protected",
             "tagname": "",
-            "class": "GeolocationDetection"
+            "class": "GeolocationDetection",
+            "module": "slikland",
+            "submodule": "slikland.utils"
         },
         {
             "file": "../../source/coffee/slikland/utils/GeolocationDetection.coffee",
-            "line": 28,
+            "line": 27,
             "itemtype": "method",
             "name": "getInstance",
             "static": 1,
@@ -4765,18 +5433,22 @@
                 "description": "",
                 "type": "GeolocationDetection"
             },
-            "class": "GeolocationDetection"
+            "class": "GeolocationDetection",
+            "module": "slikland",
+            "submodule": "slikland.utils"
         },
         {
             "file": "../../source/coffee/slikland/utils/GeolocationDetection.coffee",
-            "line": 39,
+            "line": 43,
             "itemtype": "method",
             "name": "fetchPosition",
-            "class": "GeolocationDetection"
+            "class": "GeolocationDetection",
+            "module": "slikland",
+            "submodule": "slikland.utils"
         },
         {
             "file": "../../source/coffee/slikland/utils/GeolocationDetection.coffee",
-            "line": 54,
+            "line": 58,
             "itemtype": "property",
             "name": "position",
             "type": "Object",
@@ -4785,11 +5457,13 @@
                 "type": "Object"
             },
             "readonly": "",
-            "class": "GeolocationDetection"
+            "class": "GeolocationDetection",
+            "module": "slikland",
+            "submodule": "slikland.utils"
         },
         {
             "file": "../../source/coffee/slikland/utils/GeolocationDetection.coffee",
-            "line": 63,
+            "line": 67,
             "itemtype": "method",
             "name": "_success",
             "params": [
@@ -4801,11 +5475,13 @@
             ],
             "access": "private",
             "tagname": "",
-            "class": "GeolocationDetection"
+            "class": "GeolocationDetection",
+            "module": "slikland",
+            "submodule": "slikland.utils"
         },
         {
             "file": "../../source/coffee/slikland/utils/GeolocationDetection.coffee",
-            "line": 74,
+            "line": 78,
             "itemtype": "method",
             "name": "_error",
             "params": [
@@ -4817,59 +5493,73 @@
             ],
             "access": "private",
             "tagname": "",
-            "class": "GeolocationDetection"
+            "class": "GeolocationDetection",
+            "module": "slikland",
+            "submodule": "slikland.utils"
         },
         {
             "file": "../../source/coffee/slikland/utils/GestureUtils.coffee",
-            "line": 8,
+            "line": 7,
             "itemtype": "event",
             "name": "ON_SWIPE_LEFT",
             "static": 1,
-            "class": "GestureUtils"
+            "class": "GestureUtils",
+            "module": "slikland",
+            "submodule": "slikland.utils"
         },
         {
             "file": "../../source/coffee/slikland/utils/GestureUtils.coffee",
-            "line": 14,
+            "line": 13,
             "itemtype": "event",
             "name": "ON_SWIPE_RIGHT",
             "static": 1,
-            "class": "GestureUtils"
+            "class": "GestureUtils",
+            "module": "slikland",
+            "submodule": "slikland.utils"
         },
         {
             "file": "../../source/coffee/slikland/utils/GestureUtils.coffee",
-            "line": 20,
+            "line": 19,
             "itemtype": "event",
             "name": "ON_SWIPE_UP",
             "static": 1,
-            "class": "GestureUtils"
+            "class": "GestureUtils",
+            "module": "slikland",
+            "submodule": "slikland.utils"
         },
         {
             "file": "../../source/coffee/slikland/utils/GestureUtils.coffee",
-            "line": 26,
+            "line": 25,
             "itemtype": "event",
             "name": "ON_SWIPE_DOWN",
             "static": 1,
-            "class": "GestureUtils"
+            "class": "GestureUtils",
+            "module": "slikland",
+            "submodule": "slikland.utils"
         },
         {
             "file": "../../source/coffee/slikland/utils/GestureUtils.coffee",
-            "line": 32,
+            "line": 31,
             "itemtype": "event",
             "name": "ON_TOUCH_START",
             "static": 1,
-            "class": "GestureUtils"
+            "class": "GestureUtils",
+            "module": "slikland",
+            "submodule": "slikland.utils"
         },
         {
             "file": "../../source/coffee/slikland/utils/GestureUtils.coffee",
-            "line": 38,
+            "line": 37,
             "itemtype": "event",
             "name": "ON_TOUCH_END",
             "static": 1,
-            "class": "GestureUtils"
+            "class": "GestureUtils",
+            "module": "slikland",
+            "submodule": "slikland.utils"
         },
         {
             "file": "../../source/coffee/slikland/utils/GestureUtils.coffee",
-            "line": 47,
+            "line": 51,
             "itemtype": "method",
             "name": "registerElement",
             "params": [
@@ -4879,11 +5569,13 @@
                     "type": "HTMLElement"
                 }
             ],
-            "class": "GestureUtils"
+            "class": "GestureUtils",
+            "module": "slikland",
+            "submodule": "slikland.utils"
         },
         {
             "file": "../../source/coffee/slikland/utils/GestureUtils.coffee",
-            "line": 63,
+            "line": 67,
             "itemtype": "method",
             "name": "_onTouchStart",
             "params": [
@@ -4895,11 +5587,13 @@
             ],
             "access": "private",
             "tagname": "",
-            "class": "GestureUtils"
+            "class": "GestureUtils",
+            "module": "slikland",
+            "submodule": "slikland.utils"
         },
         {
             "file": "../../source/coffee/slikland/utils/GestureUtils.coffee",
-            "line": 85,
+            "line": 89,
             "itemtype": "method",
             "name": "_onLeft",
             "params": [
@@ -4911,11 +5605,13 @@
             ],
             "access": "private",
             "tagname": "",
-            "class": "GestureUtils"
+            "class": "GestureUtils",
+            "module": "slikland",
+            "submodule": "slikland.utils"
         },
         {
             "file": "../../source/coffee/slikland/utils/GestureUtils.coffee",
-            "line": 94,
+            "line": 98,
             "itemtype": "method",
             "name": "_onRight",
             "params": [
@@ -4927,11 +5623,13 @@
             ],
             "access": "private",
             "tagname": "",
-            "class": "GestureUtils"
+            "class": "GestureUtils",
+            "module": "slikland",
+            "submodule": "slikland.utils"
         },
         {
             "file": "../../source/coffee/slikland/utils/GestureUtils.coffee",
-            "line": 103,
+            "line": 107,
             "itemtype": "method",
             "name": "_onUp",
             "params": [
@@ -4943,11 +5641,13 @@
             ],
             "access": "private",
             "tagname": "",
-            "class": "GestureUtils"
+            "class": "GestureUtils",
+            "module": "slikland",
+            "submodule": "slikland.utils"
         },
         {
             "file": "../../source/coffee/slikland/utils/GestureUtils.coffee",
-            "line": 112,
+            "line": 116,
             "itemtype": "method",
             "name": "_onDown",
             "params": [
@@ -4959,11 +5659,13 @@
             ],
             "access": "private",
             "tagname": "",
-            "class": "GestureUtils"
+            "class": "GestureUtils",
+            "module": "slikland",
+            "submodule": "slikland.utils"
         },
         {
             "file": "../../source/coffee/slikland/utils/GestureUtils.coffee",
-            "line": 121,
+            "line": 125,
             "itemtype": "method",
             "name": "_onTouchMove",
             "params": [
@@ -4975,11 +5677,13 @@
             ],
             "access": "private",
             "tagname": "",
-            "class": "GestureUtils"
+            "class": "GestureUtils",
+            "module": "slikland",
+            "submodule": "slikland.utils"
         },
         {
             "file": "../../source/coffee/slikland/utils/GestureUtils.coffee",
-            "line": 135,
+            "line": 139,
             "itemtype": "method",
             "name": "_onTouchEnd",
             "params": [
@@ -4991,11 +5695,13 @@
             ],
             "access": "private",
             "tagname": "",
-            "class": "GestureUtils"
+            "class": "GestureUtils",
+            "module": "slikland",
+            "submodule": "slikland.utils"
         },
         {
             "file": "../../source/coffee/slikland/utils/GestureUtils.coffee",
-            "line": 166,
+            "line": 170,
             "itemtype": "method",
             "name": "getTouchPositions",
             "static": 1,
@@ -5010,7 +5716,9 @@
                 "description": "",
                 "type": "Array"
             },
-            "class": "GestureUtils"
+            "class": "GestureUtils",
+            "module": "slikland",
+            "submodule": "slikland.utils"
         },
         {
             "file": "../../source/coffee/slikland/utils/JSONUtils.coffee",
@@ -5029,7 +5737,9 @@
                 "description": "",
                 "type": "JSON"
             },
-            "class": "JSONUtils"
+            "class": "JSONUtils",
+            "module": "slikland",
+            "submodule": "slikland.utils"
         },
         {
             "file": "../../source/coffee/slikland/utils/JSONUtils.coffee",
@@ -5048,7 +5758,9 @@
                 "description": "",
                 "type": "JSON"
             },
-            "class": "JSONUtils"
+            "class": "JSONUtils",
+            "module": "slikland",
+            "submodule": "slikland.utils"
         },
         {
             "file": "../../source/coffee/slikland/utils/JSONUtils.coffee",
@@ -5089,7 +5801,9 @@
                 "description": "",
                 "type": "String"
             },
-            "class": "JSONUtils"
+            "class": "JSONUtils",
+            "module": "slikland",
+            "submodule": "slikland.utils"
         },
         {
             "file": "../../source/coffee/slikland/utils/JSONUtils.coffee",
@@ -5120,7 +5834,9 @@
                 "description": "",
                 "type": "String"
             },
-            "class": "JSONUtils"
+            "class": "JSONUtils",
+            "module": "slikland",
+            "submodule": "slikland.utils"
         },
         {
             "file": "../../source/coffee/slikland/utils/JSONUtils.coffee",
@@ -5139,7 +5855,9 @@
                 "description": "",
                 "type": "JSON"
             },
-            "class": "JSONUtils"
+            "class": "JSONUtils",
+            "module": "slikland",
+            "submodule": "slikland.utils"
         },
         {
             "file": "../../source/coffee/slikland/utils/JSONUtils.coffee",
@@ -5191,7 +5909,9 @@
                 "description": "",
                 "type": "JSON|Object|Array"
             },
-            "class": "JSONUtils"
+            "class": "JSONUtils",
+            "module": "slikland",
+            "submodule": "slikland.utils"
         },
         {
             "file": "../../source/coffee/slikland/utils/MathUtils.coffee",
@@ -5230,7 +5950,9 @@
                 "description": "Result point like {\"x\":0,\"y\":0}",
                 "type": "Object"
             },
-            "class": "MathUtils"
+            "class": "MathUtils",
+            "module": "slikland",
+            "submodule": "slikland.utils"
         },
         {
             "file": "../../source/coffee/slikland/utils/MathUtils.coffee",
@@ -5274,7 +5996,9 @@
                 "description": "Result point like {\"x\":0,\"y\":0}",
                 "type": "Object"
             },
-            "class": "MathUtils"
+            "class": "MathUtils",
+            "module": "slikland",
+            "submodule": "slikland.utils"
         },
         {
             "file": "../../source/coffee/slikland/utils/MathUtils.coffee",
@@ -5306,7 +6030,9 @@
                 "description": "The resulting the coordinates",
                 "type": "Number"
             },
-            "class": "MathUtils"
+            "class": "MathUtils",
+            "module": "slikland",
+            "submodule": "slikland.utils"
         },
         {
             "file": "../../source/coffee/slikland/utils/MathUtils.coffee",
@@ -5337,7 +6063,9 @@
                 "description": "",
                 "type": "Number"
             },
-            "class": "MathUtils"
+            "class": "MathUtils",
+            "module": "slikland",
+            "submodule": "slikland.utils"
         },
         {
             "file": "../../source/coffee/slikland/utils/MathUtils.coffee",
@@ -5357,7 +6085,9 @@
                 "description": "",
                 "type": "Number"
             },
-            "class": "MathUtils"
+            "class": "MathUtils",
+            "module": "slikland",
+            "submodule": "slikland.utils"
         },
         {
             "file": "../../source/coffee/slikland/utils/MathUtils.coffee",
@@ -5377,7 +6107,9 @@
                 "description": "",
                 "type": "Number"
             },
-            "class": "MathUtils"
+            "class": "MathUtils",
+            "module": "slikland",
+            "submodule": "slikland.utils"
         },
         {
             "file": "../../source/coffee/slikland/utils/MathUtils.coffee",
@@ -5397,7 +6129,9 @@
                 "description": "",
                 "type": "Number"
             },
-            "class": "MathUtils"
+            "class": "MathUtils",
+            "module": "slikland",
+            "submodule": "slikland.utils"
         },
         {
             "file": "../../source/coffee/slikland/utils/MouseUtils.coffee",
@@ -5423,7 +6157,9 @@
                 "description": "A array with a format [x, y]",
                 "type": "Array"
             },
-            "class": "MouseUtils"
+            "class": "MouseUtils",
+            "module": "slikland",
+            "submodule": "slikland.utils"
         },
         {
             "file": "../../source/coffee/slikland/utils/MouseUtils.coffee",
@@ -5447,7 +6183,9 @@
                 "description": "A array with a format [x, y]",
                 "type": "Array"
             },
-            "class": "MouseUtils"
+            "class": "MouseUtils",
+            "module": "slikland",
+            "submodule": "slikland.utils"
         },
         {
             "file": "../../source/coffee/slikland/utils/NumberUtils.coffee",
@@ -5467,7 +6205,9 @@
                 "description": "The resulting boolean object.",
                 "type": "Boolean"
             },
-            "class": "NumberUtils"
+            "class": "NumberUtils",
+            "module": "slikland",
+            "submodule": "slikland.utils"
         },
         {
             "file": "../../source/coffee/slikland/utils/NumberUtils.coffee",
@@ -5487,7 +6227,9 @@
                 "description": "The resulting boolean object.",
                 "type": "Boolean"
             },
-            "class": "NumberUtils"
+            "class": "NumberUtils",
+            "module": "slikland",
+            "submodule": "slikland.utils"
         },
         {
             "file": "../../source/coffee/slikland/utils/NumberUtils.coffee",
@@ -5507,7 +6249,9 @@
                 "description": "The resulting boolean object.",
                 "type": "Boolean"
             },
-            "class": "NumberUtils"
+            "class": "NumberUtils",
+            "module": "slikland",
+            "submodule": "slikland.utils"
         },
         {
             "file": "../../source/coffee/slikland/utils/NumberUtils.coffee",
@@ -5537,7 +6281,9 @@
                 "description": "The resulting number object.",
                 "type": "Number"
             },
-            "class": "NumberUtils"
+            "class": "NumberUtils",
+            "module": "slikland",
+            "submodule": "slikland.utils"
         },
         {
             "file": "../../source/coffee/slikland/utils/NumberUtils.coffee",
@@ -5567,7 +6313,9 @@
                 "description": "The resulting number object.",
                 "type": "Number"
             },
-            "class": "NumberUtils"
+            "class": "NumberUtils",
+            "module": "slikland",
+            "submodule": "slikland.utils"
         },
         {
             "file": "../../source/coffee/slikland/utils/NumberUtils.coffee",
@@ -5587,7 +6335,9 @@
                 "description": "Results in MB's",
                 "type": "String"
             },
-            "class": "NumberUtils"
+            "class": "NumberUtils",
+            "module": "slikland",
+            "submodule": "slikland.utils"
         },
         {
             "file": "../../source/coffee/slikland/utils/NumberUtils.coffee",
@@ -5607,7 +6357,9 @@
                 "description": "Results in byte, KB's, MB's or GB's",
                 "type": "String"
             },
-            "class": "NumberUtils"
+            "class": "NumberUtils",
+            "module": "slikland",
+            "submodule": "slikland.utils"
         },
         {
             "file": "../../source/coffee/slikland/utils/NumberUtils.coffee",
@@ -5639,7 +6391,9 @@
                 "description": "",
                 "type": "Number"
             },
-            "class": "NumberUtils"
+            "class": "NumberUtils",
+            "module": "slikland",
+            "submodule": "slikland.utils"
         },
         {
             "file": "../../source/coffee/slikland/utils/ObjectUtils.coffee",
@@ -5659,7 +6413,9 @@
                 "description": "",
                 "type": "Number"
             },
-            "class": "ObjectUtils"
+            "class": "ObjectUtils",
+            "module": "slikland",
+            "submodule": "slikland.utils"
         },
         {
             "file": "../../source/coffee/slikland/utils/ObjectUtils.coffee",
@@ -5679,7 +6435,9 @@
                 "description": "",
                 "type": "Array"
             },
-            "class": "ObjectUtils"
+            "class": "ObjectUtils",
+            "module": "slikland",
+            "submodule": "slikland.utils"
         },
         {
             "file": "../../source/coffee/slikland/utils/ObjectUtils.coffee",
@@ -5704,7 +6462,9 @@
                 "description": "Returns a new merged object.",
                 "type": "Object"
             },
-            "class": "ObjectUtils"
+            "class": "ObjectUtils",
+            "module": "slikland",
+            "submodule": "slikland.utils"
         },
         {
             "file": "../../source/coffee/slikland/utils/ObjectUtils.coffee",
@@ -5724,7 +6484,9 @@
                 "description": "Returns a new cloned object.",
                 "type": "Object"
             },
-            "class": "ObjectUtils"
+            "class": "ObjectUtils",
+            "module": "slikland",
+            "submodule": "slikland.utils"
         },
         {
             "file": "../../source/coffee/slikland/utils/ObjectUtils.coffee",
@@ -5761,7 +6523,9 @@
                 "description": "Returns the object with a new value.",
                 "type": "Object"
             },
-            "class": "ObjectUtils"
+            "class": "ObjectUtils",
+            "module": "slikland",
+            "submodule": "slikland.utils"
         },
         {
             "file": "../../source/coffee/slikland/utils/ObjectUtils.coffee",
@@ -5785,7 +6549,9 @@
                 "description": "",
                 "type": "Boolean"
             },
-            "class": "ObjectUtils"
+            "class": "ObjectUtils",
+            "module": "slikland",
+            "submodule": "slikland.utils"
         },
         {
             "file": "../../source/coffee/slikland/utils/ObjectUtils.coffee",
@@ -5809,7 +6575,9 @@
                 "description": "",
                 "type": "Boolean"
             },
-            "class": "ObjectUtils"
+            "class": "ObjectUtils",
+            "module": "slikland",
+            "submodule": "slikland.utils"
         },
         {
             "file": "../../source/coffee/slikland/utils/ObjectUtils.coffee",
@@ -5832,7 +6600,9 @@
             "example": [
                 "\n```\nObjectUtils.parseLinkedArray([['id', 'name'], [0, 'name1'], [1, 'name2']])\nOutput://[{id: 0, 'name': 'name1'}, {id: 1, 'name': 'name2'}]\n\n```"
             ],
-            "class": "ObjectUtils"
+            "class": "ObjectUtils",
+            "module": "slikland",
+            "submodule": "slikland.utils"
         },
         {
             "file": "../../source/coffee/slikland/utils/ObjectUtils.coffee",
@@ -5851,22 +6621,25 @@
                 "description": "",
                 "type": "String"
             },
-            "class": "ObjectUtils"
+            "class": "ObjectUtils",
+            "module": "slikland",
+            "submodule": "slikland.utils"
         },
         {
             "file": "../../source/coffee/slikland/utils/Prototypes.coffee",
-            "line": 27,
+            "line": 22,
             "description": "This method is a decorator to create constant variable to a class.\nA extending class cannot override this constant either can't be reassigned.\n\n* Please ignore de backslash on \\\\\\@ as the code formatter doesn't escape atmarks.",
             "itemtype": "method",
             "name": "@const",
             "example": [
                 "\n\tclass A\n\t\t\\@const PI: 3.14\n\tconsole.log(A.PI) // 3.14\n\tclass B extends A\n\t\t\\@const PI: 3.14159 // Will throw error\n\tconsole.log(B.PI) // Already thrown error before, but will be 3.14"
             ],
-            "class": "Prototypes"
+            "class": "ResizeUtils",
+            "module": "slikland"
         },
         {
             "file": "../../source/coffee/slikland/utils/Prototypes.coffee",
-            "line": 55,
+            "line": 50,
             "description": "EXPERIMENTAL\nThis method is a decorator to protect a property of a class instance removing the property name from enumerable list.\n\n* Please ignore de backslash on \\\\\\@ as the code formatter doesn't escape atmarks.",
             "itemtype": "method",
             "name": "@protectProperties",
@@ -5874,29 +6647,32 @@
             "example": [
                 "\n\tclass A\n\t\t\\@protectProperties [\"_a\", \"_b\"]\n\t\tconstructor:()->\n\t\t\t\\@_a = 1\n\tconsole.log(new A()) // Will not list _a either _b as enumerable"
             ],
-            "class": "Prototypes"
+            "class": "ResizeUtils",
+            "module": "slikland"
         },
         {
             "file": "../../source/coffee/slikland/utils/Prototypes.coffee",
-            "line": 87,
+            "line": 82,
             "description": "Getter decorator for a class instance.\nWith this decorator you're able to assign a getter method to a variable.\n\nAlso for a special case, you can assign a scope to the getter so you can create static getter to a class.\n\n* Please ignore de backslash on \\\\\\@ as the code formatter doesn't escape atmarks.",
             "itemtype": "method",
             "name": "@get",
             "example": [
                 "\n\n\t// Instance getter\n\tclass A\n\t\t\\@get test:()->\n\t\t\treturn 'Hello world!'\n\ta = new A()\n\tconsole.log(a.test) // Hello world!\n\n\t// Static getter\n\tclass A\n\t\t\\@get \\@, TEST:()->\n\t\t\treturn 'Hello world!'\n\tconsole.log(A.TEST) // Hello world!"
             ],
-            "class": "Prototypes"
+            "class": "ResizeUtils",
+            "module": "slikland"
         },
         {
             "file": "../../source/coffee/slikland/utils/Prototypes.coffee",
-            "line": 125,
+            "line": 120,
             "description": "Setter decorator for a class instance.\nWith this decorator you're able to assign a setter method to a variable.\n\nAlso for a special case, you can assign a scope to the setter so you can create static setter to a class.\n\n* Please ignore de backslash on \\\\\\@ as the code formatter doesn't escape atmarks.",
             "itemtype": "method",
             "name": "@set",
             "example": [
                 "\n\n\t// Instance getter / stter\n\tclass A\n\t\t\\@get test:()->\n\t\t\treturn \\@_test\n\t\t\\@set test:(value)->\n\t\t\t\\@_test = value\n\ta = new A()\n\ta.test = 'Hello setter'\n\tconsole.log(a.test) // Hello setter\n\n\t// Static getter / setter\n\tclass A\n\t\t\\@get \\@, TEST:()->\n\t\t\treturn @_TEST\n\t\t\\@set \\@, TEST:(value)->\n\t\t\t\\@_TEST = value\n\tA.TEST = 'Hello setter'\n\tconsole.log(A.TEST) // Hello setter"
             ],
-            "class": "Prototypes"
+            "class": "ResizeUtils",
+            "module": "slikland"
         },
         {
             "file": "../../source/coffee/slikland/utils/ResizeUtils.coffee",
@@ -5948,7 +6724,9 @@
                 "description": "A object with a format {x:0, y:0, width:0, height:0, scale:0}",
                 "type": "Object"
             },
-            "class": "ResizeUtils"
+            "class": "ResizeUtils",
+            "module": "slikland",
+            "submodule": "slikland.utils"
         },
         {
             "file": "../../source/coffee/slikland/utils/ResizeUtils.coffee",
@@ -5967,35 +6745,43 @@
                 "description": "",
                 "type": "Object"
             },
-            "class": "ResizeUtils"
+            "class": "ResizeUtils",
+            "module": "slikland",
+            "submodule": "slikland.utils"
         },
         {
             "file": "../../source/coffee/slikland/utils/Resizer.coffee",
-            "line": 10,
+            "line": 11,
             "itemtype": "event",
             "name": "RESIZE",
             "static": 1,
-            "class": "Resizer"
+            "class": "Resizer",
+            "module": "slikland",
+            "submodule": "slikland.utils"
         },
         {
             "file": "../../source/coffee/slikland/utils/Resizer.coffee",
-            "line": 16,
+            "line": 17,
             "itemtype": "event",
             "name": "ORIENTATION_CHANGE",
             "static": 1,
-            "class": "Resizer"
+            "class": "Resizer",
+            "module": "slikland",
+            "submodule": "slikland.utils"
         },
         {
             "file": "../../source/coffee/slikland/utils/Resizer.coffee",
-            "line": 22,
+            "line": 23,
             "itemtype": "event",
             "name": "BREAKPOINT_CHANGE",
             "static": 1,
-            "class": "Resizer"
+            "class": "Resizer",
+            "module": "slikland",
+            "submodule": "slikland.utils"
         },
         {
             "file": "../../source/coffee/slikland/utils/Resizer.coffee",
-            "line": 31,
+            "line": 32,
             "itemtype": "method",
             "name": "getInstance",
             "static": 1,
@@ -6012,61 +6798,75 @@
                 "description": "",
                 "type": "Resizer"
             },
-            "class": "Resizer"
+            "class": "Resizer",
+            "module": "slikland",
+            "submodule": "slikland.utils"
         },
         {
             "file": "../../source/coffee/slikland/utils/Resizer.coffee",
-            "line": 53,
+            "line": 54,
             "itemtype": "property",
             "name": "width",
             "type": "{Number}",
             "readonly": "",
-            "class": "Resizer"
+            "class": "Resizer",
+            "module": "slikland",
+            "submodule": "slikland.utils"
         },
         {
             "file": "../../source/coffee/slikland/utils/Resizer.coffee",
-            "line": 61,
+            "line": 62,
             "itemtype": "property",
             "name": "height",
             "type": "{Number}",
             "readonly": "",
-            "class": "Resizer"
+            "class": "Resizer",
+            "module": "slikland",
+            "submodule": "slikland.utils"
         },
         {
             "file": "../../source/coffee/slikland/utils/Resizer.coffee",
-            "line": 69,
+            "line": 70,
             "itemtype": "property",
             "name": "orientation",
             "type": "{String} 'landscape' or 'portrait'",
             "readonly": "",
-            "class": "Resizer"
+            "class": "Resizer",
+            "module": "slikland",
+            "submodule": "slikland.utils"
         },
         {
             "file": "../../source/coffee/slikland/utils/Resizer.coffee",
-            "line": 78,
+            "line": 79,
             "description": "Gets/Sets bounds",
             "itemtype": "property",
             "name": "bounds",
             "type": "{Object} The object like {\"top\":0, \"bottom\":0, \"left\":0, \"right\":0}",
-            "class": "Resizer"
+            "class": "Resizer",
+            "module": "slikland",
+            "submodule": "slikland.utils"
         },
         {
             "file": "../../source/coffee/slikland/utils/Resizer.coffee",
-            "line": 88,
+            "line": 89,
             "itemtype": "method",
             "name": "start",
-            "class": "Resizer"
+            "class": "Resizer",
+            "module": "slikland",
+            "submodule": "slikland.utils"
         },
         {
             "file": "../../source/coffee/slikland/utils/Resizer.coffee",
-            "line": 97,
+            "line": 98,
             "itemtype": "method",
             "name": "stop",
-            "class": "Resizer"
+            "class": "Resizer",
+            "module": "slikland",
+            "submodule": "slikland.utils"
         },
         {
             "file": "../../source/coffee/slikland/utils/Resizer.coffee",
-            "line": 105,
+            "line": 106,
             "itemtype": "method",
             "name": "change",
             "params": [
@@ -6083,11 +6883,13 @@
                     "optdefault": "false"
                 }
             ],
-            "class": "Resizer"
+            "class": "Resizer",
+            "module": "slikland",
+            "submodule": "slikland.utils"
         },
         {
             "file": "../../source/coffee/slikland/utils/Resizer.coffee",
-            "line": 143,
+            "line": 144,
             "itemtype": "method",
             "name": "addClass",
             "params": [
@@ -6101,11 +6903,13 @@
                 "description": "",
                 "type": "HTMLElement"
             },
-            "class": "Resizer"
+            "class": "Resizer",
+            "module": "slikland",
+            "submodule": "slikland.utils"
         },
         {
             "file": "../../source/coffee/slikland/utils/Resizer.coffee",
-            "line": 151,
+            "line": 152,
             "itemtype": "method",
             "name": "removeClass",
             "params": [
@@ -6119,11 +6923,13 @@
                 "description": "",
                 "type": "HTMLElement"
             },
-            "class": "Resizer"
+            "class": "Resizer",
+            "module": "slikland",
+            "submodule": "slikland.utils"
         },
         {
             "file": "../../source/coffee/slikland/utils/Resizer.coffee",
-            "line": 159,
+            "line": 160,
             "itemtype": "method",
             "name": "hasClass",
             "params": [
@@ -6137,7 +6943,9 @@
                 "description": "",
                 "type": "Boolean"
             },
-            "class": "Resizer"
+            "class": "Resizer",
+            "module": "slikland",
+            "submodule": "slikland.utils"
         },
         {
             "file": "../../source/coffee/slikland/utils/ShareUtils.coffee",
@@ -6177,7 +6985,9 @@
                 "description": "",
                 "type": "String"
             },
-            "class": "ShareUtils"
+            "class": "ShareUtils",
+            "module": "slikland",
+            "submodule": "slikland.utils"
         },
         {
             "file": "../../source/coffee/slikland/utils/ShareUtils.coffee",
@@ -6203,7 +7013,9 @@
                 "description": "",
                 "type": "String"
             },
-            "class": "ShareUtils"
+            "class": "ShareUtils",
+            "module": "slikland",
+            "submodule": "slikland.utils"
         },
         {
             "file": "../../source/coffee/slikland/utils/ShareUtils.coffee",
@@ -6229,7 +7041,9 @@
                 "description": "",
                 "type": "String"
             },
-            "class": "ShareUtils"
+            "class": "ShareUtils",
+            "module": "slikland",
+            "submodule": "slikland.utils"
         },
         {
             "file": "../../source/coffee/slikland/utils/ShareUtils.coffee",
@@ -6276,7 +7090,9 @@
                 "description": "",
                 "type": "String"
             },
-            "class": "ShareUtils"
+            "class": "ShareUtils",
+            "module": "slikland",
+            "submodule": "slikland.utils"
         },
         {
             "file": "../../source/coffee/slikland/utils/ShareUtils.coffee",
@@ -6316,7 +7132,9 @@
                 "description": "",
                 "type": "String"
             },
-            "class": "ShareUtils"
+            "class": "ShareUtils",
+            "module": "slikland",
+            "submodule": "slikland.utils"
         },
         {
             "file": "../../source/coffee/slikland/utils/ShareUtils.coffee",
@@ -6356,7 +7174,9 @@
                 "description": "",
                 "type": "String"
             },
-            "class": "ShareUtils"
+            "class": "ShareUtils",
+            "module": "slikland",
+            "submodule": "slikland.utils"
         },
         {
             "file": "../../source/coffee/slikland/utils/ShareUtils.coffee",
@@ -6375,21 +7195,23 @@
                     "description": "",
                     "type": "String",
                     "optional": true,
-                    "optdefault": "''"
+                    "optdefault": "\"\""
                 },
                 {
                     "name": "p_style",
                     "description": "",
                     "type": "String",
                     "optional": true,
-                    "optdefault": "'width"
+                    "optdefault": "\"width"
                 }
             ],
             "return": {
                 "description": "",
                 "type": "String"
             },
-            "class": "ShareUtils"
+            "class": "ShareUtils",
+            "module": "slikland",
+            "submodule": "slikland.utils"
         },
         {
             "file": "../../source/coffee/slikland/utils/ShareUtils.coffee",
@@ -6406,11 +7228,13 @@
                     "type": "String"
                 }
             ],
-            "class": "ShareUtils"
+            "class": "ShareUtils",
+            "module": "slikland",
+            "submodule": "slikland.utils"
         },
         {
             "file": "../../source/coffee/slikland/utils/SplitTextUtils.coffee",
-            "line": 6,
+            "line": 7,
             "description": "Split texts to chars for animations",
             "itemtype": "method",
             "name": "splitHTMLChars",
@@ -6439,11 +7263,13 @@
                 "description": "",
                 "type": "Array"
             },
-            "class": "SplitTextUtils"
+            "class": "SplitTextUtils",
+            "module": "slikland",
+            "submodule": "slikland.utils"
         },
         {
             "file": "../../source/coffee/slikland/utils/SplitTextUtils.coffee",
-            "line": 17,
+            "line": 18,
             "description": "Split texts to words for animations",
             "itemtype": "method",
             "name": "splitHTMLWords",
@@ -6472,11 +7298,13 @@
                 "description": "",
                 "type": "Array"
             },
-            "class": "SplitTextUtils"
+            "class": "SplitTextUtils",
+            "module": "slikland",
+            "submodule": "slikland.utils"
         },
         {
             "file": "../../source/coffee/slikland/utils/SplitTextUtils.coffee",
-            "line": 28,
+            "line": 29,
             "description": "Split texts to lines for animations",
             "itemtype": "method",
             "name": "splitHTMLLines",
@@ -6505,11 +7333,13 @@
                 "description": "",
                 "type": "Array"
             },
-            "class": "SplitTextUtils"
+            "class": "SplitTextUtils",
+            "module": "slikland",
+            "submodule": "slikland.utils"
         },
         {
             "file": "../../source/coffee/slikland/utils/SplitTextUtils.coffee",
-            "line": 69,
+            "line": 70,
             "itemtype": "method",
             "name": "_findParentsUntil",
             "params": [
@@ -6530,11 +7360,13 @@
                 "description": "",
                 "type": "HTMLElement"
             },
-            "class": "SplitTextUtils"
+            "class": "SplitTextUtils",
+            "module": "slikland",
+            "submodule": "slikland.utils"
         },
         {
             "file": "../../source/coffee/slikland/utils/SplitTextUtils.coffee",
-            "line": 84,
+            "line": 85,
             "itemtype": "method",
             "name": "_splitHTML",
             "params": [
@@ -6565,11 +7397,13 @@
                 "description": "",
                 "type": "Array"
             },
-            "class": "SplitTextUtils"
+            "class": "SplitTextUtils",
+            "module": "slikland",
+            "submodule": "slikland.utils"
         },
         {
             "file": "../../source/coffee/slikland/utils/SplitTextUtils.coffee",
-            "line": 111,
+            "line": 112,
             "itemtype": "method",
             "name": "_replaceChars",
             "params": [
@@ -6595,11 +7429,13 @@
                 "description": "",
                 "type": "String"
             },
-            "class": "SplitTextUtils"
+            "class": "SplitTextUtils",
+            "module": "slikland",
+            "submodule": "slikland.utils"
         },
         {
             "file": "../../source/coffee/slikland/utils/SplitTextUtils.coffee",
-            "line": 131,
+            "line": 132,
             "itemtype": "method",
             "name": "_replaceWords",
             "params": [
@@ -6625,11 +7461,13 @@
                 "description": "",
                 "type": "String"
             },
-            "class": "SplitTextUtils"
+            "class": "SplitTextUtils",
+            "module": "slikland",
+            "submodule": "slikland.utils"
         },
         {
             "file": "../../source/coffee/slikland/utils/SplitTextUtils.coffee",
-            "line": 147,
+            "line": 148,
             "itemtype": "method",
             "name": "_replaceAll",
             "params": [
@@ -6655,7 +7493,9 @@
                 "description": "",
                 "type": "String"
             },
-            "class": "SplitTextUtils"
+            "class": "SplitTextUtils",
+            "module": "slikland",
+            "submodule": "slikland.utils"
         },
         {
             "file": "../../source/coffee/slikland/utils/StringUtils.coffee",
@@ -6680,7 +7520,9 @@
                 "description": "",
                 "type": "Boolean"
             },
-            "class": "StringUtils"
+            "class": "StringUtils",
+            "module": "slikland",
+            "submodule": "slikland.utils"
         },
         {
             "file": "../../source/coffee/slikland/utils/StringUtils.coffee",
@@ -6710,7 +7552,9 @@
                 "description": "",
                 "type": "String"
             },
-            "class": "StringUtils"
+            "class": "StringUtils",
+            "module": "slikland",
+            "submodule": "slikland.utils"
         },
         {
             "file": "../../source/coffee/slikland/utils/StringUtils.coffee",
@@ -6730,7 +7574,9 @@
                 "description": "",
                 "type": "String"
             },
-            "class": "StringUtils"
+            "class": "StringUtils",
+            "module": "slikland",
+            "submodule": "slikland.utils"
         },
         {
             "file": "../../source/coffee/slikland/utils/StringUtils.coffee",
@@ -6750,7 +7596,9 @@
                 "description": "",
                 "type": "String"
             },
-            "class": "StringUtils"
+            "class": "StringUtils",
+            "module": "slikland",
+            "submodule": "slikland.utils"
         },
         {
             "file": "../../source/coffee/slikland/utils/StringUtils.coffee",
@@ -6770,7 +7618,9 @@
                 "description": "",
                 "type": "String"
             },
-            "class": "StringUtils"
+            "class": "StringUtils",
+            "module": "slikland",
+            "submodule": "slikland.utils"
         },
         {
             "file": "../../source/coffee/slikland/utils/StringUtils.coffee",
@@ -6790,7 +7640,9 @@
                 "description": "",
                 "type": "String"
             },
-            "class": "StringUtils"
+            "class": "StringUtils",
+            "module": "slikland",
+            "submodule": "slikland.utils"
         },
         {
             "file": "../../source/coffee/slikland/utils/StringUtils.coffee",
@@ -6810,7 +7662,9 @@
                 "description": "",
                 "type": "String"
             },
-            "class": "StringUtils"
+            "class": "StringUtils",
+            "module": "slikland",
+            "submodule": "slikland.utils"
         },
         {
             "file": "../../source/coffee/slikland/utils/StringUtils.coffee",
@@ -6830,7 +7684,9 @@
                 "description": "",
                 "type": "String"
             },
-            "class": "StringUtils"
+            "class": "StringUtils",
+            "module": "slikland",
+            "submodule": "slikland.utils"
         },
         {
             "file": "../../source/coffee/slikland/utils/StringUtils.coffee",
@@ -6850,7 +7706,9 @@
                 "description": "",
                 "type": "String"
             },
-            "class": "StringUtils"
+            "class": "StringUtils",
+            "module": "slikland",
+            "submodule": "slikland.utils"
         },
         {
             "file": "../../source/coffee/slikland/utils/StringUtils.coffee",
@@ -6870,7 +7728,9 @@
                 "description": "",
                 "type": "String"
             },
-            "class": "StringUtils"
+            "class": "StringUtils",
+            "module": "slikland",
+            "submodule": "slikland.utils"
         },
         {
             "file": "../../source/coffee/slikland/utils/StringUtils.coffee",
@@ -6890,7 +7750,9 @@
                 "description": "",
                 "type": "Bollean"
             },
-            "class": "StringUtils"
+            "class": "StringUtils",
+            "module": "slikland",
+            "submodule": "slikland.utils"
         },
         {
             "file": "../../source/coffee/slikland/utils/StringUtils.coffee",
@@ -6910,7 +7772,9 @@
                 "description": "",
                 "type": "String"
             },
-            "class": "StringUtils"
+            "class": "StringUtils",
+            "module": "slikland",
+            "submodule": "slikland.utils"
         },
         {
             "file": "../../source/coffee/slikland/utils/StringUtils.coffee",
@@ -6935,7 +7799,9 @@
                 "description": "",
                 "type": "String"
             },
-            "class": "StringUtils"
+            "class": "StringUtils",
+            "module": "slikland",
+            "submodule": "slikland.utils"
         },
         {
             "file": "../../source/coffee/slikland/utils/StringUtils.coffee",
@@ -6955,7 +7821,9 @@
                 "description": "",
                 "type": "Number"
             },
-            "class": "StringUtils"
+            "class": "StringUtils",
+            "module": "slikland",
+            "submodule": "slikland.utils"
         },
         {
             "file": "../../source/coffee/slikland/utils/StringUtils.coffee",
@@ -6975,7 +7843,9 @@
                 "description": "",
                 "type": "String"
             },
-            "class": "StringUtils"
+            "class": "StringUtils",
+            "module": "slikland",
+            "submodule": "slikland.utils"
         },
         {
             "file": "../../source/coffee/slikland/utils/StringUtils.coffee",
@@ -7010,7 +7880,9 @@
                 "description": "",
                 "type": "String"
             },
-            "class": "StringUtils"
+            "class": "StringUtils",
+            "module": "slikland",
+            "submodule": "slikland.utils"
         },
         {
             "file": "../../source/coffee/slikland/utils/StringUtils.coffee",
@@ -7030,7 +7902,9 @@
                 "description": "",
                 "type": "Boolean"
             },
-            "class": "StringUtils"
+            "class": "StringUtils",
+            "module": "slikland",
+            "submodule": "slikland.utils"
         },
         {
             "file": "../../source/coffee/slikland/utils/StringUtils.coffee",
@@ -7050,7 +7924,9 @@
                 "description": "",
                 "type": "String"
             },
-            "class": "StringUtils"
+            "class": "StringUtils",
+            "module": "slikland",
+            "submodule": "slikland.utils"
         },
         {
             "file": "../../source/coffee/slikland/utils/StringUtils.coffee",
@@ -7075,7 +7951,9 @@
                 "description": "",
                 "type": "String"
             },
-            "class": "StringUtils"
+            "class": "StringUtils",
+            "module": "slikland",
+            "submodule": "slikland.utils"
         },
         {
             "file": "../../source/coffee/slikland/utils/StringUtils.coffee",
@@ -7100,7 +7978,9 @@
                 "description": "",
                 "type": "String"
             },
-            "class": "StringUtils"
+            "class": "StringUtils",
+            "module": "slikland",
+            "submodule": "slikland.utils"
         },
         {
             "file": "../../source/coffee/slikland/utils/StringUtils.coffee",
@@ -7125,7 +8005,9 @@
                 "description": "",
                 "type": "String"
             },
-            "class": "StringUtils"
+            "class": "StringUtils",
+            "module": "slikland",
+            "submodule": "slikland.utils"
         },
         {
             "file": "../../source/coffee/slikland/utils/StringUtils.coffee",
@@ -7145,7 +8027,9 @@
                 "description": "",
                 "type": "String"
             },
-            "class": "StringUtils"
+            "class": "StringUtils",
+            "module": "slikland",
+            "submodule": "slikland.utils"
         },
         {
             "file": "../../source/coffee/slikland/utils/StringUtils.coffee",
@@ -7171,7 +8055,9 @@
                 "description": "",
                 "type": "String"
             },
-            "class": "StringUtils"
+            "class": "StringUtils",
+            "module": "slikland",
+            "submodule": "slikland.utils"
         },
         {
             "file": "../../source/coffee/slikland/utils/StringUtils.coffee",
@@ -7186,7 +8072,9 @@
                 "description": "",
                 "type": "String"
             },
-            "class": "StringUtils"
+            "class": "StringUtils",
+            "module": "slikland",
+            "submodule": "slikland.utils"
         },
         {
             "file": "../../source/coffee/slikland/utils/StringUtils.coffee",
@@ -7201,7 +8089,9 @@
                 "description": "",
                 "type": "Array"
             },
-            "class": "StringUtils"
+            "class": "StringUtils",
+            "module": "slikland",
+            "submodule": "slikland.utils"
         },
         {
             "file": "../../source/coffee/slikland/utils/SunUtils.coffee",
@@ -7213,7 +8103,221 @@
                 "description": "",
                 "type": "SunUtils"
             },
-            "class": "SunUtils"
+            "class": "SunUtils",
+            "module": "slikland",
+            "submodule": "slikland.utils"
+        },
+        {
+            "file": "../../source/coffee/slikland/utils/SunUtils.coffee",
+            "line": 25,
+            "itemtype": "method",
+            "name": "getTimeToNextSunset",
+            "params": [
+                {
+                    "name": "callback",
+                    "description": "",
+                    "type": "Function"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "Number|Boolean"
+            },
+            "class": "SunUtils",
+            "module": "slikland",
+            "submodule": "slikland.utils"
+        },
+        {
+            "file": "../../source/coffee/slikland/utils/SunUtils.coffee",
+            "line": 63,
+            "itemtype": "method",
+            "name": "COS",
+            "params": [
+                {
+                    "name": "deg",
+                    "description": "",
+                    "type": "Number"
+                }
+            ],
+            "access": "protected",
+            "tagname": "",
+            "return": {
+                "description": "",
+                "type": "Number"
+            },
+            "class": "SunUtils",
+            "module": "slikland",
+            "submodule": "slikland.utils"
+        },
+        {
+            "file": "../../source/coffee/slikland/utils/SunUtils.coffee",
+            "line": 73,
+            "itemtype": "method",
+            "name": "SIN",
+            "params": [
+                {
+                    "name": "deg",
+                    "description": "",
+                    "type": "Number"
+                }
+            ],
+            "access": "protected",
+            "tagname": "",
+            "return": {
+                "description": "",
+                "type": "Number"
+            },
+            "class": "SunUtils",
+            "module": "slikland",
+            "submodule": "slikland.utils"
+        },
+        {
+            "file": "../../source/coffee/slikland/utils/SunUtils.coffee",
+            "line": 83,
+            "itemtype": "method",
+            "name": "TAN",
+            "params": [
+                {
+                    "name": "deg",
+                    "description": "",
+                    "type": "Number"
+                }
+            ],
+            "access": "protected",
+            "tagname": "",
+            "return": {
+                "description": "",
+                "type": "Number"
+            },
+            "class": "SunUtils",
+            "module": "slikland",
+            "submodule": "slikland.utils"
+        },
+        {
+            "file": "../../source/coffee/slikland/utils/SunUtils.coffee",
+            "line": 93,
+            "itemtype": "method",
+            "name": "ACOS",
+            "params": [
+                {
+                    "name": "cos",
+                    "description": "",
+                    "type": "Number"
+                }
+            ],
+            "access": "protected",
+            "tagname": "",
+            "return": {
+                "description": "",
+                "type": "Number"
+            },
+            "class": "SunUtils",
+            "module": "slikland",
+            "submodule": "slikland.utils"
+        },
+        {
+            "file": "../../source/coffee/slikland/utils/SunUtils.coffee",
+            "line": 102,
+            "itemtype": "method",
+            "name": "ASIN",
+            "params": [
+                {
+                    "name": "cos",
+                    "description": "",
+                    "type": "Number"
+                }
+            ],
+            "access": "protected",
+            "tagname": "",
+            "return": {
+                "description": "",
+                "type": "Number"
+            },
+            "class": "SunUtils",
+            "module": "slikland",
+            "submodule": "slikland.utils"
+        },
+        {
+            "file": "../../source/coffee/slikland/utils/SunUtils.coffee",
+            "line": 111,
+            "itemtype": "method",
+            "name": "ATAN",
+            "params": [
+                {
+                    "name": "tan",
+                    "description": "",
+                    "type": "Number"
+                }
+            ],
+            "access": "protected",
+            "tagname": "",
+            "return": {
+                "description": "",
+                "type": "Number"
+            },
+            "class": "SunUtils",
+            "module": "slikland",
+            "submodule": "slikland.utils"
+        },
+        {
+            "file": "../../source/coffee/slikland/utils/SunUtils.coffee",
+            "line": 120,
+            "itemtype": "method",
+            "name": "_showLocation",
+            "params": [
+                {
+                    "name": "location",
+                    "description": "A object likes {coords:{\"latitude\":0, \"longitude\":0}}",
+                    "type": "Object"
+                },
+                {
+                    "name": "callback",
+                    "description": "",
+                    "type": "Function"
+                }
+            ],
+            "access": "private",
+            "tagname": "",
+            "class": "SunUtils",
+            "module": "slikland",
+            "submodule": "slikland.utils"
+        },
+        {
+            "file": "../../source/coffee/slikland/utils/SunUtils.coffee",
+            "line": 137,
+            "itemtype": "method",
+            "name": "_getCurrentTime",
+            "access": "private",
+            "tagname": "",
+            "return": {
+                "description": "",
+                "type": "Number"
+            },
+            "class": "SunUtils",
+            "module": "slikland",
+            "submodule": "slikland.utils"
+        },
+        {
+            "file": "../../source/coffee/slikland/utils/SunUtils.coffee",
+            "line": 146,
+            "itemtype": "method",
+            "name": "_calcSunsetOf",
+            "params": [
+                {
+                    "name": "now",
+                    "description": "",
+                    "type": "Date"
+                }
+            ],
+            "access": "private",
+            "tagname": "",
+            "return": {
+                "description": "",
+                "type": "Number"
+            },
+            "class": "SunUtils",
+            "module": "slikland",
+            "submodule": "slikland.utils"
         },
         {
             "file": "../../source/coffee/slikland/utils/URLUtils.coffee",
@@ -7244,7 +8348,9 @@
                 "description": "",
                 "type": "Boolean"
             },
-            "class": "URLUtils"
+            "class": "URLUtils",
+            "module": "slikland",
+            "submodule": "slikland.utils"
         },
         {
             "file": "../../source/coffee/slikland/utils/URLUtils.coffee",
@@ -7268,7 +8374,9 @@
                 "description": "",
                 "type": "Boolean"
             },
-            "class": "URLUtils"
+            "class": "URLUtils",
+            "module": "slikland",
+            "submodule": "slikland.utils"
         },
         {
             "file": "../../source/coffee/slikland/utils/URLUtils.coffee",
@@ -7292,7 +8400,9 @@
                 "description": "Cleanup URL",
                 "type": "String"
             },
-            "class": "URLUtils"
+            "class": "URLUtils",
+            "module": "slikland",
+            "submodule": "slikland.utils"
         },
         {
             "file": "../../source/coffee/slikland/utils/URLUtils.coffee",
@@ -7313,7 +8423,9 @@
                 "description": "Parsed object of params",
                 "type": "Object"
             },
-            "class": "URLUtils"
+            "class": "URLUtils",
+            "module": "slikland",
+            "submodule": "slikland.utils"
         },
         {
             "file": "../../source/coffee/slikland/utils/URLUtils.coffee",
@@ -7337,7 +8449,9 @@
                 "description": "",
                 "type": "String"
             },
-            "class": "URLUtils"
+            "class": "URLUtils",
+            "module": "slikland",
+            "submodule": "slikland.utils"
         }
     ],
     "warnings": []

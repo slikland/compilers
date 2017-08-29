@@ -1,7 +1,6 @@
 ###*
-Methods for gesture and touch
 @class GestureUtils
-@extends EventDispatcher
+@submodule slikland.utils
 ###
 class GestureUtils extends EventDispatcher
 
@@ -41,6 +40,11 @@ class GestureUtils extends EventDispatcher
 	###
 	@const ON_TOUCH_END: 'onTouchEnd'
 
+	###*
+	@class GestureUtils
+	@constructor
+	@extends EventDispatcher
+	###
 	constructor:()->
 		super
 

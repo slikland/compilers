@@ -29,7 +29,6 @@ YUI.add("yuidoc-meta", function(Y) {
         "NumberUtils",
         "ObjectUtils",
         "PreloadFiles",
-        "Prototypes",
         "ResizeUtils",
         "Resizer",
         "ShareUtils",
@@ -41,8 +40,26 @@ YUI.add("yuidoc-meta", function(Y) {
         "URLUtils",
         "ViewsData"
     ],
-    "modules": [],
-    "allModules": [],
+    "modules": [
+        "slikland",
+        "slikland.utils",
+        "slikland.utils.keyboard"
+    ],
+    "allModules": [
+        {
+            "displayName": "slikland",
+            "name": "slikland",
+            "description": "Base class to setup the navigation and start loading of dependencies."
+        },
+        {
+            "displayName": "slikland.utils",
+            "name": "slikland.utils"
+        },
+        {
+            "displayName": "slikland.utils.keyboard",
+            "name": "slikland.utils.keyboard"
+        }
+    ],
     "elements": []
 } };
 });

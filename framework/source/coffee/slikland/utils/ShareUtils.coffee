@@ -1,7 +1,7 @@
 ###*
-Bunch of utilities methods for social networks share 
 @class ShareUtils
 @static
+@submodule slikland.utils
 ###
 class ShareUtils
 
@@ -109,8 +109,8 @@ class ShareUtils
 	@method open
 	@static
 	@param {String} p_url
-	@param {String} [p_name='']
-	@param {String} [p_style='width=640,height=480']
+	@param {String} [p_name=""]
+	@param {String} [p_style="width=640,height=480"]
 	@return {String}
 	###
 	@open:(p_url, p_name='', p_style='width=640,height=480')->

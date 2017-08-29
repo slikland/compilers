@@ -1,7 +1,7 @@
 ###*
-Bunch of utilities methods for objects
 @class ObjectUtils
 @static
+@submodule slikland.utils
 ###
 class ObjectUtils
 

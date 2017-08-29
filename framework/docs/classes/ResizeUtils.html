@@ -66,7 +66,6 @@
                                 <li><a href="../classes/NumberUtils.html">NumberUtils</a></li>
                                 <li><a href="../classes/ObjectUtils.html">ObjectUtils</a></li>
                                 <li><a href="../classes/PreloadFiles.html">PreloadFiles</a></li>
-                                <li><a href="../classes/Prototypes.html">Prototypes</a></li>
                                 <li><a href="../classes/Resizer.html">Resizer</a></li>
                                 <li><a href="../classes/ResizeUtils.html">ResizeUtils</a></li>
                                 <li><a href="../classes/ShareUtils.html">ShareUtils</a></li>
@@ -81,6 +80,9 @@
                 
                 
                             <ul id="api-modules" class="apis modules">
+                                <li><a href="../modules/slikland.html">slikland</a></li>
+                                <li><a href="../modules/slikland.utils.html">slikland.utils</a></li>
+                                <li><a href="../modules/slikland.utils.keyboard.html">slikland.utils.keyboard</a></li>
                             </ul>
                         </div>
                     </div>
@@ -122,13 +124,14 @@
             Defined in: <a href="../files/.._.._source_coffee_slikland_utils_ResizeUtils.coffee.html#l1"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;utils&#x2F;ResizeUtils.coffee:1</code></a>
         </div>
 
+            Module: <a href="../modules/slikland.utils.html">slikland.utils</a><br>
+            Parent Module: <a href="../modules/slikland.html">slikland</a>
 
 </div>
 
 
 <div class="box intro">
-    <p>Bunch of utilities methods for resize</p>
-
+    
 </div>
 
 
@@ -147,6 +150,22 @@
                     <h3>Methods</h3>
 
                     <ul class="index-list methods">
+                            <li class="index-item method">
+                                <a href="#method_@const">@const</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_@get">@get</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_@protectProperties">@protectProperties</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_@set">@set</a>
+
+                            </li>
                             <li class="index-item method">
                                 <a href="#method_fitTo">fitTo</a>
 
@@ -167,6 +186,221 @@
             <div id="methods" class="api-class-tabpanel">
                 <h2 class="off-left">Methods</h2>
 
+<div id="method_@const" class="method item">
+    <h3 class="name"><code>@const</code></h3>
+
+        <span class="paren">()</span>
+
+
+
+
+
+
+
+
+    <div class="meta">
+                    <p>Provided by the <a href="../modules/slikland.html">slikland</a> module.</p>
+                <p>
+                Defined in
+        <a href="../files/.._.._source_coffee_slikland_utils_Prototypes.coffee.html#l22"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;utils&#x2F;Prototypes.coffee:22</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>This method is a decorator to create constant variable to a class.
+A extending class cannot override this constant either can't be reassigned.</p>
+<ul>
+<li>Please ignore de backslash on \@ as the code formatter doesn't escape atmarks.</li>
+</ul>
+
+    </div>
+
+
+
+
+        <div class="example">
+            <h4>Example:</h4>
+
+            <div class="example-content">
+                <pre class="code prettyprint"><code>class A
+    \@const PI: 3.14
+console.log(A.PI) // 3.14
+class B extends A
+    \@const PI: 3.14159 // Will throw error
+console.log(B.PI) // Already thrown error before, but will be 3.14</code></pre>
+
+            </div>
+        </div>
+</div>
+<div id="method_@get" class="method item">
+    <h3 class="name"><code>@get</code></h3>
+
+        <span class="paren">()</span>
+
+
+
+
+
+
+
+
+    <div class="meta">
+                    <p>Provided by the <a href="../modules/slikland.html">slikland</a> module.</p>
+                <p>
+                Defined in
+        <a href="../files/.._.._source_coffee_slikland_utils_Prototypes.coffee.html#l82"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;utils&#x2F;Prototypes.coffee:82</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Getter decorator for a class instance.
+With this decorator you're able to assign a getter method to a variable.</p>
+<p>Also for a special case, you can assign a scope to the getter so you can create static getter to a class.</p>
+<ul>
+<li>Please ignore de backslash on \@ as the code formatter doesn't escape atmarks.</li>
+</ul>
+
+    </div>
+
+
+
+
+        <div class="example">
+            <h4>Example:</h4>
+
+            <div class="example-content">
+                <pre class="code prettyprint"><code>// Instance getter
+class A
+    \@get test:()-&gt;
+        return 'Hello world!'
+a = new A()
+console.log(a.test) // Hello world!
+
+// Static getter
+class A
+    \@get \@, TEST:()-&gt;
+        return 'Hello world!'
+console.log(A.TEST) // Hello world!</code></pre>
+
+            </div>
+        </div>
+</div>
+<div id="method_@protectProperties" class="method item">
+    <h3 class="name"><code>@protectProperties</code></h3>
+
+        <span class="paren">()</span>
+
+
+
+
+
+
+
+
+    <div class="meta">
+                    <p>Provided by the <a href="../modules/slikland.html">slikland</a> module.</p>
+                <p>
+                Defined in
+        <a href="../files/.._.._source_coffee_slikland_utils_Prototypes.coffee.html#l50"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;utils&#x2F;Prototypes.coffee:50</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>EXPERIMENTAL
+This method is a decorator to protect a property of a class instance removing the property name from enumerable list.</p>
+<ul>
+<li>Please ignore de backslash on \@ as the code formatter doesn't escape atmarks.</li>
+</ul>
+
+    </div>
+
+
+
+
+        <div class="example">
+            <h4>Example:</h4>
+
+            <div class="example-content">
+                <pre class="code prettyprint"><code>class A
+    \@protectProperties [&quot;_a&quot;, &quot;_b&quot;]
+    constructor:()-&gt;
+        \@_a = 1
+console.log(new A()) // Will not list _a either _b as enumerable</code></pre>
+
+            </div>
+        </div>
+</div>
+<div id="method_@set" class="method item">
+    <h3 class="name"><code>@set</code></h3>
+
+        <span class="paren">()</span>
+
+
+
+
+
+
+
+
+    <div class="meta">
+                    <p>Provided by the <a href="../modules/slikland.html">slikland</a> module.</p>
+                <p>
+                Defined in
+        <a href="../files/.._.._source_coffee_slikland_utils_Prototypes.coffee.html#l120"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;utils&#x2F;Prototypes.coffee:120</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Setter decorator for a class instance.
+With this decorator you're able to assign a setter method to a variable.</p>
+<p>Also for a special case, you can assign a scope to the setter so you can create static setter to a class.</p>
+<ul>
+<li>Please ignore de backslash on \@ as the code formatter doesn't escape atmarks.</li>
+</ul>
+
+    </div>
+
+
+
+
+        <div class="example">
+            <h4>Example:</h4>
+
+            <div class="example-content">
+                <pre class="code prettyprint"><code>// Instance getter / stter
+class A
+    \@get test:()-&gt;
+        return \@_test
+    \@set test:(value)-&gt;
+        \@_test = value
+a = new A()
+a.test = 'Hello setter'
+console.log(a.test) // Hello setter
+
+// Static getter / setter
+class A
+    \@get \@, TEST:()-&gt;
+        return @_TEST
+    \@set \@, TEST:(value)-&gt;
+        \@_TEST = value
+A.TEST = 'Hello setter'
+console.log(A.TEST) // Hello setter</code></pre>
+
+            </div>
+        </div>
+</div>
 <div id="method_fitTo" class="method item">
     <h3 class="name"><code>fitTo</code></h3>
 

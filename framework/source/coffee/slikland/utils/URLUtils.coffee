@@ -1,9 +1,9 @@
 #import slikland.utils.Prototypes
  
 ###*
-Bunch of utilities methods for URL
 @class URLUtils
 @static
+@submodule slikland.utils
 ###
 class URLUtils
 
