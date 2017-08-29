@@ -273,50 +273,48 @@ unless "of" of Array::
 		return Array::slice.call(arguments)
 
 unless "from" of Array::
-	Array.from = ()->
-		# The length property of the from method is 1.
-		(arrayLike) ->
-			# 1. Let C be the this value.
-			C = this
-			# 2. Let items be ToObject(arrayLike).
-			items = Object(arrayLike)
-			# 3. ReturnIfAbrupt(items).
-			if arrayLike == null
-				throw new TypeError('Array.from requires an array-like object - not null or undefined')
-			# 4. If mapfn is undefined, then let mapping be false.
-			mapFn = if arguments.length > 1 then arguments[1] else undefined
-			T = undefined
-			if typeof mapFn != 'undefined'
-				# 5. else
-				# 5. a If IsCallable(mapfn) is false, throw a TypeError exception.
-				if !Function.isCallable(mapFn)
-					throw new TypeError('Array.from: when provided, the second argument must be a function')
-				# 5. b. If thisArg was supplied, let T be thisArg; else let T be undefined.
-				if arguments.length > 2
-					T = arguments[2]
-			# 10. Let lenValue be Get(items, "length").
-			# 11. Let len be ToLength(lenValue).
-			len = Number.toLength(items.length)
-			# 13. If IsConstructor(C) is true, then
-			# 13. a. Let A be the result of calling the [[Construct]] internal method
-			# of C with an argument list containing the single item len.
-			# 14. a. Else, Let A be ArrayCreate(len).
-			A = if Function.isCallable(C) then Object(new C(len)) else new Array(len)
-			# 16. Let k be 0.
-			k = 0
-			# 17. Repeat, while k < len… (also steps a - h)
-			kValue = undefined
-			while k < len
-				kValue = items[k]
-				if mapFn
-					A[k] = if typeof T == 'undefined' then mapFn(kValue, k) else mapFn.call(T, kValue, k)
-				else
-					A[k] = kValue
-				k += 1
-			# 18. Let putStatus be Put(A, "length", len, true).
-			A.length = len
-			# 20. Return A.
-			A
+	Array.from = (arrayLike) ->
+		# 1. Let C be the this value.
+		C = this
+		# 2. Let items be ToObject(arrayLike).
+		items = Object(arrayLike)
+		# 3. ReturnIfAbrupt(items).
+		if arrayLike == null
+			throw new TypeError('Array.from requires an array-like object - not null or undefined')
+		# 4. If mapfn is undefined, then let mapping be false.
+		mapFn = if arguments.length > 1 then arguments[1] else undefined
+		T = undefined
+		if typeof mapFn != 'undefined'
+			# 5. else
+			# 5. a If IsCallable(mapfn) is false, throw a TypeError exception.
+			if !Function.isCallable(mapFn)
+				throw new TypeError('Array.from: when provided, the second argument must be a function')
+			# 5. b. If thisArg was supplied, let T be thisArg; else let T be undefined.
+			if arguments.length > 2
+				T = arguments[2]
+		# 10. Let lenValue be Get(items, "length").
+		# 11. Let len be ToLength(lenValue).
+		len = Number.toLength(items.length)
+		# 13. If IsConstructor(C) is true, then
+		# 13. a. Let A be the result of calling the [[Construct]] internal method
+		# of C with an argument list containing the single item len.
+		# 14. a. Else, Let A be ArrayCreate(len).
+		A = if Function.isCallable(C) then Object(new C(len)) else new Array(len)
+		# 16. Let k be 0.
+		k = 0
+		# 17. Repeat, while k < len… (also steps a - h)
+		kValue = undefined
+		while k < len
+			kValue = items[k]
+			if mapFn
+				A[k] = if typeof T == 'undefined' then mapFn(kValue, k) else mapFn.call(T, kValue, k)
+			else
+				A[k] = kValue
+			k += 1
+		# 18. Let putStatus be Put(A, "length", len, true).
+		A.length = len
+		# 20. Return A.
+		A
 
 unless "indexOf" of Array::
 	Array::indexOf = (find, i) -> #opt
