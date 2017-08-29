@@ -7,6 +7,7 @@ class DOMUtils
 	
 	###*
 	@method addCSSClass
+	@static
 	@param {HTMLElement} el
 	@param {String} className
 	@return {HTMLElement}
@@ -30,6 +31,7 @@ class DOMUtils
 
 	###*
 	@method removeCSSClass
+	@static
 	@param {HTMLElement} el
 	@param {String} className
 	@return {HTMLElement}
@@ -52,6 +54,7 @@ class DOMUtils
 
 	###*
 	@method hasCSSClass
+	@static
 	@param {HTMLElement} el
 	@param {String} className
 	@return {Boolean}
@@ -76,6 +79,7 @@ class DOMUtils
 	
 	###*
 	@method toggleCSSClass
+	@static
 	@param {HTMLElement} el
 	@param {String} name
 	@param {Boolean} [toggle=null]
@@ -93,6 +97,7 @@ class DOMUtils
 
 	###*
 	@method findParentQuerySelector
+	@static
 	@param {HTMLElement} target
 	@param {String} selector
 	@return {HTMLElement|Boolean}
@@ -109,6 +114,7 @@ class DOMUtils
 
 	###*
 	@method removeAllChildren
+	@static
 	@param {HTMLElement} target
 	###
 	@removeAllChildren:(target)->

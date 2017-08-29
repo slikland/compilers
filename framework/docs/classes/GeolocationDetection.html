@@ -141,7 +141,6 @@
 
             <li class="api-class-tab methods"><a href="#methods">Methods</a></li>
             <li class="api-class-tab properties"><a href="#properties">Properties</a></li>
-            <li class="api-class-tab attrs"><a href="#attrs">Attributes</a></li>
             <li class="api-class-tab events"><a href="#events">Events</a></li>
     </ul>
 
@@ -192,22 +191,17 @@
                     <h3>Properties</h3>
 
                     <ul class="index-list properties extends">
-                            <li class="index-item property">
+                            <li class="index-item property protected">
                                 <a href="#property_isSearching">isSearching</a>
 
                             </li>
-                    </ul>
-                </div>
+                            <li class="index-item property">
+                                <a href="#property_position">position</a>
 
-                <div class="index-section attrs">
-                    <h3>Attributes</h3>
-
-                    <ul class="index-list attrs extends">
-                            <li class="index-item attr">
-                                <a href="#attr_position">position</a>
                             </li>
                     </ul>
                 </div>
+
 
                 <div class="index-section events">
                     <h3>Events</h3>
@@ -828,11 +822,12 @@ ed.trigger('someEvent', {someData: true}, window);</code></pre>
             <div id="properties" class="api-class-tabpanel">
                 <h2 class="off-left">Properties</h2>
 
-<div id="property_isSearching" class="property item">
+<div id="property_isSearching" class="property item protected">
     <h3 class="name"><code>isSearching</code></h3>
     <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean" class="crosslink external" target="_blank">Boolean</a></span>
 
 
+        <span class="flag protected">protected</span>
 
 
 
@@ -853,41 +848,32 @@ ed.trigger('someEvent', {someData: true}, window);</code></pre>
 
 
 </div>
+<div id="property_position" class="property item">
+    <h3 class="name"><code>position</code></h3>
+    <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._.._source_coffee_slikland_utils_GeolocationDetection.coffee.html#l49"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;utils&#x2F;GeolocationDetection.coffee:49</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        
+    </div>
+
+
+
+</div>
             </div>
 
-            <div id="attrs" class="api-class-tabpanel">
-                <h2 class="off-left">Attributes</h2>
-
-                    <div id="attr_position" class="attr item">
-                        <a name="config_position"></a> 
-                        <h3 class="name"><code>position</code></h3>
-                        <span class="type"></span>
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                            <span class="flag readonly">readonly</span>
-                    
-                        <div class="meta">
-                                    <p>
-                                    Defined in
-                            <a href="../files/.._.._source_coffee_slikland_utils_GeolocationDetection.coffee.html#l49"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;utils&#x2F;GeolocationDetection.coffee:49</code></a>
-                            </p>
-                    
-                    
-                        </div>
-                    
-                        <div class="description">
-                            
-                        </div>
-                    
-                    
-                    
-                    </div>
-            </div>
 
             <div id="events" class="api-class-tabpanel">
                 <h2 class="off-left">Events</h2>

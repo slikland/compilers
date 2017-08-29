@@ -162,10 +162,10 @@ class ObjectUtils
 	@return {Object} Returns a new merged object.
 	###
 	@merge:(a, b)-&gt;
-		if isPlainObject(a) &amp;&amp; isPlainObject(b)
+		if Object.isObject(a) &amp;&amp; Object.isObject(b)
 			for k of b
 				if !a.hasOwnProperty(k)
-					if isPlainObject(b[k])
+					if Object.isObject(b[k])
 						a[k] = ObjectUtils.clone(b[k])
 					else
 						a[k] = b[k]
@@ -284,10 +284,12 @@ class ObjectUtils
 	@return {String} 
 	###
 	@getClassName:(p_source)-&gt;
-		if typeof p_source is undefined
-			return undefined
+		if typeof p_source is &#x27;undefined&#x27;
+			return &#x27;undefined&#x27;
 		if p_source is null
-			return null
+			return &#x27;null&#x27;
+		if typeof p_source is &#x27;function&#x27;
+			return p_source.name || &#x27;undefined&#x27;
 		if p_source.constructor?
 			if p_source.constructor.name?
 				return p_source.constructor.name
@@ -299,10 +301,7 @@ class ObjectUtils
 					matches = description.match(/function\s*(\w+)/)
 				if matches? &amp;&amp; matches.length is 2
 					return matches[1]
-		return undefined
-
-# Feature: global.isPlainObject(source)
-&#x60;!function(e){if(&quot;object&quot;==typeof exports&amp;&amp;&quot;undefined&quot;!=typeof module)module.exports=e();else if(&quot;function&quot;==typeof define&amp;&amp;define.amd)define([],e);else{var t;t=&quot;undefined&quot;!=typeof window?window:&quot;undefined&quot;!=typeof global?global:&quot;undefined&quot;!=typeof self?self:this,t.isPlainObject=e()}}(function(){return function e(t,r,n){function o(f,u){if(!r[f]){if(!t[f]){var c=&quot;function&quot;==typeof require&amp;&amp;require;if(!u&amp;&amp;c)return c(f,!0);if(i)return i(f,!0);var p=new Error(&quot;Cannot find module &#x27;&quot;+f+&quot;&#x27;&quot;);throw p.code=&quot;MODULE_NOT_FOUND&quot;,p}var s=r[f]={exports:{}};t[f][0].call(s.exports,function(e){var r=t[f][1][e];return o(r?r:e)},s,s.exports,e,t,r,n)}return r[f].exports}for(var i=&quot;function&quot;==typeof require&amp;&amp;require,f=0;f&lt;n.length;f++)o(n[f]);return o}({1:[function(e,t,r){&quot;use strict&quot;;function n(e){return o(e)===!0&amp;&amp;&quot;[object Object]&quot;===Object.prototype.toString.call(e)}var o=e(&quot;isobject&quot;);t.exports=function(e){var t,r;return n(e)===!1?!1:(t=e.constructor,&quot;function&quot;!=typeof t?!1:(r=t.prototype,n(r)===!1?!1:r.hasOwnProperty(&quot;isPrototypeOf&quot;)===!1?!1:!0))}},{isobject:2}],2:[function(e,t,r){&quot;use strict&quot;;t.exports=function(e){return null!=e&amp;&amp;&quot;object&quot;==typeof e&amp;&amp;!Array.isArray(e)}},{}]},{},[1])(1)});&#x60;
+		return &#x27;undefined&#x27;
 
     </pre>
 </div>

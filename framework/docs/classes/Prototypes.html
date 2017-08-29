@@ -236,7 +236,7 @@ console.log(B.PI) // Already thrown error before, but will be 3.14</code></pre>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._.._source_coffee_slikland_utils_Prototypes.coffee.html#l86"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;utils&#x2F;Prototypes.coffee:86</code></a>
+        <a href="../files/.._.._source_coffee_slikland_utils_Prototypes.coffee.html#l87"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;utils&#x2F;Prototypes.coffee:87</code></a>
         </p>
 
 
@@ -316,7 +316,9 @@ This method is a decorator to protect a property of a class instance removing th
             <div class="example-content">
                 <pre class="code prettyprint"><code>class A
     \@protectProperties [&quot;_a&quot;, &quot;_b&quot;]
-    constructor:()-&gt;</code></pre>
+    constructor:()-&gt;
+        \@_a = 1
+console.log(new A()) // Will not list _a either _b as enumerable</code></pre>
 
             </div>
         </div>
@@ -336,7 +338,7 @@ This method is a decorator to protect a property of a class instance removing th
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._.._source_coffee_slikland_utils_Prototypes.coffee.html#l122"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;utils&#x2F;Prototypes.coffee:122</code></a>
+        <a href="../files/.._.._source_coffee_slikland_utils_Prototypes.coffee.html#l125"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;utils&#x2F;Prototypes.coffee:125</code></a>
         </p>
 
 

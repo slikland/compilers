@@ -21,7 +21,7 @@ class GeolocationDetection extends EventDispatcher
 	@property isSearching
 	@type Boolean
 	@default false
-	@protect
+	@protected
 	###
 	isSearching: false
 
@@ -47,9 +47,9 @@ class GeolocationDetection extends EventDispatcher
 		false
 
 	###*
-	@attribute position
+	@property position
+	@type Object
 	@return {Object}
-	@readOnly
 	###
 	@get position:()->
 		return @_position

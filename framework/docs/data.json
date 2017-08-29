@@ -4000,8 +4000,8 @@
             "itemtype": "property",
             "name": "MODIFIERS",
             "type": "Array",
+            "static": 1,
             "default": "['alt', 'ctrl', 'meta', 'shift']",
-            "readyonly": "",
             "class": "Shortcut"
         },
         {
@@ -4010,8 +4010,116 @@
             "itemtype": "property",
             "name": "MODIFIER_CODES",
             "type": "Array",
+            "static": 1,
             "default": "[16, 18, 17, 91]",
-            "readyonly": "",
+            "class": "Shortcut"
+        },
+        {
+            "file": "../../source/coffee/slikland/utils/keyboard/Shortcut.coffee",
+            "line": 39,
+            "itemtype": "method",
+            "name": "destroy",
+            "class": "Shortcut"
+        },
+        {
+            "file": "../../source/coffee/slikland/utils/keyboard/Shortcut.coffee",
+            "line": 49,
+            "itemtype": "method",
+            "name": "_keyDown",
+            "access": "private",
+            "tagname": "",
+            "params": [
+                {
+                    "name": "Event",
+                    "description": "",
+                    "type": "E"
+                }
+            ],
+            "class": "Shortcut"
+        },
+        {
+            "file": "../../source/coffee/slikland/utils/keyboard/Shortcut.coffee",
+            "line": 72,
+            "itemtype": "method",
+            "name": "_normalizeShortcut",
+            "access": "private",
+            "tagname": "",
+            "params": [
+                {
+                    "name": "shortcut",
+                    "description": "",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "Array"
+            },
+            "class": "Shortcut"
+        },
+        {
+            "file": "../../source/coffee/slikland/utils/keyboard/Shortcut.coffee",
+            "line": 93,
+            "itemtype": "method",
+            "name": "_findShortcut",
+            "access": "private",
+            "tagname": "",
+            "params": [
+                {
+                    "name": "shortcut",
+                    "description": "",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "Array"
+            },
+            "class": "Shortcut"
+        },
+        {
+            "file": "../../source/coffee/slikland/utils/keyboard/Shortcut.coffee",
+            "line": 107,
+            "itemtype": "method",
+            "name": "addShortcut",
+            "params": [
+                {
+                    "name": "shortcut",
+                    "description": "",
+                    "type": "String"
+                },
+                {
+                    "name": "callback",
+                    "description": "",
+                    "type": "Function"
+                },
+                {
+                    "name": "preventDefault",
+                    "description": "",
+                    "type": "Boolean",
+                    "optional": true,
+                    "optdefault": "true"
+                }
+            ],
+            "class": "Shortcut"
+        },
+        {
+            "file": "../../source/coffee/slikland/utils/keyboard/Shortcut.coffee",
+            "line": 122,
+            "itemtype": "method",
+            "name": "removeShortcut",
+            "params": [
+                {
+                    "name": "shortcut",
+                    "description": "",
+                    "type": "String"
+                },
+                {
+                    "name": "callback",
+                    "description": "",
+                    "type": "Function"
+                }
+            ],
             "class": "Shortcut"
         },
         {
@@ -4424,6 +4532,7 @@
             "line": 8,
             "itemtype": "method",
             "name": "addCSSClass",
+            "static": 1,
             "params": [
                 {
                     "name": "el",
@@ -4444,9 +4553,10 @@
         },
         {
             "file": "../../source/coffee/slikland/utils/DOMUtils.coffee",
-            "line": 31,
+            "line": 32,
             "itemtype": "method",
             "name": "removeCSSClass",
+            "static": 1,
             "params": [
                 {
                     "name": "el",
@@ -4467,9 +4577,10 @@
         },
         {
             "file": "../../source/coffee/slikland/utils/DOMUtils.coffee",
-            "line": 53,
+            "line": 55,
             "itemtype": "method",
             "name": "hasCSSClass",
+            "static": 1,
             "params": [
                 {
                     "name": "el",
@@ -4490,9 +4601,10 @@
         },
         {
             "file": "../../source/coffee/slikland/utils/DOMUtils.coffee",
-            "line": 77,
+            "line": 80,
             "itemtype": "method",
             "name": "toggleCSSClass",
+            "static": 1,
             "params": [
                 {
                     "name": "el",
@@ -4516,9 +4628,10 @@
         },
         {
             "file": "../../source/coffee/slikland/utils/DOMUtils.coffee",
-            "line": 94,
+            "line": 98,
             "itemtype": "method",
             "name": "findParentQuerySelector",
+            "static": 1,
             "params": [
                 {
                     "name": "target",
@@ -4539,9 +4652,10 @@
         },
         {
             "file": "../../source/coffee/slikland/utils/DOMUtils.coffee",
-            "line": 110,
+            "line": 115,
             "itemtype": "method",
             "name": "removeAllChildren",
+            "static": 1,
             "params": [
                 {
                     "name": "target",
@@ -4631,7 +4745,8 @@
             "name": "isSearching",
             "type": "Boolean",
             "default": "false",
-            "protect": "",
+            "access": "protected",
+            "tagname": "",
             "class": "GeolocationDetection"
         },
         {
@@ -4644,13 +4759,13 @@
         {
             "file": "../../source/coffee/slikland/utils/GeolocationDetection.coffee",
             "line": 49,
-            "itemtype": "attribute",
+            "itemtype": "property",
             "name": "position",
+            "type": "Object",
             "return": {
                 "description": "",
                 "type": "Object"
             },
-            "readonly": "",
             "class": "GeolocationDetection"
         },
         {
@@ -5736,15 +5851,15 @@
             "description": "EXPERIMENTAL\nThis method is a decorator to protect a property of a class instance removing the property name from enumerable list.\n\n* Please ignore de backslash on \\\\\\@ as the code formatter doesn't escape atmarks.",
             "itemtype": "method",
             "name": "@protectProperties",
+            "beta": 1,
             "example": [
-                "\n\tclass A\n\t\t\\@protectProperties [\"_a\", \"_b\"]\n\t\tconstructor:()->"
+                "\n\tclass A\n\t\t\\@protectProperties [\"_a\", \"_b\"]\n\t\tconstructor:()->\n\t\t\t\\@_a = 1\n\tconsole.log(new A()) // Will not list _a either _b as enumerable"
             ],
-            "_a": "= 1\n\tconsole.log(new A()) // Will not list _a either _b as enumerable",
             "class": "Prototypes"
         },
         {
             "file": "../../source/coffee/slikland/utils/Prototypes.coffee",
-            "line": 86,
+            "line": 87,
             "description": "Getter decorator for a class instance.\nWith this decorator you're able to assign a getter method to a variable.\n\nAlso for a special case, you can assign a scope to the getter so you can create static getter to a class.\n\n* Please ignore de backslash on \\\\\\@ as the code formatter doesn't escape atmarks.",
             "itemtype": "method",
             "name": "@get",
@@ -5755,7 +5870,7 @@
         },
         {
             "file": "../../source/coffee/slikland/utils/Prototypes.coffee",
-            "line": 122,
+            "line": 125,
             "description": "Setter decorator for a class instance.\nWith this decorator you're able to assign a setter method to a variable.\n\nAlso for a special case, you can assign a scope to the setter so you can create static setter to a class.\n\n* Please ignore de backslash on \\\\\\@ as the code formatter doesn't escape atmarks.",
             "itemtype": "method",
             "name": "@set",
@@ -6307,7 +6422,7 @@
         },
         {
             "file": "../../source/coffee/slikland/utils/StringUtils.coffee",
-            "line": 61,
+            "line": 64,
             "description": "A method to remove the white spaces in a String.",
             "itemtype": "method",
             "name": "removeWhiteSpace",
@@ -6327,7 +6442,7 @@
         },
         {
             "file": "../../source/coffee/slikland/utils/StringUtils.coffee",
-            "line": 72,
+            "line": 75,
             "description": "A method to remove HTML tags in a String.",
             "itemtype": "method",
             "name": "removeHTMLTag",
@@ -6347,7 +6462,7 @@
         },
         {
             "file": "../../source/coffee/slikland/utils/StringUtils.coffee",
-            "line": 83,
+            "line": 86,
             "description": "A method to remove special characters in a String.",
             "itemtype": "method",
             "name": "removeSpecialChars",
@@ -6367,7 +6482,7 @@
         },
         {
             "file": "../../source/coffee/slikland/utils/StringUtils.coffee",
-            "line": 94,
+            "line": 97,
             "description": "A method to convert a numeric string to brazillian CPF format. (XXX.XXX.XXX-XX)",
             "itemtype": "method",
             "name": "convertToCPF",
@@ -6387,7 +6502,7 @@
         },
         {
             "file": "../../source/coffee/slikland/utils/StringUtils.coffee",
-            "line": 113,
+            "line": 116,
             "description": "A method to convert a numeric string to brazillian CEP format. (XXXXX-XXX)",
             "itemtype": "method",
             "name": "convertToCEP",
@@ -6407,7 +6522,7 @@
         },
         {
             "file": "../../source/coffee/slikland/utils/StringUtils.coffee",
-            "line": 128,
+            "line": 131,
             "description": "A method to convert a numeric string to date format. (XX/XX/XXXX)",
             "itemtype": "method",
             "name": "convertToDate",
@@ -6427,7 +6542,7 @@
         },
         {
             "file": "../../source/coffee/slikland/utils/StringUtils.coffee",
-            "line": 145,
+            "line": 148,
             "description": "A method to check if the String is empty.",
             "itemtype": "method",
             "name": "isEmpty",
@@ -6447,7 +6562,7 @@
         },
         {
             "file": "../../source/coffee/slikland/utils/StringUtils.coffee",
-            "line": 155,
+            "line": 158,
             "description": "A method to capitalize case the String",
             "itemtype": "method",
             "name": "toCapitalizeCase",
@@ -6467,7 +6582,7 @@
         },
         {
             "file": "../../source/coffee/slikland/utils/StringUtils.coffee",
-            "line": 167,
+            "line": 170,
             "description": "A method to convert milisecounds (Number) to a String on time format.",
             "itemtype": "method",
             "name": "toTimeFormat",
@@ -6492,7 +6607,7 @@
         },
         {
             "file": "../../source/coffee/slikland/utils/StringUtils.coffee",
-            "line": 180,
+            "line": 183,
             "description": "A method to convert a String time format to secounds (Number).",
             "itemtype": "method",
             "name": "fromTimeFormat",
@@ -6512,7 +6627,7 @@
         },
         {
             "file": "../../source/coffee/slikland/utils/StringUtils.coffee",
-            "line": 195,
+            "line": 198,
             "description": "A method to add a zero before if the p_value is smaller that 10 and bigger that -1.",
             "itemtype": "method",
             "name": "addDecimalZero",
@@ -6532,7 +6647,7 @@
         },
         {
             "file": "../../source/coffee/slikland/utils/StringUtils.coffee",
-            "line": 207,
+            "line": 210,
             "description": "A method to abbreviate a String.",
             "itemtype": "method",
             "name": "abbreviate",
@@ -6567,7 +6682,7 @@
         },
         {
             "file": "../../source/coffee/slikland/utils/StringUtils.coffee",
-            "line": 244,
+            "line": 247,
             "description": "A method to convert a String to Boolean (yes | true | 1 | no | false | 0).",
             "itemtype": "method",
             "name": "toBoolean",
@@ -6587,7 +6702,7 @@
         },
         {
             "file": "../../source/coffee/slikland/utils/StringUtils.coffee",
-            "line": 258,
+            "line": 261,
             "description": "A method to returns a random String with the specified length.",
             "itemtype": "method",
             "name": "random",
@@ -6607,7 +6722,7 @@
         },
         {
             "file": "../../source/coffee/slikland/utils/StringUtils.coffee",
-            "line": 271,
+            "line": 274,
             "description": "Trim",
             "itemtype": "method",
             "name": "trim",
@@ -6632,7 +6747,7 @@
         },
         {
             "file": "../../source/coffee/slikland/utils/StringUtils.coffee",
-            "line": 283,
+            "line": 286,
             "description": "Trim Right",
             "itemtype": "method",
             "name": "trimRight",
@@ -6657,7 +6772,7 @@
         },
         {
             "file": "../../source/coffee/slikland/utils/StringUtils.coffee",
-            "line": 298,
+            "line": 301,
             "description": "Trim left",
             "itemtype": "method",
             "name": "trimLeft",
@@ -6682,7 +6797,7 @@
         },
         {
             "file": "../../source/coffee/slikland/utils/StringUtils.coffee",
-            "line": 313,
+            "line": 316,
             "description": "Replace special characters",
             "itemtype": "method",
             "name": "replaceSpecialCharacters",
@@ -6702,7 +6817,7 @@
         },
         {
             "file": "../../source/coffee/slikland/utils/StringUtils.coffee",
-            "line": 329,
+            "line": 332,
             "description": "Set strings uppercase",
             "itemtype": "method",
             "name": "_upperCase",
@@ -6728,7 +6843,7 @@
         },
         {
             "file": "../../source/coffee/slikland/utils/StringUtils.coffee",
-            "line": 340,
+            "line": 343,
             "description": "List of space character",
             "itemtype": "property",
             "name": "substitionDict",
@@ -6743,7 +6858,7 @@
         },
         {
             "file": "../../source/coffee/slikland/utils/StringUtils.coffee",
-            "line": 349,
+            "line": 352,
             "description": "Create list of space character",
             "itemtype": "property",
             "name": "_initDict",
@@ -6881,22 +6996,5 @@
             "class": "URLUtils"
         }
     ],
-    "warnings": [
-        {
-            "message": "unknown tag: readyonly",
-            "line": " ../../source/coffee/slikland/utils/keyboard/Shortcut.coffee:8"
-        },
-        {
-            "message": "unknown tag: readyonly",
-            "line": " ../../source/coffee/slikland/utils/keyboard/Shortcut.coffee:16"
-        },
-        {
-            "message": "unknown tag: protect",
-            "line": " ../../source/coffee/slikland/utils/GeolocationDetection.coffee:20"
-        },
-        {
-            "message": "unknown tag: _a",
-            "line": " ../../source/coffee/slikland/utils/Prototypes.coffee:55"
-        }
-    ]
+    "warnings": []
 }

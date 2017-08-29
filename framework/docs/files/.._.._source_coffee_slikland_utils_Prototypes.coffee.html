@@ -179,11 +179,12 @@ This method is a decorator to protect a property of a class instance removing th
 * Please ignore de backslash on \\\@ as the code formatter doesn&#x27;t escape atmarks.
 
 @method @protectProperties
+@beta
 @example
 	class A
 		\@protectProperties [&quot;_a&quot;, &quot;_b&quot;]
 		constructor:()-&gt;
-			@_a = 1
+			\@_a = 1
 	console.log(new A()) // Will not list _a either _b as enumerable
 ###
 Function::protectProperties = (p_props) -&gt;
@@ -234,6 +235,8 @@ Function::get = (scope, p_prop) -&gt;
 		__scope = if __scopeIE8 then __scopeIE8 else @::
 	else
 		enumerable = true
+		if scope is &#x27;static&#x27;
+			scope = @
 		__scope = scope
 	for name, getter of p_prop
 		Object.defineProperty __scope, name, get: getter, configurable: true, enumerable: enumerable
@@ -277,6 +280,8 @@ Function::set = (scope, p_prop) -&gt;
 		__scope = if __scopeIE8 then __scopeIE8 else @::
 	else
 		enumerable = true
+		if scope is &#x27;static&#x27;
+			scope = @
 		__scope = scope
 	for name, setter of p_prop
 		Object.defineProperty __scope, name, set: setter, configurable: true, enumerable: enumerable
@@ -291,7 +296,7 @@ Function::set = (scope, p_prop) -&gt;
 # Add ECMA262-5 method binding if not supported natively
 #
 
-Function.isCallable = (fn) -&gt;
+window.isCallable = Function.isCallable = (fn) -&gt;
 	typeof fn == &#x27;function&#x27; or Object::toString.call(fn) == &#x27;[object Function]&#x27;
 
 unless &quot;bind&quot; of Function::
@@ -331,7 +336,9 @@ Number.toLength = (value) -&gt;
 String::url = ()-&gt;
 	a = document.createElement(&#x27;a&#x27;)
 	a.href = @
-	origin = a.protocol + &#x27;//&#x27; + a.hostname
+	origin = a.hostname
+	if a.protocol.length &gt; 0
+		origin = a.protocol + &#x27;//&#x27; + a.hostname
 	if a.port.length &gt; 0
 		origin = &quot;#{origin}:#{a.port}&quot;
 	{host, hostname, pathname, port, protocol, search, hash} = a
@@ -384,6 +391,7 @@ String::padRight = (length, char = &#x27; &#x27;) -&gt;
 unless &quot;isArray&quot; of Array::
 	Array.isArray = (arg) -&gt;
 		Object::toString.call(arg) == &#x27;[object Array]&#x27;
+window.isArray = Array.isArray
 
 unless &quot;of&quot; of Array::
 	Array.of = ()-&gt;
@@ -502,6 +510,49 @@ unless &quot;some&quot; of Array::
 			return true  if i of @ and tester.call(that, @[i], i, @)
 			i++
 		false
+
+##------------------------------------------------------------------------------
+#
+# OBJECT PROTOTYPES
+#
+
+window.isPlainObject = Object.isObject = (obj)-&gt;
+ 	return obj!=null &amp;&amp; typeof(obj) is &quot;object&quot; &amp;&amp; Object.getPrototypeOf(obj) is Object.prototype
+
+unless &quot;is&quot; of Object
+	Object.is = (x, y) -&gt;
+		# SameValue algorithm
+		if x == y
+			# Steps 1-5, 7-10
+			# Steps 6.b-6.e: +0 != -0
+			x != 0 or 1 / x == 1 / y
+		else
+			# Step 6.a: NaN == NaN
+			x != x and y != y
+
+unless &quot;assign&quot; of Object
+	# Must be writable: true, enumerable: false, configurable: true
+	Object.defineProperty Object, &#x27;assign&#x27;,
+		value: (target, varArgs) -&gt;
+			# .length of function is 2
+			&#x27;use strict&#x27;
+			if target == null
+				# TypeError if undefined or null
+				throw new TypeError(&#x27;Cannot convert undefined or null to object&#x27;)
+			to = Object(target)
+			index = 1
+			while index &lt; arguments.length
+				nextSource = arguments[index]
+				if nextSource != null
+					# Skip over if undefined or null
+					for nextKey of nextSource
+						# Avoid bugs when hasOwnProperty is shadowed
+						if Object::hasOwnProperty.call(nextSource, nextKey)
+							to[nextKey] = nextSource[nextKey]
+				index++
+			to
+		writable: true
+		configurable: true
 
 ##------------------------------------------------------------------------------
 #

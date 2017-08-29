@@ -59,11 +59,12 @@ This method is a decorator to protect a property of a class instance removing th
 * Please ignore de backslash on \\\@ as the code formatter doesn't escape atmarks.
 
 @method @protectProperties
+@beta
 @example
 	class A
 		\@protectProperties ["_a", "_b"]
 		constructor:()->
-			@_a = 1
+			\@_a = 1
 	console.log(new A()) // Will not list _a either _b as enumerable
 ###
 Function::protectProperties = (p_props) ->

@@ -128,16 +128,16 @@ class Shortcut
 	###*
 	@property MODIFIERS
 	@type Array
+	@static
 	@default [&#x27;alt&#x27;, &#x27;ctrl&#x27;, &#x27;meta&#x27;, &#x27;shift&#x27;]
-	@readyonly
 	###
 	@const MODIFIERS: [&#x27;alt&#x27;, &#x27;ctrl&#x27;, &#x27;meta&#x27;, &#x27;shift&#x27;]
 
 	###*
 	@property MODIFIER_CODES
 	@type Array
+	@static
 	@default [16, 18, 17, 91]
-	@readyonly
 	###
 	@const MODIFIER_CODES: [16, 18, 17, 91]
 
@@ -155,17 +155,23 @@ class Shortcut
 
 		@_target.addEventListener(&#x27;keydown&#x27;, @_keyDown)
 		@_target.addEventListener(&#x27;keyup&#x27;, @_keyUp)
-		
+
+	###*
+	@method destroy
+	###
 	destroy:()-&gt;
 		@_target?.removeEventListener(&#x27;keydown&#x27;, @_keyDown)
 		@_target?.removeEventListener(&#x27;keyup&#x27;, @_keyUp)
 		@_shortcuts.length = 0
 		delete @_shortcuts
 		delete @_target
-
-
+		false
+	###*
+	@method _keyDown
+	@private
+	@param {e} Event
+	###
 	_keyDown:(e)=&gt;
-
 		keyCode = e.keyCode
 		key = &#x27;&#x27;
 		if !(keyCode in @constructor.MODIFIER_CODES)
@@ -181,7 +187,14 @@ class Shortcut
 			item.callback?()
 			if item.preventDefault
 				e.preventDefault()
+		false
 
+	###*
+	@method _normalizeShortcut
+	@private
+	@param {String} shortcut
+	@return {Array}
+	###
 	_normalizeShortcut:(shortcut)-&gt;
 		shortcut = shortcut.toLowerCase()
 		modRE = /\[(.*?)\]/g
@@ -197,6 +210,12 @@ class Shortcut
 		modifiers.sort()
 		return &#x27;[&#x27; + modifiers.join(&#x27;][&#x27;) + &#x27;]&#x27; + shortcut.join(&#x27;&#x27;)
 
+	###*
+	@method _findShortcut
+	@private
+	@param {String} shortcut
+	@return {Array}
+	###
 	_findShortcut:(shortcut)-&gt;
 		found = []
 		i = @_shortcuts.length
@@ -205,6 +224,12 @@ class Shortcut
 				found.push(@_shortcuts[i])
 		return found
 
+	###*
+	@method addShortcut
+	@param {String} shortcut
+	@param {Function} callback
+	@param {Boolean} [preventDefault=true]
+	###
 	addShortcut:(shortcut, callback, preventDefault = true)-&gt;
 		normalized = @_normalizeShortcut(shortcut)
 		i = @_shortcuts.length
@@ -212,7 +237,13 @@ class Shortcut
 			if @_shortcuts[i].normalized == normalized &amp;&amp; @_shortcuts[i].callback == callback
 				return
 		@_shortcuts.push({normalized: normalized, shortcut: shortcut, callback: callback, preventDefault: preventDefault})
+		false
 
+	###*
+	@method removeShortcut
+	@param {String} shortcut
+	@param {Function} callback
+	###
 	removeShortcut:(shortcut, callback)-&gt;
 		normalized = @_normalizeShortcut(shortcut)
 		i = @_shortcuts.length
@@ -220,6 +251,7 @@ class Shortcut
 			if @_shortcuts[i].normalized == normalized
 				if !callback || (callback &amp;&amp; @_shortcuts[i].callback == callback)
 					@_shortcuts.splice(i, 1)
+		false
 
     </pre>
 </div>
