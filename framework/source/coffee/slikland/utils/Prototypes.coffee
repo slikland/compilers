@@ -114,6 +114,8 @@ Function::get = (scope, p_prop) ->
 		__scope = if __scopeIE8 then __scopeIE8 else @::
 	else
 		enumerable = true
+		if scope is 'static'
+			scope = @
 		__scope = scope
 	for name, getter of p_prop
 		Object.defineProperty __scope, name, get: getter, configurable: true, enumerable: enumerable
@@ -157,6 +159,8 @@ Function::set = (scope, p_prop) ->
 		__scope = if __scopeIE8 then __scopeIE8 else @::
 	else
 		enumerable = true
+		if scope is 'static'
+			scope = @
 		__scope = scope
 	for name, setter of p_prop
 		Object.defineProperty __scope, name, set: setter, configurable: true, enumerable: enumerable
@@ -171,7 +175,7 @@ Function::set = (scope, p_prop) ->
 # Add ECMA262-5 method binding if not supported natively
 #
 
-Function.isCallable = (fn) ->
+window.isCallable = Function.isCallable = (fn) ->
 	typeof fn == 'function' or Object::toString.call(fn) == '[object Function]'
 
 unless "bind" of Function::
@@ -211,7 +215,9 @@ Number.toLength = (value) ->
 String::url = ()->
 	a = document.createElement('a')
 	a.href = @
-	origin = a.protocol + '//' + a.hostname
+	origin = a.hostname
+	if a.protocol.length > 0
+		origin = a.protocol + '//' + a.hostname
 	if a.port.length > 0
 		origin = "#{origin}:#{a.port}"
 	{host, hostname, pathname, port, protocol, search, hash} = a
@@ -264,6 +270,7 @@ String::padRight = (length, char = ' ') ->
 unless "isArray" of Array::
 	Array.isArray = (arg) ->
 		Object::toString.call(arg) == '[object Array]'
+window.isArray = Array.isArray
 
 unless "of" of Array::
 	Array.of = ()->
@@ -382,6 +389,49 @@ unless "some" of Array::
 			return true  if i of @ and tester.call(that, @[i], i, @)
 			i++
 		false
+
+##------------------------------------------------------------------------------
+#
+# OBJECT PROTOTYPES
+#
+
+window.isPlainObject = Object.isObject = (obj)->
+ 	return obj!=null && typeof(obj) is "object" && Object.getPrototypeOf(obj) is Object.prototype
+
+unless "is" of Object
+	Object.is = (x, y) ->
+		# SameValue algorithm
+		if x == y
+			# Steps 1-5, 7-10
+			# Steps 6.b-6.e: +0 != -0
+			x != 0 or 1 / x == 1 / y
+		else
+			# Step 6.a: NaN == NaN
+			x != x and y != y
+
+unless "assign" of Object
+	# Must be writable: true, enumerable: false, configurable: true
+	Object.defineProperty Object, 'assign',
+		value: (target, varArgs) ->
+			# .length of function is 2
+			'use strict'
+			if target == null
+				# TypeError if undefined or null
+				throw new TypeError('Cannot convert undefined or null to object')
+			to = Object(target)
+			index = 1
+			while index < arguments.length
+				nextSource = arguments[index]
+				if nextSource != null
+					# Skip over if undefined or null
+					for nextKey of nextSource
+						# Avoid bugs when hasOwnProperty is shadowed
+						if Object::hasOwnProperty.call(nextSource, nextKey)
+							to[nextKey] = nextSource[nextKey]
+				index++
+			to
+		writable: true
+		configurable: true
 
 ##------------------------------------------------------------------------------
 #

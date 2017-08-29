@@ -52,10 +52,13 @@ class StringUtils
 	@param {String} p_string - The value to camellcase.
 	@return {String}
 	###	
-	@toCamelCase:(p_string) ->
+	@toCamelCase:(p_string, p_cssType = false) ->
 		re = p_string.replace /([\+\-_ ][a-z])/g, ($1) ->
 			$1.toUpperCase().replace /[\+\-_ ]/, ""
-		return re.charAt(0).toUpperCase() + re.slice(1)
+		if p_cssType
+			return re
+		else
+			return re.charAt(0).toUpperCase() + re.slice(1)
 
 	
 	###*

@@ -42,10 +42,10 @@ class ObjectUtils
 	@return {Object} Returns a new merged object.
 	###
 	@merge:(a, b)->
-		if isPlainObject(a) && isPlainObject(b)
+		if Object.isObject(a) && Object.isObject(b)
 			for k of b
 				if !a.hasOwnProperty(k)
-					if isPlainObject(b[k])
+					if Object.isObject(b[k])
 						a[k] = ObjectUtils.clone(b[k])
 					else
 						a[k] = b[k]
@@ -164,10 +164,12 @@ class ObjectUtils
 	@return {String} 
 	###
 	@getClassName:(p_source)->
-		if typeof p_source is undefined
-			return undefined
+		if typeof p_source is 'undefined'
+			return 'undefined'
 		if p_source is null
-			return null
+			return 'null'
+		if typeof p_source is 'function'
+			return p_source.name || 'undefined'
 		if p_source.constructor?
 			if p_source.constructor.name?
 				return p_source.constructor.name
@@ -179,7 +181,4 @@ class ObjectUtils
 					matches = description.match(/function\s*(\w+)/)
 				if matches? && matches.length is 2
 					return matches[1]
-		return undefined
-
-# Feature: global.isPlainObject(source)
-`!function(e){if("object"==typeof exports&&"undefined"!=typeof module)module.exports=e();else if("function"==typeof define&&define.amd)define([],e);else{var t;t="undefined"!=typeof window?window:"undefined"!=typeof global?global:"undefined"!=typeof self?self:this,t.isPlainObject=e()}}(function(){return function e(t,r,n){function o(f,u){if(!r[f]){if(!t[f]){var c="function"==typeof require&&require;if(!u&&c)return c(f,!0);if(i)return i(f,!0);var p=new Error("Cannot find module '"+f+"'");throw p.code="MODULE_NOT_FOUND",p}var s=r[f]={exports:{}};t[f][0].call(s.exports,function(e){var r=t[f][1][e];return o(r?r:e)},s,s.exports,e,t,r,n)}return r[f].exports}for(var i="function"==typeof require&&require,f=0;f<n.length;f++)o(n[f]);return o}({1:[function(e,t,r){"use strict";function n(e){return o(e)===!0&&"[object Object]"===Object.prototype.toString.call(e)}var o=e("isobject");t.exports=function(e){var t,r;return n(e)===!1?!1:(t=e.constructor,"function"!=typeof t?!1:(r=t.prototype,n(r)===!1?!1:r.hasOwnProperty("isPrototypeOf")===!1?!1:!0))}},{isobject:2}],2:[function(e,t,r){"use strict";t.exports=function(e){return null!=e&&"object"==typeof e&&!Array.isArray(e)}},{}]},{},[1])(1)});`
+		return 'undefined'
