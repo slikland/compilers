@@ -96,7 +96,7 @@ class Navigation extends EventDispatcher
 	
 	###*
 	Returns the visible views in DOM
-	@attribute visibleViews
+	@property visibleViews
 	@type {Array}
 	@readOnly
 	###
@@ -105,7 +105,7 @@ class Navigation extends EventDispatcher
 
 	###*
 	Returns the current view
-	@attribute currentView
+	@property currentView
 	@type {BaseView}
 	@readOnly
 	###
@@ -114,7 +114,7 @@ class Navigation extends EventDispatcher
 
 	###*
 	Returns the previous view
-	@attribute previousView
+	@property previousView
 	@type {BaseView}
 	@readOnly
 	###
@@ -123,7 +123,7 @@ class Navigation extends EventDispatcher
 
 	###*
 	Returns the route data
-	@attribute routeData
+	@property routeData
 	@type {Object}
 	@readOnly
 	###
@@ -144,7 +144,7 @@ class Navigation extends EventDispatcher
 
 	###*
 	Returns the instance of router controller
-	@attribute router
+	@property router
 	@type {NavigationRouter}
 	@readOnly
 	###
@@ -153,7 +153,7 @@ class Navigation extends EventDispatcher
 	
 	###*
 	Returns the instance of navigation controller
-	@attribute navigation
+	@property navigation
 	@type {BaseNavigationController}
 	@readOnly
 	###

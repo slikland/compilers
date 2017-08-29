@@ -558,9 +558,7 @@
             "plugins": [],
             "extensions": [],
             "plugin_for": [],
-            "extension_for": [
-                "BaseView"
-            ],
+            "extension_for": [],
             "file": "../../source/coffee/slikland/navigation/core/meta/MetaController.coffee",
             "line": 8,
             "extends": "EventDispatcher",
@@ -724,12 +722,9 @@
             "plugin_for": [],
             "extension_for": [],
             "file": "../../source/coffee/slikland/navigation/display/BaseView.coffee",
-            "line": 96,
+            "line": 95,
             "description": "Base View",
             "extends": "BaseDOM",
-            "uses": [
-                "MetaController"
-            ],
             "is_constructor": 1,
             "params": [
                 {
@@ -969,7 +964,7 @@
             "plugin_for": [],
             "extension_for": [],
             "file": "../../source/coffee/slikland/utils/Resizer.coffee",
-            "line": 20,
+            "line": 40,
             "extends": "EventDispatcher",
             "is_constructor": 1,
             "params": [
@@ -980,8 +975,7 @@
                     "optional": true,
                     "optdefault": "true"
                 }
-            ],
-            "default": "true"
+            ]
         },
         "ShareUtils": {
             "name": "ShareUtils",
@@ -1541,7 +1535,7 @@
             "file": "../../source/coffee/slikland/navigation/core/data/ConditionsValidation.coffee",
             "line": 38,
             "description": "Returns the internal list of registered conditions.",
-            "itemtype": "attribute",
+            "itemtype": "property",
             "name": "list",
             "type": "{Object}",
             "readonly": "",
@@ -2071,7 +2065,7 @@
         {
             "file": "../../source/coffee/slikland/navigation/core/meta/MetaController.coffee",
             "line": 146,
-            "itemtype": "attribute",
+            "itemtype": "property",
             "name": "head",
             "type": "{HTMLElement}",
             "readonly": "",
@@ -2080,7 +2074,7 @@
         {
             "file": "../../source/coffee/slikland/navigation/core/meta/MetaController.coffee",
             "line": 154,
-            "itemtype": "attribute",
+            "itemtype": "property",
             "name": "viewport",
             "type": "{String}",
             "class": "MetaController"
@@ -2088,7 +2082,7 @@
         {
             "file": "../../source/coffee/slikland/navigation/core/meta/MetaController.coffee",
             "line": 161,
-            "itemtype": "attribute",
+            "itemtype": "property",
             "name": "title",
             "type": "{String}",
             "class": "MetaController"
@@ -2096,7 +2090,7 @@
         {
             "file": "../../source/coffee/slikland/navigation/core/meta/MetaController.coffee",
             "line": 172,
-            "itemtype": "attribute",
+            "itemtype": "property",
             "name": "description",
             "type": "{String}",
             "class": "MetaController"
@@ -2104,7 +2098,7 @@
         {
             "file": "../../source/coffee/slikland/navigation/core/meta/MetaController.coffee",
             "line": 179,
-            "itemtype": "attribute",
+            "itemtype": "property",
             "name": "favicon",
             "type": "{String}",
             "class": "MetaController"
@@ -2112,7 +2106,7 @@
         {
             "file": "../../source/coffee/slikland/navigation/core/meta/MetaController.coffee",
             "line": 189,
-            "itemtype": "attribute",
+            "itemtype": "property",
             "name": "icons",
             "type": "{String}",
             "class": "MetaController"
@@ -2121,7 +2115,7 @@
             "file": "../../source/coffee/slikland/navigation/core/meta/MetaController.coffee",
             "line": 198,
             "description": "Only for iOS",
-            "itemtype": "attribute",
+            "itemtype": "property",
             "name": "splash",
             "type": "{String}",
             "class": "MetaController"
@@ -2129,7 +2123,7 @@
         {
             "file": "../../source/coffee/slikland/navigation/core/meta/MetaController.coffee",
             "line": 207,
-            "itemtype": "attribute",
+            "itemtype": "property",
             "name": "webAppCapable",
             "type": "{String}",
             "class": "MetaController"
@@ -2137,7 +2131,7 @@
         {
             "file": "../../source/coffee/slikland/navigation/core/meta/MetaController.coffee",
             "line": 220,
-            "itemtype": "attribute",
+            "itemtype": "property",
             "name": "color",
             "type": "{String}",
             "class": "MetaController"
@@ -2146,7 +2140,7 @@
             "file": "../../source/coffee/slikland/navigation/core/meta/MetaController.coffee",
             "line": 238,
             "description": "Only for Android",
-            "itemtype": "attribute",
+            "itemtype": "property",
             "name": "manifest",
             "type": "{String}",
             "example": [
@@ -2606,7 +2600,7 @@
             "file": "../../source/coffee/slikland/navigation/core/Navigation.coffee",
             "line": 97,
             "description": "Returns the visible views in DOM",
-            "itemtype": "attribute",
+            "itemtype": "property",
             "name": "visibleViews",
             "type": "{Array}",
             "readonly": "",
@@ -2616,7 +2610,7 @@
             "file": "../../source/coffee/slikland/navigation/core/Navigation.coffee",
             "line": 106,
             "description": "Returns the current view",
-            "itemtype": "attribute",
+            "itemtype": "property",
             "name": "currentView",
             "type": "{BaseView}",
             "readonly": "",
@@ -2626,7 +2620,7 @@
             "file": "../../source/coffee/slikland/navigation/core/Navigation.coffee",
             "line": 115,
             "description": "Returns the previous view",
-            "itemtype": "attribute",
+            "itemtype": "property",
             "name": "previousView",
             "type": "{BaseView}",
             "readonly": "",
@@ -2636,7 +2630,7 @@
             "file": "../../source/coffee/slikland/navigation/core/Navigation.coffee",
             "line": 124,
             "description": "Returns the route data",
-            "itemtype": "attribute",
+            "itemtype": "property",
             "name": "routeData",
             "type": "{Object}",
             "readonly": "",
@@ -2646,7 +2640,7 @@
             "file": "../../source/coffee/slikland/navigation/core/Navigation.coffee",
             "line": 145,
             "description": "Returns the instance of router controller",
-            "itemtype": "attribute",
+            "itemtype": "property",
             "name": "router",
             "type": "{NavigationRouter}",
             "readonly": "",
@@ -2656,7 +2650,7 @@
             "file": "../../source/coffee/slikland/navigation/core/Navigation.coffee",
             "line": 154,
             "description": "Returns the instance of navigation controller",
-            "itemtype": "attribute",
+            "itemtype": "property",
             "name": "navigation",
             "type": "{BaseNavigationController}",
             "readonly": "",
@@ -3457,7 +3451,7 @@
         },
         {
             "file": "../../source/coffee/slikland/navigation/display/BaseView.coffee",
-            "line": 13,
+            "line": 12,
             "description": "Triggered before the create routine view starts. Triggered when {{#crossLink \"BaseView/createStart:method\"}}{{/crossLink}} is called.",
             "itemtype": "event",
             "name": "CREATE_START",
@@ -3466,7 +3460,7 @@
         },
         {
             "file": "../../source/coffee/slikland/navigation/display/BaseView.coffee",
-            "line": 19,
+            "line": 18,
             "description": "Triggered when the create routine view starts. Triggered when {{#crossLink \"BaseView/create:method\"}}{{/crossLink}} is called.",
             "itemtype": "event",
             "name": "CREATE",
@@ -3475,7 +3469,7 @@
         },
         {
             "file": "../../source/coffee/slikland/navigation/display/BaseView.coffee",
-            "line": 25,
+            "line": 24,
             "description": "Triggered when the create routine view is finished. Triggered when {{#crossLink \"BaseView/createComplete:method\"}}{{/crossLink}} is called.",
             "itemtype": "event",
             "name": "CREATE_COMPLETE",
@@ -3484,7 +3478,7 @@
         },
         {
             "file": "../../source/coffee/slikland/navigation/display/BaseView.coffee",
-            "line": 32,
+            "line": 31,
             "description": "Triggered before the showing routine view starts. Triggered when {{#crossLink \"BaseView/showStart:method\"}}{{/crossLink}} is called.",
             "itemtype": "event",
             "name": "SHOW_START",
@@ -3493,7 +3487,7 @@
         },
         {
             "file": "../../source/coffee/slikland/navigation/display/BaseView.coffee",
-            "line": 38,
+            "line": 37,
             "description": "Triggered when the showing routine view starts. Triggered when {{#crossLink \"BaseView/show:method\"}}{{/crossLink}} is called.",
             "itemtype": "event",
             "name": "SHOW",
@@ -3502,7 +3496,7 @@
         },
         {
             "file": "../../source/coffee/slikland/navigation/display/BaseView.coffee",
-            "line": 44,
+            "line": 43,
             "description": "Triggered when the showing routine view is finished. Triggered when {{#crossLink \"BaseView/showComplete:method\"}}{{/crossLink}} is called.",
             "itemtype": "event",
             "name": "SHOW_COMPLETE",
@@ -3511,7 +3505,7 @@
         },
         {
             "file": "../../source/coffee/slikland/navigation/display/BaseView.coffee",
-            "line": 51,
+            "line": 50,
             "description": "Triggered before the hiding routine view starts. Triggered when {{#crossLink \"BaseView/hideStart:method\"}}{{/crossLink}} is called.",
             "itemtype": "event",
             "name": "HIDE_START",
@@ -3520,7 +3514,7 @@
         },
         {
             "file": "../../source/coffee/slikland/navigation/display/BaseView.coffee",
-            "line": 57,
+            "line": 56,
             "description": "Triggered when the hiding routine view starts. Triggered when {{#crossLink \"BaseView/hide:method\"}}{{/crossLink}} is called.",
             "itemtype": "event",
             "name": "HIDE",
@@ -3529,7 +3523,7 @@
         },
         {
             "file": "../../source/coffee/slikland/navigation/display/BaseView.coffee",
-            "line": 63,
+            "line": 62,
             "description": "Triggered when the hiding routine view is finished. Triggered when {{#crossLink \"BaseView/hideComplete:method\"}}{{/crossLink}} is called.",
             "itemtype": "event",
             "name": "HIDE_COMPLETE",
@@ -3538,7 +3532,7 @@
         },
         {
             "file": "../../source/coffee/slikland/navigation/display/BaseView.coffee",
-            "line": 70,
+            "line": 69,
             "description": "Triggered when the destroy routine view starts. Triggered when {{#crossLink \"BaseView/destroy:method\"}}{{/crossLink}} is called.",
             "itemtype": "event",
             "name": "DESTROY",
@@ -3547,7 +3541,7 @@
         },
         {
             "file": "../../source/coffee/slikland/navigation/display/BaseView.coffee",
-            "line": 76,
+            "line": 75,
             "description": "Triggered when the destroy routine view is finished. Triggered when {{#crossLink \"BaseView/destroyComplete:method\"}}{{/crossLink}} is called.",
             "itemtype": "event",
             "name": "DESTROY_COMPLETE",
@@ -3556,7 +3550,7 @@
         },
         {
             "file": "../../source/coffee/slikland/navigation/display/BaseView.coffee",
-            "line": 83,
+            "line": 82,
             "description": "Triggered when the view pauses. Usually when {{#crossLink \"BaseView/pause:method\"}}{{/crossLink}} is called.",
             "itemtype": "event",
             "name": "PAUSE",
@@ -3565,7 +3559,7 @@
         },
         {
             "file": "../../source/coffee/slikland/navigation/display/BaseView.coffee",
-            "line": 89,
+            "line": 88,
             "description": "Triggered when the view resumes. Usually when {{#crossLink \"BaseView/resume:method\"}}{{/crossLink}} is called.",
             "itemtype": "event",
             "name": "RESUME",
@@ -3574,9 +3568,9 @@
         },
         {
             "file": "../../source/coffee/slikland/navigation/display/BaseView.coffee",
-            "line": 151,
+            "line": 150,
             "description": "Returns the loader queue of this specific view.",
-            "itemtype": "attribute",
+            "itemtype": "property",
             "name": "loader",
             "type": "{createjs.LoadQueue}",
             "default": "null",
@@ -3585,9 +3579,9 @@
         },
         {
             "file": "../../source/coffee/slikland/navigation/display/BaseView.coffee",
-            "line": 161,
+            "line": 160,
             "description": "Returns true if the view was created.",
-            "itemtype": "attribute",
+            "itemtype": "property",
             "name": "created",
             "type": "{Boolean}",
             "default": "false",
@@ -3598,9 +3592,9 @@
         },
         {
             "file": "../../source/coffee/slikland/navigation/display/BaseView.coffee",
-            "line": 172,
+            "line": 171,
             "description": "Returns true if the view was shown.",
-            "itemtype": "attribute",
+            "itemtype": "property",
             "name": "showed",
             "type": "{Boolean}",
             "default": "false",
@@ -3611,9 +3605,9 @@
         },
         {
             "file": "../../source/coffee/slikland/navigation/display/BaseView.coffee",
-            "line": 183,
+            "line": 182,
             "description": "Sets/gets a clone of data object with default and/or custom values of properties of view.",
-            "itemtype": "attribute",
+            "itemtype": "property",
             "name": "data",
             "type": "{Object}",
             "default": "{}",
@@ -3621,9 +3615,9 @@
         },
         {
             "file": "../../source/coffee/slikland/navigation/display/BaseView.coffee",
-            "line": 195,
+            "line": 194,
             "description": "Sets/gets the unique ID of view.",
-            "itemtype": "attribute",
+            "itemtype": "property",
             "name": "id",
             "type": "{String}",
             "default": "null",
@@ -3631,9 +3625,9 @@
         },
         {
             "file": "../../source/coffee/slikland/navigation/display/BaseView.coffee",
-            "line": 206,
+            "line": 205,
             "description": "Sets/gets the content of view.",
-            "itemtype": "attribute",
+            "itemtype": "property",
             "name": "content",
             "type": "{String|Object|JSON}",
             "default": "null",
@@ -3641,9 +3635,9 @@
         },
         {
             "file": "../../source/coffee/slikland/navigation/display/BaseView.coffee",
-            "line": 217,
+            "line": 216,
             "description": "Sets/gets the route of view.",
-            "itemtype": "attribute",
+            "itemtype": "property",
             "name": "route",
             "type": "{String|RegExp}",
             "default": "null",
@@ -3651,9 +3645,9 @@
         },
         {
             "file": "../../source/coffee/slikland/navigation/display/BaseView.coffee",
-            "line": 228,
+            "line": 227,
             "description": "Sets/gets the actual route data.",
-            "itemtype": "attribute",
+            "itemtype": "property",
             "name": "routeData",
             "type": "{Object}",
             "access": "protected",
@@ -3663,9 +3657,9 @@
         },
         {
             "file": "../../source/coffee/slikland/navigation/display/BaseView.coffee",
-            "line": 240,
+            "line": 239,
             "description": "Sets/gets the parent view of this view.",
-            "itemtype": "attribute",
+            "itemtype": "property",
             "name": "parentView",
             "type": "{BaseView}",
             "default": "null",
@@ -3673,9 +3667,9 @@
         },
         {
             "file": "../../source/coffee/slikland/navigation/display/BaseView.coffee",
-            "line": 251,
+            "line": 250,
             "description": "Sets/gets a array of {{#crossLink \"BaseView\"}}{{/crossLink}} instances of subviews of this view.",
-            "itemtype": "attribute",
+            "itemtype": "property",
             "name": "subviews",
             "type": "{Array}",
             "default": "null",
@@ -3683,9 +3677,9 @@
         },
         {
             "file": "../../source/coffee/slikland/navigation/display/BaseView.coffee",
-            "line": 262,
+            "line": 261,
             "description": "Sets/gets if this views is destroyable.",
-            "itemtype": "attribute",
+            "itemtype": "property",
             "name": "destroyable",
             "type": "{Boolean}",
             "default": "false",
@@ -3693,9 +3687,9 @@
         },
         {
             "file": "../../source/coffee/slikland/navigation/display/BaseView.coffee",
-            "line": 273,
+            "line": 272,
             "description": "Sets/gets the type is a 'view' or a 'sub-view'.",
-            "itemtype": "attribute",
+            "itemtype": "property",
             "name": "type",
             "type": "{String}",
             "access": "protected",
@@ -3705,9 +3699,9 @@
         },
         {
             "file": "../../source/coffee/slikland/navigation/display/BaseView.coffee",
-            "line": 285,
+            "line": 284,
             "description": "Returns the meta object of his content.",
-            "itemtype": "attribute",
+            "itemtype": "property",
             "name": "meta",
             "type": "{Object}",
             "default": "null",
@@ -3716,9 +3710,9 @@
         },
         {
             "file": "../../source/coffee/slikland/navigation/display/BaseView.coffee",
-            "line": 295,
+            "line": 294,
             "description": "Sets/gets the loading progress of this view.",
-            "itemtype": "attribute",
+            "itemtype": "property",
             "name": "progress",
             "type": "{Number}",
             "access": "protected",
@@ -3727,9 +3721,9 @@
         },
         {
             "file": "../../source/coffee/slikland/navigation/display/BaseView.coffee",
-            "line": 306,
+            "line": 305,
             "description": "Returns the reverse path of his parent view.",
-            "itemtype": "attribute",
+            "itemtype": "property",
             "name": "reverseParentPath",
             "type": "{Array}",
             "access": "protected",
@@ -3739,9 +3733,9 @@
         },
         {
             "file": "../../source/coffee/slikland/navigation/display/BaseView.coffee",
-            "line": 317,
+            "line": 316,
             "description": "Returns the path of his parent view.",
-            "itemtype": "attribute",
+            "itemtype": "property",
             "name": "parentPath",
             "type": "{Array}",
             "access": "protected",
@@ -3751,9 +3745,9 @@
         },
         {
             "file": "../../source/coffee/slikland/navigation/display/BaseView.coffee",
-            "line": 328,
+            "line": 327,
             "description": "Returns the wrapper container for the sub-views of this view.",
-            "itemtype": "attribute",
+            "itemtype": "property",
             "name": "subviewsWrapper",
             "type": "{HTMLElement}",
             "default": "null",
@@ -3762,9 +3756,9 @@
         },
         {
             "file": "../../source/coffee/slikland/navigation/display/BaseView.coffee",
-            "line": 338,
+            "line": 337,
             "description": "Returns the CSS Selector of the wrapper container for attach this view.",
-            "itemtype": "attribute",
+            "itemtype": "property",
             "name": "attachToParentWrapper",
             "type": "{String}",
             "default": "null",
@@ -3773,7 +3767,7 @@
         },
         {
             "file": "../../source/coffee/slikland/navigation/display/BaseView.coffee",
-            "line": 348,
+            "line": 347,
             "description": "Returns a reverse list of the parent path of this view.",
             "itemtype": "method",
             "name": "getReverseParentList",
@@ -3793,7 +3787,7 @@
         },
         {
             "file": "../../source/coffee/slikland/navigation/display/BaseView.coffee",
-            "line": 362,
+            "line": 361,
             "description": "Usually starts before the creation routine of view calling by the navigation controller.<br>\nCallback the method {{#crossLink \"BaseView/create:method\"}}{{/crossLink}} and trigger the event {{#crossLink \"BaseView/CREATE_START:event\"}}{{/crossLink}} after complete.",
             "itemtype": "method",
             "name": "createStart",
@@ -3810,7 +3804,7 @@
         },
         {
             "file": "../../source/coffee/slikland/navigation/display/BaseView.coffee",
-            "line": 373,
+            "line": 372,
             "description": "Usually starts when the creation routine of view calling by the navigation controller.<br>\nCallback the method {{#crossLink \"BaseView/createComplete:method\"}}{{/crossLink}} and trigger the event {{#crossLink \"BaseView/CREATE:event\"}}{{/crossLink}} after complete.",
             "itemtype": "method",
             "name": "create",
@@ -3827,7 +3821,7 @@
         },
         {
             "file": "../../source/coffee/slikland/navigation/display/BaseView.coffee",
-            "line": 384,
+            "line": 383,
             "description": "Usually starts when finished the creation routine of view calling by the navigation controller and trigger the event {{#crossLink \"BaseView/CREATE_COMPLETE:event\"}}{{/crossLink}} after complete the routine.",
             "itemtype": "method",
             "name": "createComplete",
@@ -3844,7 +3838,7 @@
         },
         {
             "file": "../../source/coffee/slikland/navigation/display/BaseView.coffee",
-            "line": 394,
+            "line": 393,
             "description": "Usually starts before the showing routine of view calling by the navigation controller.<br>\nCallback the method {{#crossLink \"BaseView/show:method\"}}{{/crossLink}} and trigger the event {{#crossLink \"BaseView/SHOW_START:event\"}}{{/crossLink}} after complete.",
             "itemtype": "method",
             "name": "showStart",
@@ -3861,7 +3855,7 @@
         },
         {
             "file": "../../source/coffee/slikland/navigation/display/BaseView.coffee",
-            "line": 406,
+            "line": 405,
             "description": "Usually starts when the showing routine of view calling by the navigation controller.<br>\nCallback the method {{#crossLink \"BaseView/showComplete:method\"}}{{/crossLink}} and trigger the event {{#crossLink \"BaseView/SHOW:event\"}}{{/crossLink}} after complete.",
             "itemtype": "method",
             "name": "show",
@@ -3878,7 +3872,7 @@
         },
         {
             "file": "../../source/coffee/slikland/navigation/display/BaseView.coffee",
-            "line": 417,
+            "line": 416,
             "description": "Usually when finished the showing routine of view calling by the navigation controller and trigger the event {{#crossLink \"BaseView/SHOW_COMPLETE:event\"}}{{/crossLink}} after complete the routine.",
             "itemtype": "method",
             "name": "showComplete",
@@ -3895,7 +3889,7 @@
         },
         {
             "file": "../../source/coffee/slikland/navigation/display/BaseView.coffee",
-            "line": 427,
+            "line": 426,
             "description": "Usually starts before the hiding routine of view calling by the navigation controller.<br>\nCallback the method {{#crossLink \"BaseView/hide:method\"}}{{/crossLink}} and trigger the event {{#crossLink \"BaseView/HIDE_START:event\"}}{{/crossLink}} after complete.",
             "itemtype": "method",
             "name": "hideStart",
@@ -3912,7 +3906,7 @@
         },
         {
             "file": "../../source/coffee/slikland/navigation/display/BaseView.coffee",
-            "line": 438,
+            "line": 437,
             "description": "Usually starts when the hiding routine of view calling by the navigation controller.<br>\nCallback the method {{#crossLink \"BaseView/hideComplete:method\"}}{{/crossLink}} and trigger the event {{#crossLink \"BaseView/HIDE:event\"}}{{/crossLink}} after complete.",
             "itemtype": "method",
             "name": "hide",
@@ -3929,7 +3923,7 @@
         },
         {
             "file": "../../source/coffee/slikland/navigation/display/BaseView.coffee",
-            "line": 450,
+            "line": 449,
             "description": "Usually when finished the hiding routine of view calling by the navigation controller and trigger the event {{#crossLink \"BaseView/HIDE_COMPLETE:event\"}}{{/crossLink}} after complete the routine.",
             "itemtype": "method",
             "name": "hideComplete",
@@ -3946,7 +3940,7 @@
         },
         {
             "file": "../../source/coffee/slikland/navigation/display/BaseView.coffee",
-            "line": 459,
+            "line": 458,
             "description": "Usually used to pauses animations or something else in looping in view.\nTrigger the event {{#crossLink \"BaseView/PAUSE:event\"}}{{/crossLink}} after complete.",
             "itemtype": "method",
             "name": "pause",
@@ -3954,7 +3948,7 @@
         },
         {
             "file": "../../source/coffee/slikland/navigation/display/BaseView.coffee",
-            "line": 468,
+            "line": 467,
             "description": "Usually used to resumes animations or something else in view.\nTrigger the event {{#crossLink \"BaseView/RESUME:event\"}}{{/crossLink}} after complete.",
             "itemtype": "method",
             "name": "pause",
@@ -3962,7 +3956,7 @@
         },
         {
             "file": "../../source/coffee/slikland/navigation/display/BaseView.coffee",
-            "line": 477,
+            "line": 476,
             "description": "Usually starts when the destroying routine of view calling by the navigation controller.<br>\nCallback the method {{#crossLink \"BaseView/destroyComplete:method\"}}{{/crossLink}} and trigger the event {{#crossLink \"BaseView/DESTROY:event\"}}{{/crossLink}} after complete.",
             "itemtype": "method",
             "name": "destroy",
@@ -3979,7 +3973,7 @@
         },
         {
             "file": "../../source/coffee/slikland/navigation/display/BaseView.coffee",
-            "line": 498,
+            "line": 497,
             "description": "Usually when finished the destroying routine of view calling by the navigation controller and trigger the event {{#crossLink \"BaseView/DESTROY_COMPLETE:event\"}}{{/crossLink}} after complete the routine.",
             "itemtype": "method",
             "name": "destroyComplete",
@@ -4666,6 +4660,18 @@
             "class": "DOMUtils"
         },
         {
+            "file": "../../source/coffee/slikland/utils/Detections.coffee",
+            "line": 25,
+            "itemtype": "method",
+            "name": "getInstance",
+            "static": 1,
+            "return": {
+                "description": "",
+                "type": "Detections"
+            },
+            "class": "Detections"
+        },
+        {
             "file": "../../source/coffee/slikland/utils/FunctionUtils.coffee",
             "line": 8,
             "itemtype": "method",
@@ -4751,14 +4757,26 @@
         },
         {
             "file": "../../source/coffee/slikland/utils/GeolocationDetection.coffee",
-            "line": 34,
+            "line": 28,
+            "itemtype": "method",
+            "name": "getInstance",
+            "static": 1,
+            "return": {
+                "description": "",
+                "type": "GeolocationDetection"
+            },
+            "class": "GeolocationDetection"
+        },
+        {
+            "file": "../../source/coffee/slikland/utils/GeolocationDetection.coffee",
+            "line": 39,
             "itemtype": "method",
             "name": "fetchPosition",
             "class": "GeolocationDetection"
         },
         {
             "file": "../../source/coffee/slikland/utils/GeolocationDetection.coffee",
-            "line": 49,
+            "line": 54,
             "itemtype": "property",
             "name": "position",
             "type": "Object",
@@ -4766,11 +4784,12 @@
                 "description": "",
                 "type": "Object"
             },
+            "readonly": "",
             "class": "GeolocationDetection"
         },
         {
             "file": "../../source/coffee/slikland/utils/GeolocationDetection.coffee",
-            "line": 57,
+            "line": 63,
             "itemtype": "method",
             "name": "_success",
             "params": [
@@ -4786,7 +4805,7 @@
         },
         {
             "file": "../../source/coffee/slikland/utils/GeolocationDetection.coffee",
-            "line": 68,
+            "line": 74,
             "itemtype": "method",
             "name": "_error",
             "params": [
@@ -5952,8 +5971,53 @@
         },
         {
             "file": "../../source/coffee/slikland/utils/Resizer.coffee",
-            "line": 33,
-            "itemtype": "attribute",
+            "line": 10,
+            "itemtype": "event",
+            "name": "RESIZE",
+            "static": 1,
+            "class": "Resizer"
+        },
+        {
+            "file": "../../source/coffee/slikland/utils/Resizer.coffee",
+            "line": 16,
+            "itemtype": "event",
+            "name": "ORIENTATION_CHANGE",
+            "static": 1,
+            "class": "Resizer"
+        },
+        {
+            "file": "../../source/coffee/slikland/utils/Resizer.coffee",
+            "line": 22,
+            "itemtype": "event",
+            "name": "BREAKPOINT_CHANGE",
+            "static": 1,
+            "class": "Resizer"
+        },
+        {
+            "file": "../../source/coffee/slikland/utils/Resizer.coffee",
+            "line": 31,
+            "itemtype": "method",
+            "name": "getInstance",
+            "static": 1,
+            "params": [
+                {
+                    "name": "p_start",
+                    "description": "",
+                    "type": "Boolean",
+                    "optional": true,
+                    "optdefault": "false"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "Resizer"
+            },
+            "class": "Resizer"
+        },
+        {
+            "file": "../../source/coffee/slikland/utils/Resizer.coffee",
+            "line": 53,
+            "itemtype": "property",
             "name": "width",
             "type": "{Number}",
             "readonly": "",
@@ -5961,8 +6025,8 @@
         },
         {
             "file": "../../source/coffee/slikland/utils/Resizer.coffee",
-            "line": 41,
-            "itemtype": "attribute",
+            "line": 61,
+            "itemtype": "property",
             "name": "height",
             "type": "{Number}",
             "readonly": "",
@@ -5970,8 +6034,8 @@
         },
         {
             "file": "../../source/coffee/slikland/utils/Resizer.coffee",
-            "line": 49,
-            "itemtype": "attribute",
+            "line": 69,
+            "itemtype": "property",
             "name": "orientation",
             "type": "{String} 'landscape' or 'portrait'",
             "readonly": "",
@@ -5979,31 +6043,30 @@
         },
         {
             "file": "../../source/coffee/slikland/utils/Resizer.coffee",
-            "line": 58,
+            "line": 78,
             "description": "Gets/Sets bounds",
-            "itemtype": "attribute",
+            "itemtype": "property",
             "name": "bounds",
             "type": "{Object} The object like {\"top\":0, \"bottom\":0, \"left\":0, \"right\":0}",
-            "readonly": "",
             "class": "Resizer"
         },
         {
             "file": "../../source/coffee/slikland/utils/Resizer.coffee",
-            "line": 69,
+            "line": 88,
             "itemtype": "method",
             "name": "start",
             "class": "Resizer"
         },
         {
             "file": "../../source/coffee/slikland/utils/Resizer.coffee",
-            "line": 78,
+            "line": 97,
             "itemtype": "method",
             "name": "stop",
             "class": "Resizer"
         },
         {
             "file": "../../source/coffee/slikland/utils/Resizer.coffee",
-            "line": 86,
+            "line": 105,
             "itemtype": "method",
             "name": "change",
             "params": [
@@ -6024,7 +6087,7 @@
         },
         {
             "file": "../../source/coffee/slikland/utils/Resizer.coffee",
-            "line": 124,
+            "line": 143,
             "itemtype": "method",
             "name": "addClass",
             "params": [
@@ -6042,7 +6105,7 @@
         },
         {
             "file": "../../source/coffee/slikland/utils/Resizer.coffee",
-            "line": 132,
+            "line": 151,
             "itemtype": "method",
             "name": "removeClass",
             "params": [
@@ -6060,7 +6123,7 @@
         },
         {
             "file": "../../source/coffee/slikland/utils/Resizer.coffee",
-            "line": 140,
+            "line": 159,
             "itemtype": "method",
             "name": "hasClass",
             "params": [
@@ -6075,6 +6138,275 @@
                 "type": "Boolean"
             },
             "class": "Resizer"
+        },
+        {
+            "file": "../../source/coffee/slikland/utils/ShareUtils.coffee",
+            "line": 8,
+            "itemtype": "method",
+            "name": "twitter",
+            "static": 1,
+            "params": [
+                {
+                    "name": "p_text",
+                    "description": "",
+                    "type": "String"
+                },
+                {
+                    "name": "p_url",
+                    "description": "",
+                    "type": "String",
+                    "optional": true,
+                    "optdefault": "null"
+                },
+                {
+                    "name": "p_hashtags",
+                    "description": "separated by commas like 'digital,web,programming'",
+                    "type": "String",
+                    "optional": true,
+                    "optdefault": "null"
+                },
+                {
+                    "name": "p_trigger",
+                    "description": "",
+                    "type": "Boolean",
+                    "optional": true,
+                    "optdefault": "false"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "String"
+            },
+            "class": "ShareUtils"
+        },
+        {
+            "file": "../../source/coffee/slikland/utils/ShareUtils.coffee",
+            "line": 25,
+            "itemtype": "method",
+            "name": "facebook",
+            "static": 1,
+            "params": [
+                {
+                    "name": "p_url",
+                    "description": "",
+                    "type": "String"
+                },
+                {
+                    "name": "p_trigger",
+                    "description": "",
+                    "type": "Boolean",
+                    "optional": true,
+                    "optdefault": "false"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "String"
+            },
+            "class": "ShareUtils"
+        },
+        {
+            "file": "../../source/coffee/slikland/utils/ShareUtils.coffee",
+            "line": 37,
+            "itemtype": "method",
+            "name": "googleplus",
+            "static": 1,
+            "params": [
+                {
+                    "name": "p_url",
+                    "description": "",
+                    "type": "String"
+                },
+                {
+                    "name": "p_trigger",
+                    "description": "",
+                    "type": "Boolean",
+                    "optional": true,
+                    "optdefault": "false"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "String"
+            },
+            "class": "ShareUtils"
+        },
+        {
+            "file": "../../source/coffee/slikland/utils/ShareUtils.coffee",
+            "line": 49,
+            "itemtype": "method",
+            "name": "linkedin",
+            "static": 1,
+            "params": [
+                {
+                    "name": "p_url",
+                    "description": "",
+                    "type": "String"
+                },
+                {
+                    "name": "p_title",
+                    "description": "",
+                    "type": "String",
+                    "optional": true,
+                    "optdefault": "null"
+                },
+                {
+                    "name": "p_summary",
+                    "description": "",
+                    "type": "String",
+                    "optional": true,
+                    "optdefault": "null"
+                },
+                {
+                    "name": "p_source",
+                    "description": "",
+                    "type": "String",
+                    "optional": true,
+                    "optdefault": "null"
+                },
+                {
+                    "name": "p_trigger",
+                    "description": "",
+                    "type": "Boolean",
+                    "optional": true,
+                    "optdefault": "false"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "String"
+            },
+            "class": "ShareUtils"
+        },
+        {
+            "file": "../../source/coffee/slikland/utils/ShareUtils.coffee",
+            "line": 70,
+            "itemtype": "method",
+            "name": "pinterest",
+            "static": 1,
+            "params": [
+                {
+                    "name": "p_url",
+                    "description": "",
+                    "type": "String"
+                },
+                {
+                    "name": "p_media",
+                    "description": "",
+                    "type": "String",
+                    "optional": true,
+                    "optdefault": "null"
+                },
+                {
+                    "name": "p_description",
+                    "description": "",
+                    "type": "String",
+                    "optional": true,
+                    "optdefault": "null"
+                },
+                {
+                    "name": "p_trigger",
+                    "description": "",
+                    "type": "Boolean",
+                    "optional": true,
+                    "optdefault": "false"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "String"
+            },
+            "class": "ShareUtils"
+        },
+        {
+            "file": "../../source/coffee/slikland/utils/ShareUtils.coffee",
+            "line": 89,
+            "itemtype": "method",
+            "name": "email",
+            "static": 1,
+            "params": [
+                {
+                    "name": "p_email",
+                    "description": "",
+                    "type": "String"
+                },
+                {
+                    "name": "p_subject",
+                    "description": "",
+                    "type": "String",
+                    "optional": true,
+                    "optdefault": "null"
+                },
+                {
+                    "name": "p_body",
+                    "description": "",
+                    "type": "String",
+                    "optional": true,
+                    "optdefault": "null"
+                },
+                {
+                    "name": "p_trigger",
+                    "description": "",
+                    "type": "Boolean",
+                    "optional": true,
+                    "optdefault": "false"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "String"
+            },
+            "class": "ShareUtils"
+        },
+        {
+            "file": "../../source/coffee/slikland/utils/ShareUtils.coffee",
+            "line": 108,
+            "itemtype": "method",
+            "name": "open",
+            "static": 1,
+            "params": [
+                {
+                    "name": "p_url",
+                    "description": "",
+                    "type": "String"
+                },
+                {
+                    "name": "p_name",
+                    "description": "",
+                    "type": "String",
+                    "optional": true,
+                    "optdefault": "''"
+                },
+                {
+                    "name": "p_style",
+                    "description": "",
+                    "type": "String",
+                    "optional": true,
+                    "optdefault": "'width"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "String"
+            },
+            "class": "ShareUtils"
+        },
+        {
+            "file": "../../source/coffee/slikland/utils/ShareUtils.coffee",
+            "line": 119,
+            "itemtype": "method",
+            "name": "_location",
+            "static": 1,
+            "access": "private",
+            "tagname": "",
+            "params": [
+                {
+                    "name": "p_url",
+                    "description": "",
+                    "type": "String"
+                }
+            ],
+            "class": "ShareUtils"
         },
         {
             "file": "../../source/coffee/slikland/utils/SplitTextUtils.coffee",
@@ -6870,6 +7202,18 @@
                 "type": "Array"
             },
             "class": "StringUtils"
+        },
+        {
+            "file": "../../source/coffee/slikland/utils/SunUtils.coffee",
+            "line": 7,
+            "itemtype": "method",
+            "name": "getInstance",
+            "static": 1,
+            "return": {
+                "description": "",
+                "type": "SunUtils"
+            },
+            "class": "SunUtils"
         },
         {
             "file": "../../source/coffee/slikland/utils/URLUtils.coffee",

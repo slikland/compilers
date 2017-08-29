@@ -4,6 +4,11 @@ Methods for Sunrise and Sunset
 ###
 class SunUtils
 
+	###*
+	@method getInstance
+	@static
+	@return {SunUtils} 
+	###
 	@getInstance:()=>
 		@_instance ?= new @(arguments...)
 

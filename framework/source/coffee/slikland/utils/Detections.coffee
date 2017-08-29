@@ -22,6 +22,11 @@ class Detections
 		{name: 'Safari', nick: /safari/i, test: /safari/i},
 	]
 
+	###*
+	@method getInstance
+	@static
+	@return {Detections} 
+	###
 	@getInstance:()=>
 		@_instance ?= new @(arguments...)
 

@@ -37,7 +37,7 @@ class ConditionsValidation
 
 	###*
 	Returns the internal list of registered conditions.
-	@attribute list
+	@property list
 	@type {Object}
 	@readOnly
 	###

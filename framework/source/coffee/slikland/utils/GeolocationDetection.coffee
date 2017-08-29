@@ -25,6 +25,11 @@ class GeolocationDetection extends EventDispatcher
 	###
 	isSearching: false
 
+	###*
+	@method getInstance
+	@static
+	@return {GeolocationDetection} 
+	###
 	@getInstance:()=>
 		@_instance ?= new @(arguments...)
 
@@ -50,6 +55,7 @@ class GeolocationDetection extends EventDispatcher
 	@property position
 	@type Object
 	@return {Object}
+	@readOnly
 	###
 	@get position:()->
 		return @_position

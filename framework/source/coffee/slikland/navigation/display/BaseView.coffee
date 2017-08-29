@@ -6,7 +6,6 @@
 Base View
 @class BaseView
 @extends BaseDOM
-@uses MetaController
 ###
 class BaseView extends BaseDOM
 
@@ -150,7 +149,7 @@ class BaseView extends BaseDOM
 
 	###*
 	Returns the loader queue of this specific view.
-	@attribute loader
+	@property loader
 	@type {createjs.LoadQueue}
 	@default null
 	@readOnly
@@ -160,7 +159,7 @@ class BaseView extends BaseDOM
 
 	###*
 	Returns true if the view was created.
-	@attribute created
+	@property created
 	@type {Boolean}
 	@default false
 	@protected
@@ -171,7 +170,7 @@ class BaseView extends BaseDOM
 
 	###*
 	Returns true if the view was shown.
-	@attribute showed
+	@property showed
 	@type {Boolean}
 	@default false
 	@protected
@@ -182,7 +181,7 @@ class BaseView extends BaseDOM
 
 	###*
 	Sets/gets a clone of data object with default and/or custom values of properties of view.
-	@attribute data
+	@property data
 	@type {Object}
 	@default {}
 	###
@@ -194,7 +193,7 @@ class BaseView extends BaseDOM
 
 	###*
 	Sets/gets the unique ID of view.
-	@attribute id
+	@property id
 	@type {String}
 	@default null
 	###
@@ -205,7 +204,7 @@ class BaseView extends BaseDOM
 
 	###*
 	Sets/gets the content of view.
-	@attribute content
+	@property content
 	@type {String|Object|JSON}
 	@default null
 	###
@@ -216,7 +215,7 @@ class BaseView extends BaseDOM
 
 	###*
 	Sets/gets the route of view.
-	@attribute route
+	@property route
 	@type {String|RegExp}
 	@default null
 	###
@@ -227,7 +226,7 @@ class BaseView extends BaseDOM
 
 	###*
 	Sets/gets the actual route data.
-	@attribute routeData
+	@property routeData
 	@type {Object}
 	@protected
 	@default null
@@ -239,7 +238,7 @@ class BaseView extends BaseDOM
 
 	###*
 	Sets/gets the parent view of this view.
-	@attribute parentView
+	@property parentView
 	@type {BaseView}
 	@default null
 	###
@@ -250,7 +249,7 @@ class BaseView extends BaseDOM
 
 	###*
 	Sets/gets a array of {{#crossLink "BaseView"}}{{/crossLink}} instances of subviews of this view.
-	@attribute subviews
+	@property subviews
 	@type {Array}
 	@default null
 	###
@@ -261,7 +260,7 @@ class BaseView extends BaseDOM
 
 	###*
 	Sets/gets if this views is destroyable.
-	@attribute destroyable
+	@property destroyable
 	@type {Boolean}
 	@default false
 	###
@@ -272,7 +271,7 @@ class BaseView extends BaseDOM
 
 	###*
 	Sets/gets the type is a 'view' or a 'sub-view'.
-	@attribute type
+	@property type
 	@type {String}
 	@protected
 	@default null
@@ -284,7 +283,7 @@ class BaseView extends BaseDOM
 
 	###*
 	Returns the meta object of his content.
-	@attribute meta
+	@property meta
 	@type {Object}
 	@default null
 	@readOnly
@@ -294,7 +293,7 @@ class BaseView extends BaseDOM
 
 	###*
 	Sets/gets the loading progress of this view.
-	@attribute progress
+	@property progress
 	@type {Number}
 	@protected
 	###
@@ -305,7 +304,7 @@ class BaseView extends BaseDOM
 
 	###*
 	Returns the reverse path of his parent view.
-	@attribute reverseParentPath
+	@property reverseParentPath
 	@type {Array}
 	@protected
 	@readOnly
@@ -316,7 +315,7 @@ class BaseView extends BaseDOM
 
 	###*
 	Returns the path of his parent view.
-	@attribute parentPath
+	@property parentPath
 	@type {Array}
 	@protected
 	@readOnly
@@ -327,7 +326,7 @@ class BaseView extends BaseDOM
 
 	###*
 	Returns the wrapper container for the sub-views of this view.
-	@attribute subviewsWrapper
+	@property subviewsWrapper
 	@type {HTMLElement}
 	@default null
 	@readOnly
@@ -337,7 +336,7 @@ class BaseView extends BaseDOM
 
 	###*
 	Returns the CSS Selector of the wrapper container for attach this view.
-	@attribute attachToParentWrapper
+	@property attachToParentWrapper
 	@type {String}
 	@default null
 	@readOnly

@@ -7,13 +7,33 @@
 ###
 class Resizer extends EventDispatcher
 
+	###*
+	@event RESIZE
+	@static
+	###
 	@RESIZE: 'resize_resizer'
+
+	###*
+	@event ORIENTATION_CHANGE
+	@static
+	###
 	@ORIENTATION_CHANGE: 'orientation_change_resizer'
+
+	###*
+	@event BREAKPOINT_CHANGE
+	@static
+	###
 	@BREAKPOINT_CHANGE: 'breakpoint_changed_resizer'
 
 	_bounds = null
 	_body = null
 
+	###*
+	@method getInstance
+	@static
+	@param {Boolean} [p_start=false]
+	@return {Resizer} 
+	###
 	@getInstance:(p_start=true)=>
 		@_instance ?= new @(p_start)
 
@@ -21,7 +41,6 @@ class Resizer extends EventDispatcher
 	@class Resizer
 	@constructor
 	@param {Boolean} [p_start=true]
-	@default true
 	@extends EventDispatcher
 	###
 	constructor:(p_start=true)->
@@ -29,9 +48,10 @@ class Resizer extends EventDispatcher
 		_bounds = {"top":0, "bottom":0, "left":0, "right":0}
 		@_currentOrientation = @orientation
 		if p_start? then @start()
-		
+		super
+
 	###*
-	@attribute width
+	@property width
 	@type {Number}
 	@readOnly
 	###
@@ -39,7 +59,7 @@ class Resizer extends EventDispatcher
 		return window.innerWidth
 
 	###*
-	@attribute height
+	@property height
 	@type {Number}
 	@readOnly
 	###
@@ -47,7 +67,7 @@ class Resizer extends EventDispatcher
 		return window.innerHeight
 
 	###*
-	@attribute orientation
+	@property orientation
 	@type {String} 'landscape' or 'portrait'
 	@readOnly
 	###
@@ -57,9 +77,8 @@ class Resizer extends EventDispatcher
 
 	###*
 	Gets/Sets bounds
-	@attribute bounds
+	@property bounds
 	@type {Object} The object like {"top":0, "bottom":0, "left":0, "right":0}
-	@readOnly
 	###
 	@get bounds:->
 		return _bounds

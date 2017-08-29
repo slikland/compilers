@@ -5,14 +5,15 @@ Bunch of utilities methods for social networks share
 ###
 class ShareUtils
 
-	# Public: Twitter.
-	#
-	# text - {String}
-	# url - {String}
-	# hashtags - {String}
-	#
-	# Examples
-	#     @twitter('Slikland', 'http://slikland.com', 'digital,web,programming')
+	###*
+	@method twitter
+	@static
+	@param {String} p_text
+	@param {String} [p_url=null]
+	@param {String} [p_hashtags=null] separated by commas like 'digital,web,programming'
+	@param {Boolean} [p_trigger=false]
+	@return {String}
+	###
 	@twitter:(p_text, p_url=null, p_hashtags=null, p_trigger=false)->
 		url = 'https://twitter.com/intent/tweet?'
 		if p_text    then url += '&text=' + encodeURI(p_text)
@@ -21,44 +22,40 @@ class ShareUtils
 		if p_trigger then ShareUtils.open(url)
 		return url
 
-	# Public: Facebook.
-	# OLD METHOD (DIALOG/FEED) IS DEPRECATED
-	# @facebook:(p_url, p_uri, p_title, p_description, p_image, p_appID=null, p_display=null, p_trigger=false)->
-	# 	url = 'https://www.facebook.com/dialog/feed?'
-	# 	if p_appID then url += '&app_id=' + p_appID
-	# 	if p_image then url += '&picture=' + p_image
-	# 	if p_title then url += '&name=' + encodeURIComponent(p_title)
-	# 	if p_description then url += '&description=' + encodeURIComponent(p_description)
-	# 	url += '&display=popup'
-	# 	url += '&link=' + encodeURIComponent(p_url)
-	# 	url += '&redirect_uri=' + encodeURIComponent(p_uri)
-	# 	if p_trigger then ShareUtils.open(url)
-	# 	return url
-	# 	
-	# Public: Facebook
-	# 
-	# url - {String}
-	# TODO: Test this
-
+	###*
+	@method facebook
+	@static
+	@param {String} p_url
+	@param {Boolean} [p_trigger=false]
+	@return {String}
+	###
 	@facebook:(p_url, p_trigger=false)->
 		url = 'https://www.facebook.com/sharer/sharer.php?u=' + p_url
 		if p_trigger then ShareUtils.open(url)
 		return url
 
-	# Public: Google Plus
-	#
-	# url - {String}
+	###*
+	@method googleplus
+	@static
+	@param {String} p_url
+	@param {Boolean} [p_trigger=false]
+	@return {String}
+	###
 	@googleplus:(p_url, p_trigger=false)->
 		url = 'https://plus.google.com/share?url=' + encodeURI(p_url)
 		if p_trigger then ShareUtils.open(url)
 		return url
 
-	# Public: LinkedIn.
-	#
-	# url - {String}
-	# title - {String}
-	# summary - {String}
-	# source - {String}
+	###*
+	@method linkedin
+	@static
+	@param {String} p_url
+	@param {String} [p_title=null]
+	@param {String} [p_summary=null]
+	@param {String} [p_source=null]
+	@param {Boolean} [p_trigger=false]
+	@return {String}
+	###
 	@linkedin:(p_url, p_title=null, p_summary=null,p_source=null, p_trigger=false)->
 		url = 'https://www.linkedin.com/shareArticle?mini=true'
 		params = []
@@ -70,11 +67,15 @@ class ShareUtils
 		if p_trigger then ShareUtils.open(url)
 		return url
 
-	# Public: Pinterest.
-	#
-	# url - {String}
-	# media - {String}
-	# description - {String}
+	###*
+	@method pinterest
+	@static
+	@param {String} p_url
+	@param {String} [p_media=null]
+	@param {String} [p_description=null]
+	@param {Boolean} [p_trigger=false]
+	@return {String}
+	###
 	@pinterest:(p_url, p_media=null, p_description=null, p_trigger=false)->
 		url = 'http://www.pinterest.com/pin/create/button/?'
 		params = []
@@ -85,10 +86,15 @@ class ShareUtils
 		if p_trigger then ShareUtils.open(url)
 		return url
 
-	# Public: Email.
-	#
-	# subject - {String}
-	# body - {String}
+	###*
+	@method email
+	@static
+	@param {String} p_email
+	@param {String} [p_subject=null]
+	@param {String} [p_body=null]
+	@param {Boolean} [p_trigger=false]
+	@return {String}
+	###
 	@email:(p_email, p_subject=null, p_body=null, p_trigger=false)->
 		url = 'mailto:?'+p_email
 		params = []
@@ -99,16 +105,22 @@ class ShareUtils
 			ShareUtils.open(url, '_blank')
 		return url
 
-	# Private: call url.
-	#
-	# url - {string}
-	# name - {string}
-	# style - {string}
-	@open:(p_url, p_name='',p_style='width=640,height=480')->
+	###*
+	@method open
+	@static
+	@param {String} p_url
+	@param {String} [p_name='']
+	@param {String} [p_style='width=640,height=480']
+	@return {String}
+	###
+	@open:(p_url, p_name='', p_style='width=640,height=480')->
 		window.open(p_url,p_name,p_style)
 
-	# Private: window location.
-	#
-	# url - {string}
+	###*
+	@method _location
+	@static
+	@private
+	@param {String} p_url
+	###
 	@_location:(p_url)->
 		window.location.href = p_url

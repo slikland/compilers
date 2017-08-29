@@ -144,7 +144,7 @@ class MetaController extends EventDispatcher
 		false
 
 	###*
-	@attribute head
+	@property head
 	@type {HTMLElement}
 	@readOnly
 	###
@@ -152,14 +152,14 @@ class MetaController extends EventDispatcher
 		return document.head || document.getElementsByTagName('head')[0]
 
 	###*
-	@attribute viewport
+	@property viewport
 	@type {String}
 	###
 	@set viewport:(p_value)->
 		@applyMeta('viewport', p_value)
 
 	###*
-	@attribute title
+	@property title
 	@type {String}
 	###
 	@set title:(p_value)->
@@ -170,14 +170,14 @@ class MetaController extends EventDispatcher
 			@applyMeta('apple-mobile-web-app-title', p_value)
 
 	###*
-	@attribute description
+	@property description
 	@type {String}
 	###
 	@set description:(p_value)->
 		@applyMeta('description', p_value)
 
 	###*
-	@attribute favicon
+	@property favicon
 	@type {String}
 	###
 	@set favicon:(p_value)->
@@ -187,7 +187,7 @@ class MetaController extends EventDispatcher
 		false
 
 	###*
-	@attribute icons
+	@property icons
 	@type {String}
 	###
 	@set icons:(p_value)->
@@ -197,7 +197,7 @@ class MetaController extends EventDispatcher
 
 	###*
 	*Only for iOS
-	@attribute splash
+	@property splash
 	@type {String}
 	###
 	@set splash:(p_value)->
@@ -205,7 +205,7 @@ class MetaController extends EventDispatcher
 		false
 
 	###*
-	@attribute webAppCapable
+	@property webAppCapable
 	@type {String}
 	###
 	@set webAppCapable:(p_value)->
@@ -218,7 +218,7 @@ class MetaController extends EventDispatcher
 		false
 
 	###*
-	@attribute color
+	@property color
 	@type {String}
 	###
 	@set color:(p_color)->
@@ -237,7 +237,7 @@ class MetaController extends EventDispatcher
 
 	###*
 	*Only for Android
-	@attribute manifest
+	@property manifest
 	@type {String}
 	@example
 	```
