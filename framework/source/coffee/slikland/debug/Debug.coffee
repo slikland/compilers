@@ -1,7 +1,8 @@
 ###*
-Debug Class
 @class Debug
 @static
+@module slikland
+@submodule slikland.debug
 @final
 ###
 class Debug

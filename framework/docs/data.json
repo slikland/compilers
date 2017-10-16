@@ -78,6 +78,15 @@
             "fors": {},
             "namespaces": {}
         },
+        "../../source/coffee/slikland/loader/AssetLoader.coffee": {
+            "name": "../../source/coffee/slikland/loader/AssetLoader.coffee",
+            "modules": {},
+            "classes": {
+                "AssetLoader": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
         "../../source/coffee/slikland/loader/PreloadFiles.coffee": {
             "name": "../../source/coffee/slikland/loader/PreloadFiles.coffee",
             "modules": {},
@@ -203,6 +212,15 @@
             "modules": {},
             "classes": {
                 "BaseView": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "../../source/coffee/slikland/net/API.coffee": {
+            "name": "../../source/coffee/slikland/net/API.coffee",
+            "modules": {},
+            "classes": {
+                "API": 1
             },
             "fors": {},
             "namespaces": {}
@@ -399,6 +417,11 @@
         "slikland": {
             "name": "slikland",
             "submodules": {
+                "slikland.debug": 1,
+                "slikland.event": 1,
+                "slikland.loader": 1,
+                "slikland.display": 1,
+                "slikland.net": 1,
                 "slikland.utils.keyboard": 1,
                 "slikland.utils": 1
             },
@@ -411,6 +434,7 @@
                 "Debug": 1,
                 "BaseDOM": 1,
                 "EventDispatcher": 1,
+                "AssetLoader": 1,
                 "PreloadFiles": 1,
                 "ConditionsValidation": 1,
                 "ViewsData": 1,
@@ -422,6 +446,7 @@
                 "NavigationLoader": 1,
                 "NavigationRouter": 1,
                 "BaseView": 1,
+                "API": 1,
                 "Shortcut": 1,
                 "ArrayUtils": 1,
                 "ColorUtils": 1,
@@ -449,6 +474,82 @@
             "file": "../../source/coffee/slikland/utils/URLUtils.coffee",
             "line": 3,
             "description": "Base class to setup the navigation and start loading of dependencies."
+        },
+        "slikland.debug": {
+            "name": "slikland.debug",
+            "submodules": {},
+            "elements": {},
+            "classes": {
+                "Debug": 1
+            },
+            "fors": {},
+            "is_submodule": 1,
+            "namespaces": {},
+            "module": "slikland",
+            "namespace": "",
+            "file": "../../source/coffee/slikland/debug/Debug.coffee",
+            "line": 1
+        },
+        "slikland.event": {
+            "name": "slikland.event",
+            "submodules": {},
+            "elements": {},
+            "classes": {
+                "EventDispatcher": 1
+            },
+            "fors": {},
+            "is_submodule": 1,
+            "namespaces": {},
+            "module": "slikland",
+            "namespace": "",
+            "file": "../../source/coffee/slikland/event/EventDispatcher.coffee",
+            "line": 2
+        },
+        "slikland.loader": {
+            "name": "slikland.loader",
+            "submodules": {},
+            "elements": {},
+            "classes": {
+                "AssetLoader": 1,
+                "PreloadFiles": 1
+            },
+            "fors": {},
+            "is_submodule": 1,
+            "namespaces": {},
+            "module": "slikland",
+            "namespace": "",
+            "file": "../../source/coffee/slikland/loader/PreloadFiles.coffee",
+            "line": 1
+        },
+        "slikland.display": {
+            "name": "slikland.display",
+            "submodules": {},
+            "elements": {},
+            "classes": {
+                "BaseView": 1
+            },
+            "fors": {},
+            "is_submodule": 1,
+            "namespaces": {},
+            "module": "slikland",
+            "namespace": "",
+            "file": "../../source/coffee/slikland/navigation/display/BaseView.coffee",
+            "line": 95
+        },
+        "slikland.net": {
+            "name": "slikland.net",
+            "submodules": {},
+            "elements": {},
+            "classes": {
+                "API": 1
+            },
+            "fors": {},
+            "is_submodule": 1,
+            "namespaces": {},
+            "module": "slikland",
+            "namespace": "",
+            "file": "../../source/coffee/slikland/net/API.coffee",
+            "line": 78
         },
         "slikland.utils.keyboard": {
             "name": "slikland.utils.keyboard",
@@ -577,7 +678,7 @@
             "module": "slikland",
             "file": "../../source/coffee/slikland/debug/Debug.coffee",
             "line": 1,
-            "description": "Debug Class",
+            "submodule": "slikland.debug",
             "static": 1,
             "final": 1
         },
@@ -590,6 +691,7 @@
             "plugin_for": [],
             "extension_for": [],
             "module": "slikland",
+            "namespace": "",
             "file": "../../source/coffee/slikland/display/BaseDOM.coffee",
             "line": 74,
             "description": "Base DOM manipulation class"
@@ -603,9 +705,26 @@
             "plugin_for": [],
             "extension_for": [],
             "module": "slikland",
+            "namespace": "",
             "file": "../../source/coffee/slikland/event/EventDispatcher.coffee",
             "line": 2,
-            "description": "EventDispatcher class for handling and triggering events."
+            "submodule": "slikland.event"
+        },
+        "AssetLoader": {
+            "name": "AssetLoader",
+            "shortname": "AssetLoader",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "slikland",
+            "namespace": "",
+            "file": "../../source/coffee/slikland/loader/AssetLoader.coffee",
+            "line": 32,
+            "submodule": "slikland.loader",
+            "extends": "EventDispatcher",
+            "is_constructor": 1
         },
         "PreloadFiles": {
             "name": "PreloadFiles",
@@ -616,9 +735,10 @@
             "plugin_for": [],
             "extension_for": [],
             "module": "slikland",
+            "namespace": "",
             "file": "../../source/coffee/slikland/loader/PreloadFiles.coffee",
             "line": 1,
-            "description": "It's a simple wrapper to PreloadJS.\nSee more info on <a href=\"http://www.createjs.com/docs/preloadjs/\" target=\"_blank\" class=\"crosslink\">PreloadJS Docs</a>"
+            "submodule": "slikland.loader"
         },
         "ConditionsValidation": {
             "name": "ConditionsValidation",
@@ -629,6 +749,7 @@
             "plugin_for": [],
             "extension_for": [],
             "module": "slikland",
+            "namespace": "",
             "file": "../../source/coffee/slikland/navigation/core/data/ConditionsValidation.coffee",
             "line": 16,
             "description": "Singleton ConditionsValidation class",
@@ -650,6 +771,7 @@
             "plugin_for": [],
             "extension_for": [],
             "module": "slikland",
+            "namespace": "",
             "file": "../../source/coffee/slikland/navigation/core/data/ViewsData.coffee",
             "line": 23,
             "description": "ViewsData Class",
@@ -673,6 +795,7 @@
             "plugin_for": [],
             "extension_for": [],
             "module": "slikland",
+            "namespace": "",
             "file": "../../source/coffee/slikland/navigation/core/meta/MetaController.coffee",
             "line": 8,
             "extends": "EventDispatcher",
@@ -690,10 +813,9 @@
             "plugins": [],
             "extensions": [],
             "plugin_for": [],
-            "extension_for": [
-                "Navigation"
-            ],
+            "extension_for": [],
             "module": "slikland",
+            "namespace": "",
             "file": "../../source/coffee/slikland/navigation/core/BaseNavigationController.coffee",
             "line": 28,
             "description": "BaseNavigationController is a base class for any type of navigation controller.<br>\nPlease do not instantiate this class. Use the extended classes.",
@@ -709,6 +831,7 @@
             "plugin_for": [],
             "extension_for": [],
             "module": "slikland",
+            "namespace": "",
             "file": "../../source/coffee/slikland/navigation/core/Caim.coffee",
             "line": 29,
             "description": "Base class to setup the navigation and start loading of dependencies.",
@@ -747,13 +870,9 @@
             "module": "slikland",
             "namespace": "",
             "file": "../../source/coffee/slikland/navigation/core/Navigation.coffee",
-            "line": 34,
+            "line": 32,
             "description": "Navigation Class\nThe instance of this class can be accessed by `app.navigation` wrapper",
             "extends": "EventDispatcher",
-            "uses": [
-                "NavigationRouter",
-                "BaseNavigationController"
-            ],
             "final": 1,
             "is_constructor": 1,
             "params": [
@@ -826,9 +945,7 @@
             "plugins": [],
             "extensions": [],
             "plugin_for": [],
-            "extension_for": [
-                "Navigation"
-            ],
+            "extension_for": [],
             "module": "slikland",
             "namespace": "",
             "file": "../../source/coffee/slikland/navigation/core/NavigationRouter.coffee",
@@ -849,7 +966,7 @@
             "namespace": "",
             "file": "../../source/coffee/slikland/navigation/display/BaseView.coffee",
             "line": 95,
-            "description": "Base View",
+            "submodule": "slikland.display",
             "extends": "BaseDOM",
             "is_constructor": 1,
             "params": [
@@ -878,6 +995,22 @@
             "example": [
                 "\n```\n{\n\t\"id\":\"home\",\n\t\"class\":\"template-home-view\", //the valid formats are \"ClassName\", \"class-name\", \"class name\" or \"class_name\"\n\t\"route\":\"/\", //valid formats are String or RegExp\n\t\"content\":\"data/home.json\",\n\t\"cache\":true,\n\t\"parentView\":\"someViewID\", //the unique ID of parent view\n\t\"destroyable\":true,\n\t\"loadContent\":true,\n\t\"snap\":true, //only for scroll navigation type\n\t\"subviewsWrapper\":\"CSSSelector\", //like #ID or .className etc\n\t\"attachToParentWrapper\":\"CSSSelector\" //like #ID or .className etc\n}\n```"
             ]
+        },
+        "API": {
+            "name": "API",
+            "shortname": "API",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "slikland",
+            "namespace": "",
+            "file": "../../source/coffee/slikland/net/API.coffee",
+            "line": 78,
+            "submodule": "slikland.net",
+            "extends": "EventDispatcher",
+            "is_constructor": 1
         },
         "Shortcut": {
             "name": "Shortcut",
@@ -1485,15 +1618,17 @@
         },
         {
             "file": "../../source/coffee/slikland/debug/Debug.coffee",
-            "line": 12,
+            "line": 13,
             "itemtype": "method",
             "name": "init",
             "static": 1,
-            "class": "Debug"
+            "class": "Debug",
+            "module": "slikland",
+            "submodule": "slikland.debug"
         },
         {
             "file": "../../source/coffee/slikland/debug/Debug.coffee",
-            "line": 94,
+            "line": 95,
             "itemtype": "method",
             "name": "check",
             "params": [
@@ -1510,19 +1645,23 @@
                 "type": "String"
             },
             "static": 1,
-            "class": "Debug"
+            "class": "Debug",
+            "module": "slikland",
+            "submodule": "slikland.debug"
         },
         {
             "file": "../../source/coffee/slikland/debug/Debug.coffee",
-            "line": 120,
+            "line": 121,
             "itemtype": "method",
             "name": "log",
             "static": 1,
-            "class": "Debug"
+            "class": "Debug",
+            "module": "slikland",
+            "submodule": "slikland.debug"
         },
         {
             "file": "../../source/coffee/slikland/debug/Debug.coffee",
-            "line": 131,
+            "line": 132,
             "itemtype": "method",
             "name": "logTime",
             "params": [
@@ -1533,7 +1672,9 @@
                 }
             ],
             "static": 1,
-            "class": "Debug"
+            "class": "Debug",
+            "module": "slikland",
+            "submodule": "slikland.debug"
         },
         {
             "file": "../../source/coffee/slikland/event/EventDispatcher.coffee",
@@ -1556,7 +1697,9 @@
             "example": [
                 "\n\tfunction someEventHandler(e, data)\n\t{\n\t\tconsole.log(e); // Returns event data with it's type and target/currentTarget set to the scope\n\t\tconsole.log(data); // If the triggering event has any custom data\n\t}\n\tvar ed = new EventDispatcher()\n\ted.on('someEvent', someEventHandler);"
             ],
-            "class": "EventDispatcher"
+            "class": "EventDispatcher",
+            "module": "slikland",
+            "submodule": "slikland.event"
         },
         {
             "file": "../../source/coffee/slikland/event/EventDispatcher.coffee",
@@ -1580,7 +1723,9 @@
                     "optdefault": "null"
                 }
             ],
-            "class": "EventDispatcher"
+            "class": "EventDispatcher",
+            "module": "slikland",
+            "submodule": "slikland.event"
         },
         {
             "file": "../../source/coffee/slikland/event/EventDispatcher.coffee",
@@ -1612,7 +1757,9 @@
             "example": [
                 "\n\tvar ed = new EventDispatcher()\n\n\t// Will just trigger the event\n\ted.trigger('someEvent'); \n\n\t// Will trigger the event with the object which can be retrieved by the second\n\t// parameter of the handler function.\n\ted.trigger('someEvent', {someData: true}); \n\n\t// Will set the event target to window. On the handler's first parameter\n\t//`event.target` will be window, and event.currentTarget will be the `ev` instance.\n\ted.trigger('someEvent', {someData: true}, window);"
             ],
-            "class": "EventDispatcher"
+            "class": "EventDispatcher",
+            "module": "slikland",
+            "submodule": "slikland.event"
         },
         {
             "file": "../../source/coffee/slikland/event/EventDispatcher.coffee",
@@ -1638,7 +1785,9 @@
                 "description": "",
                 "type": "Boolean"
             },
-            "class": "EventDispatcher"
+            "class": "EventDispatcher",
+            "module": "slikland",
+            "submodule": "slikland.event"
         },
         {
             "file": "../../source/coffee/slikland/event/EventDispatcher.coffee",
@@ -1670,7 +1819,9 @@
             "example": [
                 "\n\tvar ed = new EventDispatcher()\n\n\tvar someObject = {a: true, b: false, c: true};\n\n\ted.on('isA', function(){console.log('Is A!');});\n\ted.on('isB', function(){console.log('Is B!');});\n\ted.on('isC', function(){console.log('Is C!');});\n\n\tfunction test()\n\t{\n\t\tconsole.log(\"Init test()\");\n\t\tif(someObject.a) ed.stackTrigger('isA');\n\t\tif(someObject.b) ed.stackTrigger('isB');\n\t\tif(someObject.c) ed.stackTrigger('isC');\n\t\tconsole.log(\"End test()\");\n\t}\n\n\t// This will result in:\n\t// log: 'Init test()'\n\t// log: 'End test()'\n\t// log: 'isA'\n\t// log: 'isC'\n"
             ],
-            "class": "EventDispatcher"
+            "class": "EventDispatcher",
+            "module": "slikland",
+            "submodule": "slikland.event"
         },
         {
             "file": "../../source/coffee/slikland/navigation/core/data/ConditionsValidation.coffee",
@@ -1689,7 +1840,8 @@
                 "description": "",
                 "type": "Boolean"
             },
-            "class": "ConditionsValidation"
+            "class": "ConditionsValidation",
+            "module": "slikland"
         },
         {
             "file": "../../source/coffee/slikland/navigation/core/data/ConditionsValidation.coffee",
@@ -1699,7 +1851,8 @@
             "name": "list",
             "type": "{Object}",
             "readonly": "",
-            "class": "ConditionsValidation"
+            "class": "ConditionsValidation",
+            "module": "slikland"
         },
         {
             "file": "../../source/coffee/slikland/navigation/core/data/ConditionsValidation.coffee",
@@ -1718,7 +1871,8 @@
                 "description": "",
                 "type": "Object"
             },
-            "class": "ConditionsValidation"
+            "class": "ConditionsValidation",
+            "module": "slikland"
         },
         {
             "file": "../../source/coffee/slikland/navigation/core/data/ConditionsValidation.coffee",
@@ -1737,7 +1891,8 @@
                 "description": "",
                 "type": "Boolean"
             },
-            "class": "ConditionsValidation"
+            "class": "ConditionsValidation",
+            "module": "slikland"
         },
         {
             "file": "../../source/coffee/slikland/navigation/core/data/ConditionsValidation.coffee",
@@ -1756,7 +1911,8 @@
                 "description": "",
                 "type": "Boolean"
             },
-            "class": "ConditionsValidation"
+            "class": "ConditionsValidation",
+            "module": "slikland"
         },
         {
             "file": "../../source/coffee/slikland/navigation/core/data/ConditionsValidation.coffee",
@@ -1778,7 +1934,8 @@
             "example": [
                 "\n```\n//Example of conditions list in config file\n...\n\"conditions\": {\n\t\"small\": {\n\t\t\"browser\":{\n\t\t\t\"mobile\": true\n\t\t},\n\t\t\"size\": {\n\t\t\t\"min-width\":300\n\t\t}\n\t},\n\t\"medium\": {\n\t\t\"browser\":{\n\t\t\t\"tablet\": true\n\t\t},\n\t\t\"orientation\":\"landscape\",\n\t\t\"size\": {\n\t\t\t\"min-width\":992\n\t\t}\n\t},\n\t\"large\": {\n\t\t\"browser\":{\n\t\t\t\"desktop\": true\n\t\t},\n\t\t\"size\": {\n\t\t\t\"min-width\":1200\n\t\t}\n\t},\n\t\"xtra_large\": {\n\t\t\"size\": {\n\t\t\t\"min-width\":1500\n\t\t}\n\t},\n\t\"full\": {\n\t\t\"size\": {\n\t\t\t\"min-width\":1910\n\t\t}\n\t}\n}\n\n...\n//Example condition with operators in some content file\n...\n\"src\":[\n\t{\n\t\t\"condition\":\"xtra_large && full\",\n\t\t\"file\":\"file.json\"\n\t},\n\t{\n\t\t\"condition\":\"medium || xtra_large\",\n\t\t\"file\":\"file.json\"\n\t},\n\t{\n\t\t\"condition\":\"small < medium\",\n\t\t\"file\":\"file.json\"\n\t},\n\t{\n\t\t\"condition\":\"(small > medium) || medium\",\n\t\t\"file\":\"file.json\"\n\t}\n]\n\n//Example single condition in some content file\n...\n\"src\":[\n\t{\n\t\t\"condition\":\"default\",\n\t\t\"file\":\"{base}data/home.json\"\n\t}\n]\n...\n```\t"
             ],
-            "class": "ConditionsValidation"
+            "class": "ConditionsValidation",
+            "module": "slikland"
         },
         {
             "file": "../../source/coffee/slikland/navigation/core/data/ParseConfig.coffee",
@@ -1791,7 +1948,8 @@
             },
             "access": "private",
             "tagname": "",
-            "class": "ViewsData"
+            "class": "ViewsData",
+            "module": "slikland"
         },
         {
             "file": "../../source/coffee/slikland/navigation/core/data/ParseConfig.coffee",
@@ -1804,7 +1962,8 @@
             },
             "access": "private",
             "tagname": "",
-            "class": "ViewsData"
+            "class": "ViewsData",
+            "module": "slikland"
         },
         {
             "file": "../../source/coffee/slikland/navigation/core/data/ParseConfig.coffee",
@@ -1825,7 +1984,8 @@
             ],
             "access": "private",
             "tagname": "",
-            "class": "ViewsData"
+            "class": "ViewsData",
+            "module": "slikland"
         },
         {
             "file": "../../source/coffee/slikland/navigation/core/data/ParseConfig.coffee",
@@ -1845,7 +2005,8 @@
             },
             "access": "private",
             "tagname": "",
-            "class": "ViewsData"
+            "class": "ViewsData",
+            "module": "slikland"
         },
         {
             "file": "../../source/coffee/slikland/navigation/core/data/ParseContent.coffee",
@@ -1858,7 +2019,8 @@
             },
             "access": "private",
             "tagname": "",
-            "class": "ViewsData"
+            "class": "ViewsData",
+            "module": "slikland"
         },
         {
             "file": "../../source/coffee/slikland/navigation/core/data/ParseContent.coffee",
@@ -1874,7 +2036,8 @@
             ],
             "access": "protected",
             "tagname": "",
-            "class": "ViewsData"
+            "class": "ViewsData",
+            "module": "slikland"
         },
         {
             "file": "../../source/coffee/slikland/navigation/core/data/ParseData.coffee",
@@ -1893,7 +2056,8 @@
                 "type": "String"
             },
             "static": 1,
-            "class": "ViewsData"
+            "class": "ViewsData",
+            "module": "slikland"
         },
         {
             "file": "../../source/coffee/slikland/navigation/core/data/ParseData.coffee",
@@ -1912,7 +2076,8 @@
                 "type": "String"
             },
             "static": 1,
-            "class": "ViewsData"
+            "class": "ViewsData",
+            "module": "slikland"
         },
         {
             "file": "../../source/coffee/slikland/navigation/core/data/ParseData.coffee",
@@ -1932,7 +2097,8 @@
             },
             "access": "protected",
             "tagname": "",
-            "class": "ViewsData"
+            "class": "ViewsData",
+            "module": "slikland"
         },
         {
             "file": "../../source/coffee/slikland/navigation/core/data/ParseData.coffee",
@@ -1952,7 +2118,8 @@
             },
             "access": "protected",
             "tagname": "",
-            "class": "ViewsData"
+            "class": "ViewsData",
+            "module": "slikland"
         },
         {
             "file": "../../source/coffee/slikland/navigation/core/data/PathsData.coffee",
@@ -1970,7 +2137,8 @@
                 "description": "",
                 "type": "String"
             },
-            "class": "ViewsData"
+            "class": "ViewsData",
+            "module": "slikland"
         },
         {
             "file": "../../source/coffee/slikland/navigation/core/data/PathsData.coffee",
@@ -1994,7 +2162,8 @@
                 "description": "",
                 "type": "String"
             },
-            "class": "ViewsData"
+            "class": "ViewsData",
+            "module": "slikland"
         },
         {
             "file": "../../source/coffee/slikland/navigation/core/data/PathsData.coffee",
@@ -2014,7 +2183,8 @@
             },
             "access": "private",
             "tagname": "",
-            "class": "ViewsData"
+            "class": "ViewsData",
+            "module": "slikland"
         },
         {
             "file": "../../source/coffee/slikland/navigation/core/data/PathsData.coffee",
@@ -2039,7 +2209,8 @@
             },
             "access": "private",
             "tagname": "",
-            "class": "ViewsData"
+            "class": "ViewsData",
+            "module": "slikland"
         },
         {
             "file": "../../source/coffee/slikland/navigation/core/data/ViewsData.coffee",
@@ -2048,7 +2219,8 @@
             "itemtype": "event",
             "name": "VIEW_CREATED",
             "static": 1,
-            "class": "ViewsData"
+            "class": "ViewsData",
+            "module": "slikland"
         },
         {
             "file": "../../source/coffee/slikland/navigation/core/data/ViewsData.coffee",
@@ -2057,7 +2229,8 @@
             "itemtype": "event",
             "name": "ALL_VIEWS_CREATED",
             "static": 1,
-            "class": "ViewsData"
+            "class": "ViewsData",
+            "module": "slikland"
         },
         {
             "file": "../../source/coffee/slikland/navigation/core/data/ViewsData.coffee",
@@ -2075,7 +2248,8 @@
                 "description": "",
                 "type": "Object"
             },
-            "class": "ViewsData"
+            "class": "ViewsData",
+            "module": "slikland"
         },
         {
             "file": "../../source/coffee/slikland/navigation/core/data/ViewsData.coffee",
@@ -2093,7 +2267,8 @@
                 "description": "",
                 "type": "Object"
             },
-            "class": "ViewsData"
+            "class": "ViewsData",
+            "module": "slikland"
         },
         {
             "file": "../../source/coffee/slikland/navigation/core/data/ViewsData.coffee",
@@ -2107,14 +2282,16 @@
                     "type": "String"
                 }
             ],
-            "class": "ViewsData"
+            "class": "ViewsData",
+            "module": "slikland"
         },
         {
             "file": "../../source/coffee/slikland/navigation/core/data/ViewsData.coffee",
             "line": 60,
             "itemtype": "method",
             "name": "createAll",
-            "class": "ViewsData"
+            "class": "ViewsData",
+            "module": "slikland"
         },
         {
             "file": "../../source/coffee/slikland/navigation/core/data/ViewsData.coffee",
@@ -2132,7 +2309,8 @@
                 "description": "",
                 "type": "Object"
             },
-            "class": "ViewsData"
+            "class": "ViewsData",
+            "module": "slikland"
         },
         {
             "file": "../../source/coffee/slikland/navigation/core/data/ViewsData.coffee",
@@ -2146,7 +2324,8 @@
                     "type": "String"
                 }
             ],
-            "class": "ViewsData"
+            "class": "ViewsData",
+            "module": "slikland"
         },
         {
             "file": "../../source/coffee/slikland/navigation/core/data/ViewsData.coffee",
@@ -2164,7 +2343,8 @@
                 "description": "",
                 "type": "String"
             },
-            "class": "ViewsData"
+            "class": "ViewsData",
+            "module": "slikland"
         },
         {
             "file": "../../source/coffee/slikland/navigation/core/meta/MetaController.coffee",
@@ -2178,7 +2358,8 @@
                     "type": "Object"
                 }
             ],
-            "class": "MetaController"
+            "class": "MetaController",
+            "module": "slikland"
         },
         {
             "file": "../../source/coffee/slikland/navigation/core/meta/MetaController.coffee",
@@ -2199,7 +2380,8 @@
             ],
             "access": "protected",
             "tagname": "",
-            "class": "MetaController"
+            "class": "MetaController",
+            "module": "slikland"
         },
         {
             "file": "../../source/coffee/slikland/navigation/core/meta/MetaController.coffee",
@@ -2220,7 +2402,8 @@
             ],
             "access": "protected",
             "tagname": "",
-            "class": "MetaController"
+            "class": "MetaController",
+            "module": "slikland"
         },
         {
             "file": "../../source/coffee/slikland/navigation/core/meta/MetaController.coffee",
@@ -2229,7 +2412,8 @@
             "name": "head",
             "type": "{HTMLElement}",
             "readonly": "",
-            "class": "MetaController"
+            "class": "MetaController",
+            "module": "slikland"
         },
         {
             "file": "../../source/coffee/slikland/navigation/core/meta/MetaController.coffee",
@@ -2237,7 +2421,8 @@
             "itemtype": "property",
             "name": "viewport",
             "type": "{String}",
-            "class": "MetaController"
+            "class": "MetaController",
+            "module": "slikland"
         },
         {
             "file": "../../source/coffee/slikland/navigation/core/meta/MetaController.coffee",
@@ -2245,7 +2430,8 @@
             "itemtype": "property",
             "name": "title",
             "type": "{String}",
-            "class": "MetaController"
+            "class": "MetaController",
+            "module": "slikland"
         },
         {
             "file": "../../source/coffee/slikland/navigation/core/meta/MetaController.coffee",
@@ -2253,7 +2439,8 @@
             "itemtype": "property",
             "name": "description",
             "type": "{String}",
-            "class": "MetaController"
+            "class": "MetaController",
+            "module": "slikland"
         },
         {
             "file": "../../source/coffee/slikland/navigation/core/meta/MetaController.coffee",
@@ -2261,7 +2448,8 @@
             "itemtype": "property",
             "name": "favicon",
             "type": "{String}",
-            "class": "MetaController"
+            "class": "MetaController",
+            "module": "slikland"
         },
         {
             "file": "../../source/coffee/slikland/navigation/core/meta/MetaController.coffee",
@@ -2269,7 +2457,8 @@
             "itemtype": "property",
             "name": "icons",
             "type": "{String}",
-            "class": "MetaController"
+            "class": "MetaController",
+            "module": "slikland"
         },
         {
             "file": "../../source/coffee/slikland/navigation/core/meta/MetaController.coffee",
@@ -2278,7 +2467,8 @@
             "itemtype": "property",
             "name": "splash",
             "type": "{String}",
-            "class": "MetaController"
+            "class": "MetaController",
+            "module": "slikland"
         },
         {
             "file": "../../source/coffee/slikland/navigation/core/meta/MetaController.coffee",
@@ -2286,7 +2476,8 @@
             "itemtype": "property",
             "name": "webAppCapable",
             "type": "{String}",
-            "class": "MetaController"
+            "class": "MetaController",
+            "module": "slikland"
         },
         {
             "file": "../../source/coffee/slikland/navigation/core/meta/MetaController.coffee",
@@ -2294,7 +2485,8 @@
             "itemtype": "property",
             "name": "color",
             "type": "{String}",
-            "class": "MetaController"
+            "class": "MetaController",
+            "module": "slikland"
         },
         {
             "file": "../../source/coffee/slikland/navigation/core/meta/MetaController.coffee",
@@ -2306,7 +2498,8 @@
             "example": [
                 "\n\t```\n\t{\n\t  \"lang\": \"en\",\n\t  \"scope\": \"/scope/\",\t  \n\t  \"name\": \"Web Application Manifest Sample\",\n\t  \"short_name\": \"Application\",\n\t  \"display\": \"standalone\",\n\t  \"orientation\": \"landscape\",\n\t  \"start_url\": \"index.html\",\n\t  \"theme_color\": \"aliceblue\",\n\t  \"background_color\": \"blue\",\n\t  \"icons\": [\n\t    {\n\t      \"src\": \"launcher-icon-0-75x.png\",\n\t      \"sizes\": \"36x36\",\n\t      \"type\": \"image/png\",\n\t      \"density\": 0.75\n\t    },\n\t    {\n\t      \"src\": \"launcher-icon-1x.png\",\n\t      \"sizes\": \"48x48\",\n\t      \"type\": \"image/png\",\n\t      \"density\": 1.0\n\t    },\n\t    {\n\t      \"src\": \"launcher-icon-1-5x.png\",\n\t      \"sizes\": \"72x72\",\n\t      \"type\": \"image/png\",\n\t      \"density\": 1.5\n\t    },\n\t    {\n\t      \"src\": \"launcher-icon-2x.png\",\n\t      \"sizes\": \"96x96\",\n\t      \"type\": \"image/png\",\n\t      \"density\": 2.0\n\t    },\n\t    {\n\t      \"src\": \"launcher-icon-3x.png\",\n\t      \"sizes\": \"144x144\",\n\t      \"type\": \"image/png\",\n\t      \"density\": 3.0\n\t    },\n\t    {\n\t      \"src\": \"launcher-icon-4x.png\",\n\t      \"sizes\": \"192x192\",\n\t      \"type\": \"image/png\",\n\t      \"density\": 4.0\n\t    }\n\t  ]\n\t}\t\n\t```"
             ],
-            "class": "MetaController"
+            "class": "MetaController",
+            "module": "slikland"
         },
         {
             "file": "../../source/coffee/slikland/navigation/core/BaseNavigationController.coffee",
@@ -2314,7 +2507,8 @@
             "itemtype": "event",
             "name": "CHANGE",
             "static": 1,
-            "class": "BaseNavigationController"
+            "class": "BaseNavigationController",
+            "module": "slikland"
         },
         {
             "file": "../../source/coffee/slikland/navigation/core/BaseNavigationController.coffee",
@@ -2322,7 +2516,8 @@
             "itemtype": "event",
             "name": "CHANGE_VIEW",
             "static": 1,
-            "class": "BaseNavigationController"
+            "class": "BaseNavigationController",
+            "module": "slikland"
         },
         {
             "file": "../../source/coffee/slikland/navigation/core/BaseNavigationController.coffee",
@@ -2330,7 +2525,8 @@
             "itemtype": "event",
             "name": "CHANGE_SUBVIEW",
             "static": 1,
-            "class": "BaseNavigationController"
+            "class": "BaseNavigationController",
+            "module": "slikland"
         },
         {
             "file": "../../source/coffee/slikland/navigation/core/BaseNavigationController.coffee",
@@ -2346,7 +2542,8 @@
             ],
             "access": "protected",
             "tagname": "",
-            "class": "BaseNavigationController"
+            "class": "BaseNavigationController",
+            "module": "slikland"
         },
         {
             "file": "../../source/coffee/slikland/navigation/core/BaseNavigationController.coffee",
@@ -2362,7 +2559,8 @@
                     "optdefault": "null"
                 }
             ],
-            "class": "BaseNavigationController"
+            "class": "BaseNavigationController",
+            "module": "slikland"
         },
         {
             "file": "../../source/coffee/slikland/navigation/core/BaseNavigationController.coffee",
@@ -2376,7 +2574,8 @@
                     "type": "String"
                 }
             ],
-            "class": "BaseNavigationController"
+            "class": "BaseNavigationController",
+            "module": "slikland"
         },
         {
             "file": "../../source/coffee/slikland/navigation/core/BaseNavigationController.coffee",
@@ -2386,7 +2585,8 @@
             "name": "type",
             "type": "{String}",
             "readonly": "",
-            "class": "BaseNavigationController"
+            "class": "BaseNavigationController",
+            "module": "slikland"
         },
         {
             "file": "../../source/coffee/slikland/navigation/core/BaseNavigationController.coffee",
@@ -2396,7 +2596,8 @@
             "name": "visibleViews",
             "type": "{Array}",
             "readonly": "",
-            "class": "BaseNavigationController"
+            "class": "BaseNavigationController",
+            "module": "slikland"
         },
         {
             "file": "../../source/coffee/slikland/navigation/core/BaseNavigationController.coffee",
@@ -2406,7 +2607,8 @@
             "name": "currentView",
             "type": "{BaseView}",
             "readonly": "",
-            "class": "BaseNavigationController"
+            "class": "BaseNavigationController",
+            "module": "slikland"
         },
         {
             "file": "../../source/coffee/slikland/navigation/core/BaseNavigationController.coffee",
@@ -2416,7 +2618,8 @@
             "name": "previousView",
             "type": "{BaseView}",
             "readonly": "",
-            "class": "BaseNavigationController"
+            "class": "BaseNavigationController",
+            "module": "slikland"
         },
         {
             "file": "../../source/coffee/slikland/navigation/core/BaseNavigationController.coffee",
@@ -2426,7 +2629,8 @@
             "name": "data",
             "type": "{Object}",
             "readonly": "",
-            "class": "BaseNavigationController"
+            "class": "BaseNavigationController",
+            "module": "slikland"
         },
         {
             "file": "../../source/coffee/slikland/navigation/core/BaseNavigationController.coffee",
@@ -2443,7 +2647,8 @@
             ],
             "access": "protected",
             "tagname": "",
-            "class": "BaseNavigationController"
+            "class": "BaseNavigationController",
+            "module": "slikland"
         },
         {
             "file": "../../source/coffee/slikland/navigation/core/BaseNavigationController.coffee",
@@ -2459,7 +2664,8 @@
             ],
             "access": "private",
             "tagname": "",
-            "class": "BaseNavigationController"
+            "class": "BaseNavigationController",
+            "module": "slikland"
         },
         {
             "file": "../../source/coffee/slikland/navigation/core/BaseNavigationController.coffee",
@@ -2475,7 +2681,8 @@
             ],
             "access": "private",
             "tagname": "",
-            "class": "BaseNavigationController"
+            "class": "BaseNavigationController",
+            "module": "slikland"
         },
         {
             "file": "../../source/coffee/slikland/navigation/core/Caim.coffee",
@@ -2717,7 +2924,7 @@
         },
         {
             "file": "../../source/coffee/slikland/navigation/core/Navigation.coffee",
-            "line": 15,
+            "line": 13,
             "itemtype": "event",
             "name": "CHANGE_ROUTE",
             "static": 1,
@@ -2726,7 +2933,7 @@
         },
         {
             "file": "../../source/coffee/slikland/navigation/core/Navigation.coffee",
-            "line": 20,
+            "line": 18,
             "itemtype": "event",
             "name": "CHANGE_VIEW",
             "static": 1,
@@ -2735,7 +2942,7 @@
         },
         {
             "file": "../../source/coffee/slikland/navigation/core/Navigation.coffee",
-            "line": 25,
+            "line": 23,
             "itemtype": "event",
             "name": "CHANGE_INTERNAL_VIEW",
             "static": 1,
@@ -2744,7 +2951,7 @@
         },
         {
             "file": "../../source/coffee/slikland/navigation/core/Navigation.coffee",
-            "line": 49,
+            "line": 47,
             "itemtype": "method",
             "name": "setup",
             "params": [
@@ -2759,7 +2966,7 @@
         },
         {
             "file": "../../source/coffee/slikland/navigation/core/Navigation.coffee",
-            "line": 69,
+            "line": 67,
             "itemtype": "method",
             "name": "start",
             "params": [
@@ -2776,7 +2983,7 @@
         },
         {
             "file": "../../source/coffee/slikland/navigation/core/Navigation.coffee",
-            "line": 97,
+            "line": 95,
             "description": "Returns the visible views in DOM",
             "itemtype": "property",
             "name": "visibleViews",
@@ -2787,7 +2994,7 @@
         },
         {
             "file": "../../source/coffee/slikland/navigation/core/Navigation.coffee",
-            "line": 106,
+            "line": 104,
             "description": "Returns the current view",
             "itemtype": "property",
             "name": "currentView",
@@ -2798,7 +3005,7 @@
         },
         {
             "file": "../../source/coffee/slikland/navigation/core/Navigation.coffee",
-            "line": 115,
+            "line": 113,
             "description": "Returns the previous view",
             "itemtype": "property",
             "name": "previousView",
@@ -2809,7 +3016,7 @@
         },
         {
             "file": "../../source/coffee/slikland/navigation/core/Navigation.coffee",
-            "line": 124,
+            "line": 122,
             "description": "Returns the route data",
             "itemtype": "property",
             "name": "routeData",
@@ -2820,7 +3027,7 @@
         },
         {
             "file": "../../source/coffee/slikland/navigation/core/Navigation.coffee",
-            "line": 145,
+            "line": 143,
             "description": "Returns the instance of router controller",
             "itemtype": "property",
             "name": "router",
@@ -2831,7 +3038,7 @@
         },
         {
             "file": "../../source/coffee/slikland/navigation/core/Navigation.coffee",
-            "line": 154,
+            "line": 152,
             "description": "Returns the instance of navigation controller",
             "itemtype": "property",
             "name": "navigation",
@@ -2842,7 +3049,7 @@
         },
         {
             "file": "../../source/coffee/slikland/navigation/core/Navigation.coffee",
-            "line": 163,
+            "line": 161,
             "itemtype": "method",
             "name": "goto",
             "params": [
@@ -2859,7 +3066,7 @@
         },
         {
             "file": "../../source/coffee/slikland/navigation/core/Navigation.coffee",
-            "line": 172,
+            "line": 170,
             "itemtype": "method",
             "name": "setRoute",
             "params": [
@@ -2881,7 +3088,7 @@
         },
         {
             "file": "../../source/coffee/slikland/navigation/core/Navigation.coffee",
-            "line": 181,
+            "line": 179,
             "itemtype": "method",
             "name": "gotoRoute",
             "params": [
@@ -2903,7 +3110,7 @@
         },
         {
             "file": "../../source/coffee/slikland/navigation/core/Navigation.coffee",
-            "line": 197,
+            "line": 195,
             "itemtype": "method",
             "name": "replaceRoute",
             "params": [
@@ -2925,7 +3132,7 @@
         },
         {
             "file": "../../source/coffee/slikland/navigation/core/Navigation.coffee",
-            "line": 213,
+            "line": 211,
             "itemtype": "method",
             "name": "gotoDefault",
             "class": "Navigation",
@@ -2933,7 +3140,7 @@
         },
         {
             "file": "../../source/coffee/slikland/navigation/core/Navigation.coffee",
-            "line": 225,
+            "line": 223,
             "itemtype": "method",
             "name": "gotoView",
             "params": [
@@ -2948,7 +3155,7 @@
         },
         {
             "file": "../../source/coffee/slikland/navigation/core/Navigation.coffee",
-            "line": 238,
+            "line": 236,
             "itemtype": "method",
             "name": "getViewByRoute",
             "params": [
@@ -2968,7 +3175,7 @@
         },
         {
             "file": "../../source/coffee/slikland/navigation/core/Navigation.coffee",
-            "line": 250,
+            "line": 248,
             "itemtype": "method",
             "name": "getRouteByView",
             "params": [
@@ -2988,7 +3195,7 @@
         },
         {
             "file": "../../source/coffee/slikland/navigation/core/Navigation.coffee",
-            "line": 262,
+            "line": 260,
             "itemtype": "method",
             "name": "_changeView",
             "params": [
@@ -3007,7 +3214,7 @@
         },
         {
             "file": "../../source/coffee/slikland/navigation/core/Navigation.coffee",
-            "line": 276,
+            "line": 274,
             "itemtype": "method",
             "name": "_changeRoute",
             "params": [
@@ -3026,7 +3233,7 @@
         },
         {
             "file": "../../source/coffee/slikland/navigation/core/Navigation.coffee",
-            "line": 288,
+            "line": 286,
             "itemtype": "method",
             "name": "_change",
             "params": [
@@ -3690,7 +3897,8 @@
             "name": "CREATE_START",
             "static": 1,
             "class": "BaseView",
-            "module": "slikland"
+            "module": "slikland",
+            "submodule": "slikland.display"
         },
         {
             "file": "../../source/coffee/slikland/navigation/display/BaseView.coffee",
@@ -3700,7 +3908,8 @@
             "name": "CREATE",
             "static": 1,
             "class": "BaseView",
-            "module": "slikland"
+            "module": "slikland",
+            "submodule": "slikland.display"
         },
         {
             "file": "../../source/coffee/slikland/navigation/display/BaseView.coffee",
@@ -3710,7 +3919,8 @@
             "name": "CREATE_COMPLETE",
             "static": 1,
             "class": "BaseView",
-            "module": "slikland"
+            "module": "slikland",
+            "submodule": "slikland.display"
         },
         {
             "file": "../../source/coffee/slikland/navigation/display/BaseView.coffee",
@@ -3720,7 +3930,8 @@
             "name": "SHOW_START",
             "static": 1,
             "class": "BaseView",
-            "module": "slikland"
+            "module": "slikland",
+            "submodule": "slikland.display"
         },
         {
             "file": "../../source/coffee/slikland/navigation/display/BaseView.coffee",
@@ -3730,7 +3941,8 @@
             "name": "SHOW",
             "static": 1,
             "class": "BaseView",
-            "module": "slikland"
+            "module": "slikland",
+            "submodule": "slikland.display"
         },
         {
             "file": "../../source/coffee/slikland/navigation/display/BaseView.coffee",
@@ -3740,7 +3952,8 @@
             "name": "SHOW_COMPLETE",
             "static": 1,
             "class": "BaseView",
-            "module": "slikland"
+            "module": "slikland",
+            "submodule": "slikland.display"
         },
         {
             "file": "../../source/coffee/slikland/navigation/display/BaseView.coffee",
@@ -3750,7 +3963,8 @@
             "name": "HIDE_START",
             "static": 1,
             "class": "BaseView",
-            "module": "slikland"
+            "module": "slikland",
+            "submodule": "slikland.display"
         },
         {
             "file": "../../source/coffee/slikland/navigation/display/BaseView.coffee",
@@ -3760,7 +3974,8 @@
             "name": "HIDE",
             "static": 1,
             "class": "BaseView",
-            "module": "slikland"
+            "module": "slikland",
+            "submodule": "slikland.display"
         },
         {
             "file": "../../source/coffee/slikland/navigation/display/BaseView.coffee",
@@ -3770,7 +3985,8 @@
             "name": "HIDE_COMPLETE",
             "static": 1,
             "class": "BaseView",
-            "module": "slikland"
+            "module": "slikland",
+            "submodule": "slikland.display"
         },
         {
             "file": "../../source/coffee/slikland/navigation/display/BaseView.coffee",
@@ -3780,7 +3996,8 @@
             "name": "DESTROY",
             "static": 1,
             "class": "BaseView",
-            "module": "slikland"
+            "module": "slikland",
+            "submodule": "slikland.display"
         },
         {
             "file": "../../source/coffee/slikland/navigation/display/BaseView.coffee",
@@ -3790,7 +4007,8 @@
             "name": "DESTROY_COMPLETE",
             "static": 1,
             "class": "BaseView",
-            "module": "slikland"
+            "module": "slikland",
+            "submodule": "slikland.display"
         },
         {
             "file": "../../source/coffee/slikland/navigation/display/BaseView.coffee",
@@ -3800,7 +4018,8 @@
             "name": "PAUSE",
             "static": 1,
             "class": "BaseView",
-            "module": "slikland"
+            "module": "slikland",
+            "submodule": "slikland.display"
         },
         {
             "file": "../../source/coffee/slikland/navigation/display/BaseView.coffee",
@@ -3810,7 +4029,8 @@
             "name": "RESUME",
             "static": 1,
             "class": "BaseView",
-            "module": "slikland"
+            "module": "slikland",
+            "submodule": "slikland.display"
         },
         {
             "file": "../../source/coffee/slikland/navigation/display/BaseView.coffee",
@@ -3822,7 +4042,8 @@
             "default": "null",
             "readonly": "",
             "class": "BaseView",
-            "module": "slikland"
+            "module": "slikland",
+            "submodule": "slikland.display"
         },
         {
             "file": "../../source/coffee/slikland/navigation/display/BaseView.coffee",
@@ -3836,7 +4057,8 @@
             "tagname": "",
             "readonly": "",
             "class": "BaseView",
-            "module": "slikland"
+            "module": "slikland",
+            "submodule": "slikland.display"
         },
         {
             "file": "../../source/coffee/slikland/navigation/display/BaseView.coffee",
@@ -3850,7 +4072,8 @@
             "tagname": "",
             "readonly": "",
             "class": "BaseView",
-            "module": "slikland"
+            "module": "slikland",
+            "submodule": "slikland.display"
         },
         {
             "file": "../../source/coffee/slikland/navigation/display/BaseView.coffee",
@@ -3861,7 +4084,8 @@
             "type": "{Object}",
             "default": "{}",
             "class": "BaseView",
-            "module": "slikland"
+            "module": "slikland",
+            "submodule": "slikland.display"
         },
         {
             "file": "../../source/coffee/slikland/navigation/display/BaseView.coffee",
@@ -3872,7 +4096,8 @@
             "type": "{String}",
             "default": "null",
             "class": "BaseView",
-            "module": "slikland"
+            "module": "slikland",
+            "submodule": "slikland.display"
         },
         {
             "file": "../../source/coffee/slikland/navigation/display/BaseView.coffee",
@@ -3883,7 +4108,8 @@
             "type": "{String|Object|JSON}",
             "default": "null",
             "class": "BaseView",
-            "module": "slikland"
+            "module": "slikland",
+            "submodule": "slikland.display"
         },
         {
             "file": "../../source/coffee/slikland/navigation/display/BaseView.coffee",
@@ -3894,7 +4120,8 @@
             "type": "{String|RegExp}",
             "default": "null",
             "class": "BaseView",
-            "module": "slikland"
+            "module": "slikland",
+            "submodule": "slikland.display"
         },
         {
             "file": "../../source/coffee/slikland/navigation/display/BaseView.coffee",
@@ -3907,7 +4134,8 @@
             "tagname": "",
             "default": "null",
             "class": "BaseView",
-            "module": "slikland"
+            "module": "slikland",
+            "submodule": "slikland.display"
         },
         {
             "file": "../../source/coffee/slikland/navigation/display/BaseView.coffee",
@@ -3918,7 +4146,8 @@
             "type": "{BaseView}",
             "default": "null",
             "class": "BaseView",
-            "module": "slikland"
+            "module": "slikland",
+            "submodule": "slikland.display"
         },
         {
             "file": "../../source/coffee/slikland/navigation/display/BaseView.coffee",
@@ -3929,7 +4158,8 @@
             "type": "{Array}",
             "default": "null",
             "class": "BaseView",
-            "module": "slikland"
+            "module": "slikland",
+            "submodule": "slikland.display"
         },
         {
             "file": "../../source/coffee/slikland/navigation/display/BaseView.coffee",
@@ -3940,7 +4170,8 @@
             "type": "{Boolean}",
             "default": "false",
             "class": "BaseView",
-            "module": "slikland"
+            "module": "slikland",
+            "submodule": "slikland.display"
         },
         {
             "file": "../../source/coffee/slikland/navigation/display/BaseView.coffee",
@@ -3953,7 +4184,8 @@
             "tagname": "",
             "default": "null",
             "class": "BaseView",
-            "module": "slikland"
+            "module": "slikland",
+            "submodule": "slikland.display"
         },
         {
             "file": "../../source/coffee/slikland/navigation/display/BaseView.coffee",
@@ -3965,7 +4197,8 @@
             "default": "null",
             "readonly": "",
             "class": "BaseView",
-            "module": "slikland"
+            "module": "slikland",
+            "submodule": "slikland.display"
         },
         {
             "file": "../../source/coffee/slikland/navigation/display/BaseView.coffee",
@@ -3977,7 +4210,8 @@
             "access": "protected",
             "tagname": "",
             "class": "BaseView",
-            "module": "slikland"
+            "module": "slikland",
+            "submodule": "slikland.display"
         },
         {
             "file": "../../source/coffee/slikland/navigation/display/BaseView.coffee",
@@ -3990,7 +4224,8 @@
             "tagname": "",
             "readonly": "",
             "class": "BaseView",
-            "module": "slikland"
+            "module": "slikland",
+            "submodule": "slikland.display"
         },
         {
             "file": "../../source/coffee/slikland/navigation/display/BaseView.coffee",
@@ -4003,7 +4238,8 @@
             "tagname": "",
             "readonly": "",
             "class": "BaseView",
-            "module": "slikland"
+            "module": "slikland",
+            "submodule": "slikland.display"
         },
         {
             "file": "../../source/coffee/slikland/navigation/display/BaseView.coffee",
@@ -4015,7 +4251,8 @@
             "default": "null",
             "readonly": "",
             "class": "BaseView",
-            "module": "slikland"
+            "module": "slikland",
+            "submodule": "slikland.display"
         },
         {
             "file": "../../source/coffee/slikland/navigation/display/BaseView.coffee",
@@ -4027,7 +4264,8 @@
             "default": "null",
             "readonly": "",
             "class": "BaseView",
-            "module": "slikland"
+            "module": "slikland",
+            "submodule": "slikland.display"
         },
         {
             "file": "../../source/coffee/slikland/navigation/display/BaseView.coffee",
@@ -4048,7 +4286,8 @@
             "tagname": "",
             "readonly": "",
             "class": "BaseView",
-            "module": "slikland"
+            "module": "slikland",
+            "submodule": "slikland.display"
         },
         {
             "file": "../../source/coffee/slikland/navigation/display/BaseView.coffee",
@@ -4066,7 +4305,8 @@
                 }
             ],
             "class": "BaseView",
-            "module": "slikland"
+            "module": "slikland",
+            "submodule": "slikland.display"
         },
         {
             "file": "../../source/coffee/slikland/navigation/display/BaseView.coffee",
@@ -4084,7 +4324,8 @@
                 }
             ],
             "class": "BaseView",
-            "module": "slikland"
+            "module": "slikland",
+            "submodule": "slikland.display"
         },
         {
             "file": "../../source/coffee/slikland/navigation/display/BaseView.coffee",
@@ -4102,7 +4343,8 @@
                 }
             ],
             "class": "BaseView",
-            "module": "slikland"
+            "module": "slikland",
+            "submodule": "slikland.display"
         },
         {
             "file": "../../source/coffee/slikland/navigation/display/BaseView.coffee",
@@ -4120,7 +4362,8 @@
                 }
             ],
             "class": "BaseView",
-            "module": "slikland"
+            "module": "slikland",
+            "submodule": "slikland.display"
         },
         {
             "file": "../../source/coffee/slikland/navigation/display/BaseView.coffee",
@@ -4138,7 +4381,8 @@
                 }
             ],
             "class": "BaseView",
-            "module": "slikland"
+            "module": "slikland",
+            "submodule": "slikland.display"
         },
         {
             "file": "../../source/coffee/slikland/navigation/display/BaseView.coffee",
@@ -4156,7 +4400,8 @@
                 }
             ],
             "class": "BaseView",
-            "module": "slikland"
+            "module": "slikland",
+            "submodule": "slikland.display"
         },
         {
             "file": "../../source/coffee/slikland/navigation/display/BaseView.coffee",
@@ -4174,7 +4419,8 @@
                 }
             ],
             "class": "BaseView",
-            "module": "slikland"
+            "module": "slikland",
+            "submodule": "slikland.display"
         },
         {
             "file": "../../source/coffee/slikland/navigation/display/BaseView.coffee",
@@ -4192,7 +4438,8 @@
                 }
             ],
             "class": "BaseView",
-            "module": "slikland"
+            "module": "slikland",
+            "submodule": "slikland.display"
         },
         {
             "file": "../../source/coffee/slikland/navigation/display/BaseView.coffee",
@@ -4210,7 +4457,8 @@
                 }
             ],
             "class": "BaseView",
-            "module": "slikland"
+            "module": "slikland",
+            "submodule": "slikland.display"
         },
         {
             "file": "../../source/coffee/slikland/navigation/display/BaseView.coffee",
@@ -4219,7 +4467,8 @@
             "itemtype": "method",
             "name": "pause",
             "class": "BaseView",
-            "module": "slikland"
+            "module": "slikland",
+            "submodule": "slikland.display"
         },
         {
             "file": "../../source/coffee/slikland/navigation/display/BaseView.coffee",
@@ -4228,7 +4477,8 @@
             "itemtype": "method",
             "name": "pause",
             "class": "BaseView",
-            "module": "slikland"
+            "module": "slikland",
+            "submodule": "slikland.display"
         },
         {
             "file": "../../source/coffee/slikland/navigation/display/BaseView.coffee",
@@ -4246,7 +4496,8 @@
                 }
             ],
             "class": "BaseView",
-            "module": "slikland"
+            "module": "slikland",
+            "submodule": "slikland.display"
         },
         {
             "file": "../../source/coffee/slikland/navigation/display/BaseView.coffee",
@@ -4264,7 +4515,8 @@
                 }
             ],
             "class": "BaseView",
-            "module": "slikland"
+            "module": "slikland",
+            "submodule": "slikland.display"
         },
         {
             "file": "../../source/coffee/slikland/utils/keyboard/Shortcut.coffee",

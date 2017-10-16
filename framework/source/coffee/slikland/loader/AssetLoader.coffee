@@ -3,6 +3,11 @@
 #import slikland.vendors.preloaderjs.MediaPlugin
 #import slikland.navigation.core.data.PathsData
 
+###*
+@class AssetLoader
+@extends EventDispatcher
+@submodule slikland.loader
+###
 class AssetLoader extends EventDispatcher
 
 	@INITIALIZE: "initialize"
@@ -24,6 +29,11 @@ class AssetLoader extends EventDispatcher
 	@getInstance:()=>
 		@_instance ?= new @(arguments...)
 
+	###*
+	@class AssetLoader
+	@constructor
+	@extends EventDispatcher
+	###
 	constructor:()->
 		@_groups = {}
 

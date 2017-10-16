@@ -1,5 +1,10 @@
 #import slikland.event.EventDispatcher
 #import slikland.utils.Prototypes
+###*
+@class API
+@extends EventDispatcher
+@submodule slikland.net
+###
 class API extends EventDispatcher
 
 	@START: 'apiStart'
@@ -70,6 +75,11 @@ class API extends EventDispatcher
 	# URL
 	# Object
 
+	###*
+	@class API
+	@constructor
+	@extends EventDispatcher
+	###
 	constructor: (arg) ->
 		super
 		@TYPES = ['normal', 'json']

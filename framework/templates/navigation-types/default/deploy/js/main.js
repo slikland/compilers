@@ -1038,8 +1038,6 @@ Navigation Class
 The instance of this class can be accessed by `app.navigation` wrapper
 @class Navigation
 @extends EventDispatcher
-@uses NavigationRouter
-@uses BaseNavigationController
 @final
  */
 var Navigation;
@@ -1154,7 +1152,7 @@ Navigation = (function(_super) {
   };
   /**
   	Returns the visible views in DOM
-  	@attribute visibleViews
+  	@property visibleViews
   	@type {Array}
   	@readOnly
    */
@@ -1165,7 +1163,7 @@ Navigation = (function(_super) {
   });
   /**
   	Returns the current view
-  	@attribute currentView
+  	@property currentView
   	@type {BaseView}
   	@readOnly
    */
@@ -1176,7 +1174,7 @@ Navigation = (function(_super) {
   });
   /**
   	Returns the previous view
-  	@attribute previousView
+  	@property previousView
   	@type {BaseView}
   	@readOnly
    */
@@ -1187,7 +1185,7 @@ Navigation = (function(_super) {
   });
   /**
   	Returns the route data
-  	@attribute routeData
+  	@property routeData
   	@type {Object}
   	@readOnly
    */
@@ -1212,7 +1210,7 @@ Navigation = (function(_super) {
   });
   /**
   	Returns the instance of router controller
-  	@attribute router
+  	@property router
   	@type {NavigationRouter}
   	@readOnly
    */
@@ -1223,7 +1221,7 @@ Navigation = (function(_super) {
   });
   /**
   	Returns the instance of navigation controller
-  	@attribute navigation
+  	@property navigation
   	@type {BaseNavigationController}
   	@readOnly
    */
@@ -1500,13 +1498,392 @@ NavigationContainer = (function(_super) {
   return NavigationContainer;
 })(BaseView);
 /**
-Bunch of utilities methods for Colors
+@class DOMUtils
+@static
+@submodule slikland.utils
+ */
+var DOMUtils;
+DOMUtils = (function() {
+  function DOMUtils() {}
+  /**
+  	@method addCSSClass
+  	@static
+  	@param {HTMLElement} el
+  	@param {String} className
+  	@return {HTMLElement}
+   */
+  DOMUtils.addCSSClass = function(el, className) {
+    var classNames, i, p;
+    if (!(el instanceof Element)) {
+      return;
+    }
+    if (typeof className === 'string') {
+      className = className.replace(/\s+/ig, ' ').split(' ');
+    } else if (typeof className !== 'Array') {
+      return;
+    }
+    classNames = el.className.replace(/\s+/ig, ' ').split(' ');
+    p = classNames.length;
+    i = className.length;
+    while (i-- > 0) {
+      if (classNames.indexOf(className[i]) >= 0) {
+        continue;
+      }
+      classNames[p++] = className[i];
+    }
+    el.className = classNames.join(' ');
+    return el;
+  };
+  /**
+  	@method removeCSSClass
+  	@static
+  	@param {HTMLElement} el
+  	@param {String} className
+  	@return {HTMLElement}
+   */
+  DOMUtils.removeCSSClass = function(el, className) {
+    var classNames, i, p;
+    if (!(el instanceof Element)) {
+      return;
+    }
+    if (typeof className === 'string') {
+      className = className.replace(/\s+/ig, ' ').split(' ');
+    } else if (typeof className !== 'Array') {
+      return;
+    }
+    classNames = el.className.replace(/\s+/ig, ' ').split(' ');
+    i = className.length;
+    while (i-- > 0) {
+      if ((p = classNames.indexOf(className[i])) >= 0) {
+        classNames.splice(p, 1);
+      }
+    }
+    el.className = classNames.join(' ');
+    return el;
+  };
+  /**
+  	@method hasCSSClass
+  	@static
+  	@param {HTMLElement} el
+  	@param {String} className
+  	@return {Boolean}
+   */
+  DOMUtils.hasCSSClass = function(el, className) {
+    var classNames, hasClass, i;
+    if (!(el instanceof Element)) {
+      return;
+    }
+    if (typeof className === 'string') {
+      className = className.replace(/\s+/ig, ' ').split(' ');
+    } else if (typeof className !== 'Array') {
+      return;
+    }
+    classNames = el.className.replace(/\s+/ig, ' ').split(' ');
+    i = className.length;
+    hasClass = true;
+    while (i-- > 0) {
+      hasClass &= classNames.indexOf(className[i]) >= 0;
+    }
+    return hasClass;
+  };
+  /**
+  	@method toggleCSSClass
+  	@static
+  	@param {HTMLElement} el
+  	@param {String} name
+  	@param {Boolean} [toggle=null]
+   */
+  DOMUtils.toggleCSSClass = function(el, name, toggle) {
+    var has;
+    if (toggle == null) {
+      toggle = null;
+    }
+    if (!el) {
+      return;
+    }
+    has = this.hasCSSClass(el, name);
+    if (toggle === null) {
+      toggle = !has;
+    }
+    if (toggle) {
+      return this.addCSSClass(el, name);
+    } else {
+      return this.removeCSSClass(el, name);
+    }
+  };
+  /**
+  	@method findParentQuerySelector
+  	@static
+  	@param {HTMLElement} target
+  	@param {String} selector
+  	@return {HTMLElement|Boolean}
+   */
+  DOMUtils.findParentQuerySelector = function(target, selector) {
+    var i, items;
+    if (!target.parentNode || target.parentNode === target) {
+      return false;
+    }
+    items = target.parentNode.querySelectorAll(selector);
+    i = items.length;
+    while (i-- > 0) {
+      if (items[i] === target) {
+        return target;
+      }
+    }
+    return this.findParentQuerySelector(target.parentNode, selector);
+  };
+  /**
+  	@method removeAllChildren
+  	@static
+  	@param {HTMLElement} target
+   */
+  DOMUtils.removeAllChildren = function(target) {
+    while (target.childNodes.length) {
+      target.removeChild(target.firstChild);
+    }
+    return false;
+  };
+  return DOMUtils;
+})();
+/**
+@class Resizer
+@extends EventDispatcher
+@submodule slikland.utils
+ */
+var Resizer;
+Resizer = (function(_super) {
+  var _body, _bounds;
+  __extends(Resizer, _super);
+  /**
+  	@event RESIZE
+  	@static
+   */
+  Resizer.RESIZE = 'resize_resizer';
+  /**
+  	@event ORIENTATION_CHANGE
+  	@static
+   */
+  Resizer.ORIENTATION_CHANGE = 'orientation_change_resizer';
+  /**
+  	@event BREAKPOINT_CHANGE
+  	@static
+   */
+  Resizer.BREAKPOINT_CHANGE = 'breakpoint_changed_resizer';
+  _bounds = null;
+  _body = null;
+  /**
+  	@method getInstance
+  	@static
+  	@param {Boolean} [p_start=false]
+  	@return {Resizer}
+   */
+  Resizer.getInstance = function(p_start) {
+    if (p_start == null) {
+      p_start = true;
+    }
+    return Resizer._instance != null ? Resizer._instance : Resizer._instance = new Resizer(p_start);
+  };
+  /**
+  	@class Resizer
+  	@constructor
+  	@param {Boolean} [p_start=true]
+  	@extends EventDispatcher
+   */
+  function Resizer(p_start) {
+    if (p_start == null) {
+      p_start = true;
+    }
+    this.change = __bind(this.change, this);
+    this.stop = __bind(this.stop, this);
+    this.start = __bind(this.start, this);
+    _body = document.querySelector("body");
+    _bounds = {
+      "top": 0,
+      "bottom": 0,
+      "left": 0,
+      "right": 0
+    };
+    this._currentOrientation = this.orientation;
+    if (p_start != null) {
+      this.start();
+    }
+    Resizer.__super__.constructor.apply(this, arguments);
+  }
+  /**
+  	@property width
+  	@type {Number}
+  	@readOnly
+   */
+  Resizer.get({
+    width: function() {
+      return window.innerWidth;
+    }
+  });
+  /**
+  	@property height
+  	@type {Number}
+  	@readOnly
+   */
+  Resizer.get({
+    height: function() {
+      return window.innerHeight;
+    }
+  });
+  /**
+  	@property orientation
+  	@type {String} 'landscape' or 'portrait'
+  	@readOnly
+   */
+  Resizer.get({
+    orientation: function() {
+      var ratio;
+      ratio = screen.width / screen.height;
+      if (window.innerWidth > window.innerHeight && ratio > 1.3) {
+        return 'landscape';
+      } else {
+        return 'portrait';
+      }
+    }
+  });
+  /**
+  	Gets/Sets bounds
+  	@property bounds
+  	@type {Object} The object like {"top":0, "bottom":0, "left":0, "right":0}
+   */
+  Resizer.get({
+    bounds: function() {
+      return _bounds;
+    }
+  });
+  Resizer.set({
+    bounds: function(p_value) {
+      return _bounds = p_value;
+    }
+  });
+  /**
+  	@method start
+   */
+  Resizer.prototype.start = function() {
+    window.addEventListener('resize', this.change);
+    window.addEventListener('orientationchange', this.change);
+    this.change(null, true);
+    return false;
+  };
+  /**
+  	@method stop
+   */
+  Resizer.prototype.stop = function() {
+    window.removeEventListener('resize', this.change);
+    window.removeEventListener('orientationchange', this.change);
+    return false;
+  };
+  /**
+  	@method change
+  	@param {Event} evt
+  	@param {Boolean} [allKinds=false]
+   */
+  Resizer.prototype.change = function(evt, allKinds) {
+    var k, v, _data, _ref, _ref1;
+    if (allKinds == null) {
+      allKinds = false;
+    }
+    if (evt != null) {
+      evt.preventDefault();
+    }
+    if (evt != null) {
+      evt.stopImmediatePropagation();
+    }
+    _data = {
+      "width": this.width,
+      "height": this.height,
+      "bounds": this.bounds,
+      "orientation": this.orientation
+    };
+    if ((evt != null ? evt.type : void 0) === "resize") {
+      this.trigger(Resizer.RESIZE, _data);
+    }
+    if (this._currentOrientation !== this.orientation) {
+      this.trigger(Resizer.ORIENTATION_CHANGE, _data);
+      this._currentOrientation = this.orientation;
+    }
+    if (app.conditions != null) {
+      _ref = app.conditions.list;
+      for (k in _ref) {
+        v = _ref[k];
+        if ((v['size'] != null) || (v['orientation'] != null) || !!allKinds) {
+          if (app.conditions.test(k)) {
+            if (!this.hasClass(k)) {
+              this.addClass(k);
+            }
+          } else {
+            if (this.hasClass(k)) {
+              this.removeClass(k);
+            }
+          }
+        }
+      }
+      _ref1 = app.conditions.list;
+      for (k in _ref1) {
+        v = _ref1[k];
+        if ((v['size'] != null) || (v['orientation'] != null) || !!allKinds) {
+          if (app.conditions.test(k)) {
+            _data['breakpoint'] = {
+              key: k,
+              values: v
+            };
+            if (this.latestKey !== k) {
+              this.latestKey = k;
+              this.trigger(Resizer.BREAKPOINT_CHANGE, _data);
+            }
+            break;
+          }
+        }
+      }
+    }
+    return false;
+  };
+  /**
+  	@method addClass
+  	@param {String} className
+  	@return {HTMLElement}
+   */
+  Resizer.prototype.addClass = function(className) {
+    return DOMUtils.addCSSClass(_body, className);
+  };
+  /**
+  	@method removeClass
+  	@param {String} className
+  	@return {HTMLElement}
+   */
+  Resizer.prototype.removeClass = function(className) {
+    return DOMUtils.removeCSSClass(_body, className);
+  };
+  /**
+  	@method hasClass
+  	@param {String} className
+  	@return {Boolean}
+   */
+  Resizer.prototype.hasClass = function(className) {
+    return DOMUtils.hasCSSClass(_body, className);
+  };
+  return Resizer;
+})(EventDispatcher);
+/**
 @class ColorUtils
 @static
+@submodule slikland.utils
  */
 var ColorUtils;
 ColorUtils = (function() {
   function ColorUtils() {}
+  /**
+  	Darken/lighten a hexadecimal colors
+  	@method lightenOrDarken
+  	@static
+  	@param {String} p_hex The target hexadecimal color value to be darkened or lightened.
+  	@param {Number} p_amount This value must be between -1 and 1 (-1 more darken and 1 more lighten)
+  	@return {String} The hexadecimal value of result.
+   */
   ColorUtils.lightenOrDarken = function(p_hex, p_amount) {
     var black, c, color, i, shade, white;
     color = p_hex.replace(/[^0-9a-f]/gi, '');
@@ -1528,24 +1905,60 @@ ColorUtils = (function() {
     }
     return shade;
   };
+  /**
+  	Generate a random hexadecimal color
+  	@method randomHex
+  	@static
+  	@return {String} The hexadecimal value of result.
+   */
   ColorUtils.randomHex = function() {
     return '#' + Math.floor(Math.random() * 16777215).toString(16);
   };
+  /**
+  	Generate a random RGB color
+  	@method randomRGB
+  	@static
+  	@return {String} The RGB value of result on format rgb(r,g,b)
+   */
   ColorUtils.randomRGB = function() {
     return ColorUtils.hexToRGB(ColorUtils.randomHex());
   };
+  /**
+  	Converts a Hexadecimal color value to integer value. 
+  	@method hexToInt
+  	@static
+  	@return {String} The result integer value
+   */
   ColorUtils.hexToInt = function(p_hex) {
     p_hex = p_hex.substr(4, 2) + p_hex.substr(2, 2) + p_hex.substr(0, 2);
     return parseInt(p_hex, 16);
   };
+  /**
+  	Converts a RGB color value to integer value. 
+  	@method RGBToInt
+  	@static
+  	@return {String} The result integer value
+   */
   ColorUtils.RGBToInt = function(p_r, p_g, p_b) {
     return ColorUtils.hexToInt(ColorUtils.RGBToHex(p_r, p_g, p_b));
   };
+  /**
+  	Converts a RGB color value to Hexadecimal value. 
+  	@method RGBToHex
+  	@static
+  	@return {String} The result Hexadecimal value
+   */
   ColorUtils.RGBToHex = function(p_r, p_g, p_b) {
     var hex;
     hex = p_r << 16 | p_g << 8 | p_b;
     return "#" + hex.toString(16);
   };
+  /**
+  	Converts a Hexadecimal color value to RGB value. 
+  	@method hexToRGB
+  	@static
+  	@return {String} The RGB value of result on format rgb(r,g,b)
+   */
   ColorUtils.hexToRGB = function(p_hex) {
     var b, g, hex, r;
     hex = 0;
@@ -1563,9 +1976,9 @@ ColorUtils = (function() {
   return ColorUtils;
 })();
 /**
-Bunch of utilities methods for functions
 @class FunctionUtils
 @static
+@submodule slikland.utils
  */
 var FunctionUtils;
 FunctionUtils = (function() {
@@ -1595,7 +2008,8 @@ FunctionUtils = (function() {
   @static
   @param {Function} fn
   @param {Number} [threshhold=250]
-  @return {Function} [scope=null]
+  @param {Function} [scope=null]
+  @return {Function}
    */
   FunctionUtils.throttle = function(fn, threshhold, scope) {
     var deferTimer, last;
@@ -2850,6 +3264,7 @@ Main = (function(_super) {
     if (evt == null) {
       evt = null;
     }
+    console.log(this.content, "Main");
     menu = new BaseDOM();
     menu.className = 'menu';
     this.appendChildAt(menu, 0);

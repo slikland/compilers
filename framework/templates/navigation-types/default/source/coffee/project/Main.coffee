@@ -23,6 +23,8 @@ class Main extends NavigationContainer
 		super
 
 	create:(evt=null)=>
+		console.log @content, "Main"
+
 		menu = new BaseDOM()
 		menu.className = 'menu'
 		@appendChildAt(menu, 0)

@@ -3,9 +3,9 @@
 #import slikland.navigation.core.meta.MetaController
 
 ###*
-Base View
 @class BaseView
 @extends BaseDOM
+@submodule slikland.display
 ###
 class BaseView extends BaseDOM
 

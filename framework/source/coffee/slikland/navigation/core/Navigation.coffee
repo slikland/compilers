@@ -6,8 +6,6 @@ Navigation Class
 The instance of this class can be accessed by `app.navigation` wrapper
 @class Navigation
 @extends EventDispatcher
-@uses NavigationRouter
-@uses BaseNavigationController
 @final
 ###
 class Navigation extends EventDispatcher

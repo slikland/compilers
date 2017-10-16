@@ -39,7 +39,9 @@
                         <div id="api-tabview-panel">
                             <ul id="api-classes" class="apis classes">
                                 <li><a href="../classes/AnimationTicker.html">AnimationTicker</a></li>
+                                <li><a href="../classes/API.html">API</a></li>
                                 <li><a href="../classes/ArrayUtils.html">ArrayUtils</a></li>
+                                <li><a href="../classes/AssetLoader.html">AssetLoader</a></li>
                                 <li><a href="../classes/BaseAnimation.html">BaseAnimation</a></li>
                                 <li><a href="../classes/BaseDOM.html">BaseDOM</a></li>
                                 <li><a href="../classes/BaseNavigationController.html">BaseNavigationController</a></li>
@@ -81,6 +83,11 @@
                 
                             <ul id="api-modules" class="apis modules">
                                 <li><a href="../modules/slikland.html">slikland</a></li>
+                                <li><a href="../modules/slikland.debug.html">slikland.debug</a></li>
+                                <li><a href="../modules/slikland.display.html">slikland.display</a></li>
+                                <li><a href="../modules/slikland.event.html">slikland.event</a></li>
+                                <li><a href="../modules/slikland.loader.html">slikland.loader</a></li>
+                                <li><a href="../modules/slikland.net.html">slikland.net</a></li>
                                 <li><a href="../modules/slikland.utils.html">slikland.utils</a></li>
                                 <li><a href="../modules/slikland.utils.keyboard.html">slikland.utils.keyboard</a></li>
                             </ul>
@@ -118,20 +125,13 @@
                     <div class="content">
 <h1>Navigation Class</h1>
 <div class="box meta">
-        <div class="uses">
-            Uses
-            <ul class="inline commas">
-                    <li><a href="NavigationRouter.html">NavigationRouter</a></li>
-                    <li><a href="BaseNavigationController.html">BaseNavigationController</a></li>
-            </ul>
-        </div>
 
         <div class="extends">
             Extends <a href="../classes/EventDispatcher.html" class="crosslink">EventDispatcher</a>
         </div>
 
         <div class="foundat">
-            Defined in: <a href="../files/.._.._source_coffee_slikland_navigation_core_Navigation.coffee.html#l34"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;navigation&#x2F;core&#x2F;Navigation.coffee:34</code></a>
+            Defined in: <a href="../files/.._.._source_coffee_slikland_navigation_core_Navigation.coffee.html#l32"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;navigation&#x2F;core&#x2F;Navigation.coffee:32</code></a>
         </div>
 
             Module: <a href="../modules/slikland.html">slikland</a>
@@ -169,7 +169,7 @@ The instance of this class can be accessed by <code>app.navigation</code> wrappe
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._.._source_coffee_slikland_navigation_core_Navigation.coffee.html#l34"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;navigation&#x2F;core&#x2F;Navigation.coffee:34</code></a>
+        <a href="../files/.._.._source_coffee_slikland_navigation_core_Navigation.coffee.html#l32"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;navigation&#x2F;core&#x2F;Navigation.coffee:32</code></a>
         </p>
 
 
@@ -208,7 +208,6 @@ The instance of this class can be accessed by <code>app.navigation</code> wrappe
 
             <li class="api-class-tab methods"><a href="#methods">Methods</a></li>
             <li class="api-class-tab properties"><a href="#properties">Properties</a></li>
-            <li class="api-class-tab attrs"><a href="#attrs">Attributes</a></li>
             <li class="api-class-tab events"><a href="#events">Events</a></li>
     </ul>
 
@@ -220,10 +219,6 @@ The instance of this class can be accessed by <code>app.navigation</code> wrappe
                     <h3>Methods</h3>
 
                     <ul class="index-list methods extends">
-                            <li class="index-item method private inherited">
-                                <a href="#method__appendToWrapper">_appendToWrapper</a>
-
-                            </li>
                             <li class="index-item method private">
                                 <a href="#method__change">_change</a>
 
@@ -236,54 +231,6 @@ The instance of this class can be accessed by <code>app.navigation</code> wrappe
                                 <a href="#method__changeView">_changeView</a>
 
                             </li>
-                            <li class="index-item method private inherited">
-                                <a href="#method__checkRoutes">_checkRoutes</a>
-
-                            </li>
-                            <li class="index-item method private inherited">
-                                <a href="#method__getPath">_getPath</a>
-
-                            </li>
-                            <li class="index-item method private inherited">
-                                <a href="#method__onPathChange">_onPathChange</a>
-
-                            </li>
-                            <li class="index-item method private inherited">
-                                <a href="#method__parseParams">_parseParams</a>
-
-                            </li>
-                            <li class="index-item method private inherited">
-                                <a href="#method__parsePath">_parsePath</a>
-
-                            </li>
-                            <li class="index-item method private inherited">
-                                <a href="#method__removeFromWrapper">_removeFromWrapper</a>
-
-                            </li>
-                            <li class="index-item method private inherited">
-                                <a href="#method__sortRoutes">_sortRoutes</a>
-
-                            </li>
-                            <li class="index-item method private inherited">
-                                <a href="#method__triggerPath">_triggerPath</a>
-
-                            </li>
-                            <li class="index-item method inherited">
-                                <a href="#method_addRoute">addRoute</a>
-
-                            </li>
-                            <li class="index-item method protected inherited">
-                                <a href="#method_data">data</a>
-
-                            </li>
-                            <li class="index-item method inherited">
-                                <a href="#method_getCurrentPath">getCurrentPath</a>
-
-                            </li>
-                            <li class="index-item method inherited">
-                                <a href="#method_getParsedPath">getParsedPath</a>
-
-                            </li>
                             <li class="index-item method">
                                 <a href="#method_getRouteByView">getRouteByView</a>
 
@@ -292,7 +239,7 @@ The instance of this class can be accessed by <code>app.navigation</code> wrappe
                                 <a href="#method_getViewByRoute">getViewByRoute</a>
 
                             </li>
-                            <li class="index-item method deprecated inherited">
+                            <li class="index-item method deprecated">
                                 <a href="#method_goto">goto</a>
 
                                     <span class="flag deprecated">deprecated</span>
@@ -321,18 +268,6 @@ The instance of this class can be accessed by <code>app.navigation</code> wrappe
                                 <a href="#method_on">on</a>
 
                             </li>
-                            <li class="index-item method inherited">
-                                <a href="#method_removeAllRoutes">removeAllRoutes</a>
-
-                            </li>
-                            <li class="index-item method inherited">
-                                <a href="#method_removeRoute">removeRoute</a>
-
-                            </li>
-                            <li class="index-item method inherited">
-                                <a href="#method_replace">replace</a>
-
-                            </li>
                             <li class="index-item method">
                                 <a href="#method_replaceRoute">replaceRoute</a>
 
@@ -341,7 +276,7 @@ The instance of this class can be accessed by <code>app.navigation</code> wrappe
                                 <a href="#method_setRoute">setRoute</a>
 
                             </li>
-                            <li class="index-item method inherited">
+                            <li class="index-item method">
                                 <a href="#method_setup">setup</a>
 
                             </li>
@@ -349,20 +284,12 @@ The instance of this class can be accessed by <code>app.navigation</code> wrappe
                                 <a href="#method_stackTrigger">stackTrigger</a>
 
                             </li>
-                            <li class="index-item method inherited">
+                            <li class="index-item method">
                                 <a href="#method_start">start</a>
 
                             </li>
                             <li class="index-item method inherited">
                                 <a href="#method_trigger">trigger</a>
-
-                            </li>
-                            <li class="index-item method inherited">
-                                <a href="#method_triggerCurrentPath">triggerCurrentPath</a>
-
-                            </li>
-                            <li class="index-item method inherited">
-                                <a href="#method_triggerPath">triggerPath</a>
 
                             </li>
                     </ul>
@@ -399,27 +326,6 @@ The instance of this class can be accessed by <code>app.navigation</code> wrappe
                     </ul>
                 </div>
 
-                <div class="index-section attrs">
-                    <h3>Attributes</h3>
-
-                    <ul class="index-list attrs extends">
-                            <li class="index-item attr inherited">
-                                <a href="#attr_currentView">currentView</a>
-                            </li>
-                            <li class="index-item attr inherited">
-                                <a href="#attr_data">data</a>
-                            </li>
-                            <li class="index-item attr inherited">
-                                <a href="#attr_previousView">previousView</a>
-                            </li>
-                            <li class="index-item attr inherited">
-                                <a href="#attr_type">type</a>
-                            </li>
-                            <li class="index-item attr inherited">
-                                <a href="#attr_visibleViews">visibleViews</a>
-                            </li>
-                    </ul>
-                </div>
 
                 <div class="index-section events">
                     <h3>Events</h3>
@@ -447,59 +353,6 @@ The instance of this class can be accessed by <code>app.navigation</code> wrappe
             <div id="methods" class="api-class-tabpanel">
                 <h2 class="off-left">Methods</h2>
 
-<div id="method__appendToWrapper" class="method item private inherited">
-    <h3 class="name"><code>_appendToWrapper</code></h3>
-
-        <div class="args">
-            <span class="paren">(</span><ul class="args-list inline commas">
-                <li class="arg">
-                        <code>p_view</code>
-                </li>
-            </ul><span class="paren">)</span>
-        </div>
-
-
-
-        <span class="flag private">private</span>
-
-
-
-
-
-    <div class="meta">
-                <p>Inherited from
-                <a href="../classes/BaseNavigationController.html#method__appendToWrapper">BaseNavigationController</a>:
-        <a href="../files/.._.._source_coffee_slikland_navigation_core_BaseNavigationController.coffee.html#l134"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;navigation&#x2F;core&#x2F;BaseNavigationController.coffee:134</code></a>
-        </p>
-
-
-
-    </div>
-
-    <div class="description">
-        
-    </div>
-
-        <div class="params">
-            <h4>Parameters:</h4>
-
-            <ul class="params-list">
-                <li class="param">
-                        <code class="param-name">p_view</code>
-                        <span class="type"><a href="../classes/BaseView.html" class="crosslink">BaseView</a></span>
-
-
-                    <div class="param-description">
-                         
-                    </div>
-
-                </li>
-            </ul>
-        </div>
-
-
-
-</div>
 <div id="method__change" class="method item private">
     <h3 class="name"><code>_change</code></h3>
 
@@ -522,7 +375,7 @@ The instance of this class can be accessed by <code>app.navigation</code> wrappe
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._.._source_coffee_slikland_navigation_core_Navigation.coffee.html#l288"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;navigation&#x2F;core&#x2F;Navigation.coffee:288</code></a>
+        <a href="../files/.._.._source_coffee_slikland_navigation_core_Navigation.coffee.html#l286"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;navigation&#x2F;core&#x2F;Navigation.coffee:286</code></a>
         </p>
 
 
@@ -576,7 +429,7 @@ The instance of this class can be accessed by <code>app.navigation</code> wrappe
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._.._source_coffee_slikland_navigation_core_Navigation.coffee.html#l276"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;navigation&#x2F;core&#x2F;Navigation.coffee:276</code></a>
+        <a href="../files/.._.._source_coffee_slikland_navigation_core_Navigation.coffee.html#l274"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;navigation&#x2F;core&#x2F;Navigation.coffee:274</code></a>
         </p>
 
 
@@ -630,7 +483,7 @@ The instance of this class can be accessed by <code>app.navigation</code> wrappe
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._.._source_coffee_slikland_navigation_core_Navigation.coffee.html#l262"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;navigation&#x2F;core&#x2F;Navigation.coffee:262</code></a>
+        <a href="../files/.._.._source_coffee_slikland_navigation_core_Navigation.coffee.html#l260"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;navigation&#x2F;core&#x2F;Navigation.coffee:260</code></a>
         </p>
 
 
@@ -662,673 +515,6 @@ The instance of this class can be accessed by <code>app.navigation</code> wrappe
 
 
 </div>
-<div id="method__checkRoutes" class="method item private inherited">
-    <h3 class="name"><code>_checkRoutes</code></h3>
-
-        <div class="args">
-            <span class="paren">(</span><ul class="args-list inline commas">
-                <li class="arg">
-                        <code>p_path</code>
-                </li>
-            </ul><span class="paren">)</span>
-        </div>
-
-        <span class="returns-inline">
-            <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array" class="crosslink external" target="_blank">Array</a></span>
-        </span>
-
-
-        <span class="flag private">private</span>
-
-
-
-
-
-    <div class="meta">
-                <p>Inherited from
-                <a href="../classes/NavigationRouter.html#method__checkRoutes">NavigationRouter</a>:
-        <a href="../files/.._.._source_coffee_slikland_navigation_core_NavigationRouter.coffee.html#l274"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;navigation&#x2F;core&#x2F;NavigationRouter.coffee:274</code></a>
-        </p>
-
-
-
-    </div>
-
-    <div class="description">
-        
-    </div>
-
-        <div class="params">
-            <h4>Parameters:</h4>
-
-            <ul class="params-list">
-                <li class="param">
-                        <code class="param-name">p_path</code>
-                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>
-
-
-                    <div class="param-description">
-                         
-                    </div>
-
-                </li>
-            </ul>
-        </div>
-
-        <div class="returns">
-            <h4>Returns:</h4>
-
-            <div class="returns-description">
-                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array" class="crosslink external" target="_blank">Array</a></span>:
-            </div>
-        </div>
-
-
-</div>
-<div id="method__getPath" class="method item private inherited">
-    <h3 class="name"><code>_getPath</code></h3>
-
-        <span class="paren">()</span>
-
-        <span class="returns-inline">
-            <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>
-        </span>
-
-
-        <span class="flag private">private</span>
-
-
-
-
-
-    <div class="meta">
-                <p>Inherited from
-                <a href="../classes/NavigationRouter.html#method__getPath">NavigationRouter</a>:
-        <a href="../files/.._.._source_coffee_slikland_navigation_core_NavigationRouter.coffee.html#l75"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;navigation&#x2F;core&#x2F;NavigationRouter.coffee:75</code></a>
-        </p>
-
-
-
-    </div>
-
-    <div class="description">
-        
-    </div>
-
-
-        <div class="returns">
-            <h4>Returns:</h4>
-
-            <div class="returns-description">
-                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>:
-            </div>
-        </div>
-
-
-</div>
-<div id="method__onPathChange" class="method item private inherited">
-    <h3 class="name"><code>_onPathChange</code></h3>
-
-        <div class="args">
-            <span class="paren">(</span><ul class="args-list inline commas">
-                <li class="arg">
-                        <code class="optional">[evt = null]</code>
-                </li>
-            </ul><span class="paren">)</span>
-        </div>
-
-
-
-        <span class="flag private">private</span>
-
-
-
-
-
-    <div class="meta">
-                <p>Inherited from
-                <a href="../classes/NavigationRouter.html#method__onPathChange">NavigationRouter</a>:
-        <a href="../files/.._.._source_coffee_slikland_navigation_core_NavigationRouter.coffee.html#l115"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;navigation&#x2F;core&#x2F;NavigationRouter.coffee:115</code></a>
-        </p>
-
-
-
-    </div>
-
-    <div class="description">
-        
-    </div>
-
-        <div class="params">
-            <h4>Parameters:</h4>
-
-            <ul class="params-list">
-                <li class="param">
-                        <code class="param-name optional">[evt = null]</code>
-                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/API/Event" class="crosslink external" target="_blank">Event</a></span>
-                        <span class="flag optional" title="This parameter is optional.">optional</span>
-
-
-                    <div class="param-description">
-                         
-                    </div>
-
-                </li>
-            </ul>
-        </div>
-
-
-
-</div>
-<div id="method__parseParams" class="method item private inherited">
-    <h3 class="name"><code>_parseParams</code></h3>
-
-        <div class="args">
-            <span class="paren">(</span><ul class="args-list inline commas">
-                <li class="arg">
-                        <code>p_path</code>
-                </li>
-            </ul><span class="paren">)</span>
-        </div>
-
-        <span class="returns-inline">
-            <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>
-        </span>
-
-
-        <span class="flag private">private</span>
-
-
-
-
-
-    <div class="meta">
-                <p>Inherited from
-                <a href="../classes/NavigationRouter.html#method__parseParams">NavigationRouter</a>:
-        <a href="../files/.._.._source_coffee_slikland_navigation_core_NavigationRouter.coffee.html#l100"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;navigation&#x2F;core&#x2F;NavigationRouter.coffee:100</code></a>
-        </p>
-
-
-
-    </div>
-
-    <div class="description">
-        
-    </div>
-
-        <div class="params">
-            <h4>Parameters:</h4>
-
-            <ul class="params-list">
-                <li class="param">
-                        <code class="param-name">p_path</code>
-                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>
-
-
-                    <div class="param-description">
-                         
-                    </div>
-
-                </li>
-            </ul>
-        </div>
-
-        <div class="returns">
-            <h4>Returns:</h4>
-
-            <div class="returns-description">
-                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>:
-            </div>
-        </div>
-
-
-</div>
-<div id="method__parsePath" class="method item private inherited">
-    <h3 class="name"><code>_parsePath</code></h3>
-
-        <div class="args">
-            <span class="paren">(</span><ul class="args-list inline commas">
-                <li class="arg">
-                        <code>p_rawPath</code>
-                </li>
-            </ul><span class="paren">)</span>
-        </div>
-
-        <span class="returns-inline">
-            <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>
-        </span>
-
-
-        <span class="flag private">private</span>
-
-
-
-
-
-    <div class="meta">
-                <p>Inherited from
-                <a href="../classes/NavigationRouter.html#method__parsePath">NavigationRouter</a>:
-        <a href="../files/.._.._source_coffee_slikland_navigation_core_NavigationRouter.coffee.html#l88"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;navigation&#x2F;core&#x2F;NavigationRouter.coffee:88</code></a>
-        </p>
-
-
-
-    </div>
-
-    <div class="description">
-        
-    </div>
-
-        <div class="params">
-            <h4>Parameters:</h4>
-
-            <ul class="params-list">
-                <li class="param">
-                        <code class="param-name">p_rawPath</code>
-                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>
-
-
-                    <div class="param-description">
-                         
-                    </div>
-
-                </li>
-            </ul>
-        </div>
-
-        <div class="returns">
-            <h4>Returns:</h4>
-
-            <div class="returns-description">
-                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>:
-            </div>
-        </div>
-
-
-</div>
-<div id="method__removeFromWrapper" class="method item private inherited">
-    <h3 class="name"><code>_removeFromWrapper</code></h3>
-
-        <div class="args">
-            <span class="paren">(</span><ul class="args-list inline commas">
-                <li class="arg">
-                        <code>p_view</code>
-                </li>
-            </ul><span class="paren">)</span>
-        </div>
-
-
-
-        <span class="flag private">private</span>
-
-
-
-
-
-    <div class="meta">
-                <p>Inherited from
-                <a href="../classes/BaseNavigationController.html#method__removeFromWrapper">BaseNavigationController</a>:
-        <a href="../files/.._.._source_coffee_slikland_navigation_core_BaseNavigationController.coffee.html#l157"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;navigation&#x2F;core&#x2F;BaseNavigationController.coffee:157</code></a>
-        </p>
-
-
-
-    </div>
-
-    <div class="description">
-        
-    </div>
-
-        <div class="params">
-            <h4>Parameters:</h4>
-
-            <ul class="params-list">
-                <li class="param">
-                        <code class="param-name">p_view</code>
-                        <span class="type"><a href="../classes/BaseView.html" class="crosslink">BaseView</a></span>
-
-
-                    <div class="param-description">
-                         
-                    </div>
-
-                </li>
-            </ul>
-        </div>
-
-
-
-</div>
-<div id="method__sortRoutes" class="method item private inherited">
-    <h3 class="name"><code>_sortRoutes</code></h3>
-
-        <div class="args">
-            <span class="paren">(</span><ul class="args-list inline commas">
-                <li class="arg">
-                        <code>p_a</code>
-                </li>
-                <li class="arg">
-                        <code>p_b</code>
-                </li>
-            </ul><span class="paren">)</span>
-        </div>
-
-        <span class="returns-inline">
-            <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number" class="crosslink external" target="_blank">Number</a></span>
-        </span>
-
-
-        <span class="flag private">private</span>
-
-
-
-
-
-    <div class="meta">
-                <p>Inherited from
-                <a href="../classes/NavigationRouter.html#method__sortRoutes">NavigationRouter</a>:
-        <a href="../files/.._.._source_coffee_slikland_navigation_core_NavigationRouter.coffee.html#l309"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;navigation&#x2F;core&#x2F;NavigationRouter.coffee:309</code></a>
-        </p>
-
-
-
-    </div>
-
-    <div class="description">
-        
-    </div>
-
-        <div class="params">
-            <h4>Parameters:</h4>
-
-            <ul class="params-list">
-                <li class="param">
-                        <code class="param-name">p_a</code>
-                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>
-
-
-                    <div class="param-description">
-                         
-                    </div>
-
-                </li>
-                <li class="param">
-                        <code class="param-name">p_b</code>
-                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>
-
-
-                    <div class="param-description">
-                         
-                    </div>
-
-                </li>
-            </ul>
-        </div>
-
-        <div class="returns">
-            <h4>Returns:</h4>
-
-            <div class="returns-description">
-                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number" class="crosslink external" target="_blank">Number</a></span>:
-            </div>
-        </div>
-
-
-</div>
-<div id="method__triggerPath" class="method item private inherited">
-    <h3 class="name"><code>_triggerPath</code></h3>
-
-        <div class="args">
-            <span class="paren">(</span><ul class="args-list inline commas">
-                <li class="arg">
-                        <code>p_path</code>
-                </li>
-            </ul><span class="paren">)</span>
-        </div>
-
-
-
-        <span class="flag private">private</span>
-
-
-
-
-
-    <div class="meta">
-                <p>Inherited from
-                <a href="../classes/NavigationRouter.html#method__triggerPath">NavigationRouter</a>:
-        <a href="../files/.._.._source_coffee_slikland_navigation_core_NavigationRouter.coffee.html#l134"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;navigation&#x2F;core&#x2F;NavigationRouter.coffee:134</code></a>
-        </p>
-
-
-
-    </div>
-
-    <div class="description">
-        
-    </div>
-
-        <div class="params">
-            <h4>Parameters:</h4>
-
-            <ul class="params-list">
-                <li class="param">
-                        <code class="param-name">p_path</code>
-                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>
-
-
-                    <div class="param-description">
-                         
-                    </div>
-
-                </li>
-            </ul>
-        </div>
-
-
-
-</div>
-<div id="method_addRoute" class="method item inherited">
-    <h3 class="name"><code>addRoute</code></h3>
-
-        <div class="args">
-            <span class="paren">(</span><ul class="args-list inline commas">
-                <li class="arg">
-                        <code>p_route</code>
-                </li>
-                <li class="arg">
-                        <code class="optional">[p_data = null]</code>
-                </li>
-            </ul><span class="paren">)</span>
-        </div>
-
-
-
-
-
-
-
-
-    <div class="meta">
-                <p>Inherited from
-                <a href="../classes/NavigationRouter.html#method_addRoute">NavigationRouter</a>:
-        <a href="../files/.._.._source_coffee_slikland_navigation_core_NavigationRouter.coffee.html#l219"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;navigation&#x2F;core&#x2F;NavigationRouter.coffee:219</code></a>
-        </p>
-
-
-
-    </div>
-
-    <div class="description">
-        Add a route
-    </div>
-
-        <div class="params">
-            <h4>Parameters:</h4>
-
-            <ul class="params-list">
-                <li class="param">
-                        <code class="param-name">p_route</code>
-                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>
-
-
-                    <div class="param-description">
-                         
-                    </div>
-
-                </li>
-                <li class="param">
-                        <code class="param-name optional">[p_data = null]</code>
-                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>
-                        <span class="flag optional" title="This parameter is optional.">optional</span>
-
-
-                    <div class="param-description">
-                         
-                    </div>
-
-                </li>
-            </ul>
-        </div>
-
-
-
-</div>
-<div id="method_data" class="method item protected inherited">
-    <h3 class="name"><code>data</code></h3>
-
-        <div class="args">
-            <span class="paren">(</span><ul class="args-list inline commas">
-                <li class="arg">
-                        <code>p_id</code>
-                </li>
-            </ul><span class="paren">)</span>
-        </div>
-
-
-
-        <span class="flag protected">protected</span>
-
-
-
-
-
-    <div class="meta">
-                <p>Inherited from
-                <a href="../classes/BaseNavigationController.html#method_data">BaseNavigationController</a>:
-        <a href="../files/.._.._source_coffee_slikland_navigation_core_BaseNavigationController.coffee.html#l122"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;navigation&#x2F;core&#x2F;BaseNavigationController.coffee:122</code></a>
-        </p>
-
-
-
-    </div>
-
-    <div class="description">
-        <p><strong>This getter must be overridden with a change method of navigation controller it will be a extended.</strong><br>
-This method trigger the event <a href="../classes/BaseNavigationController.html#event_CHANGE_VIEW" class="crosslink">CHANGE_VIEW</a> after complete.</p>
-
-    </div>
-
-        <div class="params">
-            <h4>Parameters:</h4>
-
-            <ul class="params-list">
-                <li class="param">
-                        <code class="param-name">p_id</code>
-                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>
-
-
-                    <div class="param-description">
-                         
-                    </div>
-
-                </li>
-            </ul>
-        </div>
-
-
-
-</div>
-<div id="method_getCurrentPath" class="method item inherited">
-    <h3 class="name"><code>getCurrentPath</code></h3>
-
-        <span class="paren">()</span>
-
-        <span class="returns-inline">
-            <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>
-        </span>
-
-
-
-
-
-
-
-    <div class="meta">
-                <p>Inherited from
-                <a href="../classes/NavigationRouter.html#method_getCurrentPath">NavigationRouter</a>:
-        <a href="../files/.._.._source_coffee_slikland_navigation_core_NavigationRouter.coffee.html#l149"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;navigation&#x2F;core&#x2F;NavigationRouter.coffee:149</code></a>
-        </p>
-
-
-
-    </div>
-
-    <div class="description">
-        
-    </div>
-
-
-        <div class="returns">
-            <h4>Returns:</h4>
-
-            <div class="returns-description">
-                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>:
-            </div>
-        </div>
-
-
-</div>
-<div id="method_getParsedPath" class="method item inherited">
-    <h3 class="name"><code>getParsedPath</code></h3>
-
-        <span class="paren">()</span>
-
-        <span class="returns-inline">
-            <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>
-        </span>
-
-
-
-
-
-
-
-    <div class="meta">
-                <p>Inherited from
-                <a href="../classes/NavigationRouter.html#method_getParsedPath">NavigationRouter</a>:
-        <a href="../files/.._.._source_coffee_slikland_navigation_core_NavigationRouter.coffee.html#l156"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;navigation&#x2F;core&#x2F;NavigationRouter.coffee:156</code></a>
-        </p>
-
-
-
-    </div>
-
-    <div class="description">
-        
-    </div>
-
-
-        <div class="returns">
-            <h4>Returns:</h4>
-
-            <div class="returns-description">
-                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>:
-            </div>
-        </div>
-
-
-</div>
 <div id="method_getRouteByView" class="method item">
     <h3 class="name"><code>getRouteByView</code></h3>
 
@@ -1353,7 +539,7 @@ This method trigger the event <a href="../classes/BaseNavigationController.html#
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._.._source_coffee_slikland_navigation_core_Navigation.coffee.html#l250"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;navigation&#x2F;core&#x2F;Navigation.coffee:250</code></a>
+        <a href="../files/.._.._source_coffee_slikland_navigation_core_Navigation.coffee.html#l248"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;navigation&#x2F;core&#x2F;Navigation.coffee:248</code></a>
         </p>
 
 
@@ -1415,7 +601,7 @@ This method trigger the event <a href="../classes/BaseNavigationController.html#
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._.._source_coffee_slikland_navigation_core_Navigation.coffee.html#l238"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;navigation&#x2F;core&#x2F;Navigation.coffee:238</code></a>
+        <a href="../files/.._.._source_coffee_slikland_navigation_core_Navigation.coffee.html#l236"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;navigation&#x2F;core&#x2F;Navigation.coffee:236</code></a>
         </p>
 
 
@@ -1473,12 +659,9 @@ This method trigger the event <a href="../classes/BaseNavigationController.html#
 
 
     <div class="meta">
-            <p>Inherited from
-            <a href="../classes/NavigationRouter.html#method_goto">
-                NavigationRouter
-            </a>
-            but overwritten in
-        <a href="../files/.._.._source_coffee_slikland_navigation_core_Navigation.coffee.html#l163"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;navigation&#x2F;core&#x2F;Navigation.coffee:163</code></a>
+                <p>
+                Defined in
+        <a href="../files/.._.._source_coffee_slikland_navigation_core_Navigation.coffee.html#l161"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;navigation&#x2F;core&#x2F;Navigation.coffee:161</code></a>
         </p>
 
 
@@ -1525,7 +708,7 @@ This method trigger the event <a href="../classes/BaseNavigationController.html#
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._.._source_coffee_slikland_navigation_core_Navigation.coffee.html#l213"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;navigation&#x2F;core&#x2F;Navigation.coffee:213</code></a>
+        <a href="../files/.._.._source_coffee_slikland_navigation_core_Navigation.coffee.html#l211"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;navigation&#x2F;core&#x2F;Navigation.coffee:211</code></a>
         </p>
 
 
@@ -1564,7 +747,7 @@ This method trigger the event <a href="../classes/BaseNavigationController.html#
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._.._source_coffee_slikland_navigation_core_Navigation.coffee.html#l181"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;navigation&#x2F;core&#x2F;Navigation.coffee:181</code></a>
+        <a href="../files/.._.._source_coffee_slikland_navigation_core_Navigation.coffee.html#l179"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;navigation&#x2F;core&#x2F;Navigation.coffee:179</code></a>
         </p>
 
 
@@ -1627,7 +810,7 @@ This method trigger the event <a href="../classes/BaseNavigationController.html#
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._.._source_coffee_slikland_navigation_core_Navigation.coffee.html#l225"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;navigation&#x2F;core&#x2F;Navigation.coffee:225</code></a>
+        <a href="../files/.._.._source_coffee_slikland_navigation_core_Navigation.coffee.html#l223"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;navigation&#x2F;core&#x2F;Navigation.coffee:223</code></a>
         </p>
 
 
@@ -1897,154 +1080,6 @@ ed.on('someEvent', someEventHandler);</code></pre>
             </div>
         </div>
 </div>
-<div id="method_removeAllRoutes" class="method item inherited">
-    <h3 class="name"><code>removeAllRoutes</code></h3>
-
-        <span class="paren">()</span>
-
-
-
-
-
-
-
-
-    <div class="meta">
-                <p>Inherited from
-                <a href="../classes/NavigationRouter.html#method_removeAllRoutes">NavigationRouter</a>:
-        <a href="../files/.._.._source_coffee_slikland_navigation_core_NavigationRouter.coffee.html#l266"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;navigation&#x2F;core&#x2F;NavigationRouter.coffee:266</code></a>
-        </p>
-
-
-
-    </div>
-
-    <div class="description">
-        Remove all routes
-    </div>
-
-
-
-
-</div>
-<div id="method_removeRoute" class="method item inherited">
-    <h3 class="name"><code>removeRoute</code></h3>
-
-        <div class="args">
-            <span class="paren">(</span><ul class="args-list inline commas">
-                <li class="arg">
-                        <code>p_route</code>
-                </li>
-            </ul><span class="paren">)</span>
-        </div>
-
-
-
-
-
-
-
-
-    <div class="meta">
-                <p>Inherited from
-                <a href="../classes/NavigationRouter.html#method_removeRoute">NavigationRouter</a>:
-        <a href="../files/.._.._source_coffee_slikland_navigation_core_NavigationRouter.coffee.html#l251"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;navigation&#x2F;core&#x2F;NavigationRouter.coffee:251</code></a>
-        </p>
-
-
-
-    </div>
-
-    <div class="description">
-        Remove a route
-    </div>
-
-        <div class="params">
-            <h4>Parameters:</h4>
-
-            <ul class="params-list">
-                <li class="param">
-                        <code class="param-name">p_route</code>
-                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>
-
-
-                    <div class="param-description">
-                         
-                    </div>
-
-                </li>
-            </ul>
-        </div>
-
-
-
-</div>
-<div id="method_replace" class="method item inherited">
-    <h3 class="name"><code>replace</code></h3>
-
-        <div class="args">
-            <span class="paren">(</span><ul class="args-list inline commas">
-                <li class="arg">
-                        <code>p_path</code>
-                </li>
-                <li class="arg">
-                        <code class="optional">[p_trigger = false]</code>
-                </li>
-            </ul><span class="paren">)</span>
-        </div>
-
-
-
-
-
-
-
-
-    <div class="meta">
-                <p>Inherited from
-                <a href="../classes/NavigationRouter.html#method_replace">NavigationRouter</a>:
-        <a href="../files/.._.._source_coffee_slikland_navigation_core_NavigationRouter.coffee.html#l184"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;navigation&#x2F;core&#x2F;NavigationRouter.coffee:184</code></a>
-        </p>
-
-
-
-    </div>
-
-    <div class="description">
-        
-    </div>
-
-        <div class="params">
-            <h4>Parameters:</h4>
-
-            <ul class="params-list">
-                <li class="param">
-                        <code class="param-name">p_path</code>
-                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>
-
-
-                    <div class="param-description">
-                         
-                    </div>
-
-                </li>
-                <li class="param">
-                        <code class="param-name optional">[p_trigger = false]</code>
-                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean" class="crosslink external" target="_blank">Boolean</a></span>
-                        <span class="flag optional" title="This parameter is optional.">optional</span>
-
-
-                    <div class="param-description">
-                         
-                    </div>
-
-                </li>
-            </ul>
-        </div>
-
-
-
-</div>
 <div id="method_replaceRoute" class="method item">
     <h3 class="name"><code>replaceRoute</code></h3>
 
@@ -2069,7 +1104,7 @@ ed.on('someEvent', someEventHandler);</code></pre>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._.._source_coffee_slikland_navigation_core_Navigation.coffee.html#l197"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;navigation&#x2F;core&#x2F;Navigation.coffee:197</code></a>
+        <a href="../files/.._.._source_coffee_slikland_navigation_core_Navigation.coffee.html#l195"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;navigation&#x2F;core&#x2F;Navigation.coffee:195</code></a>
         </p>
 
 
@@ -2135,7 +1170,7 @@ ed.on('someEvent', someEventHandler);</code></pre>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._.._source_coffee_slikland_navigation_core_Navigation.coffee.html#l172"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;navigation&#x2F;core&#x2F;Navigation.coffee:172</code></a>
+        <a href="../files/.._.._source_coffee_slikland_navigation_core_Navigation.coffee.html#l170"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;navigation&#x2F;core&#x2F;Navigation.coffee:170</code></a>
         </p>
 
 
@@ -2196,12 +1231,9 @@ ed.on('someEvent', someEventHandler);</code></pre>
 
 
     <div class="meta">
-            <p>Inherited from
-            <a href="../classes/NavigationRouter.html#method_setup">
-                NavigationRouter
-            </a>
-            but overwritten in
-        <a href="../files/.._.._source_coffee_slikland_navigation_core_Navigation.coffee.html#l49"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;navigation&#x2F;core&#x2F;Navigation.coffee:49</code></a>
+                <p>
+                Defined in
+        <a href="../files/.._.._source_coffee_slikland_navigation_core_Navigation.coffee.html#l47"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;navigation&#x2F;core&#x2F;Navigation.coffee:47</code></a>
         </p>
 
 
@@ -2366,12 +1398,9 @@ function test()
 
 
     <div class="meta">
-            <p>Inherited from
-            <a href="../classes/BaseNavigationController.html#method_start">
-                BaseNavigationController
-            </a>
-            but overwritten in
-        <a href="../files/.._.._source_coffee_slikland_navigation_core_Navigation.coffee.html#l69"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;navigation&#x2F;core&#x2F;Navigation.coffee:69</code></a>
+                <p>
+                Defined in
+        <a href="../files/.._.._source_coffee_slikland_navigation_core_Navigation.coffee.html#l67"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;navigation&#x2F;core&#x2F;Navigation.coffee:67</code></a>
         </p>
 
 
@@ -2506,110 +1535,6 @@ ed.trigger('someEvent', {someData: true}, window);</code></pre>
             </div>
         </div>
 </div>
-<div id="method_triggerCurrentPath" class="method item inherited">
-    <h3 class="name"><code>triggerCurrentPath</code></h3>
-
-        <div class="args">
-            <span class="paren">(</span><ul class="args-list inline commas">
-                <li class="arg">
-                        <code>p_path</code>
-                </li>
-            </ul><span class="paren">)</span>
-        </div>
-
-
-
-
-
-
-
-
-    <div class="meta">
-                <p>Inherited from
-                <a href="../classes/NavigationRouter.html#method_triggerCurrentPath">NavigationRouter</a>:
-        <a href="../files/.._.._source_coffee_slikland_navigation_core_NavigationRouter.coffee.html#l211"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;navigation&#x2F;core&#x2F;NavigationRouter.coffee:211</code></a>
-        </p>
-
-
-
-    </div>
-
-    <div class="description">
-        
-    </div>
-
-        <div class="params">
-            <h4>Parameters:</h4>
-
-            <ul class="params-list">
-                <li class="param">
-                        <code class="param-name">p_path</code>
-                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>
-
-
-                    <div class="param-description">
-                         
-                    </div>
-
-                </li>
-            </ul>
-        </div>
-
-
-
-</div>
-<div id="method_triggerPath" class="method item inherited">
-    <h3 class="name"><code>triggerPath</code></h3>
-
-        <div class="args">
-            <span class="paren">(</span><ul class="args-list inline commas">
-                <li class="arg">
-                        <code>p_path</code>
-                </li>
-            </ul><span class="paren">)</span>
-        </div>
-
-
-
-
-
-
-
-
-    <div class="meta">
-                <p>Inherited from
-                <a href="../classes/NavigationRouter.html#method_triggerPath">NavigationRouter</a>:
-        <a href="../files/.._.._source_coffee_slikland_navigation_core_NavigationRouter.coffee.html#l203"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;navigation&#x2F;core&#x2F;NavigationRouter.coffee:203</code></a>
-        </p>
-
-
-
-    </div>
-
-    <div class="description">
-        
-    </div>
-
-        <div class="params">
-            <h4>Parameters:</h4>
-
-            <ul class="params-list">
-                <li class="param">
-                        <code class="param-name">p_path</code>
-                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>
-
-
-                    <div class="param-description">
-                         
-                    </div>
-
-                </li>
-            </ul>
-        </div>
-
-
-
-</div>
             </div>
 
             <div id="properties" class="api-class-tabpanel">
@@ -2626,7 +1551,7 @@ ed.trigger('someEvent', {someData: true}, window);</code></pre>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._.._source_coffee_slikland_navigation_core_Navigation.coffee.html#l106"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;navigation&#x2F;core&#x2F;Navigation.coffee:106</code></a>
+        <a href="../files/.._.._source_coffee_slikland_navigation_core_Navigation.coffee.html#l104"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;navigation&#x2F;core&#x2F;Navigation.coffee:104</code></a>
         </p>
 
 
@@ -2651,7 +1576,7 @@ ed.trigger('someEvent', {someData: true}, window);</code></pre>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._.._source_coffee_slikland_navigation_core_Navigation.coffee.html#l154"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;navigation&#x2F;core&#x2F;Navigation.coffee:154</code></a>
+        <a href="../files/.._.._source_coffee_slikland_navigation_core_Navigation.coffee.html#l152"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;navigation&#x2F;core&#x2F;Navigation.coffee:152</code></a>
         </p>
 
 
@@ -2676,7 +1601,7 @@ ed.trigger('someEvent', {someData: true}, window);</code></pre>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._.._source_coffee_slikland_navigation_core_Navigation.coffee.html#l115"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;navigation&#x2F;core&#x2F;Navigation.coffee:115</code></a>
+        <a href="../files/.._.._source_coffee_slikland_navigation_core_Navigation.coffee.html#l113"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;navigation&#x2F;core&#x2F;Navigation.coffee:113</code></a>
         </p>
 
 
@@ -2701,7 +1626,7 @@ ed.trigger('someEvent', {someData: true}, window);</code></pre>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._.._source_coffee_slikland_navigation_core_Navigation.coffee.html#l124"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;navigation&#x2F;core&#x2F;Navigation.coffee:124</code></a>
+        <a href="../files/.._.._source_coffee_slikland_navigation_core_Navigation.coffee.html#l122"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;navigation&#x2F;core&#x2F;Navigation.coffee:122</code></a>
         </p>
 
 
@@ -2726,7 +1651,7 @@ ed.trigger('someEvent', {someData: true}, window);</code></pre>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._.._source_coffee_slikland_navigation_core_Navigation.coffee.html#l145"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;navigation&#x2F;core&#x2F;Navigation.coffee:145</code></a>
+        <a href="../files/.._.._source_coffee_slikland_navigation_core_Navigation.coffee.html#l143"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;navigation&#x2F;core&#x2F;Navigation.coffee:143</code></a>
         </p>
 
 
@@ -2751,7 +1676,7 @@ ed.trigger('someEvent', {someData: true}, window);</code></pre>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._.._source_coffee_slikland_navigation_core_Navigation.coffee.html#l97"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;navigation&#x2F;core&#x2F;Navigation.coffee:97</code></a>
+        <a href="../files/.._.._source_coffee_slikland_navigation_core_Navigation.coffee.html#l95"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;navigation&#x2F;core&#x2F;Navigation.coffee:95</code></a>
         </p>
 
 
@@ -2767,165 +1692,6 @@ ed.trigger('someEvent', {someData: true}, window);</code></pre>
 </div>
             </div>
 
-            <div id="attrs" class="api-class-tabpanel">
-                <h2 class="off-left">Attributes</h2>
-
-                    <div id="attr_currentView" class="attr item inherited">
-                        <a name="config_currentView"></a> 
-                        <h3 class="name"><code>currentView</code></h3>
-                        <span class="type"><a href="../classes/BaseView.html" class="crosslink">BaseView</a></span>
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                            <span class="flag readonly">readonly</span>
-                    
-                        <div class="meta">
-                                    <p>Inherited from
-                                    <a href="../classes/BaseNavigationController.html#attr_currentView">BaseNavigationController</a>:
-                            <a href="../files/.._.._source_coffee_slikland_navigation_core_BaseNavigationController.coffee.html#l92"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;navigation&#x2F;core&#x2F;BaseNavigationController.coffee:92</code></a>
-                            </p>
-                    
-                    
-                        </div>
-                    
-                        <div class="description">
-                            <p><strong>This getter must be overridden with a current view of navigation controller it will be a extended.</strong><br>
-                    Returns the current view.</p>
-                    
-                        </div>
-                    
-                    
-                    
-                    </div>
-                    <div id="attr_data" class="attr item inherited">
-                        <a name="config_data"></a> 
-                        <h3 class="name"><code>data</code></h3>
-                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                            <span class="flag readonly">readonly</span>
-                    
-                        <div class="meta">
-                                    <p>Inherited from
-                                    <a href="../classes/BaseNavigationController.html#attr_data">BaseNavigationController</a>:
-                            <a href="../files/.._.._source_coffee_slikland_navigation_core_BaseNavigationController.coffee.html#l112"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;navigation&#x2F;core&#x2F;BaseNavigationController.coffee:112</code></a>
-                            </p>
-                    
-                    
-                        </div>
-                    
-                        <div class="description">
-                            <p><strong>This getter must be overridden with a data object of navigation controller it will be a extended.</strong><br>
-                    Returns the data.</p>
-                    
-                        </div>
-                    
-                    
-                    
-                    </div>
-                    <div id="attr_previousView" class="attr item inherited">
-                        <a name="config_previousView"></a> 
-                        <h3 class="name"><code>previousView</code></h3>
-                        <span class="type"><a href="../classes/BaseView.html" class="crosslink">BaseView</a></span>
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                            <span class="flag readonly">readonly</span>
-                    
-                        <div class="meta">
-                                    <p>Inherited from
-                                    <a href="../classes/BaseNavigationController.html#attr_previousView">BaseNavigationController</a>:
-                            <a href="../files/.._.._source_coffee_slikland_navigation_core_BaseNavigationController.coffee.html#l102"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;navigation&#x2F;core&#x2F;BaseNavigationController.coffee:102</code></a>
-                            </p>
-                    
-                    
-                        </div>
-                    
-                        <div class="description">
-                            <p><strong>This getter must be overridden with a previous view of navigation controller it will be a extended.</strong><br>
-                    Returns the previous view.</p>
-                    
-                        </div>
-                    
-                    
-                    
-                    </div>
-                    <div id="attr_type" class="attr item inherited">
-                        <a name="config_type"></a> 
-                        <h3 class="name"><code>type</code></h3>
-                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                            <span class="flag readonly">readonly</span>
-                    
-                        <div class="meta">
-                                    <p>Inherited from
-                                    <a href="../classes/BaseNavigationController.html#attr_type">BaseNavigationController</a>:
-                            <a href="../files/.._.._source_coffee_slikland_navigation_core_BaseNavigationController.coffee.html#l72"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;navigation&#x2F;core&#x2F;BaseNavigationController.coffee:72</code></a>
-                            </p>
-                    
-                    
-                        </div>
-                    
-                        <div class="description">
-                            <p><strong>This getter must be overridden with a type of navigation controller it will be a extended.</strong><br>
-                    Returns the type of navigation controller.</p>
-                    
-                        </div>
-                    
-                    
-                    
-                    </div>
-                    <div id="attr_visibleViews" class="attr item inherited">
-                        <a name="config_visibleViews"></a> 
-                        <h3 class="name"><code>visibleViews</code></h3>
-                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array" class="crosslink external" target="_blank">Array</a></span>
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                            <span class="flag readonly">readonly</span>
-                    
-                        <div class="meta">
-                                    <p>Inherited from
-                                    <a href="../classes/BaseNavigationController.html#attr_visibleViews">BaseNavigationController</a>:
-                            <a href="../files/.._.._source_coffee_slikland_navigation_core_BaseNavigationController.coffee.html#l82"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;navigation&#x2F;core&#x2F;BaseNavigationController.coffee:82</code></a>
-                            </p>
-                    
-                    
-                        </div>
-                    
-                        <div class="description">
-                            <p><strong>This getter must be overridden with a current visible views of navigation controller it will be a extended.</strong><br>
-                    Returns the current visible views in DOM.</p>
-                    
-                        </div>
-                    
-                    
-                    
-                    </div>
-            </div>
 
             <div id="events" class="api-class-tabpanel">
                 <h2 class="off-left">Events</h2>
@@ -2942,7 +1708,7 @@ ed.trigger('someEvent', {someData: true}, window);</code></pre>
                         <div class="meta">
                                     <p>
                                     Defined in
-                            <a href="../files/.._.._source_coffee_slikland_navigation_core_Navigation.coffee.html#l25"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;navigation&#x2F;core&#x2F;Navigation.coffee:25</code></a>
+                            <a href="../files/.._.._source_coffee_slikland_navigation_core_Navigation.coffee.html#l23"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;navigation&#x2F;core&#x2F;Navigation.coffee:23</code></a>
                             </p>
                     
                     
@@ -2967,7 +1733,7 @@ ed.trigger('someEvent', {someData: true}, window);</code></pre>
                         <div class="meta">
                                     <p>
                                     Defined in
-                            <a href="../files/.._.._source_coffee_slikland_navigation_core_Navigation.coffee.html#l15"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;navigation&#x2F;core&#x2F;Navigation.coffee:15</code></a>
+                            <a href="../files/.._.._source_coffee_slikland_navigation_core_Navigation.coffee.html#l13"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;navigation&#x2F;core&#x2F;Navigation.coffee:13</code></a>
                             </p>
                     
                     
@@ -2992,7 +1758,7 @@ ed.trigger('someEvent', {someData: true}, window);</code></pre>
                         <div class="meta">
                                     <p>
                                     Defined in
-                            <a href="../files/.._.._source_coffee_slikland_navigation_core_Navigation.coffee.html#l20"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;navigation&#x2F;core&#x2F;Navigation.coffee:20</code></a>
+                            <a href="../files/.._.._source_coffee_slikland_navigation_core_Navigation.coffee.html#l18"><code>..&#x2F;..&#x2F;source&#x2F;coffee&#x2F;slikland&#x2F;navigation&#x2F;core&#x2F;Navigation.coffee:18</code></a>
                             </p>
                     
                     
