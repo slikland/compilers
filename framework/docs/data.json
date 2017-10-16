@@ -21,7 +21,8 @@
                 "slikland": 1
             },
             "classes": {
-                "AnimationTicker": 1
+                "AnimationTicker": 1,
+                "_": 1
             },
             "fors": {},
             "namespaces": {}
@@ -537,15 +538,6 @@
             },
             "fors": {},
             "namespaces": {}
-        },
-        "../../source/coffee/slikland/_.coffee": {
-            "name": "../../source/coffee/slikland/_.coffee",
-            "modules": {},
-            "classes": {
-                "_": 1
-            },
-            "fors": {},
-            "namespaces": {}
         }
     },
     "modules": {
@@ -931,8 +923,8 @@
             "extension_for": [],
             "module": "slikland",
             "submodule": "slikland.anim",
-            "file": "../../source/coffee/slikland/_.coffee",
-            "line": 1,
+            "file": "../../source/coffee/slikland/anim/AnimationTicker.coffee",
+            "line": 96,
             "description": "_"
         },
         "BaseAnimation": {

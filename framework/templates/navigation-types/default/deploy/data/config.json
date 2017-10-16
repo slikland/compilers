@@ -165,7 +165,7 @@
 				"content":[
 					{
 						"condition":"desktop",
-						"file":"{base}data/main.json",
+						"file":"{base}data/mteste.json",
 						"cache":true
 					}
 				],

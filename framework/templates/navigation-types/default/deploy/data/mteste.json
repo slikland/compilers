@@ -1,0 +1,13 @@
+{
+	"meta":
+	{
+		"title": "Default Template - title",
+		"description":"description"
+	},
+	"label":"Carregado",
+	"other":[
+		{
+			"other":999
+		}
+	]
+}

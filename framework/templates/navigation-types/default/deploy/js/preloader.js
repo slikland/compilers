@@ -878,6 +878,12 @@ EventDispatcher = (function() {
   };
   return EventDispatcher;
 })();
+/**
+_
+@class App
+@extends EventDispatcher
+@submodule slikland.navigation.core
+ */
 var App, app, windowLoaded;
 App = (function(_super) {
   var framework_version, _conditions, _config, _container, _detections, _loader, _navigation, _root;
@@ -1070,7 +1076,6 @@ if (window.addEventListener) {
 /**
 @class Debug
 @static
-@module slikland
 @submodule slikland.debug
 @final
  */
@@ -4706,7 +4711,7 @@ MetaController = (function(_super) {
 /**
 @class BaseView
 @extends BaseDOM
-@submodule slikland.display
+@submodule slikland.navigation.display
  */
 var BaseView;
 BaseView = (function(_super) {
@@ -6362,19 +6367,14 @@ NavigationLoader = (function(_super) {
   NavigationLoader.prototype.loadFileComplete = function(evt) {
     var contents, result, _ref, _ref1, _ref2;
     evt.item.loaded = true;
-    switch (evt.item.ext) {
-      case 'js':
-        if (window.main == null) {
-          window.main = {};
-        }
-        break;
-      default:
-        result = evt.item;
-    }
+    result = evt.item;
     contents = ((_ref = config.views[currentStep.id]) != null ? _ref.content : void 0) || ((_ref1 = config.required[currentStep.id]) != null ? _ref1.content : void 0);
-    if ((contents != null) && evt.item.internal !== false) {
+    if (window.main == null) {
+      window.main = {};
+    }
+    if (contents != null) {
       eval('contents["' + ((_ref2 = evt.item.___path) != null ? _ref2.join('"]["') : void 0) + '"] = result');
-      if (window.main) {
+      if (currentStep.id === 'main') {
         window.main['content'] = contents;
       }
     }
@@ -6604,13 +6604,15 @@ Caim = (function(_super) {
         _ref = app.config.required.main;
         for (k in _ref) {
           v = _ref[k];
-          if (v.ext === 'js' && v.id.search(/main/i) !== -1) {
+          if (v.ext === 'js') {
             _mainView = app.config.required.main[v.id].result = eval(app.config.required.main[v.id].result);
-            _mainView.content = window.main['content'];
-            delete window.main['content'];
-            delete window.main;
+            if (app.config.required.main.content) {
+              _mainView.content = window.main['content'];
+              delete window.main['content'];
+            }
           }
         }
+        delete window.main;
         this.mainAssetsLoaded();
         break;
       case 'preloader':

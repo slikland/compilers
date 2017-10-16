@@ -101,11 +101,12 @@ class Caim extends EventDispatcher
 				break
 			when 'main'
 				for k, v of app.config.required.main
-					if v.ext is 'js' && v.id.search(/main/i) != -1
+					if v.ext is 'js'
 						_mainView = app.config.required.main[v.id].result = eval(app.config.required.main[v.id].result)
-						_mainView.content = window.main['content']
-						delete window.main['content']
-						delete window.main
+						if app.config.required.main.content
+							_mainView.content = window.main['content']
+							delete window.main['content']
+				delete window.main
 				@mainAssetsLoaded()
 				break
 			when 'preloader'

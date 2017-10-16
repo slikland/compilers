@@ -160,6 +160,7 @@ BaseNavigationController is a base class for any type of navigation controller.<
 Please do not instantiate this class. Use the extended classes.
 @class BaseNavigationController
 @extends EventDispatcher
+@submodule slikland.navigation.core
  */
 var BaseNavigationController;
 BaseNavigationController = (function(_super) {
@@ -353,6 +354,11 @@ BaseNavigationController = (function(_super) {
   };
   return BaseNavigationController;
 })(EventDispatcher);
+/**
+@class DefaultNavigationController
+@extends BaseNavigationController
+@submodule slikland.navigation.types
+ */
 var DefaultNavigationController;
 DefaultNavigationController = (function(_super) {
   __extends(DefaultNavigationController, _super);
@@ -2040,6 +2046,11 @@ FunctionUtils = (function() {
   };
   return FunctionUtils;
 })();
+/**
+@class MediaDOM
+@extends BaseDOM
+@submodule slikland.media
+ */
 var MediaDOM;
 MediaDOM = (function(_super) {
   __extends(MediaDOM, _super);
@@ -2381,6 +2392,11 @@ MediaDOM = (function(_super) {
   };
   return MediaDOM;
 })(BaseDOM);
+/**
+@class VideoCanvas
+@extends BaseDOM
+@submodule slikland.media.video
+ */
 var VideoCanvas;
 VideoCanvas = (function(_super) {
   __extends(VideoCanvas, _super);
@@ -2864,6 +2880,10 @@ VideoCanvas = (function(_super) {
   };
   return VideoCanvas;
 })(BaseDOM);
+/**
+@class SRTParser
+@submodule slikland.media.subtitles
+ */
 var SRTParser;
 SRTParser = (function() {
   function SRTParser() {}
@@ -2955,6 +2975,11 @@ SRTParser = (function() {
   };
   return SRTParser;
 })();
+/**
+@class VideoSubtitle
+@extends BaseDOM
+@submodule slikland.media.video
+ */
 var VideoSubtitle;
 VideoSubtitle = (function(_super) {
   __extends(VideoSubtitle, _super);

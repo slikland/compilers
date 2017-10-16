@@ -277,25 +277,18 @@ class NavigationLoader extends EventDispatcher
 	###
 	loadFileComplete:(evt)=>
 		evt.item.loaded = true
-		
-		switch evt.item.ext
-			when 'js'
-				# if currentStep.id == 'main' && evt.item.id.search(/main/i) != -1
-				window.main ?= {}
-			else
-				result = evt.item
 
+		result = evt.item
 		contents = config.views[currentStep.id]?.content || config.required[currentStep.id]?.content
-		if contents? && evt.item.internal!=false
+		
+		window.main ?= {}
+		if contents?
+		# if contents? && evt.item.internal != false
 			# @TODO 
 			# Sets the result of the content file to BaseView classes
 			# Praying for a good soul see this and fix this shit... =}
 			eval('contents["' + evt.item.___path?.join('"]["') + '"] = result')
-			#
-			# evt.item.src = removeParam('noCache', evt.item.src)
-			# evt.item.src = removeParam('v', evt.item.src)
-			if window.main
-				window.main['content'] = contents
+			if currentStep.id == 'main' then window.main['content'] = contents
 		@trigger(NavigationLoader.LOAD_FILE_COMPLETE, {id:evt.item.id, group:currentStep.id, data:evt.item, result:result})
 		false
 
@@ -366,6 +359,7 @@ class NavigationLoader extends EventDispatcher
 	###
 	assetsLoaded:(p_id)=>
 		return if !p_id?
+
 		@trigger(NavigationLoader.GROUP_ASSETS_LOADED, {id:p_id, data:@loader.getGroup(p_id)})
 
 		false
