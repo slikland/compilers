@@ -1,6 +1,11 @@
 #import slikland.data.IndexedDB
 #import slikland.data.CookiesManager
 
+###*
+@class DataStorageManager
+@extends EventDispatcher
+@submodule slikland.data
+###
 class DataStorageManager extends EventDispatcher
 
 	@getInstance:()=>

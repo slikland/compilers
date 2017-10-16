@@ -1,13 +1,5 @@
 # import slikland.anim.AnimationTicker
 
-###*
-BaseAnimation interface class for most frame / time based animation.<br>
-Please do not instantiate this class. Use the extended classes.
-@class BaseAnimation
-@extends BaseDOM
-
-###
-
 class BaseAnimation extends BaseDOM
 
 	###*
@@ -52,6 +44,15 @@ class BaseAnimation extends BaseDOM
 	###
 	@UPDATE: 'animation_update'
 
+	###*
+	BaseAnimation interface class for most frame / time based animation.<br>
+	Please do not instantiate this class. Use the extended classes.
+	@class BaseAnimation
+	@extends BaseDOM
+	@constructor
+	@param {Number} [p_fps=15]
+	@submodule slikland.anim
+	###
 	constructor:(p_fps = 15)->
 		if @constructor.name == 'BaseAnimation'
 			throw new Error('Please extend me.')

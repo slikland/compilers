@@ -5,7 +5,7 @@
 ###*
 @class BaseView
 @extends BaseDOM
-@submodule slikland.display
+@submodule slikland.navigation.display
 ###
 class BaseView extends BaseDOM
 

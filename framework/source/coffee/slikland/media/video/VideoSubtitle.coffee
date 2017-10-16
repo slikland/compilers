@@ -1,5 +1,10 @@
 #import slikland.media.subtitles.SRTParser
 
+###*
+@class VideoSubtitle
+@extends BaseDOM
+@submodule slikland.media.video
+###
 class VideoSubtitle extends BaseDOM
 
 	constructor:(p_subtitles = null)->

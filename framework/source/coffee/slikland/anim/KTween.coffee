@@ -2,6 +2,7 @@
 KTween class
 
 @class KTween
+@submodule slikland.anim
 ###
 class KTween
 	@tweenTypes = {}

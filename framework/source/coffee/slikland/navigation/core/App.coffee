@@ -1,6 +1,12 @@
 #import slikland.utils.Prototypes
 #import slikland.event.EventDispatcher
 #
+###*
+_
+@class App
+@extends EventDispatcher
+@submodule slikland.navigation.core
+###
 class App extends EventDispatcher
 	@project_version_raw : "SL_PROJECT_VERSION:0.0.0"
 	@project_date_raw : "SL_PROJECT_DATE:0000000000000"
@@ -138,3 +144,5 @@ else if window.attachEvent
 	window.attachEvent('onload', windowLoaded)
 else
 	window.onload = windowLoaded
+
+

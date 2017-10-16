@@ -7,6 +7,7 @@ Please do not instantiate this class. Use the extended classes.
 
 @class BaseNavigationController
 @extends EventDispatcher
+@submodule slikland.navigation.core
 ###
 class BaseNavigationController extends EventDispatcher
 	###*

@@ -1,3 +1,7 @@
+###*
+@class GTM
+@submodule slikland.tracking
+###
 class GTM
 
 	constructor:(p_id)->

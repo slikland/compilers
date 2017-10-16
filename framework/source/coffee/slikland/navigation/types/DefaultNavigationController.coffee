@@ -1,5 +1,10 @@
 #import slikland.navigation.core.BaseNavigationController
 
+###*
+@class DefaultNavigationController
+@extends BaseNavigationController
+@submodule slikland.navigation.types
+###
 class DefaultNavigationController extends BaseNavigationController
 	@HIDE_ALL_SUBVIEWS: 'navigation_controller_hide_all_subviews'
 	@SHOW_ALL_SUBVIEWS: 'navigation_controller_show_all_subviews'

@@ -1,3 +1,7 @@
+###*
+@class GoogleAnalytics
+@submodule slikland.tracking
+###
 class GoogleAnalytics
 
 	constructor:(p_id)->

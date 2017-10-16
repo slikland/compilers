@@ -1,3 +1,8 @@
+###*
+@class IndexedDB
+@extends EventDispatcher
+@submodule slikland.data
+###
 class IndexedDB extends EventDispatcher
 
 	@ON_CONNECTED:"onConnected"

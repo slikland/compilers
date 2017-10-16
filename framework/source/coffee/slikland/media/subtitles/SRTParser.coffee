@@ -1,4 +1,7 @@
-
+###*
+@class SRTParser
+@submodule slikland.media.subtitles
+###
 class SRTParser
 
 	@fromString:(p_string = null, p_milliseconds = false)->

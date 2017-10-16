@@ -1,14 +1,20 @@
 # import slikland.utils.Prototypes
 
 ###*
-Class to controll animation. It calls a callback method every requestAnimation frame.<br>
-In case of Internet Explorer 9, it uses a setTimeout with 16 ms.
 @class AnimationTicker
+@submodule slikland.anim
 @static
 ###
 class AnimationTicker
 	@_callbacks = []
 
+	###*
+	Class to controll animation. It calls a callback method every requestAnimation frame.<br>
+	In case of Internet Explorer 9, it uses a setTimeout with 16 ms.
+	@method _init
+	@private
+	@static
+	###
 	@_init:()->
 		@_update()
 
@@ -86,3 +92,12 @@ class AnimationTicker
 		@_currentTime = t
 
 	@_init()
+
+###*
+_
+@class _
+@module slikland
+###
+class _
+	
+	

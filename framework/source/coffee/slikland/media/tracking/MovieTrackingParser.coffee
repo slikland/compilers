@@ -1,4 +1,7 @@
-
+###*
+@class MovieTrackingParser
+@submodule slikland.media.tracking
+###
 class MovieTrackingParser
 
 	@getInstance:()=>

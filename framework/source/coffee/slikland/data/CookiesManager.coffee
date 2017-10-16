@@ -1,3 +1,8 @@
+###*
+@class CookiesManager
+@extends EventDispatcher
+@submodule slikland.data
+###
 class CookiesManager
 
 	@getInstance:()=>

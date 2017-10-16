@@ -1,3 +1,8 @@
+###*
+@class MediaDOM
+@extends BaseDOM
+@submodule slikland.media
+###
 class MediaDOM extends BaseDOM
 
 	@const PAUSE:'pause'

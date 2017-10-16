@@ -17,7 +17,9 @@
     "files": {
         "../../source/coffee/slikland/anim/AnimationTicker.coffee": {
             "name": "../../source/coffee/slikland/anim/AnimationTicker.coffee",
-            "modules": {},
+            "modules": {
+                "slikland": 1
+            },
             "classes": {
                 "AnimationTicker": 1
             },
@@ -47,6 +49,33 @@
             "modules": {},
             "classes": {
                 "SpriteSheetAnimation": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "../../source/coffee/slikland/data/CookiesManager.coffee": {
+            "name": "../../source/coffee/slikland/data/CookiesManager.coffee",
+            "modules": {},
+            "classes": {
+                "CookiesManager": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "../../source/coffee/slikland/data/DataStorageManager.coffee": {
+            "name": "../../source/coffee/slikland/data/DataStorageManager.coffee",
+            "modules": {},
+            "classes": {
+                "DataStorageManager": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "../../source/coffee/slikland/data/IndexedDB.coffee": {
+            "name": "../../source/coffee/slikland/data/IndexedDB.coffee",
+            "modules": {},
+            "classes": {
+                "IndexedDB": 1
             },
             "fors": {},
             "namespaces": {}
@@ -92,6 +121,51 @@
             "modules": {},
             "classes": {
                 "PreloadFiles": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "../../source/coffee/slikland/media/subtitles/SRTParser.coffee": {
+            "name": "../../source/coffee/slikland/media/subtitles/SRTParser.coffee",
+            "modules": {},
+            "classes": {
+                "SRTParser": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "../../source/coffee/slikland/media/tracking/MovieTrackingParser.coffee": {
+            "name": "../../source/coffee/slikland/media/tracking/MovieTrackingParser.coffee",
+            "modules": {},
+            "classes": {
+                "MovieTrackingParser": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "../../source/coffee/slikland/media/video/VideoCanvas.coffee": {
+            "name": "../../source/coffee/slikland/media/video/VideoCanvas.coffee",
+            "modules": {},
+            "classes": {
+                "VideoCanvas": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "../../source/coffee/slikland/media/video/VideoSubtitle.coffee": {
+            "name": "../../source/coffee/slikland/media/video/VideoSubtitle.coffee",
+            "modules": {},
+            "classes": {
+                "VideoSubtitle": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "../../source/coffee/slikland/media/MediaDOM.coffee": {
+            "name": "../../source/coffee/slikland/media/MediaDOM.coffee",
+            "modules": {},
+            "classes": {
+                "MediaDOM": 1
             },
             "fors": {},
             "namespaces": {}
@@ -151,6 +225,15 @@
             "fors": {},
             "namespaces": {}
         },
+        "../../source/coffee/slikland/navigation/core/App.coffee": {
+            "name": "../../source/coffee/slikland/navigation/core/App.coffee",
+            "modules": {},
+            "classes": {
+                "App": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
         "../../source/coffee/slikland/navigation/core/BaseNavigationController.coffee": {
             "name": "../../source/coffee/slikland/navigation/core/BaseNavigationController.coffee",
             "modules": {},
@@ -162,9 +245,7 @@
         },
         "../../source/coffee/slikland/navigation/core/Caim.coffee": {
             "name": "../../source/coffee/slikland/navigation/core/Caim.coffee",
-            "modules": {
-                "slikland": 1
-            },
+            "modules": {},
             "classes": {
                 "Caim": 1
             },
@@ -216,11 +297,56 @@
             "fors": {},
             "namespaces": {}
         },
+        "../../source/coffee/slikland/navigation/types/DefaultNavigationController.coffee": {
+            "name": "../../source/coffee/slikland/navigation/types/DefaultNavigationController.coffee",
+            "modules": {},
+            "classes": {
+                "DefaultNavigationController": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "../../source/coffee/slikland/navigation/types/ScrollNavigationController.coffee": {
+            "name": "../../source/coffee/slikland/navigation/types/ScrollNavigationController.coffee",
+            "modules": {},
+            "classes": {
+                "ScrollNavigationController": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
         "../../source/coffee/slikland/net/API.coffee": {
             "name": "../../source/coffee/slikland/net/API.coffee",
             "modules": {},
             "classes": {
                 "API": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "../../source/coffee/slikland/tracking/GTM.coffee": {
+            "name": "../../source/coffee/slikland/tracking/GTM.coffee",
+            "modules": {},
+            "classes": {
+                "GTM": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "../../source/coffee/slikland/tracking/GoogleAnalytics.coffee": {
+            "name": "../../source/coffee/slikland/tracking/GoogleAnalytics.coffee",
+            "modules": {},
+            "classes": {
+                "GoogleAnalytics": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "../../source/coffee/slikland/tracking/Tracking.coffee": {
+            "name": "../../source/coffee/slikland/tracking/Tracking.coffee",
+            "modules": {},
+            "classes": {
+                "Tracking": 1
             },
             "fors": {},
             "namespaces": {}
@@ -411,34 +537,81 @@
             },
             "fors": {},
             "namespaces": {}
+        },
+        "../../source/coffee/slikland/_.coffee": {
+            "name": "../../source/coffee/slikland/_.coffee",
+            "modules": {},
+            "classes": {
+                "_": 1
+            },
+            "fors": {},
+            "namespaces": {}
         }
     },
     "modules": {
+        "slikland.anim": {
+            "name": "slikland.anim",
+            "submodules": {},
+            "elements": {},
+            "classes": {
+                "AnimationTicker": 1,
+                "_": 1,
+                "BaseAnimation": 1,
+                "KTween": 1,
+                "SpriteSheetAnimation": 1
+            },
+            "fors": {},
+            "is_submodule": 1,
+            "namespaces": {},
+            "module": "slikland",
+            "description": "_",
+            "file": "../../source/coffee/slikland/anim/SpriteSheetAnimation.coffee",
+            "line": 20
+        },
         "slikland": {
             "name": "slikland",
             "submodules": {
+                "slikland.anim": 1,
+                "slikland.data": 1,
                 "slikland.debug": 1,
                 "slikland.event": 1,
                 "slikland.loader": 1,
-                "slikland.display": 1,
+                "slikland.media.subtitles": 1,
+                "slikland.media.tracking": 1,
+                "slikland.media.video": 1,
+                "slikland.media": 1,
+                "slikland.navigation.core": 1,
+                "slikland.navigation.display": 1,
+                "slikland.navigation.types": 1,
                 "slikland.net": 1,
+                "slikland.tracking": 1,
                 "slikland.utils.keyboard": 1,
                 "slikland.utils": 1
             },
             "elements": {},
             "classes": {
                 "AnimationTicker": 1,
+                "_": 1,
                 "BaseAnimation": 1,
                 "KTween": 1,
                 "SpriteSheetAnimation": 1,
+                "CookiesManager": 1,
+                "DataStorageManager": 1,
+                "IndexedDB": 1,
                 "Debug": 1,
                 "BaseDOM": 1,
                 "EventDispatcher": 1,
                 "AssetLoader": 1,
                 "PreloadFiles": 1,
+                "SRTParser": 1,
+                "MovieTrackingParser": 1,
+                "VideoCanvas": 1,
+                "VideoSubtitle": 1,
+                "MediaDOM": 1,
                 "ConditionsValidation": 1,
                 "ViewsData": 1,
                 "MetaController": 1,
+                "App": 1,
                 "BaseNavigationController": 1,
                 "Caim": 1,
                 "Navigation": 1,
@@ -446,7 +619,12 @@
                 "NavigationLoader": 1,
                 "NavigationRouter": 1,
                 "BaseView": 1,
+                "DefaultNavigationController": 1,
+                "ScrollNavigationController": 1,
                 "API": 1,
+                "GTM": 1,
+                "GoogleAnalytics": 1,
+                "Tracking": 1,
                 "Shortcut": 1,
                 "ArrayUtils": 1,
                 "ColorUtils": 1,
@@ -473,7 +651,24 @@
             "tag": "module",
             "file": "../../source/coffee/slikland/utils/URLUtils.coffee",
             "line": 3,
-            "description": "Base class to setup the navigation and start loading of dependencies."
+            "description": "_"
+        },
+        "slikland.data": {
+            "name": "slikland.data",
+            "submodules": {},
+            "elements": {},
+            "classes": {
+                "CookiesManager": 1,
+                "DataStorageManager": 1,
+                "IndexedDB": 1
+            },
+            "fors": {},
+            "is_submodule": 1,
+            "namespaces": {},
+            "module": "slikland",
+            "namespace": "",
+            "file": "../../source/coffee/slikland/data/IndexedDB.coffee",
+            "line": 1
         },
         "slikland.debug": {
             "name": "slikland.debug",
@@ -521,8 +716,86 @@
             "file": "../../source/coffee/slikland/loader/PreloadFiles.coffee",
             "line": 1
         },
-        "slikland.display": {
-            "name": "slikland.display",
+        "slikland.media.subtitles": {
+            "name": "slikland.media.subtitles",
+            "submodules": {},
+            "elements": {},
+            "classes": {
+                "SRTParser": 1
+            },
+            "fors": {},
+            "is_submodule": 1,
+            "namespaces": {},
+            "module": "slikland",
+            "namespace": "",
+            "file": "../../source/coffee/slikland/media/subtitles/SRTParser.coffee",
+            "line": 1
+        },
+        "slikland.media.tracking": {
+            "name": "slikland.media.tracking",
+            "submodules": {},
+            "elements": {},
+            "classes": {
+                "MovieTrackingParser": 1
+            },
+            "fors": {},
+            "is_submodule": 1,
+            "namespaces": {},
+            "module": "slikland",
+            "namespace": "",
+            "file": "../../source/coffee/slikland/media/tracking/MovieTrackingParser.coffee",
+            "line": 1
+        },
+        "slikland.media.video": {
+            "name": "slikland.media.video",
+            "submodules": {},
+            "elements": {},
+            "classes": {
+                "VideoCanvas": 1,
+                "VideoSubtitle": 1
+            },
+            "fors": {},
+            "is_submodule": 1,
+            "namespaces": {},
+            "module": "slikland",
+            "namespace": "",
+            "file": "../../source/coffee/slikland/media/video/VideoSubtitle.coffee",
+            "line": 3
+        },
+        "slikland.media": {
+            "name": "slikland.media",
+            "submodules": {},
+            "elements": {},
+            "classes": {
+                "MediaDOM": 1
+            },
+            "fors": {},
+            "is_submodule": 1,
+            "namespaces": {},
+            "module": "slikland",
+            "namespace": "",
+            "file": "../../source/coffee/slikland/media/MediaDOM.coffee",
+            "line": 1
+        },
+        "slikland.navigation.core": {
+            "name": "slikland.navigation.core",
+            "submodules": {},
+            "elements": {},
+            "classes": {
+                "App": 1,
+                "BaseNavigationController": 1
+            },
+            "fors": {},
+            "is_submodule": 1,
+            "namespaces": {},
+            "module": "slikland",
+            "namespace": "",
+            "description": "_",
+            "file": "../../source/coffee/slikland/navigation/core/BaseNavigationController.coffee",
+            "line": 29
+        },
+        "slikland.navigation.display": {
+            "name": "slikland.navigation.display",
             "submodules": {},
             "elements": {},
             "classes": {
@@ -535,6 +808,22 @@
             "namespace": "",
             "file": "../../source/coffee/slikland/navigation/display/BaseView.coffee",
             "line": 95
+        },
+        "slikland.navigation.types": {
+            "name": "slikland.navigation.types",
+            "submodules": {},
+            "elements": {},
+            "classes": {
+                "DefaultNavigationController": 1,
+                "ScrollNavigationController": 1
+            },
+            "fors": {},
+            "is_submodule": 1,
+            "namespaces": {},
+            "module": "slikland",
+            "namespace": "",
+            "file": "../../source/coffee/slikland/navigation/types/ScrollNavigationController.coffee",
+            "line": 4
         },
         "slikland.net": {
             "name": "slikland.net",
@@ -550,6 +839,23 @@
             "namespace": "",
             "file": "../../source/coffee/slikland/net/API.coffee",
             "line": 78
+        },
+        "slikland.tracking": {
+            "name": "slikland.tracking",
+            "submodules": {},
+            "elements": {},
+            "classes": {
+                "GTM": 1,
+                "GoogleAnalytics": 1,
+                "Tracking": 1
+            },
+            "fors": {},
+            "is_submodule": 1,
+            "namespaces": {},
+            "module": "slikland",
+            "namespace": "",
+            "file": "../../source/coffee/slikland/tracking/Tracking.coffee",
+            "line": 4
         },
         "slikland.utils.keyboard": {
             "name": "slikland.utils.keyboard",
@@ -612,8 +918,22 @@
             "module": "slikland",
             "file": "../../source/coffee/slikland/anim/AnimationTicker.coffee",
             "line": 3,
-            "description": "Class to controll animation. It calls a callback method every requestAnimation frame.<br>\nIn case of Internet Explorer 9, it uses a setTimeout with 16 ms.",
+            "submodule": "slikland.anim",
             "static": 1
+        },
+        "_": {
+            "name": "_",
+            "shortname": "_",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "slikland",
+            "submodule": "slikland.anim",
+            "file": "../../source/coffee/slikland/_.coffee",
+            "line": 1,
+            "description": "_"
         },
         "BaseAnimation": {
             "name": "BaseAnimation",
@@ -624,10 +944,22 @@
             "plugin_for": [],
             "extension_for": [],
             "module": "slikland",
+            "namespace": "",
             "file": "../../source/coffee/slikland/anim/BaseAnimation.coffee",
-            "line": 3,
+            "line": 47,
             "description": "BaseAnimation interface class for most frame / time based animation.<br>\nPlease do not instantiate this class. Use the extended classes.",
-            "extends": "BaseDOM"
+            "submodule": "slikland.anim",
+            "extends": "BaseDOM",
+            "is_constructor": 1,
+            "params": [
+                {
+                    "name": "p_fps",
+                    "description": "",
+                    "type": "Number",
+                    "optional": true,
+                    "optdefault": "15"
+                }
+            ]
         },
         "KTween": {
             "name": "KTween",
@@ -638,9 +970,11 @@
             "plugin_for": [],
             "extension_for": [],
             "module": "slikland",
+            "namespace": "",
             "file": "../../source/coffee/slikland/anim/KTween.coffee",
             "line": 1,
-            "description": "KTween class"
+            "description": "KTween class",
+            "submodule": "slikland.anim"
         },
         "SpriteSheetAnimation": {
             "name": "SpriteSheetAnimation",
@@ -651,9 +985,11 @@
             "plugin_for": [],
             "extension_for": [],
             "module": "slikland",
+            "namespace": "",
             "file": "../../source/coffee/slikland/anim/SpriteSheetAnimation.coffee",
             "line": 20,
             "description": "Spritesheet Animation class\n\nThis class will animate a spritesheet. It already handles responsiveness.<br>\nSo If the size of the SpriteSheetAnimation div is set, the animation will fit in the defined size.<br>\nIf a size is not set, it'll use the size defined in the JSON object.",
+            "submodule": "slikland.anim",
             "is_constructor": 1,
             "extends": "BaseAnimation",
             "params": [
@@ -667,6 +1003,51 @@
                 "\n```\nspritesheet = new SpriteSheetAnimation({image: someImage, json: someJson});\ndocument.body.appendChild(spritesheet.element);\nsprithesheet.play({repeat: false});\n```"
             ]
         },
+        "CookiesManager": {
+            "name": "CookiesManager",
+            "shortname": "CookiesManager",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "slikland",
+            "namespace": "",
+            "file": "../../source/coffee/slikland/data/CookiesManager.coffee",
+            "line": 1,
+            "submodule": "slikland.data",
+            "extends": "EventDispatcher"
+        },
+        "DataStorageManager": {
+            "name": "DataStorageManager",
+            "shortname": "DataStorageManager",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "slikland",
+            "namespace": "",
+            "file": "../../source/coffee/slikland/data/DataStorageManager.coffee",
+            "line": 4,
+            "submodule": "slikland.data",
+            "extends": "EventDispatcher"
+        },
+        "IndexedDB": {
+            "name": "IndexedDB",
+            "shortname": "IndexedDB",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "slikland",
+            "namespace": "",
+            "file": "../../source/coffee/slikland/data/IndexedDB.coffee",
+            "line": 1,
+            "submodule": "slikland.data",
+            "extends": "EventDispatcher"
+        },
         "Debug": {
             "name": "Debug",
             "shortname": "Debug",
@@ -676,6 +1057,7 @@
             "plugin_for": [],
             "extension_for": [],
             "module": "slikland",
+            "namespace": "",
             "file": "../../source/coffee/slikland/debug/Debug.coffee",
             "line": 1,
             "submodule": "slikland.debug",
@@ -739,6 +1121,79 @@
             "file": "../../source/coffee/slikland/loader/PreloadFiles.coffee",
             "line": 1,
             "submodule": "slikland.loader"
+        },
+        "SRTParser": {
+            "name": "SRTParser",
+            "shortname": "SRTParser",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "slikland",
+            "namespace": "",
+            "file": "../../source/coffee/slikland/media/subtitles/SRTParser.coffee",
+            "line": 1,
+            "submodule": "slikland.media.subtitles"
+        },
+        "MovieTrackingParser": {
+            "name": "MovieTrackingParser",
+            "shortname": "MovieTrackingParser",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "slikland",
+            "namespace": "",
+            "file": "../../source/coffee/slikland/media/tracking/MovieTrackingParser.coffee",
+            "line": 1,
+            "submodule": "slikland.media.tracking"
+        },
+        "VideoCanvas": {
+            "name": "VideoCanvas",
+            "shortname": "VideoCanvas",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "slikland",
+            "namespace": "",
+            "file": "../../source/coffee/slikland/media/video/VideoCanvas.coffee",
+            "line": 1,
+            "submodule": "slikland.media.video",
+            "extends": "BaseDOM"
+        },
+        "VideoSubtitle": {
+            "name": "VideoSubtitle",
+            "shortname": "VideoSubtitle",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "slikland",
+            "namespace": "",
+            "file": "../../source/coffee/slikland/media/video/VideoSubtitle.coffee",
+            "line": 3,
+            "submodule": "slikland.media.video",
+            "extends": "BaseDOM"
+        },
+        "MediaDOM": {
+            "name": "MediaDOM",
+            "shortname": "MediaDOM",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "slikland",
+            "namespace": "",
+            "file": "../../source/coffee/slikland/media/MediaDOM.coffee",
+            "line": 1,
+            "submodule": "slikland.media",
+            "extends": "BaseDOM"
         },
         "ConditionsValidation": {
             "name": "ConditionsValidation",
@@ -806,6 +1261,22 @@
                 "\n```\n\"meta\":\n{\n\t\"title\": \"Default Template - title\",\n\t\"description\":\"description\",\n\t\"webAppCapable\":\"true\",\n\t\"color\":\"#ff00ff\",\n\t\"manifest\":\"{base}data/manifest.json\",\n\t\"favicon\":\"{images}icons/favicon-default.ico\",\n\t\"icons\":[\n\t\t{\n\t\t\t\"rel\":\"apple-touch-icon\", \n\t\t\t\"sizes\":\"57x57\",\n\t\t\t\"href\":\"{images}icons/apple-touch-icon-57x57.png\"\n\t\t},\n\t\t{\n\t\t\t\"rel\":\"apple-touch-icon\", \n\t\t\t\"sizes\":\"60x60\",\n\t\t\t\"href\":\"{images}icons/apple-touch-icon-60x60.png\"\n\t\t},\n\t\t{\n\t\t\t\"rel\":\"apple-touch-icon\", \n\t\t\t\"sizes\":\"72x72\",\n\t\t\t\"href\":\"{images}icons/apple-touch-icon-72x72.png\"\n\t\t},\n\t\t{\n\t\t\t\"rel\":\"apple-touch-icon\", \n\t\t\t\"sizes\":\"76x76\",\n\t\t\t\"href\":\"{images}icons/apple-touch-icon-76x76.png\"\n\t\t},\n\t\t{\n\t\t\t\"rel\":\"apple-touch-icon\", \n\t\t\t\"sizes\":\"114x114\",\n\t\t\t\"href\":\"{images}icons/apple-touch-icon-114x114.png\"\n\t\t},\n\t\t{\n\t\t\t\"rel\":\"apple-touch-icon\", \n\t\t\t\"sizes\":\"120x120\",\n\t\t\t\"href\":\"{images}icons/apple-touch-icon-120x120.png\"\n\t\t},\n\t\t{\n\t\t\t\"rel\":\"apple-touch-icon\", \n\t\t\t\"sizes\":\"144x144\",\n\t\t\t\"href\":\"{images}icons/apple-touch-icon-144x144.png\"\n\t\t},\n\t\t{\n\t\t\t\"rel\":\"apple-touch-icon\", \n\t\t\t\"sizes\":\"152x152\",\n\t\t\t\"href\":\"{images}icons/apple-touch-icon-152x152.png\"\n\t\t},\n\t\t{\n\t\t\t\"rel\":\"apple-touch-icon\", \n\t\t\t\"sizes\":\"180x180\",\n\t\t\t\"href\":\"{images}icons/apple-touch-icon-180x180.png\"\n\t\t},\n\n\t\t{\n\t\t\t\"rel\":\"icon\",\n\t\t\t\"href\":\"{images}icons/favicon-16x16.png\", \n\t\t\t\"sizes\":\"16x16\"\n\t\t},\n\t\t{\n\t\t\t\"rel\":\"icon\",\n\t\t\t\"href\":\"{images}icons/favicon-32x32.png\", \n\t\t\t\"sizes\":\"32x32\"\n\t\t},\n\t\t{\n\t\t\t\"rel\":\"icon\",\n\t\t\t\"href\":\"{images}icons/favicon-96x96.png\", \n\t\t\t\"sizes\":\"96x96\"\n\t\t},\n\t\t{\n\t\t\t\"rel\":\"icon\",\n\t\t\t\"href\":\"{images}icons/android-chrome-192x192.png\", \n\t\t\t\"sizes\":\"192x192\"\n\t\t}\n\t]\n}\n```"
             ]
         },
+        "App": {
+            "name": "App",
+            "shortname": "App",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "slikland",
+            "namespace": "",
+            "file": "../../source/coffee/slikland/navigation/core/App.coffee",
+            "line": 4,
+            "description": "_",
+            "submodule": "slikland.navigation.core",
+            "extends": "EventDispatcher"
+        },
         "BaseNavigationController": {
             "name": "BaseNavigationController",
             "shortname": "BaseNavigationController",
@@ -817,8 +1288,9 @@
             "module": "slikland",
             "namespace": "",
             "file": "../../source/coffee/slikland/navigation/core/BaseNavigationController.coffee",
-            "line": 28,
+            "line": 29,
             "description": "BaseNavigationController is a base class for any type of navigation controller.<br>\nPlease do not instantiate this class. Use the extended classes.",
+            "submodule": "slikland.navigation.core",
             "extends": "EventDispatcher",
             "is_constructor": 1
         },
@@ -966,7 +1438,7 @@
             "namespace": "",
             "file": "../../source/coffee/slikland/navigation/display/BaseView.coffee",
             "line": 95,
-            "submodule": "slikland.display",
+            "submodule": "slikland.navigation.display",
             "extends": "BaseDOM",
             "is_constructor": 1,
             "params": [
@@ -996,6 +1468,36 @@
                 "\n```\n{\n\t\"id\":\"home\",\n\t\"class\":\"template-home-view\", //the valid formats are \"ClassName\", \"class-name\", \"class name\" or \"class_name\"\n\t\"route\":\"/\", //valid formats are String or RegExp\n\t\"content\":\"data/home.json\",\n\t\"cache\":true,\n\t\"parentView\":\"someViewID\", //the unique ID of parent view\n\t\"destroyable\":true,\n\t\"loadContent\":true,\n\t\"snap\":true, //only for scroll navigation type\n\t\"subviewsWrapper\":\"CSSSelector\", //like #ID or .className etc\n\t\"attachToParentWrapper\":\"CSSSelector\" //like #ID or .className etc\n}\n```"
             ]
         },
+        "DefaultNavigationController": {
+            "name": "DefaultNavigationController",
+            "shortname": "DefaultNavigationController",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "slikland",
+            "namespace": "",
+            "file": "../../source/coffee/slikland/navigation/types/DefaultNavigationController.coffee",
+            "line": 3,
+            "submodule": "slikland.navigation.types",
+            "extends": "BaseNavigationController"
+        },
+        "ScrollNavigationController": {
+            "name": "ScrollNavigationController",
+            "shortname": "ScrollNavigationController",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "slikland",
+            "namespace": "",
+            "file": "../../source/coffee/slikland/navigation/types/ScrollNavigationController.coffee",
+            "line": 4,
+            "submodule": "slikland.navigation.types",
+            "extends": "BaseNavigationController"
+        },
         "API": {
             "name": "API",
             "shortname": "API",
@@ -1011,6 +1513,49 @@
             "submodule": "slikland.net",
             "extends": "EventDispatcher",
             "is_constructor": 1
+        },
+        "GTM": {
+            "name": "GTM",
+            "shortname": "GTM",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "slikland",
+            "namespace": "",
+            "file": "../../source/coffee/slikland/tracking/GTM.coffee",
+            "line": 1,
+            "submodule": "slikland.tracking"
+        },
+        "GoogleAnalytics": {
+            "name": "GoogleAnalytics",
+            "shortname": "GoogleAnalytics",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "slikland",
+            "namespace": "",
+            "file": "../../source/coffee/slikland/tracking/GoogleAnalytics.coffee",
+            "line": 1,
+            "submodule": "slikland.tracking"
+        },
+        "Tracking": {
+            "name": "Tracking",
+            "shortname": "Tracking",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "slikland",
+            "namespace": "",
+            "file": "../../source/coffee/slikland/tracking/Tracking.coffee",
+            "line": 4,
+            "submodule": "slikland.tracking",
+            "extends": "EventDispatcher"
         },
         "Shortcut": {
             "name": "Shortcut",
@@ -1338,7 +1883,19 @@
     "classitems": [
         {
             "file": "../../source/coffee/slikland/anim/AnimationTicker.coffee",
-            "line": 15,
+            "line": 11,
+            "description": "Class to controll animation. It calls a callback method every requestAnimation frame.<br>\nIn case of Internet Explorer 9, it uses a setTimeout with 16 ms.",
+            "itemtype": "method",
+            "name": "_init",
+            "access": "private",
+            "tagname": "",
+            "static": 1,
+            "class": "AnimationTicker",
+            "submodule": "slikland.anim"
+        },
+        {
+            "file": "../../source/coffee/slikland/anim/AnimationTicker.coffee",
+            "line": 21,
             "description": "Add a callback method that will be called every requestAnimation.",
             "itemtype": "method",
             "name": "add",
@@ -1357,11 +1914,12 @@
                     "optdefault": "{}"
                 }
             ],
-            "class": "AnimationTicker"
+            "class": "AnimationTicker",
+            "submodule": "slikland.anim"
         },
         {
             "file": "../../source/coffee/slikland/anim/AnimationTicker.coffee",
-            "line": 48,
+            "line": 54,
             "description": "Remove a callback method added by {{#crossLink \"AnimationTicker/add:method\"}}{{/crossLink}}",
             "itemtype": "method",
             "name": "remove",
@@ -1373,11 +1931,12 @@
                     "type": "Function"
                 }
             ],
-            "class": "AnimationTicker"
+            "class": "AnimationTicker",
+            "submodule": "slikland.anim"
         },
         {
             "file": "../../source/coffee/slikland/anim/AnimationTicker.coffee",
-            "line": 59,
+            "line": 65,
             "itemtype": "method",
             "name": "_update",
             "access": "private",
@@ -1389,154 +1948,180 @@
                     "type": "Array"
                 }
             ],
-            "class": "AnimationTicker"
+            "class": "AnimationTicker",
+            "submodule": "slikland.anim"
         },
         {
             "file": "../../source/coffee/slikland/anim/BaseAnimation.coffee",
-            "line": 13,
+            "line": 5,
             "description": "Triggered when animation starts. Usually when {{#crossLink \"BaseAnimation/play:method\"}}{{/crossLink}} is called.",
             "itemtype": "event",
             "name": "PLAY",
-            "class": "BaseAnimation"
+            "class": "BaseAnimation",
+            "module": "slikland"
         },
         {
             "file": "../../source/coffee/slikland/anim/BaseAnimation.coffee",
-            "line": 19,
+            "line": 11,
             "description": "Triggered when animation stops. Usually when {{#crossLink \"BaseAnimation/stop:method\"}}{{/crossLink}} is called.",
             "itemtype": "event",
             "name": "STOP",
-            "class": "BaseAnimation"
+            "class": "BaseAnimation",
+            "module": "slikland"
         },
         {
             "file": "../../source/coffee/slikland/anim/BaseAnimation.coffee",
-            "line": 25,
+            "line": 17,
             "description": "Triggered when animation resumes. Usually when {{#crossLink \"BaseAnimation/resume:method\"}}{{/crossLink}} is called.",
             "itemtype": "event",
             "name": "RESUME",
-            "class": "BaseAnimation"
+            "class": "BaseAnimation",
+            "module": "slikland"
         },
         {
             "file": "../../source/coffee/slikland/anim/BaseAnimation.coffee",
-            "line": 31,
+            "line": 23,
             "description": "Triggered when animation pauses. Usually when {{#crossLink \"BaseAnimation/pause:method\"}}{{/crossLink}} is called.",
             "itemtype": "event",
             "name": "PAUSE",
-            "class": "BaseAnimation"
+            "class": "BaseAnimation",
+            "module": "slikland"
         },
         {
             "file": "../../source/coffee/slikland/anim/BaseAnimation.coffee",
-            "line": 37,
+            "line": 29,
             "description": "Triggered when animation finishes.",
             "itemtype": "event",
             "name": "COMPLETE",
-            "class": "BaseAnimation"
+            "class": "BaseAnimation",
+            "module": "slikland"
         },
         {
             "file": "../../source/coffee/slikland/anim/BaseAnimation.coffee",
-            "line": 43,
+            "line": 35,
             "description": "Triggered when animation reached the end and repeats.",
             "itemtype": "event",
             "name": "REPEAT",
-            "class": "BaseAnimation"
+            "class": "BaseAnimation",
+            "module": "slikland"
         },
         {
             "file": "../../source/coffee/slikland/anim/BaseAnimation.coffee",
-            "line": 49,
+            "line": 41,
             "description": "Triggered when animation changes it's frame.",
             "itemtype": "event",
             "name": "UPDATE",
-            "class": "BaseAnimation"
+            "class": "BaseAnimation",
+            "module": "slikland"
         },
         {
             "file": "../../source/coffee/slikland/anim/BaseAnimation.coffee",
-            "line": 77,
+            "line": 78,
             "description": "Return true if the animation was paused",
             "itemtype": "attribute",
             "name": "paused",
             "type": "Boolean",
             "readonly": "",
-            "class": "BaseAnimation"
+            "class": "BaseAnimation",
+            "module": "slikland",
+            "submodule": "slikland.anim"
         },
         {
             "file": "../../source/coffee/slikland/anim/BaseAnimation.coffee",
-            "line": 88,
+            "line": 89,
             "description": "Define if the animation will repeat or not.<br>\nBy default it's set to false.<br>\nIf the value is set to true, it will repeat infinitely.<br>\nThis value can also be changed when calling the {{#crossLink \"BaseAnimation/play:method\"}}{{/crossLink}} method.",
             "itemtype": "attribute",
             "name": "repeat",
             "default": "false",
             "type": "Boolean | Number",
-            "class": "BaseAnimation"
+            "class": "BaseAnimation",
+            "module": "slikland",
+            "submodule": "slikland.anim"
         },
         {
             "file": "../../source/coffee/slikland/anim/BaseAnimation.coffee",
-            "line": 104,
+            "line": 105,
             "description": "Frame rate of animation.",
             "itemtype": "attribute",
             "name": "fps",
             "type": "Number",
-            "class": "BaseAnimation"
+            "class": "BaseAnimation",
+            "module": "slikland",
+            "submodule": "slikland.anim"
         },
         {
             "file": "../../source/coffee/slikland/anim/BaseAnimation.coffee",
-            "line": 119,
+            "line": 120,
             "description": "Current time of the animation in seconds.\nIf it's playing a specific label, it refers to the portion of the label.",
             "itemtype": "attribute",
             "name": "currentTime",
             "type": "Number",
-            "class": "BaseAnimation"
+            "class": "BaseAnimation",
+            "module": "slikland",
+            "submodule": "slikland.anim"
         },
         {
             "file": "../../source/coffee/slikland/anim/BaseAnimation.coffee",
-            "line": 134,
+            "line": 135,
             "description": "Total time of the animation in seconds.\nIf it's playing a specific label, it refers to the portion of the label.",
             "itemtype": "attribute",
             "name": "totalTime",
             "type": "Number",
             "readonly": "",
-            "class": "BaseAnimation"
+            "class": "BaseAnimation",
+            "module": "slikland",
+            "submodule": "slikland.anim"
         },
         {
             "file": "../../source/coffee/slikland/anim/BaseAnimation.coffee",
-            "line": 145,
+            "line": 146,
             "description": "Current frame number of the animation.\nIf it's playing a specific label, it refers to the portion of the label.",
             "itemtype": "attribute",
             "name": "currentFrame",
             "type": "Number",
-            "class": "BaseAnimation"
+            "class": "BaseAnimation",
+            "module": "slikland",
+            "submodule": "slikland.anim"
         },
         {
             "file": "../../source/coffee/slikland/anim/BaseAnimation.coffee",
-            "line": 161,
+            "line": 162,
             "description": "Duration in frames of the animation.\nIf it's playing a specific label, it refers to the portion of the label.",
             "itemtype": "attribute",
             "name": "durationFrames",
             "type": "Number",
             "readonly": "",
-            "class": "BaseAnimation"
+            "class": "BaseAnimation",
+            "module": "slikland",
+            "submodule": "slikland.anim"
         },
         {
             "file": "../../source/coffee/slikland/anim/BaseAnimation.coffee",
-            "line": 173,
+            "line": 174,
             "description": "Total number of frames of the animation.",
             "itemtype": "attribute",
             "name": "totalFrames",
             "type": "Number",
             "readonly": "",
-            "class": "BaseAnimation"
+            "class": "BaseAnimation",
+            "module": "slikland",
+            "submodule": "slikland.anim"
         },
         {
             "file": "../../source/coffee/slikland/anim/BaseAnimation.coffee",
-            "line": 184,
+            "line": 185,
             "description": "The name of label currently playing.",
             "itemtype": "attribute",
             "name": "currentLabel",
             "type": "String",
             "readonly": "",
-            "class": "BaseAnimation"
+            "class": "BaseAnimation",
+            "module": "slikland",
+            "submodule": "slikland.anim"
         },
         {
             "file": "../../source/coffee/slikland/anim/BaseAnimation.coffee",
-            "line": 207,
+            "line": 208,
             "description": "Add a section of frames with a label name.",
             "itemtype": "method",
             "name": "addLabel",
@@ -1558,11 +2143,13 @@
                     "optional": true
                 }
             ],
-            "class": "BaseAnimation"
+            "class": "BaseAnimation",
+            "module": "slikland",
+            "submodule": "slikland.anim"
         },
         {
             "file": "../../source/coffee/slikland/anim/BaseAnimation.coffee",
-            "line": 219,
+            "line": 220,
             "description": "Remove a label",
             "itemtype": "method",
             "name": "removeLabel",
@@ -1573,11 +2160,13 @@
                     "type": "String"
                 }
             ],
-            "class": "BaseAnimation"
+            "class": "BaseAnimation",
+            "module": "slikland",
+            "submodule": "slikland.anim"
         },
         {
             "file": "../../source/coffee/slikland/anim/BaseAnimation.coffee",
-            "line": 257,
+            "line": 258,
             "description": "Play the animation.<br>\nIt receives a `data` object which is optional with some settings.",
             "itemtype": "method",
             "name": "play",
@@ -1590,35 +2179,43 @@
                     "optdefault": "{}"
                 }
             ],
-            "class": "BaseAnimation"
+            "class": "BaseAnimation",
+            "module": "slikland",
+            "submodule": "slikland.anim"
         },
         {
             "file": "../../source/coffee/slikland/anim/BaseAnimation.coffee",
-            "line": 283,
+            "line": 284,
             "description": "Resume the animation. If the {{#crossLink \"BaseAnimation/play:method\"}}{{/crossLink}} method was called with a label, it will resume the portion of the specified label",
             "itemtype": "method",
             "name": "resume",
-            "class": "BaseAnimation"
+            "class": "BaseAnimation",
+            "module": "slikland",
+            "submodule": "slikland.anim"
         },
         {
             "file": "../../source/coffee/slikland/anim/BaseAnimation.coffee",
-            "line": 294,
+            "line": 295,
             "description": "Pause the animation.",
             "itemtype": "method",
             "name": "pause",
-            "class": "BaseAnimation"
+            "class": "BaseAnimation",
+            "module": "slikland",
+            "submodule": "slikland.anim"
         },
         {
             "file": "../../source/coffee/slikland/anim/BaseAnimation.coffee",
-            "line": 305,
+            "line": 306,
             "description": "Stop the animation and goes to last frame.",
             "itemtype": "method",
             "name": "stop",
-            "class": "BaseAnimation"
+            "class": "BaseAnimation",
+            "module": "slikland",
+            "submodule": "slikland.anim"
         },
         {
             "file": "../../source/coffee/slikland/debug/Debug.coffee",
-            "line": 13,
+            "line": 12,
             "itemtype": "method",
             "name": "init",
             "static": 1,
@@ -1628,7 +2225,7 @@
         },
         {
             "file": "../../source/coffee/slikland/debug/Debug.coffee",
-            "line": 95,
+            "line": 94,
             "itemtype": "method",
             "name": "check",
             "params": [
@@ -1651,7 +2248,7 @@
         },
         {
             "file": "../../source/coffee/slikland/debug/Debug.coffee",
-            "line": 121,
+            "line": 120,
             "itemtype": "method",
             "name": "log",
             "static": 1,
@@ -1661,7 +2258,7 @@
         },
         {
             "file": "../../source/coffee/slikland/debug/Debug.coffee",
-            "line": 132,
+            "line": 131,
             "itemtype": "method",
             "name": "logTime",
             "params": [
@@ -2503,34 +3100,37 @@
         },
         {
             "file": "../../source/coffee/slikland/navigation/core/BaseNavigationController.coffee",
-            "line": 12,
+            "line": 13,
             "itemtype": "event",
             "name": "CHANGE",
             "static": 1,
             "class": "BaseNavigationController",
-            "module": "slikland"
+            "module": "slikland",
+            "submodule": "slikland.navigation.core"
         },
         {
             "file": "../../source/coffee/slikland/navigation/core/BaseNavigationController.coffee",
-            "line": 17,
+            "line": 18,
             "itemtype": "event",
             "name": "CHANGE_VIEW",
             "static": 1,
             "class": "BaseNavigationController",
-            "module": "slikland"
+            "module": "slikland",
+            "submodule": "slikland.navigation.core"
         },
         {
             "file": "../../source/coffee/slikland/navigation/core/BaseNavigationController.coffee",
-            "line": 22,
+            "line": 23,
             "itemtype": "event",
             "name": "CHANGE_SUBVIEW",
             "static": 1,
             "class": "BaseNavigationController",
-            "module": "slikland"
+            "module": "slikland",
+            "submodule": "slikland.navigation.core"
         },
         {
             "file": "../../source/coffee/slikland/navigation/core/BaseNavigationController.coffee",
-            "line": 35,
+            "line": 36,
             "itemtype": "method",
             "name": "setup",
             "params": [
@@ -2543,11 +3143,12 @@
             "access": "protected",
             "tagname": "",
             "class": "BaseNavigationController",
-            "module": "slikland"
+            "module": "slikland",
+            "submodule": "slikland.navigation.core"
         },
         {
             "file": "../../source/coffee/slikland/navigation/core/BaseNavigationController.coffee",
-            "line": 46,
+            "line": 47,
             "itemtype": "method",
             "name": "start",
             "params": [
@@ -2560,11 +3161,12 @@
                 }
             ],
             "class": "BaseNavigationController",
-            "module": "slikland"
+            "module": "slikland",
+            "submodule": "slikland.navigation.core"
         },
         {
             "file": "../../source/coffee/slikland/navigation/core/BaseNavigationController.coffee",
-            "line": 63,
+            "line": 64,
             "itemtype": "method",
             "name": "goto",
             "params": [
@@ -2575,66 +3177,72 @@
                 }
             ],
             "class": "BaseNavigationController",
-            "module": "slikland"
+            "module": "slikland",
+            "submodule": "slikland.navigation.core"
         },
         {
             "file": "../../source/coffee/slikland/navigation/core/BaseNavigationController.coffee",
-            "line": 72,
+            "line": 73,
             "description": "__This getter must be overridden with a type of navigation controller it will be a extended.__<br>\nReturns the type of navigation controller.",
             "itemtype": "attribute",
             "name": "type",
             "type": "{String}",
             "readonly": "",
             "class": "BaseNavigationController",
-            "module": "slikland"
+            "module": "slikland",
+            "submodule": "slikland.navigation.core"
         },
         {
             "file": "../../source/coffee/slikland/navigation/core/BaseNavigationController.coffee",
-            "line": 82,
+            "line": 83,
             "description": "__This getter must be overridden with a current visible views of navigation controller it will be a extended.__<br>\nReturns the current visible views in DOM.",
             "itemtype": "attribute",
             "name": "visibleViews",
             "type": "{Array}",
             "readonly": "",
             "class": "BaseNavigationController",
-            "module": "slikland"
+            "module": "slikland",
+            "submodule": "slikland.navigation.core"
         },
         {
             "file": "../../source/coffee/slikland/navigation/core/BaseNavigationController.coffee",
-            "line": 92,
+            "line": 93,
             "description": "__This getter must be overridden with a current view of navigation controller it will be a extended.__<br>\nReturns the current view.",
             "itemtype": "attribute",
             "name": "currentView",
             "type": "{BaseView}",
             "readonly": "",
             "class": "BaseNavigationController",
-            "module": "slikland"
+            "module": "slikland",
+            "submodule": "slikland.navigation.core"
         },
         {
             "file": "../../source/coffee/slikland/navigation/core/BaseNavigationController.coffee",
-            "line": 102,
+            "line": 103,
             "description": "__This getter must be overridden with a previous view of navigation controller it will be a extended.__<br>\nReturns the previous view.",
             "itemtype": "attribute",
             "name": "previousView",
             "type": "{BaseView}",
             "readonly": "",
             "class": "BaseNavigationController",
-            "module": "slikland"
+            "module": "slikland",
+            "submodule": "slikland.navigation.core"
         },
         {
             "file": "../../source/coffee/slikland/navigation/core/BaseNavigationController.coffee",
-            "line": 112,
+            "line": 113,
             "description": "__This getter must be overridden with a data object of navigation controller it will be a extended.__<br>\nReturns the data.",
             "itemtype": "attribute",
             "name": "data",
             "type": "{Object}",
             "readonly": "",
             "class": "BaseNavigationController",
-            "module": "slikland"
+            "module": "slikland",
+            "submodule": "slikland.navigation.core"
         },
         {
             "file": "../../source/coffee/slikland/navigation/core/BaseNavigationController.coffee",
-            "line": 122,
+            "line": 123,
             "description": "__This getter must be overridden with a change method of navigation controller it will be a extended.__<br>\nThis method trigger the event {{#crossLink \"BaseNavigationController/CHANGE_VIEW:event\"}}{{/crossLink}} after complete.",
             "itemtype": "method",
             "name": "data",
@@ -2648,11 +3256,12 @@
             "access": "protected",
             "tagname": "",
             "class": "BaseNavigationController",
-            "module": "slikland"
+            "module": "slikland",
+            "submodule": "slikland.navigation.core"
         },
         {
             "file": "../../source/coffee/slikland/navigation/core/BaseNavigationController.coffee",
-            "line": 134,
+            "line": 135,
             "itemtype": "method",
             "name": "_appendToWrapper",
             "params": [
@@ -2665,11 +3274,12 @@
             "access": "private",
             "tagname": "",
             "class": "BaseNavigationController",
-            "module": "slikland"
+            "module": "slikland",
+            "submodule": "slikland.navigation.core"
         },
         {
             "file": "../../source/coffee/slikland/navigation/core/BaseNavigationController.coffee",
-            "line": 157,
+            "line": 158,
             "itemtype": "method",
             "name": "_removeFromWrapper",
             "params": [
@@ -2682,7 +3292,8 @@
             "access": "private",
             "tagname": "",
             "class": "BaseNavigationController",
-            "module": "slikland"
+            "module": "slikland",
+            "submodule": "slikland.navigation.core"
         },
         {
             "file": "../../source/coffee/slikland/navigation/core/Caim.coffee",
@@ -3898,7 +4509,7 @@
             "static": 1,
             "class": "BaseView",
             "module": "slikland",
-            "submodule": "slikland.display"
+            "submodule": "slikland.navigation.display"
         },
         {
             "file": "../../source/coffee/slikland/navigation/display/BaseView.coffee",
@@ -3909,7 +4520,7 @@
             "static": 1,
             "class": "BaseView",
             "module": "slikland",
-            "submodule": "slikland.display"
+            "submodule": "slikland.navigation.display"
         },
         {
             "file": "../../source/coffee/slikland/navigation/display/BaseView.coffee",
@@ -3920,7 +4531,7 @@
             "static": 1,
             "class": "BaseView",
             "module": "slikland",
-            "submodule": "slikland.display"
+            "submodule": "slikland.navigation.display"
         },
         {
             "file": "../../source/coffee/slikland/navigation/display/BaseView.coffee",
@@ -3931,7 +4542,7 @@
             "static": 1,
             "class": "BaseView",
             "module": "slikland",
-            "submodule": "slikland.display"
+            "submodule": "slikland.navigation.display"
         },
         {
             "file": "../../source/coffee/slikland/navigation/display/BaseView.coffee",
@@ -3942,7 +4553,7 @@
             "static": 1,
             "class": "BaseView",
             "module": "slikland",
-            "submodule": "slikland.display"
+            "submodule": "slikland.navigation.display"
         },
         {
             "file": "../../source/coffee/slikland/navigation/display/BaseView.coffee",
@@ -3953,7 +4564,7 @@
             "static": 1,
             "class": "BaseView",
             "module": "slikland",
-            "submodule": "slikland.display"
+            "submodule": "slikland.navigation.display"
         },
         {
             "file": "../../source/coffee/slikland/navigation/display/BaseView.coffee",
@@ -3964,7 +4575,7 @@
             "static": 1,
             "class": "BaseView",
             "module": "slikland",
-            "submodule": "slikland.display"
+            "submodule": "slikland.navigation.display"
         },
         {
             "file": "../../source/coffee/slikland/navigation/display/BaseView.coffee",
@@ -3975,7 +4586,7 @@
             "static": 1,
             "class": "BaseView",
             "module": "slikland",
-            "submodule": "slikland.display"
+            "submodule": "slikland.navigation.display"
         },
         {
             "file": "../../source/coffee/slikland/navigation/display/BaseView.coffee",
@@ -3986,7 +4597,7 @@
             "static": 1,
             "class": "BaseView",
             "module": "slikland",
-            "submodule": "slikland.display"
+            "submodule": "slikland.navigation.display"
         },
         {
             "file": "../../source/coffee/slikland/navigation/display/BaseView.coffee",
@@ -3997,7 +4608,7 @@
             "static": 1,
             "class": "BaseView",
             "module": "slikland",
-            "submodule": "slikland.display"
+            "submodule": "slikland.navigation.display"
         },
         {
             "file": "../../source/coffee/slikland/navigation/display/BaseView.coffee",
@@ -4008,7 +4619,7 @@
             "static": 1,
             "class": "BaseView",
             "module": "slikland",
-            "submodule": "slikland.display"
+            "submodule": "slikland.navigation.display"
         },
         {
             "file": "../../source/coffee/slikland/navigation/display/BaseView.coffee",
@@ -4019,7 +4630,7 @@
             "static": 1,
             "class": "BaseView",
             "module": "slikland",
-            "submodule": "slikland.display"
+            "submodule": "slikland.navigation.display"
         },
         {
             "file": "../../source/coffee/slikland/navigation/display/BaseView.coffee",
@@ -4030,7 +4641,7 @@
             "static": 1,
             "class": "BaseView",
             "module": "slikland",
-            "submodule": "slikland.display"
+            "submodule": "slikland.navigation.display"
         },
         {
             "file": "../../source/coffee/slikland/navigation/display/BaseView.coffee",
@@ -4043,7 +4654,7 @@
             "readonly": "",
             "class": "BaseView",
             "module": "slikland",
-            "submodule": "slikland.display"
+            "submodule": "slikland.navigation.display"
         },
         {
             "file": "../../source/coffee/slikland/navigation/display/BaseView.coffee",
@@ -4058,7 +4669,7 @@
             "readonly": "",
             "class": "BaseView",
             "module": "slikland",
-            "submodule": "slikland.display"
+            "submodule": "slikland.navigation.display"
         },
         {
             "file": "../../source/coffee/slikland/navigation/display/BaseView.coffee",
@@ -4073,7 +4684,7 @@
             "readonly": "",
             "class": "BaseView",
             "module": "slikland",
-            "submodule": "slikland.display"
+            "submodule": "slikland.navigation.display"
         },
         {
             "file": "../../source/coffee/slikland/navigation/display/BaseView.coffee",
@@ -4085,7 +4696,7 @@
             "default": "{}",
             "class": "BaseView",
             "module": "slikland",
-            "submodule": "slikland.display"
+            "submodule": "slikland.navigation.display"
         },
         {
             "file": "../../source/coffee/slikland/navigation/display/BaseView.coffee",
@@ -4097,7 +4708,7 @@
             "default": "null",
             "class": "BaseView",
             "module": "slikland",
-            "submodule": "slikland.display"
+            "submodule": "slikland.navigation.display"
         },
         {
             "file": "../../source/coffee/slikland/navigation/display/BaseView.coffee",
@@ -4109,7 +4720,7 @@
             "default": "null",
             "class": "BaseView",
             "module": "slikland",
-            "submodule": "slikland.display"
+            "submodule": "slikland.navigation.display"
         },
         {
             "file": "../../source/coffee/slikland/navigation/display/BaseView.coffee",
@@ -4121,7 +4732,7 @@
             "default": "null",
             "class": "BaseView",
             "module": "slikland",
-            "submodule": "slikland.display"
+            "submodule": "slikland.navigation.display"
         },
         {
             "file": "../../source/coffee/slikland/navigation/display/BaseView.coffee",
@@ -4135,7 +4746,7 @@
             "default": "null",
             "class": "BaseView",
             "module": "slikland",
-            "submodule": "slikland.display"
+            "submodule": "slikland.navigation.display"
         },
         {
             "file": "../../source/coffee/slikland/navigation/display/BaseView.coffee",
@@ -4147,7 +4758,7 @@
             "default": "null",
             "class": "BaseView",
             "module": "slikland",
-            "submodule": "slikland.display"
+            "submodule": "slikland.navigation.display"
         },
         {
             "file": "../../source/coffee/slikland/navigation/display/BaseView.coffee",
@@ -4159,7 +4770,7 @@
             "default": "null",
             "class": "BaseView",
             "module": "slikland",
-            "submodule": "slikland.display"
+            "submodule": "slikland.navigation.display"
         },
         {
             "file": "../../source/coffee/slikland/navigation/display/BaseView.coffee",
@@ -4171,7 +4782,7 @@
             "default": "false",
             "class": "BaseView",
             "module": "slikland",
-            "submodule": "slikland.display"
+            "submodule": "slikland.navigation.display"
         },
         {
             "file": "../../source/coffee/slikland/navigation/display/BaseView.coffee",
@@ -4185,7 +4796,7 @@
             "default": "null",
             "class": "BaseView",
             "module": "slikland",
-            "submodule": "slikland.display"
+            "submodule": "slikland.navigation.display"
         },
         {
             "file": "../../source/coffee/slikland/navigation/display/BaseView.coffee",
@@ -4198,7 +4809,7 @@
             "readonly": "",
             "class": "BaseView",
             "module": "slikland",
-            "submodule": "slikland.display"
+            "submodule": "slikland.navigation.display"
         },
         {
             "file": "../../source/coffee/slikland/navigation/display/BaseView.coffee",
@@ -4211,7 +4822,7 @@
             "tagname": "",
             "class": "BaseView",
             "module": "slikland",
-            "submodule": "slikland.display"
+            "submodule": "slikland.navigation.display"
         },
         {
             "file": "../../source/coffee/slikland/navigation/display/BaseView.coffee",
@@ -4225,7 +4836,7 @@
             "readonly": "",
             "class": "BaseView",
             "module": "slikland",
-            "submodule": "slikland.display"
+            "submodule": "slikland.navigation.display"
         },
         {
             "file": "../../source/coffee/slikland/navigation/display/BaseView.coffee",
@@ -4239,7 +4850,7 @@
             "readonly": "",
             "class": "BaseView",
             "module": "slikland",
-            "submodule": "slikland.display"
+            "submodule": "slikland.navigation.display"
         },
         {
             "file": "../../source/coffee/slikland/navigation/display/BaseView.coffee",
@@ -4252,7 +4863,7 @@
             "readonly": "",
             "class": "BaseView",
             "module": "slikland",
-            "submodule": "slikland.display"
+            "submodule": "slikland.navigation.display"
         },
         {
             "file": "../../source/coffee/slikland/navigation/display/BaseView.coffee",
@@ -4265,7 +4876,7 @@
             "readonly": "",
             "class": "BaseView",
             "module": "slikland",
-            "submodule": "slikland.display"
+            "submodule": "slikland.navigation.display"
         },
         {
             "file": "../../source/coffee/slikland/navigation/display/BaseView.coffee",
@@ -4287,7 +4898,7 @@
             "readonly": "",
             "class": "BaseView",
             "module": "slikland",
-            "submodule": "slikland.display"
+            "submodule": "slikland.navigation.display"
         },
         {
             "file": "../../source/coffee/slikland/navigation/display/BaseView.coffee",
@@ -4306,7 +4917,7 @@
             ],
             "class": "BaseView",
             "module": "slikland",
-            "submodule": "slikland.display"
+            "submodule": "slikland.navigation.display"
         },
         {
             "file": "../../source/coffee/slikland/navigation/display/BaseView.coffee",
@@ -4325,7 +4936,7 @@
             ],
             "class": "BaseView",
             "module": "slikland",
-            "submodule": "slikland.display"
+            "submodule": "slikland.navigation.display"
         },
         {
             "file": "../../source/coffee/slikland/navigation/display/BaseView.coffee",
@@ -4344,7 +4955,7 @@
             ],
             "class": "BaseView",
             "module": "slikland",
-            "submodule": "slikland.display"
+            "submodule": "slikland.navigation.display"
         },
         {
             "file": "../../source/coffee/slikland/navigation/display/BaseView.coffee",
@@ -4363,7 +4974,7 @@
             ],
             "class": "BaseView",
             "module": "slikland",
-            "submodule": "slikland.display"
+            "submodule": "slikland.navigation.display"
         },
         {
             "file": "../../source/coffee/slikland/navigation/display/BaseView.coffee",
@@ -4382,7 +4993,7 @@
             ],
             "class": "BaseView",
             "module": "slikland",
-            "submodule": "slikland.display"
+            "submodule": "slikland.navigation.display"
         },
         {
             "file": "../../source/coffee/slikland/navigation/display/BaseView.coffee",
@@ -4401,7 +5012,7 @@
             ],
             "class": "BaseView",
             "module": "slikland",
-            "submodule": "slikland.display"
+            "submodule": "slikland.navigation.display"
         },
         {
             "file": "../../source/coffee/slikland/navigation/display/BaseView.coffee",
@@ -4420,7 +5031,7 @@
             ],
             "class": "BaseView",
             "module": "slikland",
-            "submodule": "slikland.display"
+            "submodule": "slikland.navigation.display"
         },
         {
             "file": "../../source/coffee/slikland/navigation/display/BaseView.coffee",
@@ -4439,7 +5050,7 @@
             ],
             "class": "BaseView",
             "module": "slikland",
-            "submodule": "slikland.display"
+            "submodule": "slikland.navigation.display"
         },
         {
             "file": "../../source/coffee/slikland/navigation/display/BaseView.coffee",
@@ -4458,7 +5069,7 @@
             ],
             "class": "BaseView",
             "module": "slikland",
-            "submodule": "slikland.display"
+            "submodule": "slikland.navigation.display"
         },
         {
             "file": "../../source/coffee/slikland/navigation/display/BaseView.coffee",
@@ -4468,7 +5079,7 @@
             "name": "pause",
             "class": "BaseView",
             "module": "slikland",
-            "submodule": "slikland.display"
+            "submodule": "slikland.navigation.display"
         },
         {
             "file": "../../source/coffee/slikland/navigation/display/BaseView.coffee",
@@ -4478,7 +5089,7 @@
             "name": "pause",
             "class": "BaseView",
             "module": "slikland",
-            "submodule": "slikland.display"
+            "submodule": "slikland.navigation.display"
         },
         {
             "file": "../../source/coffee/slikland/navigation/display/BaseView.coffee",
@@ -4497,7 +5108,7 @@
             ],
             "class": "BaseView",
             "module": "slikland",
-            "submodule": "slikland.display"
+            "submodule": "slikland.navigation.display"
         },
         {
             "file": "../../source/coffee/slikland/navigation/display/BaseView.coffee",
@@ -4516,7 +5127,7 @@
             ],
             "class": "BaseView",
             "module": "slikland",
-            "submodule": "slikland.display"
+            "submodule": "slikland.navigation.display"
         },
         {
             "file": "../../source/coffee/slikland/utils/keyboard/Shortcut.coffee",

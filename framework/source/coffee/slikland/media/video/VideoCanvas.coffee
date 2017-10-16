@@ -1,3 +1,8 @@
+###*
+@class VideoCanvas
+@extends BaseDOM
+@submodule slikland.media.video
+###
 class VideoCanvas extends BaseDOM
 
 	@const PAUSE:'pause'

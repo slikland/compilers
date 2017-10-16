@@ -1,6 +1,11 @@
 #import slikland.tracking.GoogleAnalytics
 #import slikland.tracking.GTM
 
+###*
+@class Tracking
+@extends EventDispatcher
+@submodule slikland.tracking
+###
 class Tracking extends EventDispatcher
 	@getInstance:()=>
 		@_instance ?= new @(arguments...)
