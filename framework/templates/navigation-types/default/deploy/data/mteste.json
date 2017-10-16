@@ -5,6 +5,18 @@
 		"description":"description"
 	},
 	"label":"Carregado",
+	"image":{
+		"id": "image",
+		"src":[
+				{
+					"condition":"desktop",
+					"file":"{images}666x666&text=home+dummy+image.png"
+				}
+			],
+		"area": "main",
+		"cache": true,
+		"other":666
+	},
 	"other":[
 		{
 			"other":999
