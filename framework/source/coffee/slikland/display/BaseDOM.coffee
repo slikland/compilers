@@ -318,7 +318,7 @@ class BaseDOM extends EventDispatcher
 				@removeChild(child, !!domInstance and !!destroy)
 
 	contains:(child)->
-		return @element.contains(child)
+		return @element.contains(child.element || child)
 
 	##--------------------------------------
 	##	Check if the instance matches a query selector
