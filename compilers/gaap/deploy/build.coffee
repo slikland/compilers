@@ -6,11 +6,17 @@ sourcePaths: [
 	'{paths.source}'
 ]
 tasks:
-	preloader:
+	gaap:
 		src: 'Main.coffee'
 		output: '{paths.deploy}gaap.js'
 		ignorePackage: 'slikland'
 		isNode: true
+	type:
+		src: 'TypeTest.ts'
+		output: '{paths.deploy}type.js'
+	versionTest:
+		src: 'VersionTest.ts'
+		output: '{paths.deploy}versionTest.js'
 	# framework: 
 	# 	'slikland'
 	# preloaderCss:

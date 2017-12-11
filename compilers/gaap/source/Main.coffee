@@ -50,6 +50,9 @@ class Main
 
 		Main.verbose = @verbose
 
+		@typeCompiler = new TypeScriptCompiler()
+		@typeCompiler.ugly = @ugly
+
 		@coffeeCompiler = new CoffeeCompiler()
 		@coffeeCompiler.ugly = @ugly
 
@@ -72,18 +75,22 @@ class Main
 	_fileChanged:(e, files)=>
 		files = [].concat(files)
 		for file in files
-			if /\.coffee$/i.test(file)
+			if /\.ts$/i.test(file)
+				@typeCompiler.update(file)
+			else if /\.coffee$/i.test(file)
 				@coffeeCompiler.update(file)
 			else if /\.less$/i.test(file)
 				@lessCompiler.update(file)
 			else if /\.styl$/i.test(file)
 				@stylusCompiler.update(file)
 			else if /\.js$/i.test(file)
+				@typeCompiler.update(file)
 				@coffeeCompiler?.update(file)
 				@jsCompiler.update(file)
 
 	_fileRemoved:(e, files)=>
 		files = [].concat(files)
+		@typeCompiler.remove(files)
 		@coffeeCompiler.remove(files)
 		@lessCompiler.remove(files)
 		@stylusCompiler.remove(files)
@@ -98,11 +105,13 @@ class Main
 			process.stdout.write('\x1b[T\x1b[J')
 			switch data
 				when 'compile'
+					@typeCompiler.runTasks(false)
 					@coffeeCompiler.runTasks(false)
 					@lessCompiler.runTasks(false)
 					@stylusCompiler.runTasks(false)
 					@jsCompiler.runTasks(false)
 				when 'uglify'
+					@typeCompiler.runTasks(true)
 					@coffeeCompiler.runTasks(true)
 					@lessCompiler.runTasks(true)
 					@stylusCompiler.runTasks(true)
@@ -114,6 +123,7 @@ class Main
 					Log.setStyle('yellow')
 					Log.println('This command has been deprecated, please use [bugfix || build || release] to compile with correct version.')
 				when 'bugfix', 'build', 'release'
+					@typeCompiler.runTasks(true, data)
 					@coffeeCompiler.runTasks(true, data)
 					@lessCompiler.runTasks(true)
 					@stylusCompiler.runTasks(true)
@@ -131,6 +141,8 @@ class Main
 		@_buildDocs()
 
 	_reset:()->
+		@typeCompiler.stop()
+		@typeCompiler.reset()
 		@coffeeCompiler.stop()
 		@coffeeCompiler.reset()
 		@lessCompiler.stop()
@@ -191,7 +203,8 @@ class Main
 		@_reset()
 		@_parseBuildFile()
 
-		# Log.println(@sourcePaths)
+		Log.println(@sourcePaths)
+		@typeCompiler.start(@sourcePaths)
 		@coffeeCompiler.start(@sourcePaths)
 		@lessCompiler.start(@sourcePaths)
 		@stylusCompiler.start(@sourcePaths)
@@ -230,6 +243,7 @@ class Main
 		@_parseTasks()
 		@sourcePaths = [].concat(@buildFile.sourcePaths)
 		@_watchFolders()
+
 	_replaceDynamicValues:(obj)->
 		Main._tempObj = obj
 		@_tempData = JSON.stringify(obj)
@@ -238,6 +252,7 @@ class Main
 		delete Main._tempObj
 		delete @_tempData
 		return obj
+
 	__replaceDynamicValues:(match, capture, pos, val)=>
 		n = capture.split('.')
 		v = Main._tempObj
@@ -256,7 +271,9 @@ class Main
 	_parseTasks:()->
 		for k, task of @buildFile.tasks
 			src = task.src
-			if /\.coffee$/i.test(src)
+			if /\.ts$/i.test(src)
+				@typeCompiler.addTask(k, task)
+			else if /\.coffee$/i.test(src)
 				@coffeeCompiler.addTask(k, task)
 			else if /\.less$/i.test(src)
 				@lessCompiler.addTask(k, task)
@@ -264,14 +281,18 @@ class Main
 				@stylusCompiler.addTask(k, task)
 			else if /\.js$/i.test(src)
 				@jsCompiler.addTask(k, task)
+
 	_resetWatchers:()->
 		@_watcher?.removeAll()
+
 	_watchFolders:()->
 		@_resetWatchers()
 		sourcePaths = [].concat(@buildFile.sourcePaths)
 		i = 0
 		for p in sourcePaths
 			@_watcher.addPath(p, true)
+
+
 	# _fileChange:()=>
 	# 	src = arguments
 	# 	if /\.coffee$/i.test(src)

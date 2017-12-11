@@ -8,13 +8,20 @@ class Versioner extends EventDispatcher
 
 	constructor: (p_path) ->
 		path = p_path
+		@_versioning = false
 		@readFile(p_path)
 		super
+
+	isVersioning:()->
+		return @_versioning
+
+	getSource:()->
+		return @_source
 	
 	notify:(p_text, p_color=null)=>
-		Log.println()
 		if p_color? then Log.setStyle(p_color)
 		Log.print(p_text)
+		Log.println()
 		Log.println()
 
 	readFile:(p_path)=>
@@ -22,14 +29,18 @@ class Versioner extends EventDispatcher
 
 		try
 			@running = true
-			data = fs.readFileSync(p_path, 'utf8')
+			@_source = data = fs.readFileSync(p_path, 'utf8')
 		catch err
+			@_versioning = false
+			@_source = null
 			@notify(err, 'magenta')
 
 		if @versionRegex.test(data)
 			resultVersion = String(data.match(@versionRegex))
 			resultDate = String(data.match(@dateRegex))
+			@_versioning = true
 		@running = false
+		return data
 
 	nextVersion:(p_type)=>
 		if !resultVersion || @running
@@ -60,7 +71,7 @@ class Versioner extends EventDispatcher
 
 		resultDate = 'SL_PROJECT_DATE:' + now
 		resultVersion = 'SL_PROJECT_VERSION:' + release + '.' + build + '.' + bugfix
-		@notify('Current project version: '+release + '.' + build + '.' + bugfix, 'yellow')
+		@notify('Current version: '+release + '.' + build + '.' + bugfix, 'yellow')
 		@running = false
 		return [resultVersion, resultDate]
 
@@ -74,4 +85,11 @@ class Versioner extends EventDispatcher
 		catch err
 			# @notify(err, 'magenta')
 		return false
+
+	destroy:()->
+		@running = false
+		@_source = null
+		delete @_source
+		@_versioning = null
+		delete @_versioning
 
