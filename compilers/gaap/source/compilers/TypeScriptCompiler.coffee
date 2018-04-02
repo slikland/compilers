@@ -157,8 +157,9 @@ function define(id, dependencies, factory) {
 	};
 }
 function resolve(definition) {
-	if (definition.resolved === true)
-			return;
+	if (definition.resolved === true) {
+		return;
+	}
 	definition.resolved = true;
 	var dependencies = definition.dependencies.map(function (id) {
 		return (id === "exports")

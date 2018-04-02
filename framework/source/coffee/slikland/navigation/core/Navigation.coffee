@@ -58,7 +58,7 @@ class Navigation extends EventDispatcher
 		_router.setup(app.root, app.config.navigation?.forceHashBang)
 		
 		for k, v of p_data.views
-			if v.route? then _router.addRoute(v.route)
+			if v.route? then _router.addRoute(v.route, null, {strict: !!v.strictRoute || false})
 
 		if app.config.navigation?.autoStart || app.config.navigation?.autoStart is undefined
 			@start()

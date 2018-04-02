@@ -301,7 +301,8 @@ class NavigationLoader extends EventDispatcher
 	removeParam=(p_param, p_url)->
 		param = null
 		params = []
-		results = p_url.split('?')[0]
+		p_url = Array.isArray(p_url) then '' else p_url
+		results = p_url.split('?')[0] || ''
 		query = if p_url.indexOf('?') != -1 then p_url.split('?')[1] else ''
 		if query != ''
 			params = query.split('&')

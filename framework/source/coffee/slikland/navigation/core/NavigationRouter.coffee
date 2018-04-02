@@ -222,7 +222,7 @@ class NavigationRouter extends EventDispatcher
 	@param {String} p_route
 	@param {Object} [p_data = null]
 	###
-	addRoute:(p_route, p_data = null)->
+	addRoute:(p_route, p_data = null, p_options = {strict:false})->
 		# console.log "addRoute"
 		if typeof(p_route)!='string'
 			i = p_route.length
@@ -239,7 +239,15 @@ class NavigationRouter extends EventDispatcher
 
 		try
 			r = r.replace(/(.*?)\/*$/, '$1')
-			routeRE = new RegExp('(?:' + r.replace(/\{.*?\}/g, '(.+?)') + '$)', 'g')
+			strictTralingSlash = '(\/)?'
+			strictParams = '(?:\\?.*)?'
+			if !!p_options.strict
+				strictTralingSlash = ''
+				strictParams = ''
+			if r is ''
+				routeRE = new RegExp("^(?:\/)?#{strictParams}$", 'g')
+			else
+				routeRE = new RegExp("(?:" + r.replace(/\{.*?\}/g, "(.+?)") + "#{strictTralingSlash})#{strictParams}$", 'g')
 		catch err
 			console.log err.stack
 			return

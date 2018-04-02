@@ -12,7 +12,7 @@
 ##--------------------------------------
 # TODO: Fix/Add override
 #
-isIE= ->
+isIE = ->
 	nav = navigator.userAgent.toLowerCase()
 	return if (nav.indexOf('msie') != -1) then parseInt(nav.split('msie')[1]) else false
 
@@ -435,20 +435,13 @@ unless "assign" of Object
 Node::on = Node::addEventListener
 Node::off = Node::removeEventListener
 
-Element::matches = Element::matches || Element::webkitMatchesSelector || Element::mozMatchesSelector || Element::msMatchesSelector || Element::oMatchesSelector
+Element::matches ?= Element::matches || Element::webkitMatchesSelector || Element::mozMatchesSelector || Element::msMatchesSelector || Element::oMatchesSelector
 
 Element::isElement = (p_target)->
 	if typeof HTMLElement is 'object'
 		return p_target instanceof HTMLElement or p_target instanceof BaseDOM
 	else
 		return typeof p_target is 'object' && p_target?.nodeType is 1 && typeof p_target?.nodeName is 'string'
-
-##------------------------------------------------------------------------------
-#
-# ADDED OLDER BROWSERS SUPPORT
-#
-navigator.mediaDevices ?= {}
-navigator.getUserMedia = navigator.mediaDevices.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia
 
 ##------------------------------------------------------------------------------
 #
@@ -567,3 +560,10 @@ if CacheStorage?
 							match
 						)
 				), Promise.resolve()
+
+##------------------------------------------------------------------------------
+#
+# ADDED OLDER BROWSERS SUPPORT
+#
+navigator.mediaDevices ?= {}
+navigator.getUserMedia = navigator.mediaDevices.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia

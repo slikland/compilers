@@ -121,9 +121,9 @@ class BaseDOM extends EventDispatcher
 		if className
 			@addClass(className)
 
-		# if MutationObserver?
+		# if (MutationObserver = window.MutationObserver || window.WebKitMutationObserver || window.MozMutationObserver)?
 		# 	@_observer = new MutationObserver(@_mutations)
-		# 	@_observer.observe(@element, { childList: true })
+		# 	@_observer.observe(@element, { childList: true, attributes: true })
 		# else
 		# 	@element.on 'DOMNodeInsertedIntoDocument', @_addedToDOM
 		# 	@element.on 'DOMNodeRemovedFromDocument', @_removedFromDOM
@@ -255,9 +255,9 @@ class BaseDOM extends EventDispatcher
 			delete @_observer
 
 	@get isAttached:(p_container = null)->
-		if typeof (p_container.contains) is 'function'
+		if typeof (p_container?.contains) is 'function'
 			return p_container.contains(@element)
-		return document.contains?(@element) || document.body.contains(@element)
+		return document?.contains?(@element) || document?.body.contains?(@element)
 
 	##--------------------------------------
 	##	DOM Manipulation
@@ -537,19 +537,12 @@ class BaseDOM extends EventDispatcher
 	_mutations:(mutations)=>
 		i = mutations.length
 		while i--
-			added = 0
-			nodes = mutations[i].addedNodes
-			length = mutations[i].addedNodes.length
-			while length--
-				nodes[added].__instance__?._addedToDOM({target:nodes[added]})
-				added++
-
-			removed = 0
-			length = mutations[i].removedNodes.length
-			nodes = mutations[i].removedNodes
-			while length--
-				nodes[removed].__instance__?._removedFromDOM({target:nodes[removed]})
-				removed++
+			mutation = mutations[i]
+			if mutation.type is 'childList'
+				for node in mutation.removedNodes
+					node.__instance__?._removedFromDOM({target:node})
+				for node in mutation.addedNodes
+					node.__instance__?._addedToDOM({target:node})
 		undefined
 
 	_addedToDOM:(evt)=>
