@@ -19,7 +19,7 @@
 	"conditions": {
         "mobile":{
             "browser":{
-            	"mobile": true
+            	"desktop": false
             }
         },
         "desktop":{
@@ -67,7 +67,12 @@
 					"file":"{base}data/home.json",
 					"cache":true,
 					"testestes":"teste"
-
+				},
+				{
+					"condition":"mobile",
+					"file":"{base}data/home.json",
+					"cache":true,
+					"testestes":"teste"
 				}
 			],
 			"destroyable":false,
@@ -153,18 +158,18 @@
 			},
 			{
 				"id": "main-js",
-				"src": [
-					{
-						"condition":"desktop",
-						"file":"{base}js/main.js"
-					}
-				],
+				"src":"{base}js/main.js",
 				"cache":true
 			},
 			{
 				"content":[
 					{
 						"condition":"desktop",
+						"file":"{base}data/mteste.json",
+						"cache":true
+					},
+					{
+						"condition":"mobile",
 						"file":"{base}data/mteste.json",
 						"cache":true
 					}

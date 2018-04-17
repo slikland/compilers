@@ -20,7 +20,7 @@ class App extends EventDispatcher
 	# 
 	# FOR NOW IS HARDCODED !!!1!
 	# 
-	framework_version = "3.3.1"
+	framework_version = "3.3.2"
 
 	_root = null
 	_loader = null

@@ -6,22 +6,13 @@
 	},
 	"video":{
 		"loadWithView":false,
-		"src":[
-				{
-					"condition":"desktop",
-					"file":"{videos}SampleVideo_1280x720_1mb.mp4"
-				}
-			],
+		"src":"{videos}SampleVideo_1280x720_1mb.mp4",
+		"fullBuffer": true,
 		"cache": true
 	},
 	"subtitle":{
 		"loadWithView":true,
-		"src":[
-				{
-					"condition":"desktop",
-					"file":"{videos}subtitle.srt"
-				}
-			],
+		"src":"{videos}subtitle.srt",
 		"cache": true
 	},
 	"test666":{
@@ -38,6 +29,12 @@
 									"cache":false,
 									"loadWithView":false,
 									"condition":"desktop",
+									"file":"{images}icons/apple-touch-icon-180x180.png"
+								},
+								{
+									"cache":false,
+									"loadWithView":false,
+									"condition":"mobile",
 									"file":"{images}icons/apple-touch-icon-180x180.png"
 								}
 							]

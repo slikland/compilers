@@ -3,7 +3,7 @@ var __bind=function(fn, me){ return function(){ return fn.apply(me, arguments); 
 __hasProp={}.hasOwnProperty,
 __indexOf=[].indexOf || function(item) { for (var i = 0, l = this.length; i < l; i++) { if (i in this && this[i] === item) return i; } return -1; },
 __extends=function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) Object.defineProperty(child, key, Object.getOwnPropertyDescriptor(parent, key)); } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
-var NetworkError, isIE, __scopeIE8;
+var NetworkError, isIE, __scopeIE8, _base;
 isIE = function() {
   var nav;
   nav = navigator.userAgent.toLowerCase();
@@ -495,7 +495,9 @@ if (!("assign" in Object)) {
 }
 Node.prototype.on = Node.prototype.addEventListener;
 Node.prototype.off = Node.prototype.removeEventListener;
-Element.prototype.matches = Element.prototype.matches || Element.prototype.webkitMatchesSelector || Element.prototype.mozMatchesSelector || Element.prototype.msMatchesSelector || Element.prototype.oMatchesSelector;
+if ((_base = Element.prototype).matches == null) {
+  _base.matches = Element.prototype.matches || Element.prototype.webkitMatchesSelector || Element.prototype.mozMatchesSelector || Element.prototype.msMatchesSelector || Element.prototype.oMatchesSelector;
+}
 Element.prototype.isElement = function(p_target) {
   if (typeof HTMLElement === 'object') {
     return p_target instanceof HTMLElement || p_target instanceof BaseDOM;
@@ -503,10 +505,6 @@ Element.prototype.isElement = function(p_target) {
     return typeof p_target === 'object' && (p_target != null ? p_target.nodeType : void 0) === 1 && typeof (p_target != null ? p_target.nodeName : void 0) === 'string';
   }
 };
-if (navigator.mediaDevices == null) {
-  navigator.mediaDevices = {};
-}
-navigator.getUserMedia = navigator.mediaDevices.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia;
 (function() {
   var browserRaf, canceled, lastTime, nowOffset, vendor, w, _i, _len, _ref;
   w = window;
@@ -646,6 +644,10 @@ if (typeof CacheStorage !== "undefined" && CacheStorage !== null) {
     };
   }
 }
+if (navigator.mediaDevices == null) {
+  navigator.mediaDevices = {};
+}
+navigator.getUserMedia = navigator.mediaDevices.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia;
 /**
 @class EventDispatcher
 @submodule slikland.event
@@ -893,7 +895,7 @@ App = (function(_super) {
   App.WINDOW_ACTIVE = "windowActive";
   App.WINDOW_INACTIVE = "windowInactive";
   App.NETWORK_UPDATE = 'networkUpdate';
-  framework_version = "3.3.1";
+  framework_version = "3.3.2";
   _root = null;
   _loader = null;
   _config = null;
@@ -3892,13 +3894,14 @@ BaseDOM = (function(_super) {
   });
   BaseDOM.get({
     isAttached: function(p_container) {
+      var _base;
       if (p_container == null) {
         p_container = null;
       }
-      if (typeof p_container.contains === 'function') {
+      if (typeof (p_container != null ? p_container.contains : void 0) === 'function') {
         return p_container.contains(this.element);
       }
-      return (typeof document.contains === "function" ? document.contains(this.element) : void 0) || document.body.contains(this.element);
+      return (typeof document !== "undefined" && document !== null ? typeof document.contains === "function" ? document.contains(this.element) : void 0 : void 0) || (typeof document !== "undefined" && document !== null ? typeof (_base = document.body).contains === "function" ? _base.contains(this.element) : void 0 : void 0);
     }
   });
   BaseDOM.prototype.appendChild = function(child) {
@@ -3992,7 +3995,7 @@ BaseDOM = (function(_super) {
     return _results;
   };
   BaseDOM.prototype.contains = function(child) {
-    return this.element.contains(child);
+    return this.element.contains(child.element || child);
   };
   BaseDOM.prototype.matches = function(query) {
     return this.element.matches(query);
@@ -4283,30 +4286,29 @@ BaseDOM = (function(_super) {
     return hasClass;
   };
   BaseDOM.prototype._mutations = function(mutations) {
-    var added, i, length, nodes, removed, _ref, _ref1;
+    var i, mutation, node, _i, _j, _len, _len1, _ref, _ref1, _ref2, _ref3;
     i = mutations.length;
     while (i--) {
-      added = 0;
-      nodes = mutations[i].addedNodes;
-      length = mutations[i].addedNodes.length;
-      while (length--) {
-        if ((_ref = nodes[added].__instance__) != null) {
-          _ref._addedToDOM({
-            target: nodes[added]
-          });
+      mutation = mutations[i];
+      if (mutation.type === 'childList') {
+        _ref = mutation.removedNodes;
+        for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+          node = _ref[_i];
+          if ((_ref1 = node.__instance__) != null) {
+            _ref1._removedFromDOM({
+              target: node
+            });
+          }
         }
-        added++;
-      }
-      removed = 0;
-      length = mutations[i].removedNodes.length;
-      nodes = mutations[i].removedNodes;
-      while (length--) {
-        if ((_ref1 = nodes[removed].__instance__) != null) {
-          _ref1._removedFromDOM({
-            target: nodes[removed]
-          });
+        _ref2 = mutation.addedNodes;
+        for (_j = 0, _len1 = _ref2.length; _j < _len1; _j++) {
+          node = _ref2[_j];
+          if ((_ref3 = node.__instance__) != null) {
+            _ref3._addedToDOM({
+              target: node
+            });
+          }
         }
-        removed++;
       }
     }
     return void 0;
@@ -5702,6 +5704,8 @@ ParseData = (function(_super) {
               return clone[i].file;
             }
             break;
+          } else {
+            continue;
           }
         } else {
           if (clone[i].file != null) {
@@ -5903,7 +5907,7 @@ ParseConfig = (function(_super) {
     var i, param, params, query, results;
     param = null;
     params = [];
-    results = p_url.split('?')[0];
+    results = typeof p_url.split === "function" ? p_url.split('?')[0] : void 0;
     query = p_url.indexOf('?') !== -1 ? p_url.split('?')[1] : '';
     if (query !== '') {
       params = query.split('&');
@@ -6396,7 +6400,8 @@ NavigationLoader = (function(_super) {
     var i, param, params, query, results;
     param = null;
     params = [];
-    results = p_url.split('?')[0];
+    console.log(">>>> ", p_url);
+    results = typeof p_url.split === "function" ? p_url.split('?')[0] : void 0;
     query = p_url.indexOf('?') !== -1 ? p_url.split('?')[1] : '';
     if (query !== '') {
       params = query.split('&');

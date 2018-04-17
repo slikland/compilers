@@ -28,11 +28,14 @@ class ParseData extends EventDispatcher
 		if typeof(p_obj) == 'object'
 			clone = ObjectUtils.clone(p_obj)
 			for i in [0...clone.length]
+				# console.log  "<<< ", clone[i].condition
 				if clone[i].condition?
 					if _conditions?.test?(clone[i].condition)
 						if clone[i].file?
 							return clone[i].file
 						break
+					else
+						continue
 				else
 					if clone[i].file?
 						return clone[i].file

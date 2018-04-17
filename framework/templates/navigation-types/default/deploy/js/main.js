@@ -846,10 +846,15 @@ NavigationRouter = (function(_super) {
   	@param {String} p_route
   	@param {Object} [p_data = null]
    */
-  NavigationRouter.prototype.addRoute = function(p_route, p_data) {
-    var err, i, labels, o, p, r, routeRE;
+  NavigationRouter.prototype.addRoute = function(p_route, p_data, p_options) {
+    var err, i, labels, o, p, r, routeRE, strictParams, strictTralingSlash;
     if (p_data == null) {
       p_data = null;
+    }
+    if (p_options == null) {
+      p_options = {
+        strict: false
+      };
     }
     if (typeof p_route !== 'string') {
       i = p_route.length;
@@ -869,7 +874,17 @@ NavigationRouter = (function(_super) {
     }
     try {
       r = r.replace(/(.*?)\/*$/, '$1');
-      routeRE = new RegExp('(?:' + r.replace(/\{.*?\}/g, '(.+?)') + '$)', 'g');
+      strictTralingSlash = '(\/)?';
+      strictParams = '(?:\\?.*)?';
+      if (!!p_options.strict) {
+        strictTralingSlash = '';
+        strictParams = '';
+      }
+      if (r === '') {
+        routeRE = new RegExp("^(?:\/)?" + strictParams + "$", 'g');
+      } else {
+        routeRE = new RegExp("(?:" + r.replace(/\{.*?\}/g, "(.+?)") + ("" + strictTralingSlash + ")" + strictParams + "$"), 'g');
+      }
     } catch (_error) {
       err = _error;
       console.log(err.stack);
@@ -1113,7 +1128,9 @@ Navigation = (function(_super) {
     for (k in _ref1) {
       v = _ref1[k];
       if (v.route != null) {
-        _router.addRoute(v.route);
+        _router.addRoute(v.route, null, {
+          strict: !!v.strictRoute || false
+        });
       }
     }
     if (((_ref2 = app.config.navigation) != null ? _ref2.autoStart : void 0) || ((_ref3 = app.config.navigation) != null ? _ref3.autoStart : void 0) === void 0) {
