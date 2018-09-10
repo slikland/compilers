@@ -301,19 +301,20 @@ class NavigationLoader extends EventDispatcher
 	removeParam=(p_param, p_url)->
 		param = null
 		params = []
-		console.log ">>>> ", p_url
-		results = p_url.split?('?')[0]
-		query = if p_url.indexOf('?') != -1 then p_url.split('?')[1] else ''
-		if query != ''
-			params = query.split('&')
-			i = params.length - 1
-			while i >= 0
-				param = params[i].split('=')[0]
-				if param == p_param
-					params.splice i, 1
-				i -= 1
-			if params.length > 0
-				results = results + '?' + params.join('&')
+		# console.log ">>>> ", p_url
+		if typeof(p_url) is 'string'
+			results = p_url.split?('?')[0]
+			query = if p_url.indexOf('?') != -1 then p_url.split('?')[1] else ''
+			if query != ''
+				params = query.split('&')
+				i = params.length - 1
+				while i >= 0
+					param = params[i].split('=')[0]
+					if param == p_param
+						params.splice i, 1
+					i -= 1
+				if params.length > 0
+					results = results + '?' + params.join('&')
 		return results
 
 	###*
