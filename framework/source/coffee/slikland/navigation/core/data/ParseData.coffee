@@ -35,7 +35,9 @@ class ParseData extends EventDispatcher
 							return clone[i].file
 						break
 					else
-						continue
+						# continue
+						return null
+						break
 				else
 					if clone[i].file?
 						return clone[i].file
